@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+	<context>
+		<name>phpVirtualBox</name>
+		<message>
+			<source>Warning: A VirtualBox internal operation is in progress. Closing this window or navigating away from this web page may cause unexpected and undesirable results. Please wait for the operation to complete.</source>
+			<translation>Внимание: VirtualBox занят. Если вы закроете это окно или уйдёте с этой веб-страницы, то это может привести к неизвестному результату. Пожалуйста, дождитесь окончания операции.</translation>
+		</message>
+		<message>
+			<source>Operation Canceled</source>
+			<translation>Действие отменено</translation>
+		</message>
+		<message>
+			<source>An error occurred communicating with your vboxwebsrv. No more requests will be sent by phpVirtualBox until the error is corrected and this page is refreshed. The details of this connection error should be displayed in a subsequent dialog box.</source>
+			<translation>Ошибка соединения с vboxwebsrv. phpVirtualBox не будет работать, пока ошибка не устранена или не обновлена страница. Подробности ошибки подключения в следующем диалоговом окне.</translation>
+		</message>
+		<message>
+			<source>Unable to retrieve guest properties. Make sure the virtual machine is running and has the VirtualBox Guest Additions installed.</source>
+			<translation>Невозможно получить свойства гостевой машины. Убедитесь, что машина запущена и установлены VirtualBox Guest Additions.</translation>
+		</message>
+		<!-- Error vmlist 1 -->
+		<message>
+			<source>There was an error obtaining the list of registered virtual machines from VirtualBox. Make sure vboxwebsrv is running and that the settings in config.php are correct.&lt;p&gt;The list of virtual machines will not begin auto-refreshing again until this page is reloaded.&lt;/p&gt;</source>
+			<translation>Ошибка получения списка виртуальных машин. Убедитесь, что vboxwebsrv запущен и параметры в config.php корректны.&lt;p&gt;Список виртуальных машин не будет автообновляться, пока вы не перезагрузите страницу.&lt;/p&gt;</translation>
+		</message>
+		<message>
+			<source>Server List</source>
+			<translation>Список серверов</translation>
+		</message>
+	</context>
+	<context>
+		<name>UIVMDesktop</name>
+		<message>
+			<source>Console</source>
+			<translation>Консоль</translation>
+		</message>
+		<message>
+			<source>Loading ...</source>
+			<translation>Загрузка...</translation>
+		</message>
+	</context>
+	<context>
+		<name>VBoxSelectorWnd</name>
+		<message>
+			<source>Change Password</source>
+			<translation>Изменить пароль</translation>
+		</message>
+		<message>
+			<source>Log out - %1</source>
+			<translation>Выйти - %1</translation>
+		</message>
+		<message>
+			<source>Logged in as %1</source>
+			<translation>Logged in as %1</translation>
+		</message>
+		<message>
+			<source>Stop</source>
+			<translation>Остановить</translation>
+		</message>
+		<message>
+			<source>VirtualBox User Manual</source>
+			<translation>Справка VirtualBox</translation>
+		</message>	
+		<message>
+			<source>About</source>
+			<translation>О программе</translation>
+		</message>
+	</context>
+	<context>
+		<name>UIActionsPool</name>
+		<message>
+			<source>Save State</source>
+			<translation>Сохранить состояние машины</translation>
+		</message>
+		<message>
+			<source>Power Off</source>
+			<translation>Выключить машину</translation>
+		</message>		
+	</context>
+	<context>
+		<!-- Console Tab -->
+		<name>VBoxConsoleWgt</name>
+		<message>
+			<source>User name</source>
+			<translation>Имя пользователья</translation>
+		</message>
+		<message>
+			<source>Password</source>
+			<translation>Пароль</translation>
+		</message>
+		<message>
+			<source>Connecting to %1</source>
+			<translation>Подключаемся к %1</translation>
+		</message>
+		<message>
+			<source>Connected to %1</source>
+			<translation>Подключено к %1</translation>
+		</message>
+		<message>
+			<source>Requested desktop size</source>
+			<translation>Разрешение экрана</translation>
+		</message>
+		<message>
+			<source>Connect</source>
+			<translation>Подключить</translation>
+		</message>
+		<message>
+			<source>Detach</source>
+			<translation>В отдельном окне</translation>
+		</message>
+		<message>
+			<source>Disconnect</source>
+			<translation>Отключить</translation>
+		</message>
+		<message>
+			<source>Send Ctrl-Alt-Del</source>
+			<translation>Отправить Ctrl-Alt-Del</translation>
+		</message>
+		<message>
+			<source>Disconnect reason</source>
+			<translation>Причина отключения</translation>
+		</message>
+		<message>
+			<source>Redirection by %1</source>
+			<translation>Redirection by %1</translation>
+		</message>
+		<message>
+			<source>Virtual machine is not running or is not configured to accept RDP connections.</source>
+			<translation>Виртуальная машина не запущена или не настроен удалённый дисплей.</translation>
+		</message>
+	</context>		
+	<context>
+		<name>VBoxGlobal</name>
+		<message>
+			<source>Hosting</source>
+			<translation>Хост</translation>
+		</message>
+		<message>
+			<source>Guest Network Adapters</source>
+			<translation>Гостевые сетевые адаптеры</translation>
+		</message>
+		<message>
+			<source>Up</source>
+			<translation>включен</translation>
+			<comment>Host network adapter status</comment>
+		</message>
+		<message>
+			<source>Down</source>
+			<translation>выключен</translation>
+			<comment>Host network adapter status</comment>
+		</message>
+	</context>
+	<context>
+		<name>UIVMPreviewWindow</name>
+		<message>
+			<source>Every %1 seconds</source>
+			<translation>Каждые %1 секунд</translation>
+		</message>
+		<message>
+			<source>Open in new window</source>
+			<translation>В новом окне</translation>
+		</message>		
+	</context>
+	<context>
+		<name>UISettingsDialogGlobal</name>
+		<message>
+			<source>Users</source>
+			<translation>Пользователи</translation>
+		</message>
+	</context>
+	<context>
+		<name>UIUsers</name>
+		<message>
+			<source>Users</source>
+			<translation>Пользователи</translation>
+		</message>		
+		<message>
+			<source>Admin User</source>
+			<translation>Администратор</translation>
+		</message>
+		<message>
+			<source>Can administer users</source>
+			<translation>Может управлять пользователями</translation>
+		</message>
+		<message>
+			<source>Add User</source>
+			<translation>Добавить пользователя</translation>
+		</message>
+		<message>
+			<source>Edit User</source>
+			<translation>Редактировать параметры пользователя</translation>
+		</message>
+		<message>
+			<source>Remove User</source>
+			<translation>Удалить пользователя</translation>
+		</message>
+		<message>
+			<source>A user with that username already exists.</source>
+			<translation>Пользователь с такимименем уже существует.</translation>
+		</message>
+		<message>
+			<source>Are you sure you want to remove the user &lt;b&gt;%1&lt;/b&gt;? This action cannot be undone.</source>
+			<translation>Вы уверены, что хотите удалить пользователя &lt;b&gt;%1&lt;/b&gt;? Это действие не может быть отменено.</translation>
+		</message>
+		<message>
+			<source>Username</source>
+			<translation>Имя пользователя</translation>
+		</message>
+		<message>
+			<source>Password</source>
+			<translation>Пароль</translation>
+		</message>
+		<message>
+			<source>Log in</source>
+			<translation>Войти</translation>
+		</message>
+		<message>
+			<source>Change Password</source>
+			<translation>Изменить пароль</translation>
+		</message>
+		<message>
+			<source>Old Password</source>
+			<translation>Старый пароль</translation>
+		</message>
+		<message>
+			<source>New Password</source>
+			<translation>Новый пароль</translation>
+		</message>
+		<message>
+			<source>The passwords you have entered do not match.</source>
+			<translation>Пароли не совпадают.</translation>
+		</message>
+		<message>
+			<source>Password changed.</source>
+			<translation>Пароль изменен.</translation>
+		</message>
+		<message>
+			<source>The password you have entered is invalid.</source>
+			<translation>Пароль, который выввели неверный.</translation>
+		</message>
+		<message>
+			<source>Retype</source>
+			<translation>Повторить пароль</translation>
+		</message>
+		<message>
+			<source>Invalid username or password.</source>
+			<translation>Некорректное имя пользователя или пароль.</translation>
+		</message>
+		<message>
+			<source>Not logged in.</source>
+			<translation>Вы не вошли в систему.</translation>
+		</message>		
+	</context>
+</language>

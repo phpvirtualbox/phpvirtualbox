@@ -1,0 +1,340 @@
+<!-- 
+
+	Export appliance wizard panes. Logic in vboxWizard() class
+	Copyright (C) 2010-2015 Ian Moore (imoore76 at yahoo dot com)
+	
+	$Id: wizardExportAppliance.html 595 2015-04-17 09:50:36Z imoore76 $
+
+ -->
+<!-- Step 1 -->
+<div id='wizardExportApplianceStep1' title='Virtual machines to export' style='display: none'>
+
+	<span class='translate'>&lt;p&gt;Please select the virtual machines that should be added to the appliance. You can select more than one. Please note that these machines have to be turned off before they can be exported.&lt;/p&gt;</span>
+	
+	<div id='vboxExportAppVMListContainer' style='overflow:auto;padding:0px;margin:0px;' class='vboxBordered'>
+		<ul style='width: 100%;margin:0px;' id='vboxExportAppVMList' class='vboxList'>
+			<li><img src='images/spinner.gif' /></li>
+		</ul>
+	</div>
+</div>
+
+
+<!-- Step 2 -->
+<div id='wizardExportApplianceStep2' title='Appliance Export Settings' style='display: none; width: 100%;'>
+<!--
+	Just here for translation skipping 
+ -->
+</div>
+
+<!-- Step 3 -->
+<div id='wizardExportApplianceStep3' title='Appliance settings' style='display: none; width: 100%;'>
+
+	<span class='translatep3'>&lt;p&gt;Please choose a filename to export the OVF/OVA to.&lt;/p&gt;&lt;p&gt;If you use an &lt;i&gt;ova&lt;/i&gt; extension, then all the files will be combined into one Open Virtualization Format Archive.&lt;/p&gt;&lt;p&gt;If you use an &lt;i&gt;ovf&lt;/i&gt; extension, several files will be written separately.&lt;/p&gt;&lt;p&gt;Other extensions are not allowed.&lt;/p&gt;</span>
+	
+	<div class='vboxOptions'>
+		<table style='width: 100%;' class='vboxOptions'>
+			<tr>
+				<th width='1%'><span class='translate'>File:</span></th>
+				<td class='vboxFileFolderInput'>
+					<input type='text' class='vboxText' name='wizardExportApplianceLocation' />
+					<input type="button" class="vboxImgButton" style="background-image: url(images/vbox/select_file_16px.png)" onClick="wizardExportApplianceBrowseLocation()" />
+				</td>
+			</tr>
+			<tr>
+				<th width='1%'><span class='translate'>Format:</span></th>
+				<td>
+					<select name='wizardExportApplianceFormat'>
+						<option value="ovf-0.9">OVF 0.9</option>
+						<option value="ovf-1.0" selected>OVF 1.0</option>
+						<option value="ovf-2.0">OVF 2.0</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td colspan='2'>
+					<label><input type='checkbox' class='vboxCheckbox' name='wizardExportApplianceManifest'/>
+						<span class='translate'>Write Manifest file</span></label>	
+				</td>
+			</tr>
+		</table>
+		
+	</div>	
+</div>
+
+<!-- Step 4 -->
+<div id='wizardExportApplianceStep4' title='Appliance settings' style='display: none; width: 100%;'>
+
+	<div class='translate' style='margin-bottom:8px; width: 100%'>This is the descriptive information which will be added to the virtual appliance.  You can change it by double clicking on individual lines.</div>
+
+	<div class='vboxBordered' id='vboxExportPropsContainer' style='overflow: auto' style='width: 100%'>
+		<table class='vboxHorizontal' style='width: 100%;'>
+			<tbody id='vboxExportProps'>
+			</tbody>
+		</table>
+	</div>
+</div>
+
+
+<script type='text/javascript'>
+
+// On keypress, mark this as changed
+$(document.forms['frmwizardExportAppliance'].elements.wizardExportApplianceLocation).on('keyup',function(){
+	$(this).data('vboxChanged', true);
+});
+
+// Translate step 3
+$('#wizardExportApplianceStep3').find('.translatep3').html(function(i,h){
+	return trans($('<span />').html(h).text(),'UIWizardExportAppPageBasic3');
+}).removeClass('translatep3');
+
+// Add format options
+$(document.forms['frmwizardExportAppliance'].wizardExportApplianceFormat).find('option').html(function(i,h){return trans(h,'UIWizardExportApp');});
+
+
+var l = new vboxLoader();
+l.add('vboxGetExportableMachines',function(d){$('#wizardExportApplianceStep1').data('vms',d.responseData);});
+l.onLoad = function() {
+	var vms = $('#wizardExportApplianceStep1').data('vms');
+	var vmlist = $('#vboxExportAppVMList');
+	$(vmlist).children().remove();
+	vms.sort(function(a,b){return strnatcasecmp(a.name,b.name);});
+	for(var i in vms) {
+		var li = $('<li />').data({'vm':vms[i]});
+		if(vboxVMStates.isRunning(vms[i]) || vboxVMStates.isPaused(vms[i])) {
+			$(li).addClass('vboxDisabled disabled');
+		} else {
+			$(li).click(function(){$(this).toggleClass('vboxListItemSelected');}).addClass('vboxListItem');
+			if(vboxChooser.isVMSelected(vms[i].id))
+				$(li).addClass('vboxListItemSelected');
+		}
+		$(li).html("<img style='width: 16px; height: 16px;' src='images/vbox/" + vboxGuestOSTypeIcon(vms[i].OSTypeId) + "' /> " + vms[i].name)
+			.data('vboxVMName', vms[i].name);
+		$(vmlist).append(li);
+	}
+	vboxColorRows(vmlist);
+};
+l.run();
+
+
+function wizardExportApplianceStepResizeList() {
+	
+	// Resize list
+	$('#vboxExportAppVMListContainer').hide();
+	var h = $('#wizardExportApplianceStep1').parent().innerHeight() - $('#wizardExportApplianceTitle').outerHeight(true);
+
+	$('#vboxExportAppVMListContainer').siblings().each(function(){
+		h -= $(this).outerHeight(true);
+	});
+	h-=20;
+	$('#vboxExportAppVMListContainer').height(h).show();
+	
+	// Resize properties
+	$('#vboxExportPropsContainer').hide();
+	var h = $('#wizardExportApplianceStep3').parent().innerHeight() - $('#wizardExportApplianceTitle').outerHeight(true);
+
+	$('#vboxExportPropsContainer').siblings().each(function(){
+		h -= $(this).outerHeight(true);
+	});
+	$('#vboxExportPropsContainer').width($('#vboxExportPropsContainer').parent().innerWidth()).height(h-4).show();
+	
+}
+
+$('#wizardExportApplianceStep1').on('show',function(e,wiz){
+	
+	wizardExportApplianceStepResizeList();
+
+	// Keep track of where we were
+	$('#wizardExportApplianceStep2').data('fromStep',1);
+
+});
+
+$('#wizardExportApplianceDialog').on('dialogresizestop',wizardExportApplianceStepResizeList);
+
+/*
+ * 
+ * VM Properties to edit / export
+ *
+ */
+var vboxApplianceProps = {
+	'name' : {'label':'Name','icon':'name'},
+	'product' : {'label':'Product','icon':'description'},
+	'product-url' : {'label':'Product-URL','icon':'description'},
+	'vendor' : {'label':'Vendor','icon':'description'},
+	'vendor-url' : {'label':'Vendor-URL','icon':'description'},
+	'version' : {'label':'Version','icon':'description'},
+	'description' : {'label':'Description','icon':'description','textarea':true},
+	'license' : {'label':'License','icon':'description','textarea':true}
+};
+
+/* Browse for export location */
+function wizardExportApplianceBrowseLocation() {
+
+	var dsepRegEx = $('#vboxPane').data('vboxConfig').DSEP;
+	if(dsepRegEx == '\\') dsepRegEx += '\\';
+		
+	// Get current location
+	var loc = document.forms['frmwizardExportAppliance'].elements.wizardExportApplianceLocation.value;
+	if(loc.indexOf($('#vboxPane').data('vboxConfig').DSEP) > -1) {
+		var r = new RegExp(dsepRegEx+'([^'+dsepRegEx+']*)?$');
+		loc = loc.replace(r,'');
+	} else {
+		// no path set
+		loc = vboxDirname($('#vboxPane').data('vboxConfig').version.settingsFilePath) + $('#vboxPane').data('vboxConfig').DSEP;
+	}
+	vboxFileBrowser(loc,function(f){
+		if(!f) return;
+		// get file name
+		var r = new RegExp('.*'+dsepRegEx);
+		file = $(document.forms['frmwizardExportAppliance'].elements.wizardExportApplianceLocation).val().replace(r,'');
+		document.forms['frmwizardExportAppliance'].elements.wizardExportApplianceLocation.value = f+($('#vboxPane').data('vboxConfig').DSEP)+file;
+		$(document.forms['frmwizardExportAppliance'].elements.wizardExportApplianceLocation).data('vboxChanged', true);
+	},true,trans('Select a file to export into','UIWizardExportAppPage3'));
+
+}
+
+/* Skip step 2 */
+$('#wizardExportApplianceStep2').on('show',function(e,wiz){
+	if($('#wizardExportApplianceStep2').data('fromStep') == 3)
+		wiz.displayStep(1);
+	else
+		wiz.displayStep(3);
+});
+
+/* When going to step3, determine default OVF name */
+$('#wizardExportApplianceStep3').on('show',function(e,wiz){
+
+	// Keep track of where we were
+	$('#wizardExportApplianceStep2').data('fromStep',3);
+	
+	var vmSel = $('#vboxExportAppVMList').children('li.vboxListItemSelected');
+	
+	/* When going to step3, make sure vms are selected */
+	if(!vmSel.length) {
+		$('#vboxExportAppVMListContainer').addClass('vboxRequired');
+		wiz.displayStep(1);
+		return;
+	};
+
+	$('#vboxExportAppVMListContainer').removeClass('vboxRequired');
+	
+	if($(document.forms['frmwizardExportAppliance'].elements.wizardExportApplianceLocation).data('vboxChanged'))
+		return;
+
+	var name = '';
+	if(vmSel.length == 1) {
+		name = jQuery.trim($(vmSel[0]).data('vboxVMName'));
+	}
+	
+	if(!name) name = 'Appliance';
+
+	name = vboxDirname($('#vboxPane').data('vboxConfig').version.settingsFilePath) + $('#vboxPane').data('vboxConfig').DSEP + name + '.ova';
+	$(document.forms['frmwizardExportAppliance'].elements.wizardExportApplianceLocation).val(name);
+});
+
+$('#wizardExportApplianceStep4').on('show',function(e,wiz){
+
+	var vms = $('#vboxExportAppVMList').children('li');
+	
+	var tbl = $('#vboxExportProps');
+			
+	for(var i = 0; i < vms.length; i++) {
+
+		var vmid = $(vms[i]).data('vm').id;
+
+		// Selected ? 
+		if($(vms[i]).hasClass('vboxListItemSelected')) {	
+			if($('#vboxAppliance-'+vmid).attr('id')) continue;
+		} else {
+			$(tbl).children('tr.vboxAppliance-'+vmid).remove();
+			continue;
+		}
+			
+		// VM header row
+		var trparent = $('<tr />').attr({'id':'vboxAppliance-'+vmid}).addClass('vboxAppliance-'+vmid + ' vboxTableParent');
+		var td = $('<td />').attr({'colspan':'2','class':'vboxApplianceHeader'}).append(
+			$('<div />').css({'font-weight':'bold','padding-left':'6px'}).append(
+					$('<input />').attr({'type':'button','class':'vboxImgButton','style':'background-image: url(images/downArrow.png); margin:0px;margin-right:4px;padding:0px;vspace:0px;hspace:0px;width: 12px; height: 12px;'}).click(function(){
+						
+						if(!$(this).data('toggleClicked')) {
+							
+							$(this).data('toggleClicked', true);
+
+							$(this).css({'background-image':'url(images/rightArrow.png)'});
+							var tr = $(this).closest('tr');
+							$(tr).siblings('tr.vboxChildOf'+$(tr).data('vboxOrder')).hide();
+						} else {
+							
+							$(this).data('toggleClicked', false);
+							
+							$(this).css({'background-image':'url(images/downArrow.png)'});				
+							var tr = $(this).closest('tr');						
+							$(tr).siblings('tr.vboxChildOf'+$(tr).data('vboxOrder')).show();
+						}
+					})
+			).append(
+					//trans('Virtual System X').replace('%s',(i+1))
+					$('<div />').text($(vms[i]).data('vm').name).html()
+			)
+		).disableSelection();
+		$(trparent).append(td).data({'vm':$(vms[i]).data('vm'),'vboxOrder':i}).appendTo(tbl);
+		
+		// VM properties
+		for(var p in vboxApplianceProps) {
+			
+			var tr = $('<tr />').attr({'class':'vboxAppliance-'+vmid+' vboxChildOf' + i}).data({'vmprop':p});
+			
+			$('<td />').css({'padding-left':'18px','white-space':'nowrap','width':'1%'}).html('<img src="images/vbox/'+vboxApplianceProps[p].icon+'_16px.png" /> ' + trans(vboxApplianceProps[p].label,'UIApplianceEditorWidget')).appendTo(tr);
+
+			$('<td />').attr({'class':'vboxHideOverflow vboxAppProp'+p}).css({'width':'100%','padding-left':'10px','padding-right':'2px'}).html('<div>'+$('<div />').text(($(trparent).data('vm')[p]||'')).html()+'</div>').dblclick((vboxApplianceProps[p].textarea ? vboxExportAppliancePropEditArea : vboxExportAppliancePropEdit )).appendTo(tr);
+			
+			$(tbl).append(tr);
+		}
+	}
+	vboxColorRows(tbl,false,'vboxTableParent');
+	
+	wizardExportApplianceStepResizeList();
+
+});
+
+
+/* Edit property that has a text area */
+function vboxExportAppliancePropEditArea(evt,elm) {
+	
+	vboxExportAppliancePropEditDialog(evt.target, $('<span />').html($(evt.target).html()).text());
+	
+}
+/* Edit property dialog */
+function vboxExportAppliancePropEditDialog(elm, defaults) {
+	
+	var d = $('<div />').css({'display':'none'});
+	var frm = $('<form />').attr({'onSubmit':'return false;'}).css({'margin':'0px','border':'0px','padding':'0px','width':'100%','height':'100%'});
+	$('<textarea />').attr({'id':'vboxExportAppliancePropTextarea'}).css({'height':'99%','width':'99%'}).val(defaults).appendTo(frm);
+	$(d).append(frm);
+	
+	var buttons = {};
+	buttons[trans('OK','QIMessageBox')] = function(){
+		var d = vboxDivOverflowHidden(elm);
+		$(d).html($('<div />').text($('#vboxExportAppliancePropTextarea').val()).html());
+		$(elm).html('').append(d);
+		$(this).empty().remove();
+	};
+	buttons[trans('Cancel','QIMessageBox')] = function(){
+		$(this).empty().remove();
+	};
+	$(d).dialog({'height':300,'width':300,'closeOnEscape':false,'modal':true,'resizable':true,'dialogClass':'vboxDialogContent','draggable':true,'buttons':buttons,'title':$(elm).parent().siblings().first().html()});
+
+}
+/* Edit property that has a text box */
+function vboxExportAppliancePropEdit(evt,elm) {
+	var input = $('<input />').attr({'type':'text','class':'vboxText'}).css({'width':($(this).innerWidth()-12)+'px','margin':'0px'}).val($('<div />').html($(this).children().first().html()).text()).blur(function(){
+		var v = $(this).val();
+		var p = $(this).parent();
+		var d = vboxDivOverflowHidden(p);		
+		$(this).remove();
+		$(d).html($('<div />').text(v).html());
+		$(p).html('').append(d);
+	}).keydown(function(e){if(e.keyCode == 13) $(this).trigger('blur');});
+	$(this).html('').append(input).children().first().focus();
+}
+
+</script>

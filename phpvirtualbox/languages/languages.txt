@@ -1,0 +1,192 @@
+
+$Id: languages.txt 582 2014-12-11 17:47:28Z imoore76 $
+
+This outlines in-depth the process used by phpVirtualBox's translation mechanisms and describes
+how a developer may add new translations. If the reader, as an end-user simply wishes to translate
+phpVirtualBox into a new language, see:
+http://sourceforge.net/p/phpvirtualbox/wiki/Home/#translating-phpvirtualbox
+
+.. I) phpVirtualBox translation mechanism
+....... a) Contexts
+....... b) Data structure
+....... c) Runtime translations in JavaScript
+....... d) Runtime translations in PHP
+
+.. II) Adding a new language
+....... a) Creating phpVirtualBox XML translation file
+....... b) Converting QT .qm files
+....... c) Updating language selection
+
+
+I. phpVirtualBox translation mechanism
+
+The translation mechanism in phpVirtualBox uses a combination of PHP serialized data along with
+runtime parsed XML files. 
+
+VirtualBox's QT language files are pre-parsed (before runtime) and serialized into data consumable
+by PHP's unserialize function. These files contain all translations performed by VirtualBox's
+translators for the VirtualBox GUI frontend. Serialized translation files are placed in the 
+languages/source folder.
+
+Some text that appears in phpVirtualBox is not in, or applicable to the VirtualBox GUI and therefore
+has no corresponding translation in VirtualBox's language files. This text is translated in XML files
+in the languages/ folder.
+
+lib/language.php contanis the __vbox_language class. Upon instantiation this class:
+
+	1) Determines which language to use by checking phpVirtualBox settings for the default language,
+		and for the cookie vboxLanguage if passed by the web browser - the browser's cookie will
+		overwrite the default language defined in config.php
+	
+	2) Unserializes the language data from the appropriate file in the languages/source folder
+	
+	3) Parses the XML data from the appropriate XML file in the languages folder
+	
+	4) Merges language data into a single array structure allowing the XML translations to overwrite
+		serialized data translations (if such a scenario exists)
+   
+I.a Contexts
+
+Language contexts is a translational concept allowing one word (or phrase) to take on many meanings
+based on the context in which it is used. When text is being translated, the translation mechanism
+must also be passed a context. For instance the "Add" button to add a user may be translated
+differently than the "Add" button to add a VirtualMachine.
+
+I.b Data structure
+
+The data structure of parsed languages is a multidimensional associative array / hash / dict that
+contains a hierarchy of contexts -> messages -> translation(s). Using PHP's print_r, the output of
+this data structure is:
+
+Array
+(
+    [contexts] => Array
+        (
+			.....
+			
+            [UINewHDWizardPageVariant] => Array
+                (
+                    [messages] => Array
+                        (
+                            [Storage details] => Array
+                                (
+                                    [translation] => Detalles de almacenamiento
+                                )
+
+                        )
+                        .....
+
+                )
+.....
+
+("array" refers to an associative array / hash / dict. They are all the same thing in PHP.)
+
+The context UINewHDWizardPageVariant is a key within the contexts array. It has a number of messages.
+Storage Details is a key in the messages array. It has a single item called translation that contains
+the translation of Storage Details.
+
+I.c Runtime translations in JavaScript
+
+When phpVirtualBox is loaded, it loads js/language.php. This instantiates __vbox_language and dumps
+its language data as a JSON encoded object. It also contains the phpVirtualBox JavaScript trans()
+function which takes (at a minimum) a context and message, and returns the corresponding translation.
+
+I.d Runtime translations in PHP
+
+lib/language.php contains a trans() function defined in PHP which takes (at a minimum) a context and
+message, and returns the corresponding translation using an instance of __vbox_language. Since
+language loading is an expensive process (unserializing a large amount of data and parsing XML), the
+instantiation of the __vbox_language only occurs if trans() is called in PHP. Subsequent calls to
+trans() will of course use the existing instantiation. Translation inside PHP Is rare and restricted
+to error messages returned by phpVirtualBox.
+
+II. Adding a new language
+
+Adding a new language requires relatively little work. First, determine the 2 letter language code
+for the target language. See http://en.wikipedia.org/wiki/ISO_639-1
+
+II.a Creating phpVirtualBox XML translation file
+
+Copy an existing XML file in phpVirtualBox's languages folder using the 2 letter language code
+described above.
+
+Here is an example:
+
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+        <context>
+                <name>phpVirtualBox</name>
+                <message>
+                        <source>Warning: A VirtualBox internal operation is in progress. Closing this
+                        	window or navigating away from this web page may cause unexpected and
+                        	undesirable results. Please wait for the operation to complete.
+                        </source>
+                        <translation>Warnung: Interne Aktion läuft. Wenn Sie dieses Fenster schließen
+                        	oder diese Seite verlassen, kann das zu unerwünschten oder
+                        	unbeabsichtigten Effekten führen. Bitte warten Sie bis die Aktion
+                        	abgeschlossen ist.
+                        </translation>
+                </message>
+                <message>
+                        <source>Operation Canceled</source>
+                        <translation>Aktion abgebrochen</translation>
+                </message>
+                 ......
+                 
+You will see translation messages such as:
+
+<message>
+   <source>Operation Canceled</source>
+   <translation>Aktion abgebrochen</translation>
+</message>
+
+Text within the <source> tag is the text that is to be translated. The translated text goes in the
+<translation> tag. E.g.
+
+<message>
+   <source>Operation Canceled</source>
+   <translation>Your translation of "Operation Canceled" goes here...</translation>
+</message>
+
+WARNING: Do not change the text in the <source> tag. Even adding an extra line will break the
+translation.
+
+II.b Converting QT .qm files
+
+To convert these files, you will need a copy of Qt Linguist. A google search should yield a download
+link. You will also need a copy of VirtualBox installed.
+
+Open Qt Linguist. From the file menu, select Open and select All Files in the Open File dialog.
+Navigate to your VirtualBox folder on your computer, then to the nls folder. You should see files
+which have the naming convention VirtualBox_xx.qm - where xx is the language code described above.
+Select the file and click Open. Just click OK on the subsequent dialog box. Click on Save as... in
+the File menu. Save the file as a "Qt translation source" (*.ts) file.
+
+The script languages/source/parse_vbox_lang.php can then be used to parse a .ts file into a .dat file
+consumable by phpVirtualBox. E.g.
+
+php languages/source/pasre_vbox_lang.php VirtualBox_es.ts >es.dat
+
+The es.dat file can then be placed in the languages/source/ folder for use by phpVirtualBox.
+
+
+II.c Updating language selection
+
+Once translation files have been added to languages/ and languages/source/ the interface must be
+updated so that the new language is available for selection. Edit panes/settingsGlobalLanguage.html
+and add the new language to the JavaScript vboxLanguages array.
+
+var vboxLanguages = [
+	{'id':'en','name':'English'},
+	{'id':'pt_br','name':'Portuguese (Brazil)','name_tr':'Português (Brasil)'},
+	{'id':'ru','name':'Russian','name_tr':'Русский'},
+	{'id':'it','name':'Italian','name_tr':'Italiano'},
+	....
+];
+
+This is an array of associative arrays of language definitions that must contain the following keys:
+	id - must match the language file name in languages/ (minus the .xml extension)
+	name - the name of the language in English
+	name_tr - the name of the language in its native speech
+
+

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+	<context>
+		<name>phpVirtualBox</name>
+		<message>
+			<source>Warning: A VirtualBox internal operation is in progress. Closing this window or navigating away from this web page may cause unexpected and undesirable results. Please wait for the operation to complete.</source>
+			<translation>Aviso: Uma operação do VirtualBox está em execução. Fechar esta janela ou navegar fora desta página pode causar resultados inesperados e indesejáveis. Por favor espere até que a tarefa seja executada.</translation>
+		</message>
+		<message>
+			<source>Operation Canceled</source>
+			<translation>Operação Cancelada</translation>
+		</message>
+		<message>
+			<source>An error occurred communicating with your vboxwebsrv. No more requests will be sent by phpVirtualBox until the error is corrected and this page is refreshed. The details of this connection error should be displayed in a subsequent dialog box.</source>
+			<translation>Ocorreu um erro ao tentar comunicar-se com o serviço vboxwebsrv. Não serão enviadas novas requisições pelo phpVirtualBox até que este erro seja corrigido a esta página atualizada. Os detalhes deste erro de conexão serão apresentados em uma janela subsequente.</translation>
+		</message>
+		<message>
+			<source>Unable to retrieve guest properties. Make sure the virtual machine is running and has the VirtualBox Guest Additions installed.</source>
+			<translation>Não foi possível abrir as propriedades da máquina virtual. Certifique-se de que ela esteja ligada e possui o VirtualBox Guest Additions instalado.</translation>
+		</message>
+		<!-- Error vmlist 1 -->
+		<message>
+			<source>There was an error obtaining the list of registered virtual machines from VirtualBox. Make sure vboxwebsrv is running and that the settings in config.php are correct.&lt;p&gt;The list of virtual machines will not begin auto-refreshing again until this page is reloaded.&lt;/p&gt;</source>
+			<translation>Houve um erro ao obter a lista de máquinas virtuais registradas no VirtualBox. Certifique-se que o serviço vboxwebsrv esteja ativo e que as configurações no arquivo config.php estejam corretas.&lt;p&gt;A lista de máquinas virtuais não será atualizada automaticamente até que esta página seja recarregada.&lt;/p&gt;</translation>
+		</message>
+		<message>
+			<source>Server List</source>
+			<translation>Lista de Servidores</translation>
+		</message>		
+	</context>
+	<context>
+		<name>UIVMDesktop</name>
+		<message>
+			<source>Console</source>
+			<translation>Console</translation>
+		</message>
+		<message>
+			<source>Loading ...</source>
+			<translation>Carregando ...</translation>
+		</message>
+	</context>
+	<context>
+		<name>VBoxSelectorWnd</name>
+		<message>
+			<source>Change Password</source>
+			<translation>Alterar Senha</translation>
+		</message>
+		<message>
+			<source>Log out - %1</source>
+			<translation>Sair - %1</translation>
+		</message>
+		<message>
+			<source>Logged in as %1</source>
+			<translation>Logged in as %1</translation>
+		</message>
+		<message>
+			<source>Stop</source>
+			<translation>Parar</translation>
+		</message>
+		<message>
+			<source>VirtualBox User Manual</source>
+			<translation>Manual de Usuário do VirtualBox</translation>
+		</message>	
+		<message>
+			<source>About</source>
+			<translation>Sobre</translation>
+		</message>
+	</context>
+	<context>
+		<name>UIActionsPool</name>
+		<message>
+			<source>Save State</source>
+			<translation>Salvar Estado</translation>
+		</message>
+		<message>
+			<source>Power Off</source>
+			<translation>Desligar</translation>
+		</message>		
+	</context>
+	<context>
+		<!-- Console Tab -->
+		<name>VBoxConsoleWgt</name>
+		<message>
+			<source>User name</source>
+			<translation>Usuário</translation>
+		</message>
+		<message>
+			<source>Password</source>
+			<translation>Senha</translation>
+		</message>
+		<message>
+			<source>Connecting to %1</source>
+			<translation>Conectando-se %1</translation>
+		</message>
+		<message>
+			<source>Connected to %1</source>
+			<translation>Conectado a %1</translation>
+		</message>
+		<message>
+			<source>Requested desktop size</source>
+			<translation>Tamanho da tela</translation>
+		</message>
+		<message>
+			<source>Connect</source>
+			<translation>Conectar</translation>
+		</message>
+		<message>
+			<source>Detach</source>
+			<translation>Abrir em janela separada</translation>
+		</message>
+		<message>
+			<source>Disconnect</source>
+			<translation>Desconectar</translation>
+		</message>
+		<message>
+			<source>Send Ctrl-Alt-Del</source>
+			<translation>Send Ctrl-Alt-Del</translation>
+		</message>
+		<message>
+			<source>Disconnect reason</source>
+			<translation>Razão da Desconexão</translation>
+		</message>
+		<message>
+			<source>Redirection by %1</source>
+			<translation>Redirection by %1</translation>
+		</message>
+		<message>
+			<source>Virtual machine is not running or is not configured to accept RDP connections.</source>
+			<translation>A Máquina Virtual não está ligada ou não está configurada para aceitar conexões RDP.</translation>
+		</message>
+	</context>		
+	<context>
+		<name>VBoxGlobal</name>
+		<message>
+			<source>Hosting</source>
+			<translation>Versão</translation>
+		</message>
+		<message>
+			<source>Guest Network Adapters</source>
+			<translation>Adaptadores de Rede do Convidado</translation>
+		</message>
+		<message>
+			<source>Up</source>
+			<translation>Conectado</translation>
+			<comment>Host network adapter status</comment>
+		</message>
+		<message>
+			<source>Down</source>
+			<translation>Não Conectado</translation>
+			<comment>Host network adapter status</comment>
+		</message>
+	</context>
+	<context>
+		<name>UIVMPreviewWindow</name>
+		<message>
+			<source>Every %1 seconds</source>
+			<translation>A cada %s segundos</translation>
+		</message>
+		<message>
+			<source>Open in new window</source>
+			<translation>Abrir em uma nova janelaく</translation>
+		</message>		
+	</context>
+	<context>
+		<name>UISettingsDialogGlobal</name>
+		<message>
+			<source>Users</source>
+			<translation>Usuários</translation>
+		</message>
+	</context>
+	<context>
+		<name>UIUsers</name>
+		<message>
+			<source>Users</source>
+			<translation>Usuários</translation>
+		</message>		
+		<message>
+			<source>Admin User</source>
+			<translation>Usuário Admin</translation>
+		</message>
+		<message>
+			<source>Can administer users</source>
+			<translation>Pode administrar usuários</translation>
+		</message>
+		<message>
+			<source>Add User</source>
+			<translation>Adicionar Usuário</translation>
+		</message>
+		<message>
+			<source>Edit User</source>
+			<translation>Editar Usuário</translation>
+		</message>
+		<message>
+			<source>Remove User</source>
+			<translation>Remover Usuário</translation>
+		</message>
+		<message>
+			<source>A user with that username already exists.</source>
+			<translation>Este nome de usuário já existe.</translation>
+		</message>
+		<message>
+			<source>Are you sure you want to remove the user &lt;b&gt;%1&lt;/b&gt;? This action cannot be undone.</source>
+			<translation>Tem certeza que deseja remover este usuário? Esta ação não poderá ser desfeita.</translation>
+		</message>
+		<message>
+			<source>Username</source>
+			<translation>Usuário</translation>
+		</message>
+		<message>
+			<source>Password</source>
+			<translation>Senha</translation>
+		</message>
+		<message>
+			<source>Log in</source>
+			<translation>Entrar</translation>
+		</message>
+		<message>
+			<source>Change Password</source>
+			<translation>Alterar Senha</translation>
+		</message>
+		<message>
+			<source>Old Password</source>
+			<translation>Senha Anterior</translation>
+		</message>
+		<message>
+			<source>New Password</source>
+			<translation>Nova Senha</translation>
+		</message>
+		<message>
+			<source>The passwords you have entered do not match.</source>
+			<translation>As senhas inseridas não conferem.</translation>
+		</message>
+		<message>
+			<source>Password changed.</source>
+			<translation>Senha Alterada.</translation>
+		</message>
+		<message>
+			<source>The password you have entered is invalid.</source>
+			<translation>A senha inserida é inválida.</translation>
+		</message>
+		<message>
+			<source>Retype</source>
+			<translation>Digite novamente</translation>
+		</message>
+		<message>
+			<source>Invalid username or password.</source>
+			<translation>Usuário ou senha inválidos.</translation>
+		</message>
+		<message>
+			<source>Not logged in.</source>
+			<translation>Não conectado.</translation>
+		</message>		
+	</context>
+</language>

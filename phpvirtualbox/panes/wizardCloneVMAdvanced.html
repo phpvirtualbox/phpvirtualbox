@@ -1,0 +1,97 @@
+<!-- 
+
+	Advanced panes for clone virtual machine wizard. Logic in vboxWizard()
+	Copyright (C) 2010-2015 Ian Moore (imoore76 at yahoo dot com)
+	
+	$Id: wizardCloneVMAdvanced.html 595 2015-04-17 09:50:36Z imoore76 $
+
+ -->
+<!-- Step 1 -->
+<div id='wizardCloneVMStep1' style='display: none'>
+
+	<span class='vboxTableLabel translate'>New machine name</span>
+	<div class='vboxOptions' style='padding: 6px; padding-top: 8px;'>
+		<input type='text' class='vboxText' name='machineCloneName' style='width: 95%' />
+	</div>
+	
+	<table class='vboxInvisible' style='border: 0px solid transparent; border-spacing: 4px;'>
+		<tr style='vertical-align: top'>
+			<td>
+				<span class='vboxTableLabel translate'>Clone type</span>
+				<div class='vboxOptions'>
+					<table style='margin-top: 8px'>
+						<tr style='vertical-align: bottom;'>
+							<td><label><input type='radio' class='vboxRadio' checked='checked' name='vboxCloneType' value='Full' onclick='vboxCloneVMUpdateSteps(this.value)' /> <span class='translate'>Full Clone</span></label></td>
+						</tr>
+						<tr style='vertical-align: bottom;'>
+							<td><label><input type='radio' class='vboxRadio' name='vboxCloneType' value='Linked' onclick='vboxCloneVMUpdateSteps(this.value)' /> <span class='translate'>Linked Clone</span></label></td>
+						</tr>		
+					</table>
+				</div>
+			</td>
+			<td>
+				<span class='vboxTableLabel translate'>Snapshots</span>
+				<div class='vboxOptions'>
+					<table style='margin-top: 8px' class='vboxWizardCloneVMSnapshotOpts'>
+						<tr style='vertical-align: bottom;'>
+							<td><label><input type='radio' class='vboxRadio' checked='checked' name='vmState' value='MachineState' /> <span class='translate'>Current machine state</span></label></td>
+						</tr>
+						<tr style='vertical-align: bottom; display:none;' id='vboxCloneCurrentAll'>
+							<td><label><input type='radio' class='vboxRadio' name='vmState' value='MachineAndChildStates' /> <span class='translate'>Current snapshot tree branch</span></label></td>
+						</tr>		
+						<tr style='vertical-align: bottom;'>
+							<td><label><input type='radio' class='vboxRadio' name='vmState' value='AllStates' /> <span class='translate'>Everything</span></label></td>
+						</tr>	
+					</table>
+				</div>
+			</td>
+		</tr>
+	</table>
+
+	<p><label><input type='checkbox' class='vboxCheckbox' name='vboxCloneReinitNetwork' />
+		<span class='translate'>Reinitialize the MAC address of all network cards</span></label>
+	</p>
+</div>
+
+
+<script type='text/javascript'>
+
+$('#wizardCloneVMStep1').on('show',function(e,wiz){
+
+	// Already initialized?
+	if($('#wizardCloneVMStep1').data('init') || !wiz.args) return;
+	
+	$('#wizardCloneVMStep1').data('init',1);
+	
+	// Hold wizard
+	$('#wizardCloneVMStep1').data('wiz',wiz);
+	
+	// Hold wizard original steps
+	$('#wizardCloneVMStep1').data('wizSteps',wiz.steps);
+	
+	// Hide "new snapshot" message if we're cloning a snapshot
+	if(wiz.args && wiz.args.snapshot)
+		$('#vboxCloneVMNewSnap').hide();
+	
+	
+	if((wiz.args.snapshot && wiz.args.snapshot.children && wiz.args.snapshot.children.length)) {
+		$('#wizardCloneVMCurrentAll').show();
+		$('#vboxCloneCurrentAll').show();
+	}
+	
+	$(document.forms['frmwizardCloneVM'].elements.machineCloneName).focus();
+
+	document.forms['frmwizardCloneVM'].elements.machineCloneName.value = trans('%1 Clone','UIWizardCloneVMPage1').replace('%1',wiz.args.vm.name);
+});
+
+
+function vboxCloneVMUpdateSteps(cval) {
+	
+	if(cval == 'Linked') {
+		$('#wizardCloneVMStep1').find('table.vboxWizardCloneVMSnapshotOpts').find('tr').addClass('disabled').find('input').prop('disabled', true);
+	} else {
+		$('#wizardCloneVMStep1').find('table.vboxWizardCloneVMSnapshotOpts').find('tr').removeClass('disabled').find('input').prop('disabled', false);
+	}
+}
+
+</script>

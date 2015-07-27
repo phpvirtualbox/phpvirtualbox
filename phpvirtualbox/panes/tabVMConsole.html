@@ -1,0 +1,41 @@
+<!--
+
+	VM Console tab
+	Copyright (C) 2010-2015 Ian Moore (imoore76 at yahoo dot com)
+	
+	$Id: tabVMConsole.html 595 2015-04-17 09:50:36Z imoore76 $
+	
+ -->
+<div id='vboxTabVMConsole' class='vboxTabContent' style='display:none;'>
+</div>
+<script type="text/javascript">
+
+// Load default VRDE tab
+if($('#vboxPane').data('vboxSystemProperties') && $('#vboxPane').data('vboxSystemProperties').defaultVRDEExtPack.indexOf('VNC') > -1) {
+	// VNC
+	$('#vboxTabVMConsole').load('panes/tabVMConsoleVNC.html');
+} else {
+	// RDP
+	$('#vboxTabVMConsole').load('panes/tabVMConsoleRDP.html');
+}
+
+// Load new on host change
+$('#vboxPane').on('hostChanged', function() {
+	
+	$('#vboxTabVMConsole').empty();
+	
+	// Load default VRDE tab
+	if($('#vboxPane').data('vboxSystemProperties') && $('#vboxPane').data('vboxSystemProperties').defaultVRDEExtPack.indexOf('VNC') > -1) {
+		// VNC
+		$('#vboxTabVMConsole').load('panes/tabVMConsoleVNC.html');
+	} else {
+		// RDP
+		$('#vboxTabVMConsole').load('panes/tabVMConsoleRDP.html');
+	}
+	
+});
+
+
+</script>
+
+  

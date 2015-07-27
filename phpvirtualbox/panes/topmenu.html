@@ -1,0 +1,285 @@
+<!-- 
+
+	Main / Top menu
+	Copyright (C) 2010-2015 Ian Moore (imoore76 at yahoo dot com)
+
+	$Id: topmenu.html 595 2015-04-17 09:50:36Z imoore76 $
+
+ -->
+<span></span>
+<script type='text/javascript'>
+/*
+ * 
+ * Main menu at top of interface
+ * 
+ * 
+ */
+
+// Top menu
+var vboxTopMenuBar = new vboxMenuBar('vboxTop');
+
+var menu = {
+	'name':'vboxTopFile',
+	'label':trans('File','UIActionPool'),
+	'menu':[
+        {
+			'name':'fileVMM',
+			'label':trans('Virtual Media Manager...','UIActionPool'),
+			'icon':'diskimage',
+			'click':function(){vboxVMMDialog();}
+        },
+        {
+			'name':'fileImport',
+			'label':trans('Import Appliance...','UIActionPool'),
+			'icon':'import',
+			'click':function(){
+				
+				new vboxWizardImportApplianceDialog().run();
+			},
+			'separator': true
+        },
+        {
+			'name':'fileExport',
+			'label':trans('Export Appliance...','UIActionPool'),
+			'icon':'export',
+			'click':function(){new vboxWizardExportApplianceDialog().run();}
+        },
+        {
+			'name':'filePrefs',
+			'label':trans('Preferences...','UIActionPool'),
+			'icon':'global_settings',
+			'click':function(){vboxGlobalPrefsDialog();},
+			'separator':true
+        }
+	]
+};
+
+if($('#vboxPane').data('vboxSession').user) {
+	if ( $('#vboxPane').data('vboxConfig').authCapabilities.canChangePassword )
+		menu['menu'][menu['menu'].length] = {
+			'name' : 'fileChangePW',
+			'label' : trans('Change Password','UIUsers'),
+			'icon' : 'register',
+			'click': function() {
+				var l = new vboxLoader();
+				l.addFileToDOM('panes/userEdit.html');
+				l.onLoad = function(){
+					
+					// Set mode
+					$('#vboxUserEdit').trigger('setMode','changePassword');
+					
+					var buttons = {};
+					buttons[trans('OK','QIMessageBox')] = function() {
+						var o = $('#vboxUserEdit').find('input[name=opass]').first().val();
+						var n1 = $('#vboxUserEdit').find('input[name=npass1]').first().val();
+						var n2 = $('#vboxUserEdit').find('input[name=npass2]').first().val();
+						if(o.length == 0) {
+							vboxAlert(trans('The password you have entered is invalid.','UIUsers'),{'width':'auto'});
+							return;
+						}
+						if(n1.length == 0 || (n1 != n2)) {
+							vboxAlert(trans('The passwords you have entered do not match.','UIUsers'),{'width':'auto'});
+							return;
+						}
+						var dialog = this;
+						var chp = new vboxLoader();
+						chp.add('changePassword',function(d){
+							if(d) {
+								if(d.success) {
+									vboxAlert(trans('Password changed.','UIUsers'),{'width':'auto'});
+									$(dialog).remove();
+								} else {
+									vboxAlert(trans('The password you have entered is invalid.','UIUsers'),{'width':'auto'});
+								}
+							} else {
+								// unknown error
+								$(dialog).remove();
+							}
+						},{'old':o,'new':n1});
+						chp.run();
+					};
+					buttons[trans('Cancel','QIMessageBox')] = function(){
+						$(this).remove();
+					};
+					$('#vboxUserEdit').dialog({'closeOnEscape':false,'width':400,'height':200,'buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/register_16px.png" class="vboxDialogTitleIcon" /> '+trans('Change Password','UIUsers')});
+				};
+				l.run();			
+			},
+			'separator':true
+		};
+		
+	if ( $('#vboxPane').data('vboxConfig').authCapabilities.canLogout )
+	{
+		menu['menu'][menu['menu'].length] = {
+				'name' : 'fileLogout',
+				// Pre-translated title to append username
+				'label' : trans('Log out - %1','UIActionPool').replace('%1',$('#vboxPane').data('vboxSession').user),
+				'icon' : 'exit',
+				'click': function() {
+					
+					// Show loading screen
+					var lm = new vboxLoader();
+					lm.showLoading();
+					
+					// Expire data mediator data
+					vboxVMDataMediator.expireAll();
+
+					// Unsubscribe from events
+					$.when(vboxEventListener.stop()).done(function() {
+						
+						// remove loading screen
+						lm.removeLoading();
+
+						var l = new vboxLoader();
+						l.noLoadingScreen = true;
+						l.add('logout',function(r){
+							if ( typeof(r.responseData.url) == 'string' )
+							{
+								window.location = r.responseData.url;
+							}
+							else
+							{
+								location.reload(true);
+							}
+						});
+						l.onLoad = function(loader){
+							loader.hideRoot = false;
+						};
+						l.hideRoot = true;
+						l.run();	
+					});
+				}
+			};
+	}
+	else
+	{
+		menu['menu'][menu['menu'].length] = {
+			'name' : 'fileLogout',
+			'label' : trans('Logged in as %1','VBoxSelectorWnd').replace('%1',$('#vboxPane').data('vboxSession').user),
+			'icon' : 'exit',
+			'click': function() {
+				return false;				
+			}
+		};
+	}
+	
+}
+	
+vboxTopMenuBar.addMenu(menu);
+
+//VM List Context menu for each VM
+var sChildren = [];
+for(var i = 0; i < vboxVMActions.stop_actions.length; i++) {
+	sChildren[sChildren.length] = $.extend({},vboxVMActions[vboxVMActions.stop_actions[i]],{'name':vboxVMActions.stop_actions[i],'iconStringDisabled':'_disabled'});
+}
+
+
+vboxTopMenuBar.addMenu({
+	'name':'vboxTopMachine',
+	'label':trans('Machine','UIActionPool'),
+	'enabled' : function(chooser) {
+		return (!chooser || (chooser.selectionMode != vboxSelectionModeSingleGroup));
+	},
+	'menu':[
+	    $.extend({},vboxVMActions['new'],{'name':'new'}),
+	    $.extend({},vboxVMActions['add'],{'name':'add'}),
+	    $.extend({},vboxVMActions['settings'],{'name':'settings'}),
+	    $.extend({},vboxVMActions['clone'],{'name':'clone'}),
+	    $.extend({},vboxVMActions['remove'],{'name':'remove'}),
+	    $.extend({},vboxVMActions['group'],{'name':'group'}),
+	    $.extend({},vboxVMActions['start'],{'name':'start','separator':true}),
+	    $.extend({},vboxVMActions['pause'],{'name':'pause'}),
+	    $.extend({},vboxVMActions['reset'],{'name':'reset'}),
+	    $.extend({},vboxVMActions['stop'],{'name':'stop','children':sChildren}),
+	    $.extend({},vboxVMActions['discard'],{'name':'discard','separator':true}),
+	    $.extend({},vboxVMActions['logs'],{'name':'logs'}),
+	    $.extend({},vboxVMActions['refresh'],{'name':'refresh'})
+	]
+});
+
+		
+vboxTopMenuBar.addMenu({
+	'name':'vboxTopGroup',
+	'label':trans('Group','UIActionPool'),
+	'enabled' : function(chooser) {
+		return (chooser && (chooser.selectionMode == vboxSelectionModeSingleGroup));
+	},
+	'menu':[
+    	$.extend({}, vboxVMGroupActions['newmachine'], {name:'newmachine'}),
+    	$.extend({}, vboxVMGroupActions['addmachine'], {name:'addmachine'}),
+    	$.extend({}, vboxVMGroupActions['rename'], {name:'rename',separator:true}),
+    	$.extend({}, vboxVMGroupActions['ungroup'], {name:'ungroup'}),
+    	$.extend({},vboxVMActions['start'],{'name':'start','separator' : true}),
+        $.extend({},vboxVMActions['pause'],{'name':'pause'}),
+        $.extend({},vboxVMActions['reset'],{'name':'reset'}),
+    	$.extend({},vboxVMActions['stop'],{'name':'stop','children':sChildren}),
+    	$.extend({},vboxVMActions['discard'],{'name':'discard','separator' : true}),
+    	$.extend({},vboxVMActions['refresh'],{'name':'refresh'}),
+    	$.extend({}, vboxVMGroupActions['sort'], {name:'sort',separator:true})
+	]
+});
+
+vboxTopMenuBar.addMenu({
+	'name':'vboxTopHelp',
+	'label':trans('Help','UIHelpButton'),
+	'menu':[
+        {
+			'name':'helpvbox',
+			'label':trans('VirtualBox User Manual','UIActionPool'),
+			'icon':'site',
+			'click':function(){
+				window.open('http://www.virtualbox.org/manual/','manual');        	
+        	}
+        },
+        
+        {
+			'name':'helpAbout',
+			'label':trans('About','UIActionPool'),
+			'icon':'help',
+			'click':function(){
+        	
+	        	$('#vboxPane').append($('<div />').attr({'id':'vboxAbout','class':'vboxDialogContent','style':'display: none; width: 500px;'}));
+	
+	        	var l = new vboxLoader();
+	        	l.addFileToDOM('panes/about.html',$('#vboxAbout'));
+	        	l.onLoad = function() {
+		        	var buttons = {};
+		        	buttons[trans('Close','UIVMLogViewer')] = function() { $(this).empty().remove(); };
+		
+		            $('#vboxAbout').dialog({'closeOnEscape':false,'width':500,'height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/help_16px.png" class="vboxDialogTitleIcon" /> phpVirtualBox'});			        	
+	        	};
+	        	l.run();
+        	}
+        }
+        
+    ]
+});
+
+vboxTopMenuBar.renderTo('vboxMenu');
+
+$('#vboxPane').on('vmSelectionListChanged vmGroupDefsSaving vmGroupDefsSaved',function(e){
+		vboxTopMenuBar.update(vboxChooser);
+
+}).on('vboxEvents', function(e, eventList) {
+
+	var updateMenuBar = false;
+	for(var i = 0; i < eventList.length && !updateMenuBar; i++) {
+		
+		switch(eventList[i].eventType) {
+			case 'OnMachineStateChanged':
+			case 'OnSessionStateChanged':
+				if(vboxChooser.isVMSelected(eventList[i].machineId)) {
+					updateMenuBar = true;
+				}
+				break;
+		}
+	}
+	
+	if(updateMenuBar) {
+		vboxTopMenuBar.update(vboxChooser);
+	}
+	
+});
+
+
+</script>

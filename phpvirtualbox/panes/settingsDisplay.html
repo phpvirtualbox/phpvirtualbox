@@ -1,0 +1,196 @@
+<!--
+
+	Display Settings
+	Copyright (C) 2010-2015 Ian Moore (imoore76 at yahoo dot com)
+	
+	$Id: settingsDisplay.html 595 2015-04-17 09:50:36Z imoore76 $
+
+-->
+<ul>
+	<li><a href="#vboxSettingsTabDisplayVideo"><span class='translate'>Video</span></a></li>
+	<li><a href="#vboxSettingsTabDisplayRemote"><span class='translate'>Remote Display</span></a></li>
+</ul>
+
+<!-- Video Tab -->
+<div id='vboxSettingsTabDisplayVideo' title='Video'>
+<table style='width: 100%'>
+	<tr>
+		<th><span class='translate'>Video Memory:</span></th>
+		<td style='width: 100%; white-space: nowrap'>
+		<table style='width: 100%'>
+			<tr>
+				<td style='width: 100%; border: 0px; margin: 0px; padding: 0px;'>
+				   <div style='margin-top: 4px' id='vboxSettingsDisplayMemory' class='slider'><div class='sliderScale'></div></div>
+				</td>
+				<td><input type='text' class='vboxText sliderValue' name='vboxSettingsDisplayMemoryValue' size='2' /> <span class='translate'>MB</span></td>
+			</tr>
+			<tr style='vertical-align: top;'>
+				<td style='border: 0px; margin: 0px; padding: 0px;'>
+					<table style='width:100%; border: 0px; margin: 0px; padding: 0px;'>
+						<tr style='vertical-align: top'>
+							<td style='text-align: left;'><span class='vboxSliderMin'>%1 MB</span></td>
+							<td style='text-align: right;'><span class='vboxSliderMax'>%1 MB</span></td>
+						</tr>
+					</table>
+				</td>
+				<td> </td>
+			</tr>
+		</table>
+
+		</td>
+	</tr>
+	<tr>
+		<th><span class='translate'>Extended Features:</span></th>
+		<td><label><input type='checkbox' class='vboxCheckbox' name='vboxSettingsDisplay3d' /> <span class='translate'>Enable 3D Acceleration</span></label></td>
+	</tr>
+	<tr>
+		<th></th>
+		<td><label><input type='checkbox' class='vboxCheckbox' name='vboxSettingsDisplay2d' /> <span class='translate'>Enable 2D Video Acceleration</span></label></td>
+	</tr>
+</table>
+</div>
+
+<!-- Remote Display Tab -->
+<div id='vboxSettingsTabDisplayRemote' title='Remote Display'>
+<table class='vboxVertical'>
+	<tr class='vboxRunningEnabled'>
+		<td colspan='2'><label><input type='checkbox' class='vboxCheckbox vboxEnablerCheckbox' name='vboxSettingsDisplayVRDEEnabled' /> <span class='translate'>Enable Server</span></label></td>
+	</tr>
+	<tr class='vboxRunningEnabled'>
+		<th><span class='translate'>Server Port:</span></th>
+		<td><input type='text' class='vboxText' style='width: 100%' name='vboxSettingsDisplayVRDEPort' /></td>
+	</tr>
+	<tr id='vboxSettingsDisplayVRDEAddrRow'>
+		<th><span class='translate'>Net Address:</span></th>
+		<td><input type='text' class='vboxText' style='width: 100%' name='vboxSettingsDisplayVRDEAddr' /></td>
+	</tr>	
+	<tr class='vboxRunningEnabled vboxSettingsDisplayRDP'>
+		<th><span class='translate'>Authentication Method:</span></th>
+		<td>
+             <select name='vboxSettingsDisplayVRDEAuth' id='vboxSettingsDisplayVRDEAuthID' style='width: 100%'>
+              <option value='' >None</option>
+				<option value='External'>External</option>
+				<option value='Guest'>Guest</option>
+             </select>
+          </td>
+	</tr>
+	<tr class='vboxRunningEnabled vboxSettingsDisplayRDP'>
+		<th><span class='translate'>Authentication Timeout:</span></th>
+		<td><input type='text' class='vboxText' style='width: 100%' name='vboxSettingsDisplayVRDEAuthTimeout' /></td>
+	</tr>
+	<tr class='vboxSettingsDisplayRDP'>
+		<th><span class='translate'>Extended Features:</span></th>
+		<td><label><input type='checkbox' class='vboxCheckbox' name='vboxSettingsDisplayVRDEMulti' /> <span class='translate vboxEnablerListen'>Allow Multiple Connections</span></label></td>
+	</tr>
+	<tr class='vboxRunningEnabled vboxSettingsDisplayVNC'>
+		<th><span class='translate'>VNC Password:</span></th>
+		<td><input type='text' class='vboxText' style='width: 100%' name='vboxSettingsDisplayVNCPassword' /></td>
+	</tr>
+
+</table>
+</div>
+<script type='text/javascript'>
+
+/* Display */
+
+/* auth method translations */
+$('#vboxSettingsDisplayVRDEAuthID').find('option').html(function(i,h){return trans(h,'VBoxGlobal');});
+
+$('#vboxSettingsDisplayMemory').data('form','frmVboxSettings');
+$('#vboxSettingsDisplayMemory').slider({'min':parseInt($('#vboxPane').data('vboxSystemProperties').minGuestVRAM),'max':parseInt($('#vboxPane').data('vboxSystemProperties').maxGuestVRAM)});
+
+
+
+/* CHange values when data is loaded */
+$('#vboxSettingsDialog').on('dataLoaded', function(){
+
+
+	$('#vboxSettingsDisplayMemory').slider('value',parseInt($('#vboxSettingsDialog').data('vboxMachineData').VRAMSize));
+	
+	document.forms['frmVboxSettings'].vboxSettingsDisplay3d.checked = ($('#vboxSettingsDialog').data('vboxMachineData').accelerate3DEnabled);
+	document.forms['frmVboxSettings'].vboxSettingsDisplay2d.checked = ($('#vboxSettingsDialog').data('vboxMachineData').accelerate2DVideoEnabled);
+	
+	var p = $('#vboxSettingsTabDisplayVideo').parent().children('div'); 
+	if(!$('#vboxSettingsDialog').data('vboxFullEdit')) {
+		$(p).find('tr:not(.vboxRunningEnabled)').find('span').addClass('disabled');
+		$(p).find('tr:not(.vboxRunningEnabled)').find('input,select,textarea').addClass('disabled').prop('disabled',true);
+		$('#vboxSettingsDisplayMemory').slider('disable');
+	} else {
+		$(p).find('tr:not(.vboxRunningEnabled)').find('span').removeClass('disabled');
+		$(p).find('tr:not(.vboxRunningEnabled)').find('input,select,textarea').removeClass('disabled').prop('disabled',false);
+		$('#vboxSettingsDisplayMemory').slider('enable');
+		
+		if(!$('#vboxSettingsDialog').data('vboxHostDetails').acceleration3DAvailable) {
+	        $(document.forms['frmVboxSettings'].vboxSettingsDisplay3d).addClass('disabled').prop('disabled', true)
+	           .parent().addClass('disabled');
+		} else {
+			$(document.forms['frmVboxSettings'].vboxSettingsDisplay3d).removeClass('disabled').prop('disabled', false)
+			 .parent().removeClass('disabled');
+		}
+	}
+	
+
+	/*
+	 * No VRDE?
+	 *
+	 */
+	if(!($('#vboxSettingsDialog').data('vboxMachineData').VRDEServer && $('#vboxSettingsDialog').data('vboxMachineData').VRDEServer.VRDEExtPack)) {
+		
+		$('#vboxSettingsTabDisplayVideo').parent().tabs('disable',1);
+
+		
+	} else {
+
+		$('#vboxSettingsTabDisplayVideo').parent().tabs('enable',1);
+
+		// Show / hide VNC / RDP sections
+		if($('#vboxSettingsDialog').data('vboxMachineData').VRDEServer.VRDEExtPack.indexOf("VNC") > -1) {
+			$('#vboxSettingsTabDisplayRemote').find('tr.vboxSettingsDisplayRDP').css({'display':'none'});
+			$('#vboxSettingsTabDisplayRemote').find('tr.vboxSettingsDisplayVNC').css({'display':''});
+		} else {
+			$('#vboxSettingsTabDisplayRemote').find('tr.vboxSettingsDisplayRDP').css({'display':''});
+			$('#vboxSettingsTabDisplayRemote').find('tr.vboxSettingsDisplayVNC').css({'display':'none'});
+		}
+		document.forms['frmVboxSettings'].vboxSettingsDisplayVRDEPort.value = $('#vboxSettingsDialog').data('vboxMachineData').VRDEServer.ports;
+		document.forms['frmVboxSettings'].vboxSettingsDisplayVRDEAuth.value = $('#vboxSettingsDialog').data('vboxMachineData').VRDEServer.authType;
+		document.forms['frmVboxSettings'].vboxSettingsDisplayVRDEAuthTimeout.value = $('#vboxSettingsDialog').data('vboxMachineData').VRDEServer.authTimeout;
+		document.forms['frmVboxSettings'].vboxSettingsDisplayVRDEAddr.value = $('#vboxSettingsDialog').data('vboxMachineData').VRDEServer.netAddress;
+		document.forms['frmVboxSettings'].vboxSettingsDisplayVNCPassword.value = $('#vboxSettingsDialog').data('vboxMachineData').VRDEServer.VNCPassword;
+				
+		$(document.forms['frmVboxSettings'].vboxSettingsDisplayVRDEEnabled).attr('checked',(!$('#vboxSettingsDialog').data('vboxMachineData').VRDEServer.enabled)).trigger('click');
+		
+		if($('#vboxSettingsDialog').data('vboxMachineData').VRDEServer.allowMultiConnection) {
+			document.forms['frmVboxSettings'].vboxSettingsDisplayVRDEMulti.checked = true;
+		} else {
+			document.forms['frmVboxSettings'].vboxSettingsDisplayVRDEMulti.checked = false;
+		}
+
+	if(!$('#vboxPane').data('vboxConfig').enableAdvancedConfig)
+		$('#vboxSettingsDisplayVRDEAddrRow').css('display','none');
+	}
+
+
+});
+
+/* Change settings onSave() */
+$('#vboxSettingsDialog').on('save',function(){
+
+	$('#vboxSettingsDialog').data('vboxMachineData').VRAMSize = $(document.forms['frmVboxSettings'].vboxSettingsDisplayMemoryValue).val();
+
+	$('#vboxSettingsDialog').data('vboxMachineData').accelerate3DEnabled = document.forms['frmVboxSettings'].vboxSettingsDisplay3d.checked;
+	$('#vboxSettingsDialog').data('vboxMachineData').accelerate2DVideoEnabled = document.forms['frmVboxSettings'].vboxSettingsDisplay2d.checked;
+
+	if($('#vboxSettingsDialog').data('vboxMachineData').VRDEServer && $('#vboxSettingsDialog').data('vboxMachineData').VRDEServer.VRDEExtPack) {
+		$('#vboxSettingsDialog').data('vboxMachineData').VRDEServer.ports = document.forms['frmVboxSettings'].vboxSettingsDisplayVRDEPort.value;
+		$('#vboxSettingsDialog').data('vboxMachineData').VRDEServer.netAddress = document.forms['frmVboxSettings'].vboxSettingsDisplayVRDEAddr.value;
+		$('#vboxSettingsDialog').data('vboxMachineData').VRDEServer.authType = document.forms['frmVboxSettings'].vboxSettingsDisplayVRDEAuth.value;
+		$('#vboxSettingsDialog').data('vboxMachineData').VRDEServer.authTimeout = document.forms['frmVboxSettings'].vboxSettingsDisplayVRDEAuthTimeout.value;
+		$('#vboxSettingsDialog').data('vboxMachineData').VRDEServer.enabled = document.forms['frmVboxSettings'].vboxSettingsDisplayVRDEEnabled.checked;
+		$('#vboxSettingsDialog').data('vboxMachineData').VRDEServer.allowMultiConnection = document.forms['frmVboxSettings'].vboxSettingsDisplayVRDEMulti.checked;
+		$('#vboxSettingsDialog').data('vboxMachineData').VRDEServer.VNCPassword = document.forms['frmVboxSettings'].vboxSettingsDisplayVNCPassword.value;
+	}
+});
+
+</script>
+
+

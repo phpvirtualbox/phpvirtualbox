@@ -1,0 +1,220 @@
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+  <meta http-equiv="Expires" content="0"/>
+  <meta http-equiv="Cache-Control" content ="no-cache"/>
+  <meta http-equiv="Cache-Control" content ="no-store, must-revalidate, max-age=0"/>
+  <meta http-equiv="Cache-Control" content ="post-check=0, pre-check=0"/>
+  <meta http-equiv="Pragma" content="no-cache"/>
+  <title>Flash RDP Client</title>
+  <script type="text/javascript" src="webclient.js"></script>
+  <script type="text/javascript" src="swfobject.js"></script>
+  <script type="text/javascript">
+    var FlashId = "FlashRDP";
+
+    function Init()
+    {
+      document.getElementById("Information").innerHTML = "Loading Flash...";
+      
+      RDPWebClient.embedSWF ("RDPClientUI.swf", FlashId);
+    }
+    
+    var fFlashLoaded = false;
+    var FlashVersion = "";
+    
+    function getFlashProperty(id, name)
+    {
+      var value = "";
+      var flash = RDPWebClient.getFlashById(id);
+      if (flash)
+      {
+        value = flash.getProperty(name);
+      }
+      return value;
+    }
+    
+    /*
+     * RDP client event handlers.
+     * They will be called when the flash movie is ready and some event occurs.
+     * Note: the function name must be the "flash_id" + "event name".
+     */
+    function RDPWebEventLoaded(flashId)
+    {
+      /* The movie loading is complete, the flash client is ready. */
+      fFlashLoaded = true;
+      FlashVersion = getFlashProperty(flashId, "version");
+      document.getElementById("Information").innerHTML = "Version: " + FlashVersion;
+    }
+    function RDPWebEventConnected(flashId)
+    {
+      /* RDP connection has been established */
+      document.getElementById("Information").innerHTML =
+          "Version: " + FlashVersion + ". Connected to " + getFlashProperty(flashId, "serverAddress");
+    }
+    function RDPWebEventServerRedirect(flashId)
+    {
+      /* RDP connection has been established */
+      document.getElementById("Information").innerHTML =
+          "Version: " + FlashVersion + ". Redirection by " + getFlashProperty(flashId, "serverAddress");
+    }
+    function RDPWebEventDisconnected(flashId)
+    {
+      /* RDP connection has been lost */
+      alert("Disconnect reason:\n" + getFlashProperty(flashId, "lastError"));
+      document.InputForm.connectionButton.value = "Connect";
+      document.InputForm.onsubmit=function() {return Connect();}
+      document.getElementById("Information").innerHTML = "Version: " + FlashVersion;
+    }
+    
+    /* 
+     * Examples how to call a flash method from HTML.
+     */
+    function Connect()
+    {
+      if (fFlashLoaded != true)
+      {
+          return false;
+      }
+      
+      /* Do something with the input form:
+       *
+       * to hide:      document.getElementById("InputForm").style.display = 'none';
+       * to redisplay: document.getElementById("InputForm").style.display = 'block';
+       *
+       * Just rename the button and attach another submit action.
+       */
+      document.InputForm.connectionButton.value = "Disconnect";
+      document.InputForm.onsubmit=function() {return Disconnect();}
+      
+      var flash = RDPWebClient.getFlashById(FlashId);
+      if (flash)
+      {
+        /* Setup the client parameters. */
+        // flash.setProperty("serverPort", "4777");
+        flash.setProperty("serverAddress", document.InputForm.serverAddress.value);
+        flash.setProperty("logonUsername", document.InputForm.logonUsername.value);
+        flash.setProperty("logonPassword", document.InputForm.logonPassword.value);
+        
+        if (document.InputForm.desktopSize.value == "800")
+        {
+            flash.setProperty("displayWidth", "800");
+            flash.setProperty("displayHeight", "600");
+        }
+        else if (document.InputForm.desktopSize.value == "1024")
+        {
+            flash.setProperty("displayWidth", "1024");
+            flash.setProperty("displayHeight", "768");
+        }
+        else if (document.InputForm.desktopSize.value == "1280")
+        {
+            flash.setProperty("displayWidth", "1280");
+            flash.setProperty("displayHeight", "1024");
+        }
+      
+        flash.setProperty("keyboardLayout", document.InputForm.keyboardLayout.value);
+
+        document.getElementById("Information").innerHTML =
+            "Version: " + FlashVersion +". Connecting to " + getFlashProperty(FlashId, "serverAddress") + "...";
+        
+        /* Establish the connection. */
+        flash.connect();
+      }
+      
+      /* If false is returned, the form will not be submitted and we stay on the same page. */
+      return false;
+    }
+    
+    function Disconnect()
+    {
+      var flash = RDPWebClient.getFlashById(FlashId);
+      if (flash)
+      {
+        flash.disconnect();
+      }
+      
+      /* Restore the "Connect" form. */
+      document.InputForm.connectionButton.value = "Connect";
+      document.InputForm.onsubmit=function() {return Connect();}
+      
+      /* If false is returned, the form will not be submitted and we stay on the same page. */
+      return false;
+    }
+    function sendCAD()
+    {
+      var flash = RDPWebClient.getFlashById(FlashId);
+      if (flash)
+      {
+        flash.keyboardSendCAD();
+      }
+      
+      /* If false is returned, the form will not be submitted and we stay on the same page. */
+      return false;
+    }
+    function sendScancodes()
+    {
+      var flash = RDPWebClient.getFlashById(FlashId);
+      if (flash)
+      {
+        flash.keyboardSendScancodes('1f 9f 2e ae 1e 9e 31 b1');
+      }
+      
+      /* If false is returned, the form will not be submitted and we stay on the same page. */
+      return false;
+    }
+    function applyKeyboardLayout()
+    {
+      var flash = RDPWebClient.getFlashById(FlashId);
+      if (flash)
+      {
+        flash.setProperty("keyboardLayout", document.InputForm.keyboardLayout.value);
+      }
+      
+      /* If false is returned, the form will not be submitted and we stay on the same page. */
+      return false;
+    }
+  </script>
+</head>
+
+<body onload="Init()">
+  <h2>RDP Web Client</h2>
+  
+  <form name="InputForm" onsubmit="return Connect()">
+    <p>
+    Computer: <input type=text size=20 name=serverAddress value="">
+    User name: <input type=text size=20 name=logonUsername value="">
+    Password: <input type=password size=20 name=logonPassword value="">
+    </p>
+    <p>
+    Desktop size: <select name=desktopSize>
+      <option value="800">800x600</option>
+      <option value="1024">1024x768</option>
+      <option value="1280">1280x1024</option>
+    </select>
+    Keyboard layout: <select name=keyboardLayout>
+      <option value="en">EN</option>
+      <option value="de">DE</option>
+    </select>
+    <input name=layoutButton type=button value="Change keyboard layout" onClick="return applyKeyboardLayout()">
+    </p>
+    <p>
+    <input name=connectionButton type=submit value="Connect">
+    <input name=cadButton type=button value="Ctrl-Alt-Del" onClick="return sendCAD()">
+    <input name=scanButton type=button value="Scancodes test" onClick="return sendScancodes()">
+    </p>
+  </form>
+  
+  <div id="FlashRDPContainer">
+    <div id="FlashRDP">
+    </div>
+  </div>
+  
+  <div id="Information"></div>
+  
+  <br>(C) 2009-2010 Oracle Corporation
+  
+  <iframe style="height:0px;width:0px;visibility:hidden" src="about:blank">
+     this frame prevents back forward cache in Safari
+  </iframe>
+</body>
+<head><meta http-equiv="Pragma" content="no-cache"/></head>
+</html>

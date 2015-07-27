@@ -1,0 +1,177 @@
+<!-- 
+
+	Main Tabs
+	Copyright (C) 2010-2015 Ian Moore (imoore76 at yahoo dot com)
+	
+	$Id: tabs.html 595 2015-04-17 09:50:36Z imoore76 $
+
+ -->
+<div id='tabMainContent' class='vboxInvisible' style='overflow: auto;'></div>
+<script type='text/javascript'>
+
+// Create UL
+$('#vboxTabsList').append($('<ul />').attr({'id':'tablistMain'}));
+
+
+var tabs = [
+    // Details
+    {
+    	name:'vboxTabVMDetails',
+    	content:'tabVMDetails',
+    	label:'Details',
+    	icon:'vm_settings'
+    	
+    // Snapshots
+    },{
+    	name:'vboxTabVMSnapshots',
+    	content:'tabVMSnapshots',
+    	label:'Snapshots',
+    	icon:'snapshot_take',
+    	default_disabled: true
+    	
+    // Console
+    },{
+    	name:'vboxTabVMConsole',
+    	content:'tabVMConsole',
+    	label:'Console',
+    	icon:'vrdp',
+    	default_disabled: true
+   	}
+];
+
+
+// Tab object. Defined in this file
+var tabsMain = new vboxTabs('tabMainContent');
+
+// Loader that will load our tab panes
+var tabLoader = new vboxLoader();
+
+// Load each tab and create tab link
+for(var i = 0; i < tabs.length; i++) {
+
+	// Tab disabled?
+	if($('#vboxPane').data('vboxConfig')['disable' + tabs[i].name.substring(4)])
+		continue;
+
+	// Tab link
+	$('<li />').attr({'class':'ui-corner-all','id':'tabsMain-'+tabs[i].name}).html('<a href="#'+tabs[i].name+'"><span><img src="images/vbox/'+tabs[i].icon+'_16px.png" border="0" /> <span id="'+tabs[i].name+'Title">'+trans(tabs[i].label,'UIVMDesktop')+'</span></span></a>').appendTo('#tablistMain');
+	
+	tabLoader.addFileToDOM('panes/'+tabs[i].content+'.html',$('#tabMainContent'));
+	
+}
+
+// Once tabs are loaded run this..
+tabLoader.onLoad = function(){
+
+	for(var i = 0; i < tabs.length; i++) {
+
+		// Tab disabled?
+		if($('#vboxPane').data('vboxConfig')['disable' + tabs[i].name.substring(4)])
+			continue;
+
+		tabsMain.addTab(tabs[i]);
+		
+	}
+	
+	// Add "click" functionality to each tab
+	$('#tablistMain').children().click(function(){
+		if(!$(this).hasClass('vboxDisabled'))
+			tabsMain.showTab($(this).children().first().attr('href'));
+		return false;
+		
+	// Mouseover
+	}).hover(function(){
+		if($(this).hasClass('vboxDisabled')) return false;
+		$(this).addClass('vboxHover');
+	},function(){
+		$(this).removeClass('vboxHover');
+	});
+	
+	// Watch for tabs asking to be enabled / disabled
+	$('#tabMainContent').on('enableTab',function(e,tabName) {
+		tabsMain.enableTab(tabsMain.getTabByName(tabName));
+	}).on('disableTab',function(e,tabName) {
+		tabsMain.disableTab(tabsMain.getTabByName(tabName));
+	});
+
+
+};
+tabLoader.run();
+
+/*
+ * Tabs pane JavaScript code for main tabs. This
+ * class listens for a vmlist selection change and tells
+ * the tabs to update themselves with new data
+ * 
+ */
+
+function vboxTabs(id) {
+
+	var self = this;
+	this.ref = null;
+	this.vm = null;
+	this.tabs = new Array();
+	this.tabSelected = null;
+	this.id = id;
+	
+	// Add a tab to list
+	this.addTab = function (tab) {
+		
+		if(!this.tabSelected) {
+			this.tabSelected = '#'+tab.name;
+			$('#tablistMain').find('a[href=#'+tab.name+']').parent().addClass('selected');
+		}
+		this.tabs[this.tabs.length] = tab;
+		
+		// Initially Disable tab
+		if(tab.default_disabled) {
+			self.disableTab(tab);
+		}
+	};
+	
+	// Get a tab by name
+	this.getTabByName = function(name) {
+		for(var i = 0; i < self.tabs.length; i++) {
+			if(self.tabs[i].name == name) return self.tabs[i];
+		}
+	};
+	
+	// Show a tab
+	this.showTab = function (tab) {
+		
+		// Do nothing if it is already shown
+		if(self.tabSelected == tab) return;
+		
+		// Hide each tab
+		for(var i = 0; i < self.tabs.length; i++) {
+			$('#'+self.tabs[i].name).css({'display':'none'}).trigger('hide');
+		}
+		
+		// Show tab
+		$(''+tab).css('display','').trigger('show');
+		self.tabSelected = tab;
+		$('#tablistMain').children().removeClass('selected');
+		$('#tablistMain').find('a[href='+tab+']').parent().addClass('selected');
+
+		
+	};
+
+	// Disable a tab		
+	this.disableTab = function(tab) {
+		
+		// Was this tab selected?
+		if(self.tabSelected == '#'+tab.name)
+			self.showTab('#'+self.tabs[0].name);
+
+		$('#tabsMain-'+tab.name).addClass('vboxDisabled').find('img').attr('src','images/vbox/'+(tab.disabled_icon ? tab.disabled_icon : tab.icon+'_disabled')+'_16px.png');
+	};
+	
+	// Enable a tab
+	this.enableTab = function(tab) {
+		$('#tabsMain-'+tab.name).removeClass('vboxDisabled').find('img').attr('src','images/vbox/'+tab.icon+'_16px.png');
+	};
+
+}
+
+</script>
+

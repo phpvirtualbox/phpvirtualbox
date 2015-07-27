@@ -1,0 +1,1704 @@
+<!--
+
+	VM Storage Settings
+	Copyright (C) 2010-2015 Ian Moore (imoore76 at yahoo dot com)
+	
+	$Id: settingsStorage.html 599 2015-07-27 10:40:37Z imoore76 $
+
+-->
+<table style='width: 100%;' id='vboxSettingsStorageTableWrapper'>
+	<tr style='height: 100%'>
+		<td width='50%' style='padding: 6px;'>
+			<div id='vboxStoragePaneLeft'>
+				<table class='vboxSettingsHeadingLine'
+					style='width: 100%; border-spacing: 0; border: 0px; margin: 0px; padding: 0px;'>
+					<tr style='vertical-align: middle'>
+						<td style='white-space: nowrap; width: auto;'><span
+							class='translate vboxRunningEnabled'>Storage Tree</span></td>
+						<td style='width: 100%'>
+							<hr style='width: 100%;' class='vboxSeparatorLine'/>
+						</td>
+					</tr>
+				</table>
+	
+	
+				<!-- Storage Controllers -->
+				<div id='vboxSettingsStorageTree' style='height: 290px; outline: none;' class='vboxBordered' tabindex='0'>
+					<ul class='vboxHover vboxHoverBorderless'>
+						<li>Storage Thingy</li>
+						<li>
+						<ul>
+							<li>Attachment Thingy</li>
+						</ul>
+						</li>
+					</ul>
+				</div>
+	
+				<!-- Controller Toolbar -->
+				<div id='vboxSettingsControllersButtons' style='text-align: right'></div>
+	
+	
+			</div>
+		</td>
+				
+		<!-- Resize Bar -->
+		<td style='height: 100%; width:3px; padding:0px; margin:0px;'>
+			<div style='margin:0px; margin-top: 2px; padding:0px; width: 3px; height: 99%; background:#aaa;' id='vboxStorageResizeBar' ></div>
+		</td>
+		
+		<td width='50%' style='padding: 6px;'>
+			<div id='vboxStoragePaneRight'>
+				<table class='vboxSettingsHeadingLine'
+					style='width: 100%; border-spacing: 0; border: 0px; margin: 0px; padding: 0px;'>
+					<tr style='vertical-align: middle'>
+						<td style='white-space: nowrap; width: auto;'><span
+							class='translate vboxRunningEnabled'>Attributes</span></td>
+						<td style='width: 100%; white-space: nowrap;'><hr style='width: 100%;' class='vboxSeparatorLine'/></td>
+					</tr>
+				</table>
+		
+		
+				<!-- Controller Settings -->
+				<div id='vboxSettingsController' style='width: 100%; display: none;'>
+					<table style='width: 100%' class='vboxVertical'>
+						<tr>
+							<th><span class='translate'>Name:</span></th>
+							<td style='width: 100%'><input type='text' class='vboxText'
+								name='vboxSettingsStorageItemName' style='width: 99%' /></td>
+						</tr>
+						<tr>
+							<th><span class='translate'>Type:</span></th>
+							<td><select name='vboxSettingsStorageControllerType'
+								style='width: 100%'>
+								<option value='ICH6'>ICH6</option>
+							</select></td>
+						</tr>
+						<tr id='vboxSettingsControllerPortCountRow' style='display: none'>
+							<th><span class='translate'>Port Count:</span></th>
+							<td>
+								<select name='vboxSettingsControllerPortCount'>
+								</select>
+							</td>
+						</tr>			
+						<tr>
+							<th></th>
+							<td style='width: 100%'>
+								<label><input type='checkbox' class='vboxCheckbox'
+								name='vboxSettingsStorageHostCache'/> <span class='translate'>Use host I/O cache</span></label></td>
+						</tr>
+					</table>
+				</div>
+		
+				<!-- Attachment Settings -->
+				<div id='vboxSettingsStorageAttachment' style='display: none'>
+					<table class='vboxVertical'>
+						<tr style='vertical-align: middle;'>
+							<th><span class='translate vboxRunningEnabled' id='vboxSettingsControllerSlotLabel'>HardDisk</span></th>
+							<td style='width: 100%'>
+								<table class='vboxInvisible' style='width: 100%'>
+									<tr style='vertical-align: middle'>
+										<td style='width: 100%'>
+											<select	name='vboxSettingsControllerSlot' style='width: 100%'></select>
+										</td>
+										<td>
+											<div id='vboxSettingsAddAttachmentsMenuHDDiv' style='display: none'></div>
+											<div id='vboxSettingsAddAttachmentsMenuFDDiv' style='display: none'></div>
+											<div id='vboxSettingsAddAttachmentsMenuCDDiv' style='display: none'></div>
+										</td>
+									</tr>
+								</table>
+							</td>
+						</tr>
+					</table>
+				</div>
+	
+				<!--  Selected Media Info -->
+				<div id='vboxSettingsMediaInfo' style='display: none'>
+					<table class='vboxSettingsHeadingLine'
+						style='width: 100%; border-spacing: 0; border: 0px; margin: 0px; padding: 0px;'>
+						<tr style='vertical-align: middle'>
+							<td style='white-space: nowrap; width: auto;'><span
+								class='translate vboxRunningEnabled'>Information</span></td>
+							<td style='width: 100%'>
+							<hr style='width: 100%; ' class='vboxSeparatorLine'/>
+							</td>
+						</tr>
+					</table>
+		
+		
+					<!-- HardDisk Media  -->
+					<div id='vboxSettingsHDInfo'>
+						<table class='vboxVertical'>
+							<tr>
+								<th><span class='translate vboxRunningEnabled'>Type (Format):</span></th>
+								<td><span id='vboxSettingsHDtype' class='vboxRunningEnabled'>Image</span></td>
+							</tr>				
+							<tr>
+								<th><span class='translate vboxRunningEnabled'>Virtual Size:</span></th>
+								<td><span id='vboxSettingsHDvsize' class='vboxRunningEnabled'>30 GB</span></td>
+							</tr>
+							<tr>
+								<th><span class='translate vboxRunningEnabled'>Actual Size:</span></th>
+								<td><span id='vboxSettingsHDasize' class='vboxRunningEnabled'>30 GB</span></td>
+							</tr>
+							<tr>
+								<th><span class='translate vboxRunningEnabled'>Details:</span></th>
+								<td><span id='vboxSettingsHDDetails' class='vboxRunningEnabled'>Dynamic</span></td>
+							</tr>							
+							<tr>
+								<th><span class='translate vboxRunningEnabled'>Location:</span></th>
+								<td><span id='vboxSettingsHDlocation' class='vboxRunningEnabled'>/usr/local/blah/etc..</span></td>
+							</tr>
+							<tr>
+								<th><span class='translate vboxRunningEnabled'>Attached To:</span></th>
+								<td><span id='vboxSettingsHDattached' class='vboxRunningEnabled'>Some Virtual
+								Machine Name</span></td>
+							</tr>
+						</table>
+					</div>
+		
+					<!-- DVD/CD Media and Floppy -->
+					<div id='vboxSettingsImageInfo'>
+						<table class='vboxVertical'>
+							<tr>
+								<th><span class='translate vboxRunningEnabled'>Type:</span></th>
+								<td><span id='vboxSettingsImageType' class='vboxRunningEnabled'>Image</span></td>
+							</tr>		
+							<tr>
+								<th><span class='translate vboxRunningEnabled'>Size:</span></th>
+								<td><span id='vboxSettingsImageSize' class='vboxRunningEnabled'>30 GB</span></td>
+							</tr>
+							<tr>
+								<th><span class='translate vboxRunningEnabled'>Location:</span></th>
+								<td><span id='vboxSettingsImageLocation' class='vboxRunningEnabled'>/usr/local/blah/etc..</span></td>
+							</tr>
+							<tr>
+								<th><span class='translate vboxRunningEnabled'>Attached To:</span></th>
+								<td><span id='vboxSettingsImageAttached' class='vboxRunningEnabled'>Some Virtual
+								Machine Name</span></td>
+							</tr>
+						</table>
+					</div>
+		
+				</div>
+			</div>
+		</td>
+	</tr>
+</table>
+<script type='text/javascript'>
+
+ /*
+  * 
+  * Storage controller helper object
+  *
+  *
+  */
+ var vboxSettingsStorageObj = function() {
+
+	this.busTypes = vboxStorage.getBusTypes();
+	
+ 	this.attachedDirectMedia = {};
+ 	this.attachedIndirectMedia = {};
+
+ 	/* Return slots available on controller, including incl (device currently on slot) */
+ 	this.availableSlots = function(conElm,incl) {
+
+ 		var bus = $(conElm).children('table').first().data('controller').bus;
+ 		var slots = vboxStorage[bus].slots();
+ 		
+ 		var atts = $(conElm).find('table.vboxSettingsStorageAttachment');
+ 		
+ 		for(var i = 0; i < atts.length; i++) {
+ 			slot = $(atts[i]).data('attachment').port+'-'+$(atts[i]).data('attachment').device;
+ 			if(incl && (incl == slot)) continue;
+ 			delete slots[slot];
+ 		}
+ 		return slots;
+ 	};
+
+ 	this.addAttached = function(m) {
+ 		if(!m || !m.id) return;
+ 		var medium = vboxMedia.getMediumById(m.id);
+ 		
+ 		// SafeGuard
+ 		if(!medium) {
+ 			alert('A medium listed as attached to this machine was not found in the media registry. phpVirtualBox will now reload.');
+ 			location.reload(true);
+ 		}
+ 		
+ 		this.attachedDirectMedia[medium.id] = medium;
+ 		if(medium.base) {
+ 			this.attachedIndirectMedia[medium.base] = medium;
+ 		}
+ 	};
+
+ 	this.isAttached = function(m,directOnly) {
+ 		if(!m || !m.id) return false;
+ 		if(this.attachedDirectMedia[m.id]) return this.attachedDirectMedia[m.id];
+ 		if(!directOnly) {
+ 			return (m.base ? this.attachedIndirectMedia[m.base] : null);
+ 		}
+ 		return false;
+ 	};
+ 	
+ 	this.isAttachedDirect = function(m) { return this.attachedDirectMedia[m.id]; };
+ 	this.isAttachedIndirect = function(m) { return (m.base ? this.attachedIndirectMedia[m.base] : null); };
+ };
+
+ /*
+  * 
+  *
+  *  Initialization logic
+  *
+  *
+  */
+
+ /* Storage Obj */
+ var vboxSettingsStorageBusses = new vboxSettingsStorageObj(); // defined below
+
+ /* Setup SATA port count */
+ var sel = document.forms['frmVboxSettings'].vboxSettingsControllerPortCount;
+ for(var i = 1; i <= vboxStorage.SATA.maxPortCount; i++) {
+ 	sel.options[sel.options.length] = new Option(i,i);
+ }
+ $(sel).change(function(){
+ 	$('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().data('controller').portCount = $(this).val();
+ });
+
+
+
+ /* Pre-load storage images */
+var imgs = new Array();
+for(var i=0;i<vboxSettingsStorageBusses.busTypes.length;i++){
+	var imgName = vboxStorage.getBusIconName(vboxSettingsStorageBusses.busTypes[i]);
+	imgs[i] = new Array();
+	imgs[i][0] = new Image();
+	imgs[i][0].src = 'images/vbox/'+imgName+'_expand_16px.png';
+	imgs[i][1] = new Image();
+	imgs[i][1].src = 'images/vbox/'+imgName+'_collapse_16px.png';
+	imgs[i][2] = new Image();
+	imgs[i][2].src = 'images/vbox/'+imgName+'_add_16px.png';
+	imgs[i][3] = new Image();
+	imgs[i][3].src = 'images/vbox/'+imgName+'_add_disabled_16px.png';
+}
+
+var imgs2 = new Array();
+var imgsToLoad = ['fd','hd','cd'];
+for(var i=0;i<imgsToLoad.length;i++){
+	imgs2[i] = new Image();
+	imgs2[i].src = 'images/vbox/'+imgsToLoad[i]+'_16px.png';
+}
+
+/*
+ * 
+ *		Init Storage Controller menus and toolbar
+ *
+ */ 
+
+ /* Menu for adding controllers */
+ var vboxSettingsCMenu = new vboxMenu('vboxSettingsAddControllerMenu','vboxSettingsAddControllerMenu');
+ vboxSettingsCMenu.iconStringDisabled = '_disabled';
+ var vboxSettingsCMenuItems = [];
+ var bustypes = vboxStorage.getBusTypes();
+ for(var i = 0; i < bustypes.length; i++) {
+ 	var bt = bustypes[i];
+ 	var icon = vboxStorage.getBusIconName(bt);;
+ 	vboxSettingsCMenuItems[vboxSettingsCMenuItems.length] = {'name':'add'+bt,'icon':icon+"_add",'label':trans('Add '+bt+' Controller','UIMachineSettingsStorage')};
+ }
+ vboxSettingsCMenu.addMenu(vboxSettingsCMenuItems);
+ 
+ 
+ /* Storage tree context menu to add controllers */
+ $('#vboxSettingsStorageTree').contextMenu({
+  		menu: vboxSettingsCMenu.menuId()
+  	},
+  	function(action, el, pos) {
+
+  	    var bus = action.substring(3);
+ 		var c = {'bus':bus,'mediumAttachments':[],'controllerType':vboxStorage[bus].types[0],'useHostIOCache':1,
+ 				'maxPortCount':vboxStorage[bus]['maxPortCount'],'maxDevicesPerPortCount':vboxStorage[bus]['maxDevicesPerPortCount']};
+ 		
+
+ 		vboxSettingsAddController(c, $('#vboxSettingsStorageTree').children('ul').first());
+
+ 		$('#vboxSettingsStorageTree').trigger('itemselect',$('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first());
+  	}
+ );
+ 
+ /* Storage tree tool bar */
+ var scToolbar = new vboxToolbarSmall();
+ var vboxSettingsStorageButtons = new Array(
+	{
+		/* Add Attachment Button */
+		'name' : 'addattach',
+		'label' : trans('Add Attachment','UIMachineSettingsStorage'),
+		'icon' : 'attachment_add',
+		'enabled' : function (item) {
+		
+			if(!$(item).data('controller')) return false;
+			
+			// Determine how max and how many are used
+			if(!($(item).data('controller').maxPortCount && ($(item).parent().find('ul').children('li').length < ($(item).data('controller').maxPortCount * $(item).data('controller').maxDevicesPerPortCount))))
+				return false;
+
+			// Enable / Disable CD/DVD menu
+			var c = $('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first();
+			if($(c).data('controller').bus == 'IDE' || $(c).data('controller').bus == 'SATA') {
+				scToolbar.getButtonElement("addattach").data('busType',$(c).data('controller').bus);
+				scToolbar.getButtonElement("addattach").enableContextMenu();
+			} else {
+				scToolbar.getButtonElement("addattach").disableContextMenu();
+			}
+			return true;
+			
+			},
+		'click' : function (item) {
+			// Let context menu handle IDE and Sata
+			var c = $('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first();
+			if($(c).data('controller').bus == 'IDE' || $(c).data('controller').bus == 'SATA') { return; }
+			vboxSettingsStorageAddMedium($(c).parent(),($(c).data('controller').bus == 'Floppy' ? 'Floppy' : 'HardDisk'));
+		}
+	},
+
+	{
+		/* Remove Attachment Button */
+		'name' : 'removeattach',
+		'label' : trans('Remove Attachment','UIMachineSettingsStorage'),
+		'icon' : 'attachment_remove',
+		'enabled' : function (item) { return (item && $(item).data('attachment')); },
+		'click' : function () {
+
+			// Set previous item to last?
+			var cur = $('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().parent();
+			
+			if($(cur).hasClass('last')) {
+				$(cur).prev().addClass('last');
+			}
+			
+			var next = $(cur).next().find('table.vboxListItem').first();
+			if(!$(next).html()) {
+				var con = $('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().data('controller');
+				if(con) next = $('#vboxSettingsController'+con.bus).find('table.vboxListItem').first();
+			}
+			$('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().parent().remove();
+			if(!$(next).trigger('click').html()) $('#vboxSettingsStorageTree').trigger('itemselect',null);
+		}		
+	},
+	
+	{
+		/* Add Controller Button */
+		'name' : 'addcontroller',
+		'label' : trans('Add Controller','UIMachineSettingsStorage'),
+		'icon' : 'controller_add',
+		'enabled' : function (item) {
+			
+			// Draw menu items
+ 			var cons = $('#vboxSettingsStorageTree').find('table.vboxSettingsController');
+ 			var avail = vboxStorage.getBusTypes();
+ 			var used = {};
+ 			for(var i = 0; i < avail.length; i++) {
+ 	 			used[avail[i]] = false;
+ 			}
+
+ 			for(var i = 0; i < cons.length; i++) {
+ 	 			used[$(cons[i]).data('controller').bus] = true;
+ 			}
+ 			
+ 			var oneEnabled = false;
+ 			for(var i in used) {
+
+ 				if(used[i]) { // && vboxStorage[i].limitOneInstance) {
+	 				vboxSettingsCMenu.disableItem('add'+i);
+ 				} else {
+	 				vboxSettingsCMenu.enableItem('add'+i);
+	 				oneEnabled = true;
+ 				}
+ 			}
+
+ 			// If at least one item is enabled
+ 			return oneEnabled;
+ 			
+ 			
+		},
+		'click' : function (item) { return true; }		
+	},
+
+	{
+		/* Remove Controller Button */
+		'name' : 'removecontroller',
+		'label' : trans('Remove Controller','UIMachineSettingsStorage'),
+		'icon' : 'controller_remove',
+		'enabled' : function (item) { if(item && $(item).data('controller')) return true; },
+		'click' : function () {
+			var next = $('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().parent().next().find('table.vboxListItem').first();
+			$('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().parent().remove();
+			if(!$(next).html()) {next = $('#vboxSettingsStorageTree').find('table.vboxListItem').first();}
+			if(!$(next).trigger('click').html()) $('#vboxSettingsStorageTree').trigger('itemselect',null);
+		}		
+	}
+	
+
+
+ );
+
+scToolbar.addButtons(vboxSettingsStorageButtons);
+scToolbar.renderTo('vboxSettingsControllersButtons');
+
+/* Add controller button menu initialization  */
+scToolbar.getButtonElement("addcontroller").contextMenu({
+ 		menu: 'vboxSettingsAddControllerMenu',
+ 		mode:'menu',
+ 		button: 0
+ 	},
+ 	function(action, el, pos) {
+
+ 		var bus = action.substring(3);
+		var c = {'bus':bus,'mediumAttachments':[],'controllerType':vboxStorage[bus].types[0],'useHostIOCache':1,
+				'maxPortCount':vboxStorage[bus]['maxPortCount'],'maxDevicesPerPortCount':vboxStorage[bus]['maxDevicesPerPortCount']};
+
+		vboxSettingsAddController(c, $('#vboxSettingsStorageTree').children('ul').first());
+
+		$('#vboxSettingsStorageTree').trigger('itemselect',$('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first());
+ 	}
+ );
+
+/* Menu for adding attachment */
+if(!$('#vboxSettingsAddAttachmentsMenu').attr('id')) {
+	
+	var ul = $('<ul />').attr({'id':'vboxSettingsAddAttachmentsMenu','class':'contextMenu','style':'display: none'});
+
+	$(ul).append($('<li />').html("<a href='#addCD' style='background-image: url(images/vbox/cd_add_16px.png);' >"+trans('Add CD/DVD Device','UIMachineSettingsStorage')+"</a>"));
+
+	$(ul).append($('<li />').html("<a href='#addHD' style='background-image: url(images/vbox/hd_add_16px.png);' >"+trans('Add Hard Disk','UIMachineSettingsStorage')+"</a>"));
+	
+	$('#vboxPane').append(ul);
+
+}
+
+ /* Add attachment button menu initialization  */
+scToolbar.getButtonElement("addattach").contextMenu({
+ 		menu: 'vboxSettingsAddAttachmentsMenu',
+ 		mode:'menu',
+ 		button: 0
+ 	},
+ 	function(action, el, pos) {
+		vboxSettingsStorageAddMedium($('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().parent(),(action == 'addCD' ? 'DVD' : 'HardDisk'));
+ 	}
+ );
+
+
+
+$('#vboxSettingsStorageTree').on('itemselect',function(e,el) {scToolbar.update(el); });
+
+
+/* Medium attachment context menu */
+var vboxSettingsMAMenu = new vboxMenu('vboxSettingsMAMenuL');
+vboxSettingsMAMenu.addMenu([vboxSettingsStorageButtons[1]]);
+
+
+/*
+ * Medium menu buttons
+ */
+var mAttachToolbarHD = new vboxButtonMediaMenu('HardDisk',vboxSettingsControllerAttach);
+mAttachToolbarHD.renderTo('vboxSettingsAddAttachmentsMenuHDDiv');
+
+var mAttachToolbarCD = new vboxButtonMediaMenu('DVD',vboxSettingsControllerAttach);
+mAttachToolbarCD.renderTo('vboxSettingsAddAttachmentsMenuCDDiv');
+
+var mAttachToolbarFD = new vboxButtonMediaMenu('Floppy',vboxSettingsControllerAttach);
+mAttachToolbarFD.renderTo('vboxSettingsAddAttachmentsMenuFDDiv');
+
+/*
+ * Controller actions and menus for each bus type
+ */
+var vboxStorageBusTypes = vboxStorage.getBusTypes();
+var vboxStorageAttachmentMenus = new Array();
+for(var i = 0; i < vboxStorageBusTypes.length; i++) {
+	var btype = vboxStorageBusTypes[i];
+	var menuItems = [];
+	for(var a = 0; a < vboxStorage[btype].driveTypes.length; a++) {
+		switch(vboxStorage[btype].driveTypes[a]) {
+			case 'dvd':
+				b = {
+					'name' : btype+'addcd',
+					'label' : trans('Add CD/DVD Device','UIMachineSettingsStorage'),
+					'icon' : 'cd_add',
+					'click' : function () { 
+						vboxSettingsStorageAddMedium($('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().parent(),'DVD');
+					}
+				};
+				break;
+			case 'disk':
+				b = {
+		    		'name' : btype+'adddrive',
+		    		'label' : trans('Add Hard Disk','UIMachineSettingsStorage'),
+		    		'icon' : 'hd_add',
+		    		'click' : function (item) { 
+		    			vboxSettingsStorageAddMedium($('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().parent());
+		    		}
+		    	};
+				break;
+			case 'floppy':
+				b = {
+					'name' : btype + 'addfloppy',
+					'label':trans('Add Floppy Device','UIMachineSettingsStorage'),
+					'icon' : 'fd_add',
+					'click' : function (item) {
+						vboxSettingsStorageAddMedium($('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().parent(),'Floppy'); }
+					};
+				break;
+		}
+		b['enabled'] = function(a) {
+			return ($('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().parent().find('li').length < (vboxStorage[a].maxPortCount * vboxStorage[a].maxDevicesPerPortCount));
+		};
+		menuItems[menuItems.length] = b;
+	}
+	
+	// Add seperator and "remove controller"
+	menuItems[menuItems.length] = $.extend(true, {}, vboxSettingsStorageButtons[3]); // "Remove"
+	menuItems[(menuItems.length-1)].separator = true;
+	menuItems[(menuItems.length-1)].enabled = null; // always enabled
+
+	vboxStorageAttachmentMenus[btype] = new vboxMenu('vboxSettingsController'+btype+'AttachmentsMenu');
+	vboxStorageAttachmentMenus[btype].iconStringDisabled = '_disabled';
+	vboxStorageAttachmentMenus[btype].addMenu(menuItems);
+	
+	
+}
+
+$('#vboxSettingsStorageTree').on('itemselect',function(e,item){
+	for(var i = 0; i < vboxStorageBusTypes.length; i++)
+		vboxStorageAttachmentMenus[vboxStorageBusTypes[i]].update(vboxStorageBusTypes[i]);	
+});
+/*
+ * 
+ * Form helper functions that listen for form change events
+ *
+ *
+ */
+
+/*
+ * Changing the slot changes the object
+ */
+document.forms['frmVboxSettings'].vboxSettingsControllerSlot.onchange = function(){
+
+    // change port / device
+	var pd = this.value.split('-');		
+	var attachment = $('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first();
+	$(attachment).data('attachment').port = pd[0];
+	$(attachment).data('attachment').device = pd[1];
+	
+};
+
+
+
+/*
+ * 
+ * 		Controller form elements
+ *
+ */
+ 
+/* onChange of controller type */
+$(document.forms['frmVboxSettings'].vboxSettingsStorageControllerType).change(function(){
+	$('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().data('controller').controllerType = $(this).val();
+});
+
+/* change storage controller label on keydown in text box */
+$(document.forms['frmVboxSettings'].vboxSettingsStorageItemName).keyup(function(){
+    $('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().find('span.vboxSettingsControllerTitle').first().text(this.value);
+});
+
+/* Set storage controller name on blur of textbox */
+$(document.forms['frmVboxSettings'].vboxSettingsStorageItemName).on('blur',function(e){
+
+	var bus = $('#vboxSettingsStorageTree').find('.vboxListItemSelected').first();
+	
+	if(!$(bus).data('controller')) return;
+	
+   	var newName = $(this).val();
+
+   	// no change?
+   	if(newName == $(bus).data('controller').name) return true;
+   	
+   	if(jQuery.trim($(this).val().toString()).length < 1) {
+    	$(document.forms['frmVboxSettings'].vboxSettingsStorageItemName).val($(bus).data('controller').name);
+
+    } else {
+    	
+    	$('#vboxSettingsStorageTree').find('table.vboxSettingsController').each(function(idx,elm) {
+			if($(elm).data('controller').name == newName) {
+	    		$(document.forms['frmVboxSettings'].vboxSettingsStorageItemName).val($(bus).data('controller').name);
+				conflictFound = true;
+				return false;
+			}
+    	});
+    }
+    
+    $(bus).data('controller').name = $(document.forms['frmVboxSettings'].vboxSettingsStorageItemName).val();
+	$(bus).find('span.vboxSettingsControllerTitle').first().text($(bus).data('controller').name);
+	
+}).keyup(function(){
+	$('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().find('span.vboxSettingsControllerTitle').text(this.value);
+});
+
+/* Change host cache value onClick of checkbox */
+$(document.forms['frmVboxSettings'].vboxSettingsStorageHostCache).click(function(){
+	$('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().data('controller').useHostIOCache = this.checked;
+});
+
+
+
+
+/*
+ * Update menu items on select and display
+ */
+$('#vboxSettingsStorageTree').on('itemselect',function(e,item){
+	
+	$('#vboxSettingsAddAttachmentsMenuCDDiv').hide();
+	$('#vboxSettingsAddAttachmentsMenuHDDiv').hide();
+	$('#vboxSettingsAddAttachmentsMenuFDDiv').hide();
+	
+	// Null selection hides everything
+	if(!item) {
+	    $('#vboxSettingsController').css('display','none');
+	    $('#vboxSettingsMediaInfo').css('display','none');
+	    $('#vboxSettingsStorageAttachment').css('display','none');
+		// Update label widths
+		vboxStorageResizeTreeItemLabels();
+	    return;
+	}
+	
+	if(!$(item).data('attachment')) {
+		// Update label widths
+		vboxStorageResizeTreeItemLabels();
+		return;
+	}
+	
+	switch($(item).data('attachment').type) {
+		case 'HardDisk':
+			$('#vboxSettingsAddAttachmentsMenuHDDiv').show();
+			break;
+		case 'Floppy':
+			// Update media menu...
+			mAttachToolbarFD.menuUpdateMedia($(item).data('attachment').medium);
+			$('#vboxSettingsAddAttachmentsMenuFDDiv').show();
+			break;
+		default:
+			// Update media menu...
+			mAttachToolbarCD.menuUpdateMedia($(item).data('attachment').medium);			
+			$('#vboxSettingsAddAttachmentsMenuCDDiv').show();
+	}
+	
+	// Update label widths
+	vboxStorageResizeTreeItemLabels();
+	
+	
+	
+});
+
+
+
+
+/*
+ * 
+ *	OnSave and OnShow for dialog
+ *
+ *
+ */
+
+/* Change settings onSave() */
+$('#vboxSettingsDialog').on('save',function(){
+
+	$(document.forms['frmVboxSettings'].vboxSettingsStorageItemName).trigger('blur');
+	
+	$('#vboxSettingsDialog').data('vboxMachineData').storageControllers = new Array();
+	
+	var storageList = $('#vboxSettingsStorageTree').children('ul').first();
+	
+	$(storageList).find('table.vboxSettingsController').each(function(i,con){
+
+		
+		var attachments = new Array();
+		
+		$(con).parent().find('table.vboxSettingsStorageAttachment').each(function(i,elm) {
+
+			var attch = $(elm).data('attachment');
+			
+			if(attch.medium && attch.medium.id) {
+				var med = vboxMedia.getMediumById(attch.medium.id);
+				attch.medium = {'id':med.id,'hostDrive':med.hostDrive,'location':med.location};
+			}
+			
+			attachments[attachments.length] = attch;
+
+		});
+
+		var curCon = $('#vboxSettingsDialog').data('vboxMachineData').storageControllers.length;
+		
+		$('#vboxSettingsDialog').data('vboxMachineData').storageControllers[curCon] = $(this).data('controller');
+		$('#vboxSettingsDialog').data('vboxMachineData').storageControllers[curCon]['mediumAttachments'] = attachments;
+				
+	});
+
+
+});
+
+/* WHen data is loaded */
+$('#vboxSettingsDialog').on('dataLoaded',function(){
+
+	/*
+	 * 
+	 * Fill form and storage list items
+	 *
+	 */
+
+	/* Fill List by calling helper functions for each controller */
+	var storageList = $('#vboxSettingsStorageTree').children('ul').first();
+	$(storageList).children().remove();
+
+	var cons = $('#vboxSettingsDialog').data('vboxMachineData').storageControllers;
+	for(var a = 0; a < cons.length; a++) {
+
+		var attch = cons[a].mediumAttachments;
+
+	    var conElm = vboxSettingsAddController(cons[a], $(storageList));
+
+	    for(var b = 0; b < cons[a].mediumAttachments.length; b++) {
+	        vboxSettingsStorageBusses.addAttached(cons[a].mediumAttachments[b].medium);
+	        vboxSettingsAddAttachment(cons[a].mediumAttachments[b], conElm);
+	    }
+	}
+
+	//Select first item in storage tree list
+	$('#vboxSettingsStorageTree').find('table.vboxListItem').first().trigger('click').html();
+
+	/* Disable non-editable items when VM is running */
+	var p = $('#vboxSettingsStorageTableWrapper'); 
+	if(!$('#vboxSettingsDialog').data('vboxFullEdit')) {
+		
+		scToolbar.disable();
+		$('#vboxSettingsStorageTree').disableContextMenu()
+				
+		p.find('span:not(.vboxRunningEnabled)').addClass('disabled');
+		p.find('input:not(.vboxRunningEnabled),select,textarea').prop('disabled',true);
+		
+		// Storage tree toolbars
+		$('#vboxSettingsStorageTree').find('.vboxControllerAttachmentButton').trigger('disable');
+		
+		// Hard Disk Media menu button
+		$('#vboxSettingsAddAttachmentsMenuHDDiv').trigger('disable');
+				
+	} else {
+
+		$('#vboxSettingsStorageTree').enableContextMenu();
+		
+		p.find('span:not(.vboxRunningEnabled)').removeClass('disabled');
+		p.find('input:not(.vboxRunningEnabled),select,textarea').prop('disabled',false);
+		
+		// Storage tree toolbars
+		$('#vboxSettingsStorageTree').find('.vboxControllerAttachmentButton').trigger('enable');
+		
+		// Hard Disk Media menu button
+		$('#vboxSettingsAddAttachmentsMenuHDDiv').trigger('enable');
+		
+		// initial toolbar update
+		scToolbar.enable();
+		scToolbar.update();
+
+	}
+
+});
+
+
+/* Respond to UP / Down arrow events */
+$('#vboxSettingsStorageTree').click(function(){$(this).focus();}).keydown(function(e){
+	
+	var keynum = 0;
+	
+	if(e.keyCode)
+		keynum = e.keyCode;
+	else if(e.which)
+		keynum = e.which;
+
+	switch(keynum) {
+	
+		// up
+		case 38:
+			
+			var cur = $(this).find('table.vboxListItemSelected').parent();
+			
+			// Try previous med attachment
+			if($(cur).prev('li.vboxSettingsMediumAttachment').children('table.vboxListItem').trigger('click')[0]) {
+				return;
+			}
+
+			// If we're a medium, click our parent controller
+			if($(cur).hasClass('vboxSettingsMediumAttachment')) {
+				$(cur).parent().parent('li.vboxSettingsController').children('table.vboxListItem').trigger('click');
+				return;
+			}
+
+			// Must be a controller, try previous controller's last medium attachment
+			if($(cur).prev().children('ul:not([class~="vboxHidden"])').find('table.vboxListItem:last').trigger('click')[0])
+				return;
+			
+			// No med attachment, try previous controller
+			$(cur).prev('li.vboxSettingsController').children('table.vboxListItem').trigger('click');
+			break;
+			
+		// right / expand
+		case 39:
+			var tbl = $(this).find('table.vboxListItemSelected');
+			var con = $(tbl).data('controller');
+			if(!con) return;
+			$(tbl).find('td.vboxSettingsController' + con.bus).click();
+			break;
+			
+		// left / contract
+		case 37:
+			var tbl = $(this).find('table.vboxListItemSelected');
+			var con = $(tbl).data('controller');
+			if(!con) return;
+			$(tbl).find('td.vboxSettingsController' + con.bus + 'Expanded').click();
+			break;
+			
+		// down
+		case 40:
+
+			var cur = $(this).find('table.vboxListItemSelected').parent();
+			
+			// Try next med attachment
+			if($(cur).next('li.vboxSettingsMediumAttachment').children('table.vboxListItem').trigger('click')[0]) {
+				return;
+			}
+
+			// Select first medium of current controller?
+			if($(cur).children('ul:not([class~="vboxHidden"])').find('table.vboxListItem:first').trigger('click')[0])
+				return;
+			
+			// Try next controller
+			$(cur).closest('li.vboxSettingsController').next('li.vboxSettingsController').children('table.vboxListItem').trigger('click');
+			
+			break;
+	}
+	
+}).css('outline','none');;
+
+/*
+ * 
+ *	Change media attachment helper function
+ *
+ */
+function vboxSettingsControllerAttach(m) {
+
+	var tbl = $('#vboxSettingsStorageTree').find('table.vboxListItemSelected');
+	$(tbl).data('attachment').medium = m;
+	$(tbl).parent().tipped({'source':vboxSettingsMediumTip(m),'position':'mouse','delay':1000});
+	
+	// Re-select attachment to update display info
+	vboxSettingsSelectAttachment(tbl);
+	
+	
+}
+
+
+/*
+ * 
+ *	Called when controller is selected helper function
+ *
+ */
+function vboxSettingsSelectController(tbl) {
+
+	// Null selection?
+	if(!tbl) {
+	    $('#vboxSettingsController').css('display','none');
+	    $('#vboxSettingsMediaInfo').css('display','none');
+	    $('#vboxSettingsStorageAttachment').css('display','none');
+	    return;
+	}
+	
+	$(document.forms['frmVboxSettings'].vboxSettingsStorageItemName).trigger('blur');
+	
+	/* set classes for selected / unselected */
+    $('#vboxSettingsStorageTree').find('table[class]').removeClass('vboxListItemSelected').addClass('vboxListItem');
+    $(tbl).removeClass('vboxListItem').addClass('vboxListItemSelected');
+
+    /* set name text box value */
+    document.forms['frmVboxSettings'].vboxSettingsStorageItemName.value = $(tbl).data('controller').name;
+    
+	/* Set host cache checkbox */
+	document.forms['frmVboxSettings'].vboxSettingsStorageHostCache.checked = $(tbl).data('controller').useHostIOCache ? 'checked' : '';
+
+    var busType = $(tbl).data('controller').bus;
+
+    /* controller type */
+    document.forms['frmVboxSettings'].vboxSettingsStorageControllerType.options.length = 0;
+	$(document.forms['frmVboxSettings'].vboxSettingsStorageControllerType).children().remove();
+    for(var i = 0; i < vboxStorage[busType].types.length; i++) {
+    	document.forms['frmVboxSettings'].vboxSettingsStorageControllerType.options[i] = new Option(trans(vboxStorageControllerType(vboxStorage[busType].types[i]),'VBoxGlobal'),vboxStorage[busType].types[i]);
+    }
+
+    /* Set default type */
+    document.forms['frmVboxSettings'].vboxSettingsStorageControllerType.value = $(tbl).data('controller').controllerType;
+
+    $('#vboxSettingsController').css('display','block');
+    $('#vboxSettingsStorageAttachment').css('display','none');
+    $('#vboxSettingsMediaInfo').css('display','none');
+    $('#vboxSettingsHDInfo').css('display','none');
+    
+    // Show SATA port count
+    if(busType == 'SATA') {
+	    $(document.forms['frmVboxSettings'].vboxSettingsControllerPortCount).val($(tbl).data('controller').portCount);
+	   	$('#vboxSettingsControllerPortCountRow').css('display','');
+	} else {
+		$('#vboxSettingsControllerPortCountRow').css('display','none');
+	}
+
+    /* Enable / disable buttons */
+	if($(tbl).parent().find('ul').children('li').length < ($(tbl).data('controller').maxPortCount * $(tbl).data('controller').maxDevicesPerPortCount)) {
+		
+		if($('#vboxSettingsDialog').data('vboxFullEdit')) {
+			$(tbl).find('.vboxToolbarSmall').trigger('enable', [true]);
+		}
+		
+	} else {
+		$(tbl).find('.vboxToolbarSmall').trigger('disable');
+	}
+    
+    /* Trigger Event */
+    $('#vboxSettingsStorageTree').trigger('itemselect',tbl);
+    
+}
+
+
+/*
+ *  Generate tooltip for medium helper function 
+ */
+function vboxSettingsMediumTip(m) {
+
+	if(!m || !m.id) return trans('Empty','VBoxGlobal');
+	if(m.hostDrive) return vboxMedia.getName(m);
+
+	// DVD / Floppy images
+	if(m.deviceType != 'HardDisk') {
+		return '<b>'+m.location+'</b><p>'+trans('Attached To:','UIMachineSettingsStorage')+' '+vboxMedia.attachedTo(m)+'</p>';
+	}
+	
+	var mbase = m;
+	if(m.base != m.id) {
+		mbase = vboxMedia.getMediumById(m.base);
+	}
+	var tip = '<b>'+mbase.location+'</b><p>'+trans('Type (Format):','UIMachineSettingsStorage')+' '+vboxMedia.getType(mbase)+' ('+mbase.format+')</p><p>'+trans('Attached To:','UIMachineSettingsStorage')+' '+vboxMedia.attachedTo(mbase)+'</p>';
+		
+	// Is this a medium that is attached indirectly
+	if(vboxSettingsStorageBusses.isAttachedIndirect(m) && m.base != m.id) {
+		var p = vboxSettingsStorageBusses.isAttached(m);
+		tip += '<hr />'+trans('This base hard disk is indirectly attached using the following differencing hard disk:','VBoxGlobal')+'<br /><b>'+p.location+'</b></p><p>'+trans('Type (Format):','UIMachineSettingsStorage')+' '+vboxMedia.getType(p) + ' (' + p.format + ')'+'</p><p>'+trans('Attached To:','UIMachineSettingsStorage')+' '+vboxMedia.attachedTo(p)+'</p>';
+	} else if(m.readOnly) {
+    	tip += '<hr />'+trans('Attaching this hard disk will be performed indirectly using a newly created differencing hard disk.','VBoxGlobal');
+	}
+
+	return tip;
+
+}
+
+/*
+ * 
+ *	Add disk medium to bus helper function
+ *
+ */
+function vboxSettingsStorageAddMedium(conElm, type) {
+
+	// get controller name
+	var controller = $(conElm).find('span.vboxSettingsControllerTitle').first().text();
+	
+	if(!type) type = 'HardDisk';
+	
+	// Find first target slot (vboxSettingsStorageBusses created above)
+	var slots = vboxSettingsStorageBusses.availableSlots(conElm);
+	var slot = null;
+	for(var i in slots) {
+		if(typeof i == 'function') continue;
+		slot = i;
+		break;
+	}
+	if(slot === null) return;
+	slot = slot.split('-');
+	var port = slot[0];
+	var device = slot[1];
+
+	// Add new attachment dialog
+	////////////////////////////
+	var buttons = {};
+
+	var msg = '';
+	
+	// Hard Disk buttons
+	if (type == 'HardDisk') {
+		
+		buttons[trans('Create new disk','UIMessageCenter')] = function() {
+
+			$.when(new vboxWizardNewHDDialog({'path':vboxDirname($('#vboxSettingsDialog').data('vboxMachineData').settingsFilePath)+$('#vboxPane').data('vboxConfig').DSEP,vmName:$('#vboxSettingsDialog').data('vboxMachineData').name}).run())
+				.done(function(id){
+					if(!id) return;
+					mAttachToolbarHD.mediaMenu.menuUpdateRecent();
+					vboxSettingsAddAttachment({'controller':controller,'port':port,'device':device,'type':type,'medium':vboxMedia.getMediumById(id),'ignoreFlush':1}, conElm);
+					$('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().click();
+				});
+			
+			$(this).remove();
+			
+		};
+		buttons[trans('Choose existing disk','UIMessageCenter')] = function() {
+			var dlg = $(this);
+			vboxMedia.actions.choose(null,'HardDisk',function(med){
+								if(med) {
+					mAttachToolbarHD.mediaMenu.menuUpdateRecent();
+					vboxSettingsAddAttachment({'controller':controller,'port':port,'device':device,'type':type,'medium':med,'ignoreFlush':1}, conElm);
+					$('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().click();
+				}
+				$(dlg).remove();
+			});
+		};
+		
+		msg = trans('<p>You are about to add a virtual hard disk to controller <b>%1</b>.</p><p>Would you like to create a new, empty file to hold the disk contents or select an existing one?</p>','UIMessageCenter').replace('%1',controller);
+	
+	// Floppy buttons
+	} else if(type == 'Floppy') {
+
+		buttons[trans('Choose disk','UIMessageCenter')] = function() {
+			var dlg = $(this);
+			vboxMedia.actions.choose(null,'Floppy',function(med){
+				if(med) {
+					mAttachToolbarFD.mediaMenu.menuUpdateRecent();
+					vboxSettingsAddAttachment({'controller':controller,'port':port,'device':device,'type':type,'medium':med}, conElm);
+					$('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().click();
+				}
+				$(dlg).remove();
+			});
+			
+		};
+
+		buttons[trans('Leave empty','UIMessageCenter')] = function() {
+			vboxSettingsAddAttachment({'controller':controller,'port':port,'device':device,'type':type,'medium':null}, conElm);
+			$('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().click();
+			$(this).remove();
+		};
+		
+		msg = trans('<p>You are about to add a new floppy drive to controller <b>%1</b>.</p><p>Would you like to choose a virtual floppy disk to put in the drive or to leave it empty for now?</p>','UIMessageCenter').replace('%1',controller);
+		
+	// CD/DVD buttons
+	} else {
+
+		buttons[trans('Choose disk','UIMessageCenter')] = function() {
+			var dlg = $(this);
+			vboxMedia.actions.choose(null,'DVD',function(med){
+				if(med) {
+					mAttachToolbarCD.mediaMenu.menuUpdateRecent();
+					vboxSettingsAddAttachment({'controller':controller,'port':port,'device':device,'type':type,'medium':med}, conElm);
+					$('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().click();
+				}
+				$(dlg).remove();
+			});
+			
+		};
+		
+		buttons[trans('Leave empty','UIMessageCenter')] = function() {
+			vboxSettingsAddAttachment({'controller':controller,'port':port,'device':device,'type':type,'medium':null}, conElm);
+			$('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().click();
+			$(this).remove();
+		};
+		
+		msg = trans('<p>You are about to add a new CD/DVD drive to controller <b>%1</b>.</p><p>Would you like to choose a virtual CD/DVD disk to put in the drive or to leave it empty for now?</p>','UIMessageCenter').replace('%1',controller);
+		
+	}
+	
+	buttons[trans('Cancel','QIMessageBox')] = function() {
+		$(this).remove();
+	};
+    $('<div />').attr({'id':'vboxSettingsStorageUnavailable','style':'display: none'}).html(
+    		'<div><img src="images/50px-Question_icon.svg.png" style="float: left; padding: 10px; " />'+msg+'</div>'
+    ).dialog({'closeOnEscape':false,'width':600,'height':200,'buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/OSE/about_16px.png" class="vboxDialogTitleIcon" /> phpVirtualBox'});			
+		
+
+}
+
+/*
+ * 
+ * 		Add controller to list helper function
+ *
+ */
+
+function vboxSettingsAddController(con,list) {
+	
+	// Elect name if none exists
+	if(!con.name) {
+		var count = $(list).children('li.vboxSettingsController'+con.bus).length + 1;
+		var name = trans(con.bus,'UIMachineSettingsStorage');
+		if(count == 1) {
+			con.name = name;
+		} else {
+			
+			var electedName = name + ' ' + count;
+			var conflictFound = false;
+			do {
+				conflictFound = false;
+				$(list).children('li.vboxSettingsController'+con.bus).each(function(idx,elm) {
+					if($(elm).children('table').first().data('controller').name == electedName) {
+						conflictFound = true;
+						electedName = name + ' ' + (++count);
+					 	return false;
+					}
+				});
+				con.name = electedName;
+				
+			} while(conflictFound);
+		}
+		
+	}
+	var li = $('<li />').attr({'title':con.name,'class':'vboxSettingsController vboxSettingsController' + con.bus});
+
+    var tbl = $('<table />').attr({'class':'vboxListItem vboxSettingsController'}).on('click',function(){
+    	vboxSettingsSelectController(this);
+    });
+
+    // filter out any dummy medium attachments
+    var mas = new Array();
+    for(var i = 0; i < con.mediumAttachments.length; i++) {
+        if(con.mediumAttachments[i].controller)
+            mas[mas.length] = con.mediumAttachments[i];
+    }
+    con.mediumAttachments = mas;
+
+    // Assign data
+    $(tbl).data('controller',con);
+    
+    var tr = $('<tr />');
+
+    var iconName = vboxStorage.getBusIconName(con.bus);
+    $('<td />').attr({'class':'vboxSettingsStorageTypeIcon vboxSettingsController' + con.bus + 'Expanded'})
+        .css({
+	        'background-image':'url(images/vbox/'+iconName+'_collapse_16px.png)'
+        }).html('<div style="width:22px" />').click(function(){
+    
+
+		if(!$(this).data('toggleClicked')) {
+			
+			$(this).data('toggleClicked', true);
+
+            var n = $(this).closest('li');
+            $(n).children('ul').addClass('vboxHidden').css('display','none');
+            $(this).removeClass('vboxSettingsController'+con.bus+'Expanded').addClass('vboxSettingsController'+con.bus)
+                .css({'background-image':'url(images/vbox/'+iconName+'_expand_16px.png)'});
+            
+        } else {
+        	
+        	$(this).data('toggleClicked', false);
+            var n = $(this).closest('li');
+            $(n).children('ul').removeClass('vboxHidden').css('display','');
+            $(this).removeClass('vboxSettingsController'+con.bus).addClass('vboxSettingsController'+con.bus+'Expanded')
+                .css({'background-image':'url(images/vbox/'+iconName+'_collapse_16px.png)'})
+        	
+        }
+		
+		return false;
+            
+    }).appendTo(tr);
+
+    // Controller name
+    $(tr).append($('<td />').css({'width':'100%'}).html('<div class="vboxFitToContainer">'+trans('Controller: %1','UIMachineSettingsStorage').replace('%1','<span class="vboxSettingsControllerTitle vboxRunningEnabled">'+$('<div/>').text(con.name).html())+"</span>"+"</div>"));
+    
+    // Buttons
+    $(tr).append($('<td />').attr({'style':'width: 22px;','class':'vboxControllerAttachmentButton'}));
+    
+    $(tbl).append(tr).appendTo(li);
+
+	
+	/* Attachments list holder */
+    $(li).append($('<ul />').attr({'class':'vboxSettingsControllerAttachments'})).dblclick(function(e){
+    	$(this).children('table.vboxSettingsController').find('td.vboxSettingsStorageTypeIcon').trigger('click',e);
+    }).disableSelection().appendTo(list);
+    
+    /* Generate Toolbars */
+    var dtypes = vboxStorage[con.bus].driveTypes;
+    for(var i = 0; i < dtypes.length; i++) {
+    	var b = null;
+    	if(dtypes[i] == 'dvd') {
+		    b = {
+				'name' : con.bus+'addcd',
+				'label' : trans('Add CD/DVD Device','UIMachineSettingsStorage'),
+				'icon' : 'cd_add',
+				'click' : function () { vboxSettingsStorageAddMedium(li,'DVD'); }
+			};
+    	} else if(dtypes[i] == 'disk') {
+		    b = {
+		    		'name' : con.bus+'adddrive',
+		    		'label' : trans('Add Hard Disk','UIMachineSettingsStorage'),
+		    		'icon' : 'hd_add',
+		    		'click' : function (item) { vboxSettingsStorageAddMedium(li); }
+		    	};
+    		
+    	} else if(dtypes[i] == 'floppy') {
+    		b = {'label':trans('Add Floppy Device','UIMachineSettingsStorage'),
+				'icon' : 'fd_add',
+				'click' : function (item) { vboxSettingsStorageAddMedium(li,'Floppy'); }
+				};
+    	}
+   		b['enabled'] = function() {
+
+   			return (li.find('li').length < (vboxStorage[con.bus].maxPortCount * vboxStorage[con.bus].maxDevicesPerPortCount));
+   		};
+
+   		var tb = new vboxToolbarSmall([b]);
+	   	tb.buttonStyle = 'margin:0px;padding:0px;border:0px;background-repeat:no-repeat;background-position:0px 0px;';
+	   	tb.noHover = true;
+	   	tb.renderTo(li.find('td.vboxControllerAttachmentButton'));
+   		tb.disable();
+   		
+	}
+    
+    // Only if machine is not running
+    if($('#vboxSettingsDialog').data('vboxFullEdit')) {
+
+    	$(li).contextMenu({menu: vboxStorageAttachmentMenus[con.bus].menuId(),
+    		menusetup: function() {$(li).children('table').first().trigger('click')}},
+		 	vboxStorageAttachmentMenus[con.bus].menuClickCallback
+	 	);
+	    
+    } 
+    
+    // Return controller element list item
+    return li;
+    	
+}
+
+
+
+
+
+/*
+ * 
+ *		Add a medium attachment to a controller helper function
+ *
+ */
+function vboxSettingsAddAttachment(d,conElm) {
+
+
+    var con = (conElm ? conElm : $('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().parent());
+    
+	// Save bus
+    d.bus = $(con).find('table.vboxSettingsController').data('controller').bus;
+    
+    // remove any 'last' classes
+    $(con).children('ul').children().removeClass('last');
+    
+    var li = $('<li />').attr({'class':'last vboxSettingsMediumAttachment'});
+        
+
+	var tbl = $('<table />').attr({'class':'vboxListItem vboxSettingsStorageAttachment'})
+		.data({'attachment':d}).on('click',function(){
+	    	vboxSettingsSelectAttachment(this);
+	    });
+    
+	var m = vboxMedia.getMediumById(((d.medium && d.medium.id) ? d.medium.id : null));
+	
+    var tr = $('<tr />');
+
+    // Storage type icon
+    $(tr).append($('<td />').attr({'class':'vboxSettingsStorageTypeIcon vboxSettingsMediaType' + d.type,'style':'width:22px'}).html('<img src="images/vbox/blank.gif" style="width:22px" />'));
+    
+    // Medium name
+    $(tr).append($('<td />').css({'width':'100%'}).append($('<div />').attr({'class':'vboxSettingsStorageMediumName vboxFitToContainer'}).html(vboxMedia.getName(vboxMedia.getMediumById((m && m.base ? m.base : (m && m.id ? m.id : null)))))));
+    
+    
+    $(tbl).append(tr).appendTo(li);
+    
+    // Only if not running
+    if($('#vboxSettingsDialog').data('vboxFullEdit')) {
+
+    	$(li).contextMenu({
+		 		menu: vboxSettingsMAMenu.menuId(),
+				menusetup : function(el) {
+					vboxSettingsSelectAttachment($(el).find('table.vboxSettingsStorageAttachment'));
+				}
+		 	},
+		 	function(action, el, pos) {
+		 		vboxSettingsStorageButtons[1].click();
+		 	}
+		);
+    }
+    
+    $(li).tipped({'source':vboxSettingsMediumTip(m),'position':'mouse','delay':1000}).appendTo(con.children('ul'));
+    
+
+}
+
+/*
+ * 
+ *		Called when selecting a medium attachment
+ *
+ */
+function vboxSettingsSelectAttachment(tbl) {
+
+	// Null selection?
+	if(!tbl) {
+	    $('#vboxSettingsController').css('display','none');
+	    $('#vboxSettingsMediaInfo').css('display','none');
+	    $('#vboxSettingsStorageAttachment').css('display','none');
+	    return;
+	}
+	
+	$(document.forms['frmVboxSettings'].vboxSettingsStorageItemName).trigger('blur');
+	
+	/* Display Changes */
+	if(!$(tbl).hasClass('vboxListItemSelected')) {
+		$('#vboxSettingsStorageTree').find('table.vboxListItemSelected').removeClass('vboxListItemSelected').addClass('vboxListItem');
+		$(tbl).removeClass('vboxListItem').addClass('vboxListItemSelected');
+	}
+	
+    $('#vboxSettingsController').css('display','none');
+    $('#vboxSettingsMediaInfo').css('display','block');
+    $('#vboxSettingsStorageAttachment').css('display','block');
+    
+
+    var ma = $(tbl).data('attachment');
+
+    /* Get / Set Medium */
+    if(ma.medium && ma.medium.id)
+        ma.medium = vboxMedia.getMediumById(ma.medium.id);
+
+    (function(){
+	    
+        var sc = $(tbl).closest('li.vboxSettingsController').children('table').first().data('controller');
+        
+        var tblSA = $('#vboxSettingsStorageAttachment').find('table').first();
+	    $(tblSA).find('tr.vboxSettingsControllerDeviceOptionRow').empty().remove();
+	    
+	    switch(ma.type) {
+	        
+	    	case 'HardDisk':
+	        	label = 'Hard Disk:';
+	        	break;
+	    	case 'DVD':
+	        	label = 'CD/DVD Drive:';
+	        	break;
+	    	case 'Floppy':
+	        	label = 'Floppy Drive:';
+	        	break;
+	    }
+	    var maOptions = vboxStorage.getMAOptions(ma)
+	       .concat(vboxStorage.getMAOptionsForSC(sc));
+	    for(var i = 0; i < maOptions.length; i++) {
+	        
+	        var opt = maOptions[i];
+	        
+	        var cbox = $('<input />').attr('type','checkbox').prop('checked', ma[opt.attrib] ? true : false)
+	           .on('click', {attrib: opt.attrib}, function(event){
+	            
+	            var attachment = $(tbl).data('attachment');
+	            attachment[event.data.attrib] = this.checked ? true : false;
+	            $(tbl).data('attachment', attachment);
+	            
+	        }).addClass('vboxCheckbox');
+	        
+	        $('<tr />').addClass('vboxSettingsControllerDeviceOptionRow')
+	            .append($('<th />'))
+	            .append(
+	                    $('<td />')
+	                        .append($('<label />')
+		                        .append(cbox)
+                                .append($('<span />').css({'margin-left':'4px'}).text(opt.label))
+	                         )
+	             ).appendTo($(tblSA));
+
+	        
+	    }
+    })();
+    $('#vboxSettingsControllerSlotLabel').html(trans(label,'UIMachineSettingsStorage'));
+
+    
+    /* Show / Hide HD/Media Info */
+    $('#vboxSettingsImageInfo').css('display',(ma.type == 'HardDisk' ? 'none' : 'block'));
+    $('#vboxSettingsHDInfo').css('display',(ma.type == 'HardDisk' ? 'block' : 'none'));
+
+    
+
+    /* Populate slot select box */
+    document.forms['frmVboxSettings'].vboxSettingsControllerSlot.options.length = 0;
+    $(document.forms['frmVboxSettings'].vboxSettingsControllerSlot).children().remove();
+    slots = vboxSettingsStorageBusses.availableSlots($(tbl).parent().parent().parent(), ma.port+'-'+ma.device);
+    
+    for(var s in slots) {
+        var opt = new Option(slots[s], s);
+        document.forms['frmVboxSettings'].vboxSettingsControllerSlot.options[document.forms['frmVboxSettings'].vboxSettingsControllerSlot.options.length] = opt;
+    }
+    document.forms['frmVboxSettings'].vboxSettingsControllerSlot.value = ma.port+'-'+ma.device;
+
+    /* Trigger Event */
+    $('#vboxSettingsStorageTree').trigger('itemselect',tbl);
+
+	var m = ma.medium;
+	var name = 	vboxMedia.getName(m);
+
+	// Read-only medium selected
+	if(ma.medium && ma.medium.readOnly) {
+		$('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().find('td').first().addClass('vboxMediumReadOnly');
+	} else {
+		$('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().find('td').first().removeClass('vboxMediumReadOnly');
+	}
+
+	// Show medium info
+    if(m && m.deviceType == 'HardDisk') {
+
+    	var disp = vboxMedia.getMediumById(m.base);
+    	name = vboxMedia.getName(disp);
+    		
+        $('#vboxSettingsHDvsize').html(vboxMbytesConvert(disp.logicalSize));
+        $('#vboxSettingsHDasize').html(vboxBytesConvert(disp.size));
+        $('#vboxSettingsHDDetails').html(vboxMedia.getHardDiskVariant(disp));
+        $('#vboxSettingsHDlocation').html(disp.location);
+        $('#vboxSettingsHDtype').html(trans(disp.type,'VBoxGlobal') + ' (' + disp.format + ')');
+        $('#vboxSettingsHDattached').html(vboxMedia.attachedTo(disp));            
+
+        
+    } else {
+        
+    	$('#vboxSettingsImageType').html(m ? trans((m.hostDrive ? 'Host Drive' : 'Image'),'UIMachineSettingsStorage'): '--');
+        $('#vboxSettingsImageSize').html((m && !m.hostDrive ? vboxBytesConvert(m.size):'--'));
+        $('#vboxSettingsImageLocation').html((m && !m.hostDrive ? m.location:'--'));
+        $('#vboxSettingsImageAttached').html((m && !m.hostDrive ? vboxMedia.attachedTo(m) :'--'));
+        
+    }
+
+    $(tbl).data('attachment').medium = m;
+    $(tbl).find('div.vboxSettingsStorageMediumName').first().html($('<div />').text(name).html());
+
+    
+}
+
+
+/*
+ * Focus storage controller list when showing this pane
+ */
+$('#vboxSettingsStorageTableWrapper').on('show',function(){
+	$('#vboxSettingsStorageTree').focus();
+});
+
+/*
+ * 
+ *
+ *	Storage pane resize and draggable resize bar logic
+ *
+ *
+ */
+/*
+ * Resize storage pane
+ */
+function vboxSettingsStorageResize() {
+
+	// Hide storage tree
+	$('#vboxSettingsStorageTree').css({'display':'none'});
+
+	// Get and set size
+	$('#vboxStoragePaneLeft').css({'display':'none'});
+	$('#vboxStoragePaneRight').css({'display':'none'});
+	
+	// Main table height
+	$('#vboxSettingsStorageTableWrapper').css({'display':'none'});
+	var h = $('#vboxSettingsStorageTableWrapper').css({'display':'none'}).parent().parent().innerHeight()-4;
+	
+	// IE needs to account for bordering
+	if($.browser.msie) h-= 4;
+	
+	// Set height
+	$('#vboxSettingsStorageTableWrapper').css({'display':''}).height(h);
+	
+	// Pane width
+	var bothWidth = ($('#vboxStoragePaneLeft').parent().innerWidth() + $('#vboxStoragePaneRight').parent().innerWidth() - 24) / 2;
+	$('#vboxStoragePaneLeft').css({'width':bothWidth+'px','display':''}).parent().css({'width':'auto','padding':'6px'});
+	$('#vboxStoragePaneRight').css({'width':bothWidth+'px','display':''}).parent().css({'width':'auto','padding':'6px'});
+	
+	// Unsnap.. sorry..
+	$('#vboxStorageResizeBar').data('vboxSnapped',0);
+	
+	// Get inner height of storage tree parent - padding
+	var h = $('#vboxStoragePaneLeft').parent().innerHeight() - 24;
+	// subtract sibling heights
+	$('#vboxSettingsStorageTree').siblings().each(function(){
+		h -= $(this).outerHeight(true);
+	});
+	
+	$('#vboxSettingsStorageTree').height(h).css({'display':''});
+	
+	vboxStorageResizeTreeItemLabels();
+	
+}
+
+/*
+ * Resize controller labels
+ */
+function vboxStorageResizeTreeItemLabels() {
+	
+	$('#vboxSettingsStorageTree div.vboxFitToContainer').each(function(){
+		$(this).css({'display':'none'});
+		var w = $(this).parent().innerWidth() - 2;
+		$(this).css({'width':w+'px','display':''});
+	});
+	
+	
+};
+
+/*
+ * Set pane sizes and resize bar
+ */
+$('#vboxSettingsStorageTableWrapper').one('show',function(){
+		
+
+	// Resize everything on dialog resize
+	$('#vboxSettingsDialog').on('dialogresizestop',function(){
+		vboxSettingsStorageResize();
+	});
+	$('#vboxSettingsStorageTableWrapper').on('show',function(){
+		vboxSettingsStorageResize();
+	});
+	
+	// Hide children to get true size
+	$('#vboxStoragePaneLeft').children().css({'display':'none'});
+	$('#vboxStoragePaneRight').children().css({'display':'none'});
+	
+	var h = $('#vboxSettingsStorageTableWrapper').parent().css({'padding':'0px','margin':'0px'}).parent().innerHeight();
+	
+	// IE needs to account for bordering
+	if($.browser.msie) h-= 4;
+	
+	$('#vboxSettingsStorageTableWrapper').height(h-4);
+		
+	// Get and set size
+	var bothWidth = ($('#vboxStoragePaneLeft').parent().innerWidth() + $('#vboxStoragePaneRight').parent().innerWidth() - 24) / 2;
+	$('#vboxStoragePaneLeft').css({'width':bothWidth+'px','overflow':'hidden'}).parent().css({'width':'auto'});
+	$('#vboxStoragePaneRight').css({'width':bothWidth+'px','overflow':'hidden'}).parent().css({'width':'auto'});
+
+	// Show children again
+	$('#vboxStoragePaneLeft').children().css({'display':''});
+	$('#vboxStoragePaneRight').children().css({'display':''});
+	
+	// Re-trigger list selection to show correct info
+	if(!$('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().click().hasClass('vboxListItemSelected'))
+		$('#vboxSettingsStorageTree').trigger('itemselect',null);
+	
+	// Don't allow selection of text in storage tree. This looks funny when dragging the resize bar
+	$('#vboxSettingsStorageTree').disableSelection();
+	
+	// Resize
+	vboxSettingsStorageResize();
+	
+	// Draggable resize bar
+	$('#vboxStorageResizeBar').draggable({cursor:(jQuery.browser.opera ? 'e-resize' : 'col-resize'),axis:'x',zIndex:99,helper:function(){
+		
+		return $('<span />'); // dummy element
+		
+	},scroll:false,'start':function(e,ui){
+		
+		$('#vboxStorageResizeBar').data('vboxX',e.pageX);
+
+		$('#vboxResizeOverlay').remove();
+		$('body').disableSelection().css({'cursor':(jQuery.browser.opera ? 'e-resize' : 'col-resize')});
+		$('#vboxSettingsDialog').append($('<div />').attr({'id':'vboxResizeOverlay','style':'width:99%;height:99%;border:0px;margin:0px;padding:0px;position:absolute;top:0px;left:0px;cursor:'+(jQuery.browser.opera ? 'e-resize' : 'col-resize')}));
+		
+		
+	},'drag':function(e){
+
+		var sStart = $('#vboxStorageResizeBar').data('vboxX');
+		var sStop = e.pageX;
+		var sWidth = Math.abs(sStop - sStart);
+		if(sWidth == 0) return;
+		
+		var lWidth = parseInt($('#vboxStoragePaneLeft').css('width'));
+		var rWidth = parseInt($('#vboxStoragePaneRight').css('width'));
+		
+		var snapped = $('#vboxStorageResizeBar').data('vboxSnapped');
+		
+		// Left to right
+		if(sStop > sStart) {
+			
+			// Check for snapping
+			if(snapped) {
+				if(snapped > sStop || (rWidth - sWidth < 150)) { return; }
+				else if(snapped && snapped <= sStop) {
+					
+					// Unsnap left pane
+					$('#vboxStoragePaneRight').parent().css({'width':'auto'});
+					$('#vboxStoragePaneLeft').css({'display':''}).parent().css({'padding':'6px'});
+					$('#vboxStorageResizeBar').data('vboxSnapped',0);
+					lWidth = $('#vboxStorageResizeBar').data('vboxSnappedWidthL');
+					rWidth = $('#vboxStorageResizeBar').data('vboxSnappedWidthR');
+					sWidth = Math.abs(sStop - snapped);					
+				}
+			}
+			
+			if(rWidth - sWidth < 150) {
+				
+				$('#vboxStoragePaneLeft').css({'width':'100%'}).parent().css({'width':'100%'});
+				$('#vboxStoragePaneRight').css({'display':'none','width':'10px'}).parent().css({'padding':'0px'});
+				$('#vboxStorageResizeBar').data('vboxSnapped',e.pageX);
+				$('#vboxStorageResizeBar').data('vboxSnappedWidthL', (lWidth + sWidth));
+				$('#vboxStorageResizeBar').data('vboxSnappedWidthR', (rWidth - sWidth));
+				
+			} else {
+				$('#vboxStoragePaneLeft').css({'width':(lWidth + sWidth)+'px','display':''});
+				$('#vboxStoragePaneRight').css({'width':(rWidth - sWidth)+'px','display':''});
+			}
+		
+			
+		// Right to left
+		} else {
+
+			// Check for snapping
+			if(snapped) {
+				if(snapped < sStop || (lWidth - sWidth < 150)) { return; }
+				else if(snapped && snapped >= sStop) {
+					
+					// Unsnap right pane
+					$('#vboxStoragePaneLeft').parent().css({'width':'auto'});
+					$('#vboxStoragePaneRight').css({'display':''}).parent().css({'width':'100%','padding':'6px'}); // 100% to fix webkit
+					$('#vboxStorageResizeBar').data('vboxSnapped',0);
+					lWidth = $('#vboxStorageResizeBar').data('vboxSnappedWidthL');
+					rWidth = $('#vboxStorageResizeBar').data('vboxSnappedWidthR');
+					sWidth = Math.abs(sStop-snapped);
+					
+				}
+			}
+
+			if(lWidth - sWidth < 150) {
+				
+				$('#vboxStoragePaneRight').css({'width':'100%'}).parent().css({'width':'100%'});
+				$('#vboxStoragePaneLeft').css({'display':'none','width':'10px'}).parent().css({'padding':'0px'});
+				$('#vboxStorageResizeBar').data('vboxSnapped',e.pageX);
+				$('#vboxStorageResizeBar').data('vboxSnappedWidthL', (lWidth - sWidth));
+				$('#vboxStorageResizeBar').data('vboxSnappedWidthR', (rWidth + sWidth));
+			
+			} else {
+				$('#vboxStoragePaneLeft').css({'width':(lWidth - sWidth)+'px'});
+				$('#vboxStoragePaneRight').css({'width':(rWidth + sWidth)+'px'});						
+			}
+		}
+		
+		$('#vboxStorageResizeBar').data('vboxX',e.pageX);
+		
+		// resize labels
+		vboxStorageResizeTreeItemLabels();
+
+		
+	},'stop':function(e) {
+
+		// resize labels
+		vboxStorageResizeTreeItemLabels();
+
+		$('body').enableSelection().css({'cursor':'default'});
+		$('#vboxResizeOverlay').remove();
+	}}).css({'cursor':(jQuery.browser.opera ? 'e-resize' : 'col-resize'),'height':'98%'});
+
+	
+});
+
+</script>

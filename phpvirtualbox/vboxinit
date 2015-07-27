@@ -1,0 +1,99 @@
+#!/bin/bash
+#
+#  vboxinit: auto start sessions when booting and save
+#                sessions when host is stopped
+#
+#  Based on vboxtool. Only tested in Debian.
+#
+# Debian install:
+# copy this script to /etc/init.d
+# run:
+# 	chmod u+rx /etc/init.d/vboxinit
+# 	update-rc.d vboxinit defaults
+
+### BEGIN INIT INFO
+# Provides:          vboxinit
+# Required-Start:    vboxdrv $local_fs
+# Required-Stop:     vboxdrv $local_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      0 1 6
+# Description:       Controls VirtualBox sessions
+### END INIT INFO
+
+. /etc/default/virtualbox
+
+# Enable/disable service
+if [ "${VBOXWEB_USER}" == "" ]; then
+	exit 0
+fi
+
+# Check for VirtualBox binary path
+if [ "$VBOX_BIN_PATH" != "" ]; then
+   PATH = "$PATH:$VBOX_BIN_PATH";
+fi
+
+start()
+{
+	# Get all autostart machines
+	MACHINES=$($su_command "VBoxManage list vms | awk '{ print \$NF }' | sed -e 's/[{}]//g'")
+	for UUID in $MACHINES; do
+		STARTUP=$($su_command "VBoxManage getextradata $UUID 'pvbx/startupMode'" | awk '{ print $NF }')
+		if [ "${STARTUP}" == "auto" ]; then
+			VMNAME=$($su_command "VBoxManage showvminfo $UUID | sed -n '0,/^Name:/s/^Name:[ \t]*//p'")
+			echo "$0: starting machine ${VMNAME} ..."
+			$su_command "VBoxManage startvm $UUID --type headless" >>/var/log/vb.log
+		fi
+	done
+}
+
+stop()
+{
+	# vms are saved, instead of stopped.
+	MACHINES=$($su_command "VBoxManage list runningvms | awk '{ print \$NF }' | sed -e 's/[{}]//g'")
+	for UUID in $MACHINES; do
+		VMNAME=$($su_command "VBoxManage showvminfo $UUID | sed -n '0,/^Name:/s/^Name:[ \t]*//p'")
+		echo "$0: saving machine ${VMNAME} state ..."
+		$su_command "VBoxManage controlvm $UUID savestate" >>/var/log/vb.log
+	done
+
+}
+
+status()
+{
+	$su_command "VBoxManage list runningvms"
+}
+
+restart()
+{
+	stop
+	start
+}
+
+
+# Implementation of user control, execute several commands as another (predefined) user,
+su_command="su - ${VBOXWEB_USER} -s /bin/bash -c"
+
+#
+# Check for a command line option
+#
+case "$1" in
+
+	start)
+		start
+		;;
+	stop)
+		stop
+  		;;
+	status)
+		status
+		;;
+	restart)
+		restart
+		;;
+	*)
+	    echo "Usage: $0 {start|stop|restart|status}"
+	    exit 1
+		;;
+esac
+
+exit 0

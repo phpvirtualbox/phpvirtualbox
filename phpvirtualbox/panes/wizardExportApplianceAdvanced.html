@@ -1,0 +1,320 @@
+<!-- 
+
+	Advanced export appliance wizard panes. Logic in vboxWizard() class
+	Copyright (C) 2010-2015 Ian Moore (imoore76 at yahoo dot com)
+	
+	$Id: wizardExportApplianceAdvanced.html 595 2015-04-17 09:50:36Z imoore76 $
+
+ -->
+<!-- Step 1 -->
+<div id='wizardExportApplianceStep1' style='display: none;'>
+
+	<table class='vboxInvisible' style='border: 0px solid transparent; border-spacing: 4px; height: 100%;'>
+		<tr style='vertical-align: top'>
+			<td style='width: 50%'>
+				
+				<span class='translate vboxTableLabel'>Virtual machines to export</span>
+				<hr style='width: 100%; margin: 0px; margin-bottom: 6px; display: block' class='vboxSeparatorLine'/>
+				
+				<div id='vboxExportAppVMListContainer' style='overflow:auto;padding:0px;margin:0px;' class='vboxBordered'>
+					<ul style='width: 100%;margin:0px;' id='vboxExportAppVMList' class='vboxList'>
+						<li><img src='images/spinner.gif' /></li>
+					</ul>
+				</div>
+			</td>
+			<td>
+				<span class='translate vboxTableLabel'>Appliance settings</span>
+				<hr style='width: 100%; margin: 0px; margin-bottom: 6px; display: block' class='vboxSeparatorLine'/>
+				
+				<div class='vboxBordered' id='vboxExportPropsContainer' style='overflow: auto' style='width: 100%'>
+					<table class='vboxHorizontal' style='width: 100%; font-size: 0.9em'>
+						<tbody id='vboxExportProps'>
+						</tbody>
+					</table>
+				</div>
+
+			</td>
+		</tr>
+		
+		<tr style='vertical-align: top; height: 1%;'>
+			<td colspan='2'>
+			
+				<table style='width: 100%;' class='vboxOptions'>
+					<tr>
+						<th width='1%'><span class='translate'>File:</span></th>
+						<td class='vboxFileFolderInput'>
+							<input type='text' class='vboxText' name='wizardExportApplianceLocation' />
+							<input type="button" class="vboxImgButton" style="background-image: url(images/vbox/select_file_16px.png)" onClick="wizardExportApplianceBrowseLocation()" />
+						</td>
+					</tr>
+					<tr>
+						<th width='1%'><span class='translate'>Format:</span></th>
+						<td>
+							<select name='wizardExportApplianceFormat'>
+								<option value="ovf-0.9">OVF 0.9</option>
+								<option value="ovf-1.0" selected>OVF 1.0</option>
+								<option value="ovf-2.0">OVF 2.0</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td colspan='2'>
+							<label><input type='checkbox' class='vboxCheckbox' name='wizardExportApplianceManifest'/>
+								<span class='translate'>Write Manifest file</span></label>	
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+	</table>
+</div>
+
+
+<script type='text/javascript'>
+
+//Add format options
+$(document.forms['frmwizardExportAppliance'].wizardExportApplianceFormat).find('option').html(function(i,h){return trans(h,'UIWizardExportApp');});
+
+
+// Load list of exportable machines
+var l = new vboxLoader();
+l.add('vboxGetExportableMachines',function(d){$('#wizardExportApplianceStep1').data('vms',d.responseData);});
+l.onLoad = function() {
+	var vms = $('#wizardExportApplianceStep1').data('vms');
+	var vmlist = $('#vboxExportAppVMList');
+	$(vmlist).children().remove();
+	vms.sort(function(a,b){return strnatcasecmp(a.name,b.name);});
+	for(var i in vms) {
+		var li = $('<li />').data({'vm':vms[i]});
+		if(vboxVMStates.isPaused(vms[i]) || vboxVMStates.isRunning(vms[i])) {
+			$(li).addClass('vboxDisabled disabled');
+		} else {
+			
+			/* Exportable appliance clicked */
+			$(li).click(function(){
+				
+				$(this).toggleClass('vboxListItemSelected');
+
+				vboxWizardExportApplianceUpdateList();
+				vboxWizardExportApplianceOVFName();
+				
+				
+			}).addClass('vboxListItem');
+			
+			if(vboxChooser.isVMSelected(vms[i].id))
+				$(li).addClass('vboxListItemSelected');
+			
+		}
+		$(li).html("<img style='width: 16px; height: 16px;' src='images/vbox/" + vboxGuestOSTypeIcon(vms[i].OSTypeId) + "' /> " + vms[i].name);
+		$(vmlist).append(li);
+	}
+	vboxColorRows(vmlist);
+	vboxWizardExportApplianceUpdateList();
+	vboxWizardExportApplianceOVFName();
+
+};
+l.run();
+
+// Resize panes function
+function wizardExportApplianceStepResizeList() {
+
+	$('#wizardExportApplianceStep1').hide();
+	$('#vboxExportAppVMListContainer').hide();
+	$('#vboxExportPropsContainer').hide();
+	
+	$('#wizardExportApplianceStep1').css({'height':($('#wizardExportApplianceStep1').parent().height()-8)+'px'}).show();
+	$('#vboxExportAppVMListContainer').css({'height':($('#vboxExportAppVMListContainer').parent().height()-16)+'px'}).show();
+	$('#vboxExportPropsContainer').css({'height':$('#vboxExportAppVMListContainer').css('height'),
+		'width':$('#vboxExportAppVMListContainer').parent().width()}).show();
+	
+}
+
+// Resize panes when wizard is resized
+$('#wizardExportApplianceDialog').on('dialogresizestop',wizardExportApplianceStepResizeList);
+//Resize panes after this div is shown
+$('#wizardExportApplianceStep1').on('show', wizardExportApplianceStepResizeList);
+
+
+/*
+ * 
+ * VM Properties to edit / export
+ *
+ */
+var vboxApplianceProps = {
+	'name' : {'label':'Name','icon':'name'},
+	'product' : {'label':'Product','icon':'description'},
+	'product-url' : {'label':'Product-URL','icon':'description'},
+	'vendor' : {'label':'Vendor','icon':'description'},
+	'vendor-url' : {'label':'Vendor-URL','icon':'description'},
+	'version' : {'label':'Version','icon':'description'},
+	'description' : {'label':'Description','icon':'description','textarea':true},
+	'license' : {'label':'License','icon':'description','textarea':true}
+};
+
+/* Browse for export location */
+function wizardExportApplianceBrowseLocation() {
+
+	var dsepRegEx = $('#vboxPane').data('vboxConfig').DSEP;
+	if(dsepRegEx == '\\') dsepRegEx += '\\';
+		
+	// Get current location
+	var loc = document.forms['frmwizardExportAppliance'].elements.wizardExportApplianceLocation.value;
+	if(loc.indexOf($('#vboxPane').data('vboxConfig').DSEP) > -1) {
+		var r = new RegExp(dsepRegEx+'([^'+dsepRegEx+']*)?$');
+		loc = loc.replace(r,'');
+	} else {
+		// no path set
+		loc = vboxDirname($('#vboxPane').data('vboxConfig').version.settingsFilePath) + $('#vboxPane').data('vboxConfig').DSEP;
+	}
+	vboxFileBrowser(loc,function(f){
+		if(!f) return;
+		// get file name
+		var r = new RegExp('.*'+dsepRegEx);
+		file = $(document.forms['frmwizardExportAppliance'].elements.wizardExportApplianceLocation).val().replace(r,'');
+		document.forms['frmwizardExportAppliance'].elements.wizardExportApplianceLocation.value = f+($('#vboxPane').data('vboxConfig').DSEP)+file;
+	},true,trans('Select a file to export into','UIWizardExportAppPage3'));
+
+}
+
+/* Determine default OVF name */
+function vboxWizardExportApplianceOVFName() {
+
+	// Keep track of where we were
+	var vmSel = $('#vboxExportAppVMList').children('li.vboxListItemSelected');
+	
+	/* When going to step3, make sure vms are selected */
+	if(!vmSel.length) {
+		$('#vboxExportAppVMListContainer').addClass('vboxRequired');
+		return;
+	}
+	$('#vboxExportAppVMListContainer').removeClass('vboxRequired');	
+	
+
+	if(jQuery.trim($(document.forms['frmwizardExportAppliance'].elements.wizardExportApplianceLocation).val()) && $(document.forms['frmwizardExportAppliance'].elements.wizardExportApplianceLocation).data('userChanged'))
+		return;
+	
+	$(document.forms['frmwizardExportAppliance'].elements.wizardExportApplianceLocation).data('userChanged', false);
+	
+	var name = '';
+	if(vmSel.length > 1) {
+		name = 'Appliance';
+	} else {
+		name = jQuery.trim($(vmSel[0]).text());
+	}
+	
+	// If there is already a folder chosen, don't change it
+	if(jQuery.trim($(document.forms['frmwizardExportAppliance'].elements.wizardExportApplianceLocation).val())) {
+		name = vboxDirname(jQuery.trim($(document.forms['frmwizardExportAppliance'].elements.wizardExportApplianceLocation).val())) + $('#vboxPane').data('vboxConfig').DSEP + name + '.ova';
+	} else {
+		name = vboxDirname($('#vboxPane').data('vboxConfig').version.settingsFilePath) + $('#vboxPane').data('vboxConfig').DSEP + name + '.ova';
+	}
+	
+	$(document.forms['frmwizardExportAppliance'].elements.wizardExportApplianceLocation).val(name);
+	
+};
+
+function vboxWizardExportApplianceUpdateList() {
+
+	var vms = $('#vboxExportAppVMList').children('li');
+	
+	var tbl = $('#vboxExportProps');
+			
+	for(var i = 0; i < vms.length; i++) {
+
+		var vmid = $(vms[i]).data('vm').id;
+
+		// Selected ? 
+		if($(vms[i]).hasClass('vboxListItemSelected')) {	
+			if($('#vboxAppliance-'+vmid).attr('id')) continue;
+		} else {
+			$(tbl).children('tr.vboxAppliance-'+vmid).remove();
+			continue;
+		}
+			
+		// VM header row
+		var trparent = $('<tr />').attr({'id':'vboxAppliance-'+vmid}).addClass('vboxAppliance-'+vmid + ' vboxTableParent');
+		var td = $('<td />').attr({'colspan':'2','class':'vboxApplianceHeader'}).append(
+			$('<div />').css({'font-weight':'bold','padding-left':'6px'}).append(
+					$('<input />').attr({'type':'button','class':'vboxImgButton','style':'background-image: url(images/downArrow.png); margin:0px;margin-right:4px;padding:0px;vspace:0px;hspace:0px;width: 12px; height: 12px;'}).click(function(){
+						
+						if(!$(this).data('toggleClicked')) {
+							
+							$(this).data('toggleClicked', true);
+
+							$(this).css({'background-image':'url(images/rightArrow.png)'});
+							var tr = $(this).closest('tr');
+							$(tr).siblings('tr.vboxChildOf'+$(tr).data('vboxOrder')).hide();
+						} else {
+							
+							$(this).data('toggleClicked', false);
+							
+							$(this).css({'background-image':'url(images/downArrow.png)'});				
+							var tr = $(this).closest('tr');						
+							$(tr).siblings('tr.vboxChildOf'+$(tr).data('vboxOrder')).show();
+						}
+					})
+			).append(
+					//trans('Virtual System X').replace('%s',(i+1))
+					$('<div />').text($(vms[i]).data('vm').name).html()
+			)
+		).disableSelection();
+		$(trparent).append(td).data({'vm':$(vms[i]).data('vm'),'vboxOrder':i}).appendTo(tbl);
+		
+		// VM properties
+		for(var p in vboxApplianceProps) {
+			
+			var tr = $('<tr />').attr({'class':'vboxAppliance-'+vmid+' vboxChildOf' + i}).data({'vmprop':p});
+			
+			$('<td />').css({'padding-left':'18px','white-space':'nowrap','width':'1%'}).html('<img src="images/vbox/'+vboxApplianceProps[p].icon+'_16px.png" /> ' + trans(vboxApplianceProps[p].label,'UIApplianceEditorWidget')).appendTo(tr);
+
+			$('<td />').attr({'class':'vboxHideOverflow vboxAppProp'+p}).css({'width':'100%','padding-left':'10px','padding-right':'2px'}).html('<div>'+$('<div />').text(($(trparent).data('vm')[p]||'')).html()+'</div>').dblclick((vboxApplianceProps[p].textarea ? vboxExportAppliancePropEditArea : vboxExportAppliancePropEdit )).appendTo(tr);
+			
+			$(tbl).append(tr);
+		}
+	}
+	vboxColorRows(tbl,false,'vboxTableParent');
+	
+
+};
+
+
+/* Edit property that has a text area */
+function vboxExportAppliancePropEditArea(evt,elm) {
+	vboxExportAppliancePropEditDialog(evt.target, $('<span />').html($(evt.target).html()).text());
+}
+
+/* Edit property dialog */
+function vboxExportAppliancePropEditDialog(elm, defaults) {
+	
+	var d = $('<div />').css({'display':'none'});
+	var frm = $('<form />').attr({'onSubmit':'return false;'}).css({'margin':'0px','border':'0px','padding':'0px','width':'100%','height':'100%'});
+	$('<textarea />').attr({'id':'vboxExportAppliancePropTextarea'}).css({'height':'99%','width':'99%'}).val(defaults).appendTo(frm);
+	$(d).append(frm);
+	
+	var buttons = {};
+	buttons[trans('OK','QIMessageBox')] = function(){
+		var d = vboxDivOverflowHidden(elm);
+		$(d).html($('<div />').text($('#vboxExportAppliancePropTextarea').val()).html());
+		$(elm).html('').append(d);
+		$(this).empty().remove();
+	};
+	buttons[trans('Cancel','QIMessageBox')] = function(){
+		$(this).empty().remove();
+	};
+	$(d).dialog({'height':300,'width':300,'closeOnEscape':false,'modal':true,'resizable':true,'dialogClass':'vboxDialogContent','draggable':true,'buttons':buttons,'title':$(elm).parent().siblings().first().html()});
+
+}
+/* Edit property that has a text box */
+function vboxExportAppliancePropEdit(evt,elm) {
+	var input = $('<input />').attr({'type':'text','class':'vboxText'}).css({'width':($(this).innerWidth()-12)+'px','margin':'0px'}).val($('<div />').html($(this).children().first().html()).text()).blur(function(){
+		var v = $(this).val();
+		var p = $(this).parent();
+		var d = vboxDivOverflowHidden(p);		
+		$(this).remove();
+		$(d).html($('<div />').text(v).html());
+		$(p).html('').append(d);
+	}).keydown(function(e){if(e.keyCode == 13) $(this).trigger('blur');});
+	$(this).html('').append(input).children().first().focus();
+}
+
+</script>

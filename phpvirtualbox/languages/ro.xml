@@ -1,0 +1,255 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<language>
+	<context>
+		<name>phpVirtualBox</name>
+		<message>
+			<source>Warning: A VirtualBox internal operation is in progress. Closing this window or navigating away from this web page may cause unexpected and undesirable results. Please wait for the operation to complete.</source>
+			<translation>Atentie: Se proceseaza o operatiune interna in VirtualBox. Iesirea din aceasta fereastra poate avea consecinte nedorite si neasteptate. Va rugam sa asteptati terminarea operatiunii.</translation>
+		</message>
+		<message>
+			<source>Operation Canceled</source>
+			<translation>Operatiune anulata</translation>
+		</message>
+		<message>
+			<source>An error occurred communicating with your vboxwebsrv. No more requests will be sent by phpVirtualBox until the error is corrected and this page is refreshed. The details of this connection error should be displayed in a subsequent dialog box.</source>
+			<translation>A aparut o eroare in timpul comunicarii cu vboxwebsrv. phpVirtualbox nu va mai trimite petitii pana cand eroarea nu va fi corectata si pagina reincarcata. Detaliile acestei erori de conexiune vor fi afisate intr-o casuta de dialog ulterioara.</translation>
+		</message>
+		<message>
+			<source>Unable to retrieve guest properties. Make sure the virtual machine is running and has the VirtualBox Guest Additions installed.</source>
+			<translation>Nu se poate recupera si afisa proprietatile clientului. Asigurati-va ca masina virtuala este pornita si ca VirtualBox Guest Additions sunt instalate.</translation>
+		</message>
+		<!-- Error vmlist 1 -->
+		<message>
+			<source>There was an error obtaining the list of registered virtual machines from VirtualBox. Make sure vboxwebsrv is running and that the settings in config.php are correct.&lt;p&gt;The list of virtual machines will not begin auto-refreshing again until this page is reloaded.&lt;/p&gt;</source>
+			<translation>A aparut o eroare in timpul obtinerii listei cu masini virtuale inregistrate in VirtualBox. Asigurati-va ca vboxwebsrv este in functiune si setarile din config.php sunt correcte.&lt;p&gt;Lista de masini virtuale nu se actualizeaza automat pana cand pagina nu este reincarcata.&lt;/p&gt;</translation>
+		</message>
+		<message>
+			<source>Server List</source>
+			<translation>Lista de servere</translation>
+		</message>		
+	</context>
+	<context>
+		<name>UIVMDesktop</name>
+		<message>
+			<source>Console</source>
+			<translation>Consola</translation>
+		</message>
+		<message>
+			<source>Loading ...</source>
+			<translation>Incarcare ...</translation>
+		</message>
+	</context>
+	<context>
+		<name>VBoxSelectorWnd</name>
+		<message>
+			<source>Change Password</source>
+			<translation>Schimba parola</translation>
+		</message>
+		<message>
+			<source>Log out - %1</source>
+			<translation>Iesire - %1</translation>
+		</message>
+		<message>
+			<source>Logged in as %1</source>
+			<translation>Logged in as %1</translation>
+		</message>
+		<message>
+			<source>Stop</source>
+			<translation>Stop</translation>
+		</message>
+		<message>
+			<source>VirtualBox User Manual</source>
+			<translation>Manual de utilizare VirtualBox</translation>
+		</message>	
+		<message>
+			<source>About</source>
+			<translation>Despre</translation>
+		</message>
+	</context>
+	<context>
+		<name>UIActionsPool</name>
+		<message>
+			<source>Save State</source>
+			<translation>Salvare stare</translation>
+		</message>
+		<message>
+			<source>Power Off</source>
+			<translation>Oprire</translation>
+		</message>		
+	</context>
+	<context>
+		<!-- Console Tab -->
+		<name>VBoxConsoleWgt</name>
+		<message>
+			<source>User name</source>
+			<translation>Nume utilizator</translation>
+		</message>
+		<message>
+			<source>Password</source>
+			<translation>Parola</translation>
+		</message>
+		<message>
+			<source>Connecting to %1</source>
+			<translation>Conectare la %1</translation>
+		</message>
+		<message>
+			<source>Connected to %1</source>
+			<translation>Conectat la %1</translation>
+		</message>
+		<message>
+			<source>Requested desktop size</source>
+			<translation>Dimensiune desktop</translation>
+		</message>
+		<message>
+			<source>Connect</source>
+			<translation>Conectare</translation>
+		</message>
+		<message>
+			<source>Detach</source>
+			<translation>Separa</translation>
+		</message>
+		<message>
+			<source>Disconnect</source>
+			<translation>Deconectare</translation>
+		</message>
+		<message>
+			<source>Send Ctrl-Alt-Del</source>
+			<translation>Trimiteti Ctrl-Alt-Del</translation>
+		</message>
+		<message>
+			<source>Disconnect reason</source>
+			<translation>Motivul deconectarii</translation>
+		</message>
+		<message>
+			<source>Redirection by %1</source>
+			<translation>Redirectionat de %1</translation>
+		</message>
+		<message>
+			<source>Virtual machine is not running or is not configured to accept RDP connections.</source>
+			<translation>Masina virtuala nu este in functiune sau nu este configurata pentru a acepta conexiuni RDP.</translation>
+		</message>
+	</context>		
+	<context>
+		<name>VBoxGlobal</name>
+		<message>
+			<source>Hosting</source>
+			<translation>Hosting</translation>
+		</message>
+		<message>
+			<source>Guest Network Adapters</source>
+			<translation>Adaptoarele de retea ale clientilor</translation>
+		</message>
+		<message>
+			<source>Up</source>
+			<translation>Conectat</translation>
+			<comment>Host network adapter status</comment>
+		</message>
+		<message>
+			<source>Down</source>
+			<translation>Neconectat</translation>
+			<comment>Host network adapter status</comment>
+		</message>
+	</context>
+	<context>
+		<name>UIVMPreviewWindow</name>
+		<message>
+			<source>Every %1 seconds</source>
+			<translation>La fiecare %1 secunde</translation>
+		</message>
+		<message>
+			<source>Open in new window</source>
+			<translation>Deschide in fereastra noua</translation>
+		</message>		
+	</context>
+	<context>
+		<name>UISettingsDialogGlobal</name>
+		<message>
+			<source>Users</source>
+			<translation>Utilizatori</translation>
+		</message>
+	</context>
+	<context>
+		<name>UIUsers</name>
+		<message>
+			<source>Users</source>
+			<translation>Utilizator</translation>
+		</message>		
+		<message>
+			<source>Admin User</source>
+			<translation>Administrator</translation>
+		</message>
+		<message>
+			<source>Can administer users</source>
+			<translation>Poate administra utilizatorii</translation>
+		</message>
+		<message>
+			<source>Add User</source>
+			<translation>Adauga utilizator</translation>
+		</message>
+		<message>
+			<source>Edit User</source>
+			<translation>Modificare utilizator</translation>
+		</message>
+		<message>
+			<source>Remove User</source>
+			<translation>Eliminare utilizator</translation>
+		</message>
+		<message>
+			<source>A user with that username already exists.</source>
+			<translation>Deja exista un utilizator cu acelasi nume.</translation>
+		</message>
+		<message>
+			<source>Are you sure you want to remove the user &lt;b&gt;%1&lt;/b&gt;? This action cannot be undone.</source>
+			<translation>Sunteti sigur ca doriti sa eliminati acest utilizator &lt;b&gt;%1&lt;/b&gt;? Aceasta actiune este ireversibila.</translation>
+		</message>
+		<message>
+			<source>Username</source>
+			<translation>Nume utilizator</translation>
+		</message>
+		<message>
+			<source>Password</source>
+			<translation>Parola</translation>
+		</message>
+		<message>
+			<source>Log in</source>
+			<translation>Conectare</translation>
+		</message>
+		<message>
+			<source>Change Password</source>
+			<translation>Schimbati parola</translation>
+		</message>
+		<message>
+			<source>Old Password</source>
+			<translation>Parola anterioara</translation>
+		</message>
+		<message>
+			<source>New Password</source>
+			<translation>Parola noua</translation>
+		</message>
+		<message>
+			<source>The passwords you have entered do not match.</source>
+			<translation>Parolele introduse nu coincid.</translation>
+		</message>
+		<message>
+			<source>Password changed.</source>
+			<translation>Parola schimbata.</translation>
+		</message>
+		<message>
+			<source>The password you have entered is invalid.</source>
+			<translation>Parola incorecta.</translation>
+		</message>
+		<message>
+			<source>Retype</source>
+			<translation>Introduceti din nou</translation>
+		</message>
+		<message>
+			<source>Invalid username or password.</source>
+			<translation>Nume de utilizator eronat sau parola incorecta.</translation>
+		</message>
+		<message>
+			<source>Not logged in.</source>
+			<translation>Neconectat.</translation>
+		</message>		
+	</context>
+</language>
+

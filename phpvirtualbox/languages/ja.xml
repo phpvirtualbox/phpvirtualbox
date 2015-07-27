@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+	<context>
+		<name>phpVirtualBox</name>
+		<message>
+			<source>Warning: A VirtualBox internal operation is in progress. Closing this window or navigating away from this web page may cause unexpected and undesirable results. Please wait for the operation to complete.</source>
+			<translation>Warning: A VirtualBox internal operation is in progress. Closing this window or navigating away from this web page may cause unexpected and undesirable results. Please wait for the operation to complete.</translation>
+		</message>
+		<message>
+			<source>Operation Canceled</source>
+			<translation>操作はキャンセルされました</translation>
+		</message>
+		<message>
+			<source>An error occurred communicating with your vboxwebsrv. No more requests will be sent by phpVirtualBox until the error is corrected and this page is refreshed. The details of this connection error should be displayed in a subsequent dialog box.</source>
+			<translation>An error occurred communicating with your vboxwebsrv. No more requests will be sent by phpVirtualBox until the error is corrected and this page is refreshed. The details of this connection error should be displayed in a subsequent dialog box.</translation>
+		</message>
+		<message>
+			<source>Unable to retrieve guest properties. Make sure the virtual machine is running and has the VirtualBox Guest Additions installed.</source>
+			<translation>Unable to retrieve guest properties. Make sure the virtual machine is running and has the VirtualBox Guest Additions installed.</translation>
+		</message>
+		<!-- Error vmlist 1 -->
+		<message>
+			<source>There was an error obtaining the list of registered virtual machines from VirtualBox. Make sure vboxwebsrv is running and that the settings in config.php are correct.&lt;p&gt;The list of virtual machines will not begin auto-refreshing again until this page is reloaded.&lt;/p&gt;</source>
+			<translation>There was an error obtaining the list of registered virtual machines from VirtualBox. Make sure vboxwebsrv is running and that the settings in config.php are correct.&lt;p&gt;The list of virtual machines will not begin auto-refreshing again until this page is reloaded.&lt;/p&gt;</translation>
+		</message>
+		<message>
+			<source>Server List</source>
+			<translation>サーバリスト</translation>
+		</message>		
+	</context>
+	<context>
+		<name>UIVMDesktop</name>
+		<message>
+			<source>Console</source>
+			<translation>コンソール</translation>
+		</message>
+		<message>
+			<source>Loading ...</source>
+			<translation>Loading ...</translation>
+		</message>
+	</context>
+	<context>
+		<name>VBoxSelectorWnd</name>
+		<message>
+			<source>Change Password</source>
+			<translation>パスワードの変更</translation>
+		</message>
+		<message>
+			<source>Log out - %1</source>
+			<translation>ログアウト - %1</translation>
+		</message>
+		<message>
+			<source>Logged in as %1</source>
+			<translation>Logged in as %1</translation>
+		</message>
+		<message>
+			<source>Stop</source>
+			<translation>停止</translation>
+		</message>
+		<message>
+			<source>VirtualBox User Manual</source>
+			<translation>VirtualBox ユーザーマニュアル</translation>
+		</message>	
+		<message>
+			<source>About</source>
+			<translation>アプリケーションについて</translation>
+		</message>
+	</context>
+	<context>
+		<name>UIActionsPool</name>
+		<message>
+			<source>Save State</source>
+			<translation>状態を保存</translation>
+		</message>
+		<message>
+			<source>Power Off</source>
+			<translation>電源オフ</translation>
+		</message>		
+	</context>
+	<context>
+		<!-- Console Tab -->
+		<name>VBoxConsoleWgt</name>
+		<message>
+			<source>User name</source>
+			<translation>ユーザー名</translation>
+		</message>
+		<message>
+			<source>Password</source>
+			<translation>パスワード</translation>
+		</message>
+		<message>
+			<source>Connecting to %1</source>
+			<translation>接続中 %1</translation>
+		</message>
+		<message>
+			<source>Connected to %1</source>
+			<translation>接続中 %1</translation>
+		</message>
+		<message>
+			<source>Requested desktop size</source>
+			<translation>デスクトップのサイズ</translation>
+		</message>
+		<message>
+			<source>Connect</source>
+			<translation>接続</translation>
+		</message>
+		<message>
+			<source>Detach</source>
+			<translation>切り離し</translation>
+		</message>
+		<message>
+			<source>Disconnect</source>
+			<translation>切断</translation>
+		</message>
+		<message>
+			<source>Send Ctrl-Alt-Del</source>
+			<translation>Ctrl-Alt-Del の送信</translation>
+		</message>
+		<message>
+			<source>Disconnect reason</source>
+			<translation>切断の説明</translation>
+		</message>
+		<message>
+			<source>Redirection by %1</source>
+			<translation>リダイレクト %1</translation>
+		</message>
+		<message>
+			<source>Virtual machine is not running or is not configured to accept RDP connections.</source>
+			<translation>仮想マシンは実行中でないかまたは、RDP 接続が有効に構成されていません。</translation>
+		</message>
+	</context>		
+	<context>
+		<name>VBoxGlobal</name>
+		<message>
+			<source>Hosting</source>
+			<translation>ホスト</translation>
+		</message>
+		<message>
+			<source>Guest Network Adapters</source>
+			<translation>ゲストネットワークアダプタ</translation>
+		</message>
+		<message>
+			<source>Up</source>
+			<translation>Up</translation>
+			<comment>Host network adapter status</comment>
+		</message>
+		<message>
+			<source>Down</source>
+			<translation>Down</translation>
+			<comment>Host network adapter status</comment>
+		</message>
+	</context>
+	<context>
+		<name>UIVMPreviewWindow</name>
+		<message>
+			<source>Every %1 seconds</source>
+			<translation> %1 秒毎</translation>
+		</message>
+		<message>
+			<source>Open in new window</source>
+			<translation>新規ウィンドウで開く</translation>
+		</message>		
+	</context>
+	<context>
+		<name>UISettingsDialogGlobal</name>
+		<message>
+			<source>Users</source>
+			<translation>ユーザ</translation>
+		</message>
+	</context>
+	<context>
+		<name>UIUsers</name>
+		<message>
+			<source>Users</source>
+			<translation>ユーザ</translation>
+		</message>		
+		<message>
+			<source>Admin User</source>
+			<translation>Admin ユーザ</translation>
+		</message>
+		<message>
+			<source>Can administer users</source>
+			<translation>管理者ユーザにする</translation>
+		</message>
+		<message>
+			<source>Add User</source>
+			<translation>ユーザの追加</translation>
+		</message>
+		<message>
+			<source>Edit User</source>
+			<translation>ユーザの編集</translation>
+		</message>
+		<message>
+			<source>Remove User</source>
+			<translation>ユーザの削除</translation>
+		</message>
+		<message>
+			<source>A user with that username already exists.</source>
+			<translation>そのユーザ名のユーザはすでに存在します。</translation>
+		</message>
+		<message>
+			<source>Are you sure you want to remove the user &lt;b&gt;%1&lt;/b&gt;? This action cannot be undone.</source>
+			<translation>ユーザ &lt;b&gt;%1&lt;/b&gt; を削除してよろしいですか? この操作は取り消すことができません。</translation>
+		</message>
+		<message>
+			<source>Username</source>
+			<translation>ユーザー名</translation>
+		</message>
+		<message>
+			<source>Password</source>
+			<translation>パスワード</translation>
+		</message>
+		<message>
+			<source>Log in</source>
+			<translation>ログイン</translation>
+		</message>
+		<message>
+			<source>Change Password</source>
+			<translation>パスワードの変更</translation>
+		</message>
+		<message>
+			<source>Old Password</source>
+			<translation>古いパスワード</translation>
+		</message>
+		<message>
+			<source>New Password</source>
+			<translation>新しいパスワード</translation>
+		</message>
+		<message>
+			<source>The passwords you have entered do not match.</source>
+			<translation>入力したパスワードが一致しません。</translation>
+		</message>
+		<message>
+			<source>Password changed.</source>
+			<translation>パスワードは変更されました。</translation>
+		</message>
+		<message>
+			<source>The password you have entered is invalid.</source>
+			<translation>入力したパスワードが無効です。</translation>
+		</message>
+		<message>
+			<source>Retype</source>
+			<translation>再入力</translation>
+		</message>
+		<message>
+			<source>Invalid username or password.</source>
+			<translation>ユーザ名またはパスワードが無効です。</translation>
+		</message>
+		<message>
+			<source>Not logged in.</source>
+			<translation>ログインしていません。</translation>
+		</message>		
+	</context>
+</language>
+

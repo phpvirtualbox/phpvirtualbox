@@ -1,0 +1,70 @@
+<?php
+/*
+
+	phpVirtualBox admin password recovery.
+	
+	Rename recovery.php-disabled to recovery.php, navigate to it in your web
+	browser and follow the instructions presented.
+	
+*/
+
+# Turn off PHP errors
+error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_WARNING);
+
+
+//Set no caching
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+header("Cache-Control: no-store, no-cache, must-revalidate, post-check=0, pre-check=0");
+header("Pragma: no-cache");
+
+require_once(dirname(__FILE__).'/lib/config.php');
+require_once(dirname(__FILE__).'/lib/utils.php');
+require_once(dirname(__FILE__).'/lib/vboxconnector.php');
+
+
+/*
+ * Clean request
+ */
+$vboxRequest = clean_request();
+
+/* Check for recovery */
+
+if($vboxRequest['recover']) {
+	
+	try {
+		// Use main / auth server
+		$vbox = new vboxconnector(true);
+		$vbox->skipSessionCheck = true;
+		$vbox->connect();
+		
+		$vbox->vbox->setExtraData('phpvb/users/admin/pass', hash('sha512', 'admin'));		
+		$vbox->vbox->setExtraData('phpvb/users/admin/admin', '1');	
+		echo("Admin account updated. Please rename this file to <b>recovery.php-disabled</b>. phpVirtualBox will refuse to run if this has not been done.");
+		
+	} catch (Exception $e) {
+		echo("<pre>");
+		print_r($e);
+		echo("</pre>");
+	}
+	return;
+}
+
+?>
+<html>
+<head>
+<title>Admin Account Recovery</title>
+</head>
+<body>
+<h3>Admin Account Recovery</h3>
+<p>This form will add the default user <b>admin</b> with a default password of <b>admin</b>. If the user <b>admin</b> already exists, its password will be changed to <b>admin</b>.</p>
+<p>Click the Recover button to add / update this user.</p>
+<form method='POST'>
+	<p>
+			<input type='hidden' name='recover' value='1' />
+			<input type='submit' value='Recover' />
+	</p>
+</form>
+</body>
+</html>
+

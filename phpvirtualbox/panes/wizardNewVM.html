@@ -1,0 +1,343 @@
+<!-- 
+
+	Panes for new virtual machine wizard. Logic in vboxWizard()
+	Copyright (C) 2010-2015 Ian Moore (imoore76 at yahoo dot com)
+	
+	$Id: wizardNewVM.html 595 2015-04-17 09:50:36Z imoore76 $
+
+ -->
+
+<!-- Step 1 -->
+<div id='wizardNewVMStep1' title='Name and operating system' style='display: none'>
+
+	<p class='translate vboxWizardDescription'>Please choose a descriptive name for the new virtual machine and select the type of operating system you intend to install on it. The name you choose will be used throughout VirtualBox to identify this machine.</p>
+	
+	<div class='vboxOptions'>
+		<table class='vboxOptions' style='width:100%'>
+			<tr>
+				<th style='width: 1%'><span class='translate'>Name:</span></th>
+				<td colspan='2'><input type='text' class='vboxText' name='newVMName' style='width: 95%' /></td>
+			</tr>
+			<tr>
+				<th><span class='translate'>Type:</span></th>
+				<td style='width: 100%'><select name='newVMOSFamily' id='newVMOSFamily' style='width: 100%'>
+					<option value='Linux'>Linux</option>
+				</select></td>
+				<td rowspan='2'><img name='vboxOSTypeImg' height='32' width='32' /></td>
+			</tr>
+			<tr>
+				<th><span class='translate'>Version:</span></th>
+				<td><select id='newVMOSType' name='newVMOSType' style='width: 100%'>
+					<option value='Debian'>Debian</option>
+				</select></td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+
+<!-- Step 2 -->
+<div id='wizardNewVMStep2' title='Memory size' style='display: none'>
+	<span id='newVMSizeLabel'></span>
+	
+	<div class='vboxOptions'>
+	
+		<table style='width: 100%'>
+		<tr>
+			<td style='width: 100%; border: 0px; margin: 0px; padding: 0px;'>
+			   <div style='margin-top: 4px' id='wizardNewVMSize' class='slider translateglob'><div class='sliderScale'></div></div>
+			</td>
+			<td style='white-space: nowrap'><input type='text' class='vboxText' name='wizardNewVMSizeValue' size='5' class='sliderValue' /> <span class='translate'>MB</span></td>
+		</tr>
+		<tr style='vertical-align: top;'>
+			<td style='border: 0px; margin: 0px; padding: 0px;'>
+				<table style='width: 100%; border: 0px; margin: 0px; padding: 0px;'>
+					<tr style='vertical-align: top'>
+						<td style='text-align: left;'><span id='wizardNewVMMin'>1</span> <span class='translate'>MB</span></td>
+						<td style='text-align: right;'><span id='wizardNewVMMax'>128</span> <span class='translate'>MB</span></td>
+					</tr>
+				</table>
+			</td>
+			<td></td>
+		</tr>
+		</table>
+	</div>
+	
+</div>
+
+<!-- Step 3 -->
+<div id='wizardNewVMStep3' title='Hard drive' style='display: none'>
+
+	<span id='newVMHDSizeLabel'></span>
+
+	
+	<div class='vboxOptions'>
+	
+		<table class='vboxOptions' id='newVMBootDiskTable' style='width:100%;'>
+			<tr>
+				<td style='padding:2px; padding-left: 14px'><label><input type="radio" class="vboxRadio" name="newVMDisk" value="none" onClick="newVMToggleNewDisk(true)" /> <span class='translate vboxEnablerListen'>Do not add a virtual hard drive</span></label></td>
+			</tr>		
+			<tr id='newVMHDTriggerBind' class='vboxEnablerTrigger'>
+				<td style='padding:2px; padding-left: 14px'><label><input type="radio" class="vboxRadio" name="newVMDisk" value="create" onClick="newVMToggleNewDisk(true)" checked='checked' /> <span class='translate vboxEnablerListen'>Create a virtual hard drive now</span></label></td>
+			</tr>
+			<tr>
+				<td style='padding:2px; padding-left: 14px'><label><input type="radio" class="vboxRadio" name="newVMDisk" value="existing" onClick="newVMToggleNewDisk(false)" /> <span class='translate vboxEnablerListen'>Use an existing virtual hard drive file</span></label></td>
+			</tr>		
+			<tr>
+				<td style='padding-left: 24px; white-space: nowrap'>
+				<table class='vboxInvisible' style='width: 99%;'>
+					<tr>
+						<td><select id="newVMDiskSelectId" name="newVMDiskSelect" disabled='disabled'></select></td>
+						<td style='width:1%' id='newVMDiskVMM'></td>
+					</tr>
+				</table>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+
+
+<script type='text/javascript'>
+
+/* Translations */
+$('#wizardNewVMStep1').find('table.vboxOptions').find('span.translate').html(function(i,h) {
+	return trans(h,'UINameAndSystemEditor');
+}).removeClass('translate');
+
+
+
+var wizardNewVMToolbar = new vboxToolbarSingle({
+	/* Add Attachment Button */
+	'name' : 'mselecthdbtn',
+	'label' : trans('Choose a virtual hard disk file...','UIMachineSettingsStorage'),
+	'icon' : 'select_file',
+	'click' : function () {
+		vboxMedia.actions.choose(null,'HardDisk',function(med){
+			if(med) vmNewFillExistingDisks(med.base);
+		});
+	}
+});
+wizardNewVMToolbar.renderTo('newVMDiskVMM');		
+
+/* Toggle new / existing */
+function newVMToggleNewDisk(dis) {
+	
+	if(dis) {
+		wizardNewVMToolbar.disable();
+		document.forms['frmwizardNewVM'].newVMDiskSelect.disabled = true;
+		$('#wizardNewVMStep3').find('.vboxMediumSelect').trigger('disable');
+	} else {
+		wizardNewVMToolbar.enable();
+		document.forms['frmwizardNewVM'].newVMDiskSelect.disabled = (document.forms['frmwizardNewVM'].newVMDiskSelect.options.length > 0 ? false : true);
+		$('#wizardNewVMStep3').find('.vboxMediumSelect').trigger('enable');
+	}
+	
+} 
+
+/* Mem size slider */
+var min = 4;
+var max = parseInt($('#vboxPane').data('vboxHostDetails').memorySize);
+
+$('#wizardNewVMSize').data('form','frmwizardNewVM');
+
+$('#wizardNewVMSize').slider({'min':min,'max':max,'step':1});
+$('#wizardNewVMSize').slider('value',4);
+
+$('#wizardNewVMMin').html(min);
+$('#wizardNewVMMax').html(max);
+
+/* Fill existing attachments */
+function vmNewFillExistingDisks(sel) {
+	
+	document.forms['frmwizardNewVM'].newVMDiskSelect.options.length = 0;
+	$(document.forms['frmwizardNewVM'].newVMDiskSelect).children().remove();
+	
+	var s = vboxMedia.mediaForAttachmentType('HardDisk');
+		
+	// Sort media
+	s.sort(function(a,b){return strnatcasecmp(a.name,b.name);});
+	
+	var mediumSelects = [];
+	var selectedIndex = 0;
+	for(var i = 0; i < s.length; i++) {
+		document.forms['frmwizardNewVM'].newVMDiskSelect.options[i] = new Option(vboxMedia.mediumPrint(s[i]),s[i].id);
+		if(s[i].readOnly && s[i].deviceType == 'HardDisk') $(document.forms['frmwizardNewVM'].newVMDiskSelect.options[i]).addClass('vboxMediumReadOnly');
+		mediumSelects[i] = {'attachedId':s[i].id,'id':s[i].id,'base':s[i].base,'label':vboxMedia.mediumPrint(s[i])};
+		if(sel == s[i].id) {
+			selectedIndex = i;
+		}
+	}
+	if(selectedIndex) {
+		document.forms['frmwizardNewVM'].newVMDiskSelect.selectedIndex = selectedIndex;
+	}
+	
+	$(document.forms['frmwizardNewVM'].newVMDiskSelect).mediumselect({'type':'HardDisk','showdiff':false,'media':mediumSelects});
+}
+
+vmNewFillExistingDisks();
+
+/*
+ *
+ * Called when OS family type changes
+ * 
+ */
+function newVMUpdateOSList(osfam) {
+	
+	document.forms['frmwizardNewVM'].newVMOSType.options.length = 0;
+	$(document.forms['frmwizardNewVM'].newVMOSType).children().remove();
+	for(var i = 0; i < newVMOSTypes[osfam].osTypes.length; i++) {
+		document.forms['frmwizardNewVM'].newVMOSType.options[i] = new Option(newVMOSTypes[osfam].osTypes[i].description, newVMOSTypes[osfam].osTypes[i].id);
+	}
+	// Trigger change
+	newVMUpdateOS(newVMOSTypes[osfam].osTypes[0].id);
+}
+
+function newVMUpdateOS(ostype) {
+
+	document.images["vboxOSTypeImg"].src = "images/vbox/" + vboxGuestOSTypeIcon(ostype);
+
+	ostype = newVMOSTypesObj[ostype];
+
+	$('#wizardNewVMSize').slider('value',ostype.recommendedRAM);	
+	
+	$('#newVMSizeLabel').html(trans("<p>Select the amount of memory (RAM) in megabytes "+
+            "to be allocated to the virtual machine.</p>"+
+            "<p>The recommended memory size is <b>%1</b> MB.</p>",'UIWizardNewVM').replace('%1',ostype.recommendedRAM));
+	
+	$('#newVMHDSizeLabel').html(trans("<p>If you wish you can add a virtual hard drive to the new machine. "+
+            "You can either create a new hard drive file or select one from the list "+
+            "or from another location using the folder icon.</p>"+
+            "<p>If you need a more complex storage set-up you can skip this step "+
+            "and make the changes to the machine settings once the machine is created.</p>"+
+            "<p>The recommended size of the hard drive is <b>%1</b>.</p>",'UIWizardNewVM').replace('%1',vboxMbytesConvert(ostype.recommendedHDD)));
+	
+}
+
+var newVMOSTypes = new Array();
+var newVMOSTypesObj = {};
+
+// shorthand
+var vboxOSTypes = $('#vboxPane').data('vboxOSTypes');
+	
+// Default OS Type set to my fav :) Eventually will move to config.php
+var vboxDefaultOSTypeId = 'Debian';
+
+
+var dosfam = null; // holds defaultostype family id
+for(var i in vboxOSTypes) {
+
+	// Skip unsupported OS types
+	if(!vboxOSTypes[i].supported) continue;
+	
+	// create array of os family types
+	if(!newVMOSTypes[vboxOSTypes[i].familyId]) {
+		newVMOSTypes[vboxOSTypes[i].familyId] = {'id':vboxOSTypes[i].familyId,'description':vboxOSTypes[i].familyDescription,'osTypes':[]};
+	}
+	
+	// We're on the default os type, record family id and index number
+	// so that we can set it later on
+	if(vboxOSTypes[i].id == vboxDefaultOSTypeId) {
+		dosfam = vboxOSTypes[i].familyId;
+		vboxDefaultOSTypeId = newVMOSTypes[vboxOSTypes[i].familyId].osTypes.length;
+	}
+
+	newVMOSTypes[vboxOSTypes[i].familyId].osTypes[newVMOSTypes[vboxOSTypes[i].familyId].osTypes.length] = {'id':vboxOSTypes[i].id,'description':vboxOSTypes[i].description };
+
+	newVMOSTypesObj[vboxOSTypes[i].id] = vboxOSTypes[i];
+	
+	// Preload icons
+	vboxOSTypes[i].icon = new Image();
+	vboxOSTypes[i].icon.src = "images/vbox/" + vboxGuestOSTypeIcon(vboxOSTypes[i].id);
+
+}
+// clear all options
+document.forms['frmwizardNewVM'].newVMOSFamily.options.length = 0;
+$(document.forms['frmwizardNewVM'].newVMOSFamily).children().remove();
+for(var i in newVMOSTypes) {
+	// default os type family? record in dosfam
+	if(i == dosfam) dosfam = document.forms['frmwizardNewVM'].newVMOSFamily.options.length;
+	document.forms['frmwizardNewVM'].newVMOSFamily.options[document.forms['frmwizardNewVM'].newVMOSFamily.options.length] = new Option(newVMOSTypes[i].description, newVMOSTypes[i].id);
+}
+// OnChange, update os type list and icon
+document.getElementById('newVMOSFamily').setAttribute('onChange','newVMUpdateOSList(this.value)');
+document.getElementById('newVMOSType').setAttribute('onChange','newVMUpdateOS(this.value)');
+
+document.forms['frmwizardNewVM'].newVMOSFamily.selectedIndex = dosfam;
+newVMUpdateOSList(document.forms['frmwizardNewVM'].newVMOSFamily.value);
+document.forms['frmwizardNewVM'].newVMOSType.selectedIndex = vboxDefaultOSTypeId;
+newVMUpdateOS(document.forms['frmwizardNewVM'].newVMOSType.options[document.forms['frmwizardNewVM'].newVMOSType.selectedIndex].value);
+
+/*
+ * END OS TYPES
+ */
+
+$('#wizardNewVMStep1').on('show',function(e,wiz){
+	$(document.forms['frmwizardNewVM'].newVMName).focus();	 
+});
+ 
+/* When going to step2, make sure a name is entered */
+$('#wizardNewVMStep2').on('show',function(e,wiz){
+
+	document.forms['frmwizardNewVM'].newVMName.value = jQuery.trim(document.forms['frmwizardNewVM'].newVMName.value);
+
+	if(!document.forms['frmwizardNewVM'].newVMName.value) {
+		$(document.forms['frmwizardNewVM'].newVMName).addClass('vboxRequired');
+		// Go back
+		wiz.displayStep(1);
+		return;
+	}
+
+	var l = new vboxLoader();
+	l.add('vboxGetComposedMachineFilename',function(d){
+		
+		loc = vboxDirname(d.responseData);
+		
+		var fe = new vboxLoader();
+		fe.add('fileExists',function(d){
+			fileExists = d.responseData;
+		},{'file':loc});
+		fe.onLoad = function() { 
+			if(fileExists) {
+				vboxAlert(trans('<p>Cannot create the machine folder <b>%1</b> in the parent folder <nobr><b>%2</b>.</nobr></p><p>This folder already exists and possibly belongs to another machine.</p>','UIMessageCenter').replace('%1',vboxBasename(loc)).replace('%2',vboxDirname(loc)));
+				// Go back
+				wiz.displayStep(1);
+	
+				return;
+			}
+			$(document.forms['frmwizardNewVM'].newVMName).removeClass('vboxRequired');
+			
+			// Update disabled / enabled items
+			if(document.forms['frmwizardNewVM'].newVMDisk[0].checked) {
+				$(document.forms['frmwizardNewVM'].newVMDisk[0]).trigger('click');
+			} else {
+				$(document.forms['frmwizardNewVM'].newVMDisk[1]).trigger('click');
+			}
+			
+		};
+		fe.run();
+		
+		
+	},{'name':document.forms['frmwizardNewVM'].newVMName.value, 'group':wiz.vmgroup});
+	
+	l.run();
+	
+});
+
+/* When hard disk is enabled / disabled */
+$('#newVMHDTriggerBind').on('enable',function(){
+
+	// Update disabled / enabled items
+	if(document.forms['frmwizardNewVM'].newVMDisk[0].checked) {
+		$(document.forms['frmwizardNewVM'].newVMDisk[0]).trigger('click');
+	} else {
+		$(document.forms['frmwizardNewVM'].newVMDisk[1]).trigger('click');
+	}
+	
+}).on('disable',function(){
+	newVMToggleNewDisk(true);
+});
+
+ 
+ 
+</script>

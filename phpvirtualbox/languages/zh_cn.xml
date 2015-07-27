@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+	<context>
+		<name>phpVirtualBox</name>
+		<message>
+			<source>Warning: A VirtualBox internal operation is in progress. Closing this window or navigating away from this web page may cause unexpected and undesirable results. Please wait for the operation to complete.</source>
+			<translation>警告：VirtualBox正在执行一个内部操作，关闭当前窗口可能会产生意想不到的错误，请等待当前操作完成。</translation>
+		</message>
+		<message>
+			<source>Operation Canceled</source>
+			<translation>操作已被取消</translation>
+		</message>
+		<message>
+			<source>An error occurred communicating with your vboxwebsrv. No more requests will be sent by phpVirtualBox until the error is corrected and this page is refreshed. The details of this connection error should be displayed in a subsequent dialog box.</source>
+			<translation>与服务端通信失败，phpVirtualBox将不会响应您接下来的操作，请刷新当前页面。</translation>
+		</message>
+		<message>
+			<source>Unable to retrieve guest properties. Make sure the virtual machine is running and has the VirtualBox Guest Additions installed.</source>
+			<translation>无法获得客户端信息，请确保客户端虚拟机正在运行。</translation>
+		</message>
+		<!-- Error vmlist 1 -->
+		<message>
+			<source>There was an error obtaining the list of registered virtual machines from VirtualBox. Make sure vboxwebsrv is running and that the settings in config.php are correct.&lt;p&gt;The list of virtual machines will not begin auto-refreshing again until this page is reloaded.&lt;/p&gt;</source>
+			<translation>在从VirtualBox中获取虚拟机列表时出现错误。请确保WEB服务端正在运行，并且config.php中的配置正确。&lt;p&gt;请重新装载该页，否则虚拟机列表中的信息将不会继续自动刷新&lt;/p&gt;</translation>
+		</message>
+		<message>
+			<source>Server List</source>
+			<translation>服务器列表</translation>
+		</message>		
+	</context>
+	<context>
+		<name>UIVMDesktop</name>
+		<message>
+			<source>Console</source>
+			<translation>终端</translation>
+		</message>
+		<message>
+			<source>Loading ...</source>
+			<translation>载入中 ...</translation>
+		</message>
+	</context>
+	<context>
+		<name>VBoxSelectorWnd</name>
+		<message>
+			<source>Change Password</source>
+			<translation>更改密码</translation>
+		</message>
+		<message>
+			<source>Log out - %1</source>
+			<translation>登出 - %1</translation>
+		</message>
+		<message>
+			<source>Logged in as %1</source>
+			<translation>Logged in as %1</translation>
+		</message>
+		<message>
+			<source>Stop</source>
+			<translation>停止</translation>
+		</message>
+		<message>
+			<source>VirtualBox User Manual</source>
+			<translation>VirtualBox用户手册</translation>
+		</message>	
+		<message>
+			<source>About</source>
+			<translation>关于</translation>
+		</message>
+	</context>
+	<context>
+		<name>UIActionsPool</name>
+		<message>
+			<source>Save State</source>
+			<translation>保存状态</translation>
+		</message>
+		<message>
+			<source>Power Off</source>
+			<translation>关闭电源</translation>
+		</message>		
+	</context>
+	<context>
+		<!-- Console Tab -->
+		<name>VBoxConsoleWgt</name>
+		<message>
+			<source>User name</source>
+			<translation>用户名</translation>
+		</message>
+		<message>
+			<source>Password</source>
+			<translation>密码</translation>
+		</message>
+		<message>
+			<source>Connecting to %1</source>
+			<translation>连接到 a %1</translation>
+		</message>
+		<message>
+			<source>Connected to %1</source>
+			<translation>已连接至 %1</translation>
+		</message>
+		<message>
+			<source>Requested desktop size</source>
+			<translation>所请求的桌面大小</translation>
+		</message>
+		<message>
+			<source>Connect</source>
+			<translation>连接</translation>
+		</message>
+		<message>
+			<source>Detach</source>
+			<translation>分离</translation>
+		</message>
+		<message>
+			<source>Disconnect</source>
+			<translation>断开</translation>
+		</message>
+		<message>
+			<source>Send Ctrl-Alt-Del</source>
+			<translation>发送 Ctrl-Alt-Del</translation>
+		</message>
+		<message>
+			<source>Disconnect reason</source>
+			<translation>断开连接的原因</translation>
+		</message>
+		<message>
+			<source>Redirection by %1</source>
+			<translation>重定向至 %1</translation>
+		</message>
+		<message>
+			<source>Virtual machine is not running or is not configured to accept RDP connections.</source>
+			<translation>虚拟机没有运行或者没有配置开启RDP连接。</translation>
+		</message>
+	</context>		
+	<context>
+		<name>VBoxGlobal</name>
+		<message>
+			<source>Hosting</source>
+			<translation>宿主机</translation>
+		</message>
+		<message>
+			<source>Guest Network Adapters</source>
+			<translation>客户机网络适配器</translation>
+		</message>
+		<message>
+			<source>Up</source>
+			<translation>上</translation>
+			<comment>Host network adapter status</comment>
+		</message>
+		<message>
+			<source>Down</source>
+			<translation>下</translation>
+			<comment>Host network adapter status</comment>
+		</message>
+	</context>
+	<context>
+		<name>UIVMPreviewWindow</name>
+		<message>
+			<source>Every %1 seconds</source>
+			<translation>每 %1 秒</translation>
+		</message>
+		<message>
+			<source>Open in new window</source>
+			<translation>在新窗口中打开</translation>
+		</message>		
+	</context>
+	<context>
+		<name>UISettingsDialogGlobal</name>
+		<message>
+			<source>Users</source>
+			<translation>用户</translation>
+		</message>
+	</context>
+	<context>
+		<name>UIUsers</name>
+		<message>
+			<source>Users</source>
+			<translation>用户</translation>
+		</message>		
+		<message>
+			<source>Admin User</source>
+			<translation>管理员用户</translation>
+		</message>
+		<message>
+			<source>Can administer users</source>
+			<translation>可管理用户</translation>
+		</message>
+		<message>
+			<source>Add User</source>
+			<translation>添加用户</translation>
+		</message>
+		<message>
+			<source>Edit User</source>
+			<translation>编辑用户</translation>
+		</message>
+		<message>
+			<source>Remove User</source>
+			<translation>删除用户</translation>
+		</message>
+		<message>
+			<source>A user with that username already exists.</source>
+			<translation>用户名已经存在。</translation>
+		</message>
+		<message>
+			<source>Are you sure you want to remove the user &lt;b&gt;%1&lt;/b&gt;? This action cannot be undone.</source>
+			<translation>你确定要删除用户 &lt;b&gt;%1&lt;/b&gt;？该操作不能被重置。</translation>
+		</message>
+		<message>
+			<source>Username</source>
+			<translation>用户名</translation>
+		</message>
+		<message>
+			<source>Password</source>
+			<translation>密码</translation>
+		</message>
+		<message>
+			<source>Log in</source>
+			<translation>登入</translation>
+		</message>
+		<message>
+			<source>Change Password</source>
+			<translation>更改密码</translation>
+		</message>
+		<message>
+			<source>Old Password</source>
+			<translation>原密码</translation>
+		</message>
+		<message>
+			<source>New Password</source>
+			<translation>新密码</translation>
+		</message>
+		<message>
+			<source>The passwords you have entered do not match.</source>
+			<translation>您输入的密码不相同。</translation>
+		</message>
+		<message>
+			<source>Password changed.</source>
+			<translation>密码已被更改。</translation>
+		</message>
+		<message>
+			<source>The password you have entered is invalid.</source>
+			<translation>密码错误。</translation>
+		</message>
+		<message>
+			<source>Retype</source>
+			<translation>重新输入</translation>
+		</message>
+		<message>
+			<source>Invalid username or password.</source>
+			<translation>错误的用户名或密码。</translation>
+		</message>
+		<message>
+			<source>Not logged in.</source>
+			<translation>还没有登入。</translation>
+		</message>		
+	</context>
+</language>

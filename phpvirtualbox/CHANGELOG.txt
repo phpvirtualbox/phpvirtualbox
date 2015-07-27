@@ -1,0 +1,1374 @@
+-------------------------------------
+    5.0-0	2015-07-18
+-------------------------------------
+VirtualBox 5.0 compatibility.
+
+Progress operations are now listed in order of creation from top
+top bottom.
+ 
+-------------------------------------
+	4.3-3	2015-04-04
+-------------------------------------
+Added 2d/3d video acceleration configuration options in VM
+settings
+
+Fixed guest OS icon for Linux 2.6 (32-bit)
+
+Added $eventListenerTimeout configuration option.
+
+Upgraded jQuery to 1.11.2 and jQuery-ui to 1.11.4
+
+-------------------------------------
+	4.3-2	2014-12-16
+-------------------------------------
+
+Updated documentation to remove all googlecode.com references.
+
+Changing the guest OS type now updates LongMode CPU Feature of VM.
+https://sourceforge.net/p/phpvirtualbox/bugs/31/
+
+Removed phptest.php and related check to see if PHP parsing works
+correctly. This gives a false negative result in some browsers
+/ web server configurations.
+https://sourceforge.net/p/phpvirtualbox/bugs/32/
+
+Copied missing image from VirtualBox src.
+
+Fixed bug that would incorrectly determine the name of some images
+causing 404s in web server logs and broken images.
+
+Fixed bug in global NAT network settings that would not save the
+'Active' checkbox setting.
+
+-------------------------------------
+	4.3-1	2014-01-02
+-------------------------------------
+
+Fixed bug that would not stop the Global Preferences dialog from
+being displayed when $noAuth was enabled or some other auth method
+was set in config.php
+https://sourceforge.net/p/phpvirtualbox/bugs/7/
+
+Fixed JavaScript error when $enforceVMOwnership is enabled
+https://sourceforge.net/p/phpvirtualbox/bugs/9/
+
+Updated the links to point to new Sourceforge home instead of
+googlecode
+http://sourceforge.net/p/phpvirtualbox/bugs/11/
+
+Updated guest OS type icons
+
+Allow SCSI and SAS controllers to have CD/DVD drives
+
+-------------------------------------
+	4.3-0	2013-10-17
+-------------------------------------
+VirtualBox 4.3.x support.
+
+Fixed behavior when a VM is inaccessible.
+
+Fixed Clone VM Wizard bug that would not keep MAC addresses even
+when 'Reinitialize MAC address...' was not set
+https://sourceforge.net/p/phpvirtualbox/bugs/3/
+
+Fixed bug that would not allow a VM to be powered off if it stuck
+https://sourceforge.net/p/phpvirtualbox/bugs/5/
+
+-------------------------------------
+	4.2-8	2013-10-15
+-------------------------------------
+Updated media menus to indicate which media is already mounted
+by the given virtual machine.
+
+Minor UI enhancements.
+
+Fixed bug when collapsing and expanding the Preview box in VM
+details sections that would leave an arrow image drawn over the
+preview image.
+
+Removed bug workarounds for old version of Opera.
+
+Minor translation bug fixes.
+
+Added VNC viewer for VirtualBox-OSE with VNC support
+(experimental).
+
+VRDE port in the Details pane is now a vnc:// link if VirtualBox
+with VNC support is detected and the VM is running.
+
+-------------------------------------
+	4.2-7	2013-08-12
+-------------------------------------
+Upgraded jQuery from 1.8.2 to 1.10.2. Updated code to reflect
+library changes.
+
+Upgraded jQuery-UI from 1.8.23 to 1.10.3. Updated code to reflect
+library changes.
+
+Consolidated some JavaScript, and CSS files where possible.
+
+Minor translation fixes.
+
+Some VM properties are now editable when a VM is in a Saved state.
+
+Fixed bug when selecting a medium by location where it would have
+to be selected twice.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=641
+
+Minor UI enhancements.
+
+EHCI is no longer enabled by default on USB controller when
+creating a new VM.
+
+Moved USB, Serial, and Parallel port settings back into their own
+sections.
+
+Progress operation text is now resizable.
+
+Fixed bug that would not update VM display when a VM's custom icon
+was changed.
+
+Fixed bug when refreshing VM data that would not cause redraws of
+certain sections.
+
+Fixed display of Acceleration properties in VM details view.
+
+Added ability to handle more than one instance of SATA, SAS, and
+SCSI controllers in VM settings. 
+
+Changed new controller names when creating a new VM to align with
+VirtualBox naming conventions.
+
+Added support for setting VNC properties in the Remote Display tab
+of VM settings (beta). The console tab is still RDP specific.
+
+Added ability to change servers while operations are in progress.
+
+Better election of new hard drive names in Create Virtual Hard
+Drive wizards.
+
+Cloning operations are no longer modal.
+
+Snapshot operations are no longer modal.
+
+-------------------------------------
+	4.2-6	2013-07-22
+-------------------------------------
+Fixed bug where deleting or renaming a VM snapshot may not cause
+the chooser to refresh VM data.
+
+Minor translation bug fixes.
+
+Fixed "Restore Defaults" button in Appliance Export Wizard.
+
+VM settings dialog now prompts for reload if settings change while
+the dialog is open.
+
+VM settings dialog is now aware of VM state changes while the
+dialog is open and updates VM editability accordingly.
+
+Fixed XSS vulnerability.
+
+Fixed bug that would not subscribe to events of machines that were
+powered on while phpVirtualBox is open.
+
+Added icons from VirtualBox source for Windows 8.1 and 2012.
+
+Updated language files from latest VirtualBox release (4.2.16).
+
+Added running VM count to VM Group tool tips.
+
+Removing a copy of a VM in the chooser now removes it from the
+interface rather than unregistering it.
+
+Improved VM Group saving logic. Some items are no longer editable
+or draggable while VM group definitions are being saved to
+VirtualBox.
+
+Minor UI changes.
+
+Fixed bug that would not allow VMs to be dropped / copied into the
+root VM group.
+
+-------------------------------------
+	4.2-5	2013-07-11
+-------------------------------------
+More details pane redraw fixes when VM selection list changes
+while VM data is still loading
+
+Fixed multiple IE8 bugs that affected selecting and removing VMs
+
+Fixed bug that would incorrectly set the VRDE host to null if no
+consoleHost was configured in config.php
+http://code.google.com/p/phpvirtualbox/issues/detail?id=620
+
+Added workaround for VirtualBox bug that generates an error when
+taking or restoring snapshots.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=614
+
+Fixed bug that would not allow starting VMs if
+$vmMemoryStartLimitWarn was enabled in config.php
+http://code.google.com/p/phpvirtualbox/issues/detail?id=619
+
+VMs that are selected in the VM list are now selected by default
+in the Export Appliance Wizard
+http://code.google.com/p/phpvirtualbox/issues/detail?id=629
+
+Fixed bug in ActiveDirectory authentication module that would not
+correctly recognize the adminUser setting.
+https://code.google.com/p/phpvirtualbox/issues/detail?id=649
+
+Fixed bug that would not allow 'Stuck' VMs to be powered off.
+https://code.google.com/p/phpvirtualbox/issues/detail?id=651
+
+Fixed bug that would not allow "." to be entered in an IP address
+text box in some cases.
+https://code.google.com/p/phpvirtualbox/issues/detail?id=653
+
+Fixed bug in LDAP authentication module that would not allow users
+to log in.
+https://code.google.com/p/phpvirtualbox/issues/detail?id=687
+
+Canceling the 'First Run' wizard now resumes starting the VM.
+
+-------------------------------------
+	4.2-4	2012-11-02
+-------------------------------------
+Fixed details pane redraws when VM selection list changes while VM
+data is still loading
+
+Added VM group tooltips
+
+Fixed bug that would not display the first VM added to VirtualBox
+when there were no other VMs until the page was refreshed
+
+Fixed bug that would not allow attachment of USB devices from the
+Settings menu
+
+Cleaned up snapshot logic and snapshot list UI
+
+Taking a snapshot of a running VM now automatically pauses the VM
+to take the snapshot and resumes it once the snapshot has been
+taken
+
+Minor look and feel changes to more closely match the VirtualBox
+GUI
+
+Added First Run wizard
+
+Major rewrite of AJAX data <-> vboxwebsrv back-end interaction
+
+PHP session support is no longer required and AJAX requests should
+be a little more responsive
+
+Fixed bug that would not save DHCP server settings of host-only
+network interfaces
+
+Fixed bug in Clone Virtual Machine wizard that would not create a
+full clone when in 'Expert' (Hide Description) mode
+
+Reintroduced the Stop button in place of the Discard button in the
+main window toolbar
+
+Cleaned up wizards to perform expected actions when pressing Enter
+
+vboxinit now reads VBOX_BIN_PATH if set in /etc/default/virtualbox
+and adds it to the PATH environment variable
+http://code.google.com/p/phpvirtualbox/issues/detail?id=616
+
+If multiple servers are configured, progress operation rows now
+contain the server's name on which the operation was performed
+http://code.google.com/p/phpvirtualbox/issues/detail?id=617
+
+Fixed bug in IE8 that would prevent opening a detached console
+window for any VM that has a space in its name
+
+-------------------------------------
+	4.2-3b	2012-10-21
+-------------------------------------
+Fixed error when detaching a VM console window
+http://code.google.com/p/phpvirtualbox/issues/detail?id=613
+
+-------------------------------------
+	4.2-3	2012-10-21
+-------------------------------------
+Fixed line endings in vboxinit
+http://code.google.com/p/phpvirtualbox/issues/detail?id=606
+
+Fixed VM state change updates that did not update menus and
+toolbars
+
+Fixed bug that would hide the Remote Display tab in VM settings
+while a VM is running
+
+Fixed Preview section update bug that would not update the preview
+window at the selected interval
+
+Removed obsolete configuration items from config.php-example
+
+Fixed UI updating of UI components when a VM is added or removed
+from a selected group or its subgroups 
+
+Added PHP version check
+
+Better error handling when the VirtualBox event listener fails
+
+Menu bug that would not always trigger an action when a menu item
+was clicked
+
+Added check for PHP LDAP extension in LDAP authentication module
+
+Added Active Directory authentication module 
+
+Fixed bug in Virtual Media Manager that would fail to properly
+refresh media
+
+Fixed permission errors that would enforce VM ownership actions
+even when $enforceVMOwnership was not enabled in config.php
+
+Changing servers while an operation is in progress is no longer
+allowed as it causes progress operations to fail
+
+Preview screen is now a hardware accelerated HTML5 canvas if
+supported by the browser
+
+Improved support for older browsers (IE 8, FF 3.6, Opera 10)
+
+Added better visual indication in the Details section of when a
+VM's VRDE server fails to start - its port number is now red and
+has a line through it
+
+Improved redraw and menu update logic
+
+-------------------------------------
+	4.2-2	2012-10-15
+-------------------------------------
+Look-and-feel changes to more closely match the VirtualBox GUI
+
+Better UI handling of long group and VM names
+
+Fixed bug causing phpVirtualBox to not load in IE unless the
+JavaScript console was open
+
+Added config option to exclusively use phpVirtualBox's own groups
+configuration rather than VirtualBox groups - see
+config.php-example for more info
+
+Fixed bug that would leave group information (vm / group counts
+and icons) always visible after renaming a group
+
+Improved redraw logic for VM data in the Details section / tab
+
+Improved chooser grouping logic when grouping multiple items
+
+GUI state information is now saved in browser's localStorage
+instead of using cookies
+http://www.w3schools.com/html/html5_webstorage.asp
+
+Collapsed state of groups is now remembered if the browser
+supports localStorage
+
+-------------------------------------
+	4.2-1	2012-10-09
+-------------------------------------
+VirtualBox 4.2.x compatibility release
+
+Various regression bug fixes from beta versions
+
+Moved to using VirtualBox's passive event listener mechanism, and
+as a result:
+
+PHP session support is now required
+
+PHP minimum requirement is now at 5.2.0 (released in 2006)
+
+-------------------------------------
+	4.2-0b	2012-09-27
+-------------------------------------
+VirtualBox 4.2.x compatibility - beta release
+NOT ALL VirtualBox 4.2 FEATURES ARE IMPLEMENTED!!
+http://code.google.com/p/phpvirtualbox/issues/detail?id=585
+
+Various regression bug fixes.
+
+Fixed vboxinit script for users that have /bin/false or some other
+invalid shell.
+
+Updated languages.
+
+Added advanced mode ("Hide Description") to wizards.
+
+-------------------------------------
+	4.2-0	2012-09-25
+-------------------------------------
+VirtualBox 4.2.x compatibility - beta release
+NOT ALL VirtualBox 4.2 FEATURES ARE IMPLEMENTED!!
+http://code.google.com/p/phpvirtualbox/issues/detail?id=585
+
+Updated jquery to 1.8.2 and jquery-ui to 1.8.23
+
+Corrected IE9 support.
+
+Removed Firefox App Tab support.
+
+-------------------------------------
+	4.1-8	2012-08-20
+-------------------------------------
+Fixed bug that would error out when creating a VM without a boot
+disk.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=482
+
+Fixed bug that would cause the progress bar to hang when
+performing progress operations in some cases.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=495
+
+Fixed "Next" arrow wizard code bug visible when the number of
+wizard steps changes at run-time.
+
+Fixed bug that would fail to generate a correct RDP connection
+file when enforceVMOwnership is set.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=523
+
+Fixed bug when creating HDD on drive letters under Windows.
+
+Fixed Windows Bug when selecting folder from Hard Drive List
+
+Added better support for IE9.
+
+Added LDAP authentication module.
+
+Cosmetic changes in init script output.
+
+-------------------------------------
+	4.1-7	2012-01-17
+-------------------------------------
+Fixed bug that would not properly set the Use host I/O cache
+and Enable Page Fusion settings.
+
+Added Windows 8 OS icons.
+
+Cleaned up Wizard code.
+
+Removed unused images from source tree.
+
+-------------------------------------
+	4.1-6.1	2012-01-03
+-------------------------------------
+Fixed bug for IE 8 that would prevent the Global Preferences
+dialog from opening.
+
+-------------------------------------
+	4.1-6	2012-01-02
+-------------------------------------
+Added $startStopConfig to config.php-example
+
+Added Traditional Chinese (zh_tw) translation.
+
+Fixed bug that would not allow the mounting of media when its
+path or file name contains a quote.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=474
+
+-------------------------------------
+	4.1-5	2011-11-15
+-------------------------------------
+Fixed bug that would not set Acceleration options for a VM if the
+$enableAdvancedConfig option was not set in config.php
+http://code.google.com/p/phpvirtualbox/issues/detail?id=438
+
+Added OpenMediaVault authentication module.
+
+Added option to set VM startup mode and associated config option
+in config.php. Use vboxinit script in phpVirtualBox's root folder.
+
+Fixed a bug in IE 8 that would cause the "Loading ..." screen to
+stay in place after login.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=455
+
+Added $enableGuestAdditionsVersionDisplay setting and associated
+functionality to display guest additions version of a running
+VM on its Details tab.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=454
+
+Added Romanian translation.
+
+-------------------------------------
+	4.1-4	2011-10-17
+-------------------------------------
+$vmMemoryOffset if configured, is now displayed in yellow(-ish) in
+the host memory usage graph.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=414
+
+Fixed bug that would throw a VirtualBox error when cloning the
+"Current State" item of a virtual machine on the Snapshot tab.
+
+Fixed regression bug that would show all USB devices as being
+attached to the selected VM in the USB Devices section of the
+Settings toolbar menu.
+
+Fixed bug that would cause an error when "USB Devices" was clicked
+in the Settings toolbar menu.
+
+Minor UI changes.
+
+Fixed Export Appliance wizard so that it now displays the correct
+Export Appliance instructions rather than the Import Appliance
+wizard instructions.
+
+Added $enableHDFlushConfig configuration setting. For more info
+see "Responding to guest IDE/SATA flush requests" at:
+http://www.virtualbox.org/manual/ch12.html#idp12757424
+
+Added workaround for http://www.virtualbox.org/ticket/9255. Taking
+a snapshot of a running VM now prompts to pause the VM. This check
+was added in 4.1-3, now however it no longer verifies the
+VirtualBox version. 4.1-3 assumed this would be fixed in
+VirtualBox versions > 4.1.2.
+
+Added support for network adapter "Generic Properties" when the
+Generic Driver adapter type is selected.
+
+Added Doxygen style comments to PHP and JavaScript files.
+
+Added Chinese translation.
+
+-------------------------------------
+	4.1-3	2011-9-20
+-------------------------------------
+Added Polish translation.
+
+Fixed 4.1-0 regression bug that would not allow runtime attachment
+of USB devices from the Settings menu in the toolbar.
+
+Fixed 4.1-1 regression bug that would not allow one to edit
+existing USB filters for a running VM.
+
+Better handling of CD/DVD medium changes when 'Live CD/DVD' is not
+selected for a medium attachment.
+
+Less context menu levels for removable media attachments in the
+Settings toolbar button menu of a running VM when the VM only has 1
+removable media attachment of the a given type (CD/DVD and Floppy).
+
+Improved Guest Additions installation handling.
+
+Added test to check that PHP files are being parsed as PHP and
+associated error message if not.
+
+Added Parallels hard disk image format creation support. Available
+hard disk formats and their capabilities are now programmatically
+obtained through the VirtualBox API.
+
+Minor translation fixes.
+
+Advanced acceleration options are now correctly hidden when
+enableAdvancedConfig is not enabled in config.php.
+
+Login form on console tab is now hidden if remote console
+authentication is set to None. This should avoid some confusion.
+
+Improved PHP session handling. This should resolve some timeout
+issues and speed up response time in phpVirtualBox.
+
+Added context menus to the Virtual Media Manager.
+
+Added workaround for http://www.virtualbox.org/ticket/9255. Taking
+a snapshot of a running VM now prompts to pause the VM if
+VirtualBox <= 4.1.2 is detected.
+
+Fixed VM cloning bug.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=380
+
+Fixed some display issues for GTK based web browsers when a dark
+GTK theme is applied.
+
+Added check to see that get_magic_quotes_gpc() function exists
+before calling it. This fix problems for people running newer
+(unsupported) versions of PHP.
+
+Fixed bug where phpVirtualBox would try to pre-load images that do
+not exist - causing 404 errors in web server logs.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=396
+
+Added host memory usage information when the VirtualBox host is
+selected in the VM list. See associated hostMemInfoRefreshInterval
+option in config.php-example.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=402
+
+Added $vmListMinimal config option and associated code. See
+config.php-example.
+
+Added $vmMemoryStartLimitWarn and associated logic to emit a
+warning when starting a virtual machine would use more memory
+than the host has available.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=291
+
+Added context menu to VM list.
+
+A list of drives is now displayed when browsing for a file or
+folder when Windows is detected. This can be turned off if desired
+using the $noWindowsDriveList configuration option in config.php.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=388
+
+Fixed bug when creating or copying a new VMDK disk image where the
+disk would always be split into files < 2GB regardless of whether
+or not the "split" option was selected.
+
+-------------------------------------
+	4.1-2	2011-8-21
+-------------------------------------
+Added Stop options to VM list context menu.
+
+Fixed bug in Global Preferences that would not allow you to save
+settings if a Language was not selected in the Languages section.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=348
+
+Added context menus to VM Storage settings.
+
+Fixed bug that would cause network adapters to disconnect and
+reconnect when saving settings of a running VM.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=361
+
+Changing a VM name in the Appliance Import Wizard now
+automatically updates virtual disk image paths.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=362
+
+Minor translation fixes.
+
+Added Linked Clone support to match VirtualBox 4.1.2.
+
+Fixed bug when the bridged adapter of a VM was assigned to a host
+sub-interface. This would not allow for selection of the interface
+in VM settings.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=371
+
+Fixed bug in VM log viewer that would not display log file
+contents when non-utf-8 characers are present.
+
+-------------------------------------
+	4.1-1b	2011-8-1
+-------------------------------------
+Added snapshot thumbnail and full image link when viewing snapshot
+details of an online snapshot.
+
+Added context menus for snapshots.
+
+Minor UI changes.
+
+Fixed page fusion setting bug for people running VirtualBox in a
+32-bit OS with a 64-bit processor.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=347
+
+-------------------------------------
+	4.1-1	2011-8-1
+-------------------------------------
+Upgraded jquery-ui to 1.8.14
+
+Numerous translation bug fixes.
+
+VM settings are now available while VM is running. Some settings
+can be modified.
+
+Minor UI changes.
+	
+Fixed bug that would activate all configured USB filters when
+saving a VM.
+
+Implemented overwriting of existing file in appliance export
+wizard.
+
+Fixed bug in IE that would not allow for the entry of internal
+network names in VM settings.
+
+Fixed Clone VM wizard bug that would force the selection of
+"Current machine and all child states."
+
+Removed "Current machine and all child states" option from Clone
+VM wizard as it is unsupported by VirtualBox at this time.
+
+Fixed display bug in VM log viewer when pressing the Refresh
+button.
+
+Snapshots tab now prompts to take a new snapshot when attempting to
+restore a snapshot while VM is in a (changed) Saved state.
+
+Added license agreement dialog when importing appliances that have
+a license.
+
+Added a check for phpVirtualBox <-> VirtualBox versions.
+
+Added "Restore Defaults" button and functionality to appliance
+import wizard.
+
+Added Page Fusion setting in VM Settings -> System -> Motherboard
+when $enableAdvancedConfig is set in config.php.
+
+Fixed bug that would not allow a disk to be set to Multi-attach.
+
+Fixed bug with PHP versions < 5.2 that would not enable network
+cards of VMs when saving VM settings.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=333
+
+Added $enableAppTabSupport configuration option and feature. See
+config.php-example for more information.
+
+Added "Split into files of less than 2GB" option when creating or
+copying VMDK disks.
+
+Fixed bug in New Virtual Disk Wizard that would create all hard
+disk images in VDI format regardless of which format was selected.
+
+WSDL files now contain VirtualBox version number in file names.
+This should fix any WSDL file caching issues after a VBox upgrade.
+
+Fixed bug for OS X hosts that would not allow the Settings dialog
+to be displayed.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=338
+
+VM Settings -> System -> Acceleration tab now always appears, but
+is disabled if host CPU does not support virtualization extensions.
+
+CPUs are limited to 1 if host CPU does not support virtualization
+extensions. Mimicking the VirtualBox GUI.
+
+Host CPU features are now displayed regardless of config.php
+$enableAdvancedConfig setting.
+
+Fixed bug in Storage settings that would always display the Port
+Count option. Even when a non-SATA controller was selected.
+
+Fixed bug that would not close the progress dialog after taking a
+snapshot.
+
+-------------------------------------
+	4.1-0	2011-7-19
+-------------------------------------
+VirtualBox 4.1.x compatibility.
+
+jquery upgrade to 1.6.2.
+
+Fixed issue where exported disks would be incorrectly named when
+exporting a virtual machine.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=307
+
+UI updates for wizards.
+
+Most translations are now taken from the VirtualBox source .qt
+files.
+
+-------------------------------------
+	4.0-7	2011-6-8
+-------------------------------------
+Removed $sessionSecurityLevel setting and associated logic as it
+really provided no extra session security.
+
+Fixed session bug where another client running the same browser
+from the same subnet could inherit another user's session.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=295
+
+Fixed bug that would not allow you to edit more than one host-only
+networking adapter.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=310
+
+Added $consoleKeyboardLayout setting.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=248
+
+-------------------------------------
+	4.0-6	2011-5-24
+-------------------------------------
+Pressing Esc key now closes most dialog boxes.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=237
+
+File / folder browser no longer shows "Access Denied" message
+when $restrictFolders is configured.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=238
+
+Hard disks that are already attached to a VM are not elected to
+be attached when adding a Hard Disk attachment in VM settings.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=239
+
+Pressing Enter key works on add user form.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=240
+
+Fixed bug in appliance import wizard where changed values would
+not be reflected in the interface after changing them.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=243
+
+Added simple authentication plugin framework.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=249
+
+Added disableHostTimeSync option when $enableAdvancedConfig is
+set.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=226
+
+When selecting media, the file / folder browser remembers the last
+media location.
+
+Added custom VM icons functionality and related $enableCustomIcons
+setting.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=225
+
+Added "Bind to IP" setting for NAT network adapters when
+$enableAdvancedConfig is set.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=232
+
+Fixed bug that would not correctly set the host network adapter of
+a running VM when changing the adapter to bridged mode.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=245
+
+Port forwarding protocol is now selectable in advanced NAT
+options.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=263 
+
+Network adapters on the VirtualBox Host details page now shows
+which VMs (and their adapters) are attached.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=276
+
+Host / port setting is now exposed and editable on the console
+tab.
+
+Fixed bug when viewing snapshot details that would keep appending
+rows to the details pane rather than clearing then redrawing info.
+
+Fixed bug that would throw an exception when a DHCP server does not
+exist on a host-only interface.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=278
+
+Fixed bug that would cause IPv6 information to not be displayed
+for host interfaces when viewing VirtualBox host details.
+
+-------------------------------------
+	4.0-5	2011-3-26
+-------------------------------------
+Added Norwegian translation.
+
+Added Japanese translation.
+
+Fixed translation of 'Log in' in log in dialog.
+
+Fixed bug that would not allow editing of NAT port forwarding
+http://code.google.com/p/phpvirtualbox/issues/detail?id=215
+
+Virtual Media Manager now has scrolling media list and sortable
+columns.
+
+Fixed bug / error in RDP file generation script that occurs when
+the remote console port is configured for a range or list of
+ports.
+
+Storage controller pane now resizes as expected.
+
+Attached USB devices in VM settings is now obtained in real-time
+rather than only when the settings dialog is first opened.
+
+Fixed clone medium bug that would always clone a disk as 
+dynamically expanding storage type no matter which option was
+selected.
+
+Fixed bug when removing a VM when using PHP < 5.2.0.
+
+Fixed bug when editing shared folders of a non-running VM.
+
+Log in form now submits when pressing enter.
+
+Import / Export Appliances now has scrolling lists.
+
+Fixed bug when PHP does not have session support enabled. This
+incorrectly displays the error 'Not logged in.' each time an
+action is attempted in phpVirtualBox.
+
+Fixed CRLF injection security hole in rdp.php.
+
+-------------------------------------
+	4.0-4b	2011-3-1
+-------------------------------------
+Fixed bug that would not display error messages when attempting
+to log in if there was an error connecting to vboxwebsrv.
+
+-------------------------------------
+	4.0-4	2011-3-1
+-------------------------------------
+Added Exclusive and VPID hardware acceleration options to
+Acceleration tab visible when $enableAdvancedConfig is set.
+
+Added "Automatic" SATA Port Count option to the SATA Port Count
+list when $enableAdvancedConfig is set. New VMs created through
+phpVirtualBox will automatically have this set to Auto.
+
+Fixed bug that would display the Input tab rather than the
+Description tab when clicking on the Description section link in
+the VM Details section if $enableAdvancedConfig is set.
+
+Fixed bug that would reload the list of VMs rather than refresh
+the list when resetting a VM.
+
+Fixed bug that would not change some settings when using
+PHP < 5.2.0. This was reported by CentOS users regarding the
+Cable Connected network setting in particular.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=192
+
+Fixed bug that would not allow you to add a VM through Machine ->
+Add when using PHP < 5.2.0.
+
+Circumvent unconfirmed VirtualBox bug when trying to obtain a
+screen shot for the Preview window returns "Could not take a
+screenshot (VERR_TRY_AGAIN)." screen.php now runs
+console->display->invalidateAndUpdate() on error.
+
+VM settings while running are now available via the Settings
+button on the toolbar. Moved Install Guest Additions function
+to this menu.
+
+Added more files to default $browserRestrictFiles setting.
+
+OS Type can now be changed when importing a VM.
+
+Added $previewAspectRatio config option.
+
+Fixed bug that would always set consoleHost to the server being
+connected to as specified by $location in config.php.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=199
+
+To ensure a more sane default setting, the remote display IP is
+now determined in the following order:
+	- consoleHost setting if set in config.php
+	- IP address if set in VM's vrdeaddress setting
+	- IP address / host specified of server's $location setting
+		in config.php
+	- If setting is 127.0.0.1 or localhost, use phpVirtualBox's IP
+		address / hostname in its URL as determined by the web
+		browser.
+
+Fixed multi-server bug when initial server is unreachable.
+http://code.google.com/p/phpvirtualbox/issues/detail?id=200
+
+Added basic user authentication and associated options.
+
+Added icons to dialog titles.
+
+Added Spanish (Latin America) translation.
+
+Fixed preview window redraws in Safari and Chrome (webkit).
+
+jQuery upgrade to 1.5.1.
+
+jQuery UI upgrade to 1.8.9.
+
+Fixed Opera bug that would cause it to stop refreshing the list of
+VMs.
+
+Maximize use of browser caching when grabbing images for preview
+window utilizing ETag and If-Modified-Since HTTP headers.
+
+Added Parallel Port configuration and associated $enableLPTConfig
+configuration setting - EXPERIMENTAL - VirtualBox provides no
+documentation or official support for this. Nor can I. LPT support
+only works in Linux.
+
+Added CD/DVD and Floppy drives to host details.
+
+Host details now displays CPU features if $enableAdvancedConfig
+is enabled.
+
+OS Type selectors now properly display only OS types supported by
+the VirtualBox host based on its processors' features.
+
+Minor UI changes.
+
+Adding media through the Virtual Media Manager now updates the
+"recent media" list.
+
+Added advanced NAT settings for Network Adapters visible when
+$enableAdvancedConfig is set.
+
+Updated German translations.
+
+Added GPLv3.txt and updated verbiage in LICENSE.txt.
+
+Updated Storage VM Settings pane to mimic VirtualBox GUI resizable
+behavior.
+
+Added right-click functionality and tooltips to VMs in the VM
+list.
+
+Added more vmListSort options - including the option to manually
+sort VMs with drag-and-drop. See config.php-example.
+
+-------------------------------------
+	4.0-3	2011-2-10
+-------------------------------------
+UI fixes for some browsers when dragging the resize bar.
+
+SATA controllers can now have CD/DVD media attachments.
+
+Support for Chipset option on Motherboard tab in VM settings when
+VirtualBox >= 4.0.2 is detected.
+http://www.virtualbox.org/ticket/7885
+
+Snapshots with no children can be deleted while VM is running.
+
+Improved snapshot name generation.
+
+Snapshot ages are now periodically updated when viewing the
+Snapshots tab.
+
+Snapshot dates are now displayed instead of age for snapshots
+taken more than 30 days ago.
+
+File / folder browser now scrolls to selected file / folder.
+
+Added Russian translation.
+
+Added Portuguese (Brazil) translation.
+
+Added Italian translation.
+
+Updated French and German translations to the best of my ability
+using nls files from VirtualBox source and Google translate.
+Corrections are welcome.
+
+Improved multi-language support for PHP installations that do not
+have JSON enabled / installed.
+
+Language can now be changed in File -> Preferences -> Language.
+
+UI changes in an attempt to make things look and feel less "flat."
+
+JavaScript changes to speed things up in IE.
+
+Added VDE Network adapter support. Your underlying VirtualBox
+installation must support this, and it must be enabled in
+config.php.
+
+Fixed improper display of Remote Display Server port when
+accessing phpVirtualBox through http://ip:port/..
+
+To ensure proper configuration when accessing the remote display
+of a VM through NAT, remote display IP is now determined in the
+following order:
+	- consoleHost setting if set in config.php
+	- IP address if set in VM's vrdeaddress setting
+	- phpVirtualBox's IP address / hostname in its URL as
+		determined by the web browser
+
+Added Serial Port configuration.
+
+Added $disableSataPortCount config option to disable setting SATA
+controllers' port count to the max port number found when saving
+VM settings.
+
+New Hard Disk Wizard hard disk location defaults to VM's folder
+where appropriate.
+
+Fixed bug that would not allow the creation of Fixed size storage.
+
+Added $enableAdvancedConfig to configuration options in config.php.
+This allows you to change the following VM configuration options:
+	- HPET (System section -> Motherboard tab)
+	- Nested Paging (System section -> Acceleration tab)
+	- Large Pages (System section -> Acceleration tab)
+	- VT-x / AMD-V (System section -> Acceleration tab)
+	- VRDE Net Address (Display section -> Remote Display tab)
+	- SATA Port Count (Storage section -> select a SATA controller)
+	- Mouse type (General section -> Input tab)
+	- Keyboard type (General section -> Input tab)
+	- Create new hard disk from Virtual Media Manager (New button)
+	- Add new media from Virtual Media Manager (Add button)
+	- Clone hard disk from Virtual Media Manager
+		(Actions menu -> Clone)
+	- Make hard disk immutable from Virtual Media Manager
+		(Actions menu -> Immutable)
+	- Make hard disk "normal" from Virtual Media Manager
+		(Actions menu -> Normal)
+	- Add iSCSI disk from Virtual Media Manager (Add iSCSI button)
+	- All media selection menus have a Virtual Media Manager
+		button
+			
+Note that these items will not be translated. See the VirtualBox
+documentation for more information on what these settings will
+change / actions these will perform.
+
+Media selection now behaves the same as it does in the VirtualBox
+GUI.
+
+Some features of the Virtual Media Manager have been removed to
+mimic the one in the VirtualBox GUI.
+
+Changed versioning scheme.
+
+New configuration model where config.php-example is distributed
+instead of config.php. This should allow for persistent user
+configuration. All config logic is now in lib/config.php.
+
+-------------------------------------
+	4-2 - 2011-1-14
+-------------------------------------
+Viewing a VM's screenshot in a new window while running now
+prints a descriptive error rather than displaying a blank
+screen if the Oracle VM Extension Pack is not installed.
+
+Re-enabled console tab in IE. Disabling it in the first place
+was because of a HUGE oversight on my part :) Which leads to
+the next feature.
+
+Console tab now displays a message if the Adobe Flash plugin is
+not installed.
+
+Host network card and drive list is now properly refreshed when
+refreshing host info via the Machine -> Refresh menu item.
+
+Added MAC Address to Guest Network Adapters dialog.
+
+Default RDP port when creating a VM is now 3389-4000. Allowing
+for a range of ports.
+
+Fixed VM creation bug that created all VMs with an Unknown OS
+type and name set to the specified OS type.
+
+Fixed VM creation bug that would incorrectly display 'None' as
+the hard drive after creation until the newly created VM was
+refreshed.
+
+Tuned down PHP error reporting to keep Notices from being
+displayed when PHP's default error reporting is set too high
+in user's PHP config.
+
+Fixed bug that would not display a list of internal networks
+in VM network settings.
+
+Network settings are now (somewhat) changeable while a VM is
+running. This mimics the same functionality as the VirtualBox
+GUI.
+
+Shared folder settings are now changeable while a VM is
+running.
+
+Added VirtualBox guest additions installation feature.
+
+Added 'Add VM' feature.
+
+Fixed issue where VM disks were created in the VirtualBox
+folder rather than being created in the VM folder when using
+the New Virtual Machine Wizard.
+
+Fixed bug that would not import SCSI controllers and attached
+disk images when using the Import Appliance Wizard.
+
+Added progress operation images.
+
+Updated text when deleting / removing a VM to match VirtualBox
+GUI.
+
+USB devices can now be attached / detached to a running VM.
+
+Medium attachments for storage controllers on VM details tab
+are now properly sorted instead of printed in the arbitrary
+order that they are read from VirtualBox.
+
+VRDE Server (remote display) is now enabled by default when
+creating a new VM.
+
+Refreshing the VirualBox host in the machine list now refreshes
+system properties cache as well.
+
+Fixed preview window scrolling bug. In some browsers, the
+preview thumbnail would stay in place as the window was
+scrolled.
+
+Fixed browser quirks when switching VMs. This would cause the
+vm list pane to grow in width while a VM was loading in
+certain browsers.
+
+-------------------------------------
+	4-1 - 2011-01-09
+-------------------------------------
+Changed behavior of file browser to always use config setting
+for browserLocal regardless of browser's host. This should be
+OK now that IVFSExplorer bugs are fixed in VirtualBox 4.0.
+
+Fixed bug in Create HardDisk wizard functionality that would
+only allow a disk of size 1MB to be created.
+
+Fixed bug in display settings when the RDP extension pack is
+not installed.
+
+Fixed "Detach" console bug.
+
+Disable Console tab when IE is detected. The Flash RDP client
+from Oracle does not appear to work with IE. Even the demo
+distributed with the flash control does not work. It appears
+that RDPWebEventLoaded event is never triggered after the
+flash control loads. -- Invalid - 2011-1-10
+
+Max HD slider size in New HD wizard is now limited to 512GB.
+Anything over that and the slider loses so much precision that
+it becomes useless. You may still type a larger size in the
+size text box. E.g. "1 TB"
+
+-------------------------------------
+	4-0 - 2011-01-07
+-------------------------------------
+UI and back-end changes to match new version of VirtualBox.
+
+Updated jquery-ui to 1.8.2.
+
+Updated jquery to 1.4.4
+
+Fixed bug that would not allow console connections if accessing
+phpVirtualBox through a URL where a port is specified. E.g.
+http://myhost:8080/phpVirtualBox
+
+Added json_encode() for PHP compiled with --disable-json and
+PHP versions < 5.2.0.
+
+Fixed compatibility issues with PHP 5.1.x.
+
+"rdpHost" setting changed to "consoleHost"
+
+Added VirtualBox version to host in VM list and on the host
+details tab.
+
+Added multiple server functionality.
+
+Fixed case sensitivity for $browserRestrictFiles setting.
+
+Fixed bug when using OSE where the Shared Folders section would
+not be selected when "Shared Folders" is clicked on from the
+Details tab / section.
+
+Exporting a VM defaults to '.ova' file.
+
+Added language contexts.
+
+Changed cache temp dir location to try environment variables
+first.
+
+Fixed bug that would not send the 'Esc' key to the console when
+pressed.
+
+Changed back to GPL license.
+
+Added multiple server support.
+
+You can now power off a VM that is in a "Stuck" state.
+
+Versioning scheme is now
+	(VirtualBox compatible version)-(phpVirtualBox version)
+
+Fixed bug that would not display error message on failure to
+connect to vboxwebsrv.
+
+Removed old imgpng requirement as VirtualBox can now export
+screenshots as PNG data.
+
+Fixed media mounting bug that would not allow anything other than
+host drives to be mounted.
+
+-------------------------------------
+		0.5 - 2010-08-10
+-------------------------------------
+Fixed some English translations.
+
+Added fr_fr and de_de languages. 
+
+Fixed top toolbar and Virtual Media Manger translation bugs.
+
+Fixed OSE startup bug and removed console tab when OSE is
+detected.
+
+Fixed Host Details bug that would not display the VirtualBox
+host server's details when it is selected in the list of vms.
+
+Fixed bug in File -> Preferences that would not correctly
+reflect a change made to any preferences on the General tab.
+
+Workaround for Console tab resize bug that would disconnect from
+an existing console session when the window was resized. Now, it
+automatically reconnects after a window resize event.
+
+Applied UI enhancements patch supplied by compuwizard123
+http://code.google.com/u/compuwizard123/
+
+Host details now include VirtualBox version.
+
+-------------------------------------
+		0.4 - 2010-07-24
+-------------------------------------
+Fixed numerous translation bugs.
+
+Fixed bug that would not allow the addition of more than 4
+storage controller types in VM Settings.
+
+Changed WSDL cache to use memory only instead of both memory
+and disk. (PHP SoapClient WSDL_CACHE_MEMORY option).
+
+RDP host (for console tab and details tab RDP links) is now
+selected in the following order:
+	1) VM Configured host (would have to be set with VboxManage)
+	2) rdpHost setting in config.php
+	3) host in location setting of config.php
+	*) if host is 'localhost' or '127.0.0.1' use web browser
+		location's URL host as last resort
+
+Fixed bug in file / folder browser that would display the full
+path of files / folders rather than just their names. This only
+affected *nix web servers connecting to VirtualBox running on
+Windows hosts. I can't imagine this is a very common scenario:)
+
+Better error handling and meaningful error message when there
+is a PHP error, and phpVirtualBox fails to load.
+
+Fixed bug that would not allow you to enter your own internal
+network name in VM network configurations where Attached To: is
+set to Internal Network.
+
+Fixed bug that would break phpVirtualBox when
+allow_call_time_pass_reference is set to Off in php.ini.
+
+Removed ReflectionClass dependency. This also changes all
+config options in config.php to use 'var' instead of 'const.'
+
+License changed from GPL to MIT.
+
+-------------------------------------
+        0.3 - 2010-07-05
+-------------------------------------
+Fixed bug in file/folder browser that would incorrectly display
+files as folders and folders as files in some cases.
+
+Added Console tab.
+
+Added OSE support. This effectively removes the console tab,
+USB, and VRDP support when OSE is detected.
+
+Fixed bug in Host-networking interfaces pane that would cause
+tabs to disappear if editing a host interface more than once
+without refreshing.
+
+Made VM list and main tab content scrollable.
+
+Added Guest Network Adapter info. This queries guest additions
+for network adapter IP information of a running VM.
+
+Added Clone, Make Immutable, and Make Normal functionality to
+Virtual Media Manager.
+
+Fixed bug in Virtual Media Manager that would allow a user to
+try to release a medium that is attached to a snapshot. This
+attempt would always fail.
+
+Fixed bug that would cause saving USB filters to fail.
+
+Added Import / Export Appliance. NOTE: Some configurable
+import settings are ignored (e.g. network interface type).
+These are also ignored when importing from the VirtualBox
+GUI, and so appears to be a bug in VirtualBox itself.
+
+Added file type icons to file / folder browser.
+
+Fixed internal network dropdown list in Virtual Machine
+settings.
+
+-------------------------------------
+        0.2 - 2010-06-14
+-------------------------------------
+Initial Release

@@ -1,0 +1,246 @@
+<!-- 
+
+	Advanced panes for new hard disk wizard. Logic in vboxWizard()
+	Copyright (C) 2010-2015 Ian Moore (imoore76 at yahoo dot com)
+	
+	$Id: wizardNewHDAdvanced.html 595 2015-04-17 09:50:36Z imoore76 $
+
+ -->
+<!-- Step 1 -->
+<div id='wizardNewHDStep1' style='display: none'>
+
+	<span class='vboxTableLabel translate'>File location</span>
+		<div class='vboxOptions'>
+			<table class='vboxOptions'>
+				<tr>
+					<td style='width: 100%; white-space: nowrap'>
+						<input type='text' class='vboxText' name='wizardNewHDLocation' style='width: 100%'/>
+					</td>
+					<td style='width: 1%' id='wizardHDBrowseLocationButton'></td>
+				</tr>
+			</table>
+		</div>	
+
+
+	<span class='vboxTableLabel translate'>File size</span>
+	<div class='vboxOptions'>
+		<table>
+			<tr>
+				<td style='width: 100%; border: 0px; margin: 0px; padding: 0px;'>
+				   <div style='margin-top: 4px' id='wizardNewHDSize' class='slider'><div class='sliderScale'></div></div>
+				</td>
+				<td><input type='text' class='vboxText' name='wizardNewHDSizeValue' size='8' class='sliderValue' /></td>
+			</tr>
+			<tr style='vertical-align: top;'>
+				<td style='border: 0px; margin: 0px; padding: 0px;'>
+				<table style='width: 100%; border: 0px; margin: 0px; padding: 0px;'>
+					<tr style='vertical-align: top'>
+						<td style='text-align: left;'><span id='wizardNewHDMin'>1</span></td>
+						<td style='text-align: right;'><span id='wizardNewHDMax'>128</span></td>
+					</tr>
+				</table>
+				</td>
+				<td></td>
+			</tr>
+		</table>
+	</div>	
+
+	<table class='vboxInvisible' style='border: 0px solid transparent; border-spacing: 4px;'>
+		<tr style='vertical-align: top'>
+			<td>
+				<span class='vboxTableLabel translate'>Hard drive file type</span>
+				<div class='vboxOptions'>
+					<table class='vboxOptions vboxNewHDWizardFileTypes'>
+						<tr style='vertical-align: top;'>
+							<td><label><input type='radio' class='vboxRadio' checked='checked' name='newHardDiskFileType' value='vdi' /> <span class='translate'>VDI (VirtualBox Disk Image)</span></label></td>
+						</tr>
+						<tr style='vertical-align: top;'>
+							<td><label><input type='radio' class='vboxRadio' name='newHardDiskFileType' value='vmdk' /> <span class='translate'>VMDK (Virtual Machine Disk)</span></label></td>
+						</tr>
+						<tr style='vertical-align: top;'>
+							<td><label><input type='radio' class='vboxRadio' name='newHardDiskFileType' value='vhd' /> <span class='translate'>VHD (Virtual Hard Disk)</span></label></td>
+						</tr>
+					</table>
+				</div>
+			</td>
+			<td>
+				<span class='vboxTableLabel translate'>Storage on physical hard drive</span>
+				<div class='vboxOptions'>
+					<table class='vboxOptions'>
+						<tr style='vertical-align: top;' class='vboxCreateDynamic'>
+							<td><label><input type='radio' class='vboxRadio' checked='checked' name='newHardDiskType' value='dynamic' /> <span class='translate'>Dynamically allocated</span></label></td>
+						</tr>
+						<tr style='vertical-align: top;' class='vboxCreateFixed'>
+							<td><label><input type='radio' class='vboxRadio' name='newHardDiskType' value='fixed' /> <span class='translate'>Fixed size</span></label></td>
+						</tr>
+						<tr style='vertical-align: top;' class='vboxCreateSplit2G'>
+							<td><label><input type='checkbox' class='vboxCheckbox' name='newHardDiskSplit' disabled/> <span class='translate'>Split into files of less than 2GB</span></label></td>
+						</tr>					
+					</table>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+
+<script type='text/javascript'>
+
+//Fill HD type options
+var vboxHDTypesTbl = $('#wizardNewHDStep1').find('table.vboxNewHDWizardFileTypes').first();
+vboxHDTypesTbl.children().remove();
+var vboxHDTypes = $('#vboxPane').data('vboxSystemProperties').mediumFormats;
+for(var i = 0; i < vboxHDTypes.length; i++) {
+	if(jQuery.inArray('CreateFixed',vboxHDTypes[i].capabilities) < 0 && jQuery.inArray('CreateDynamic',vboxHDTypes[i].capabilities) < 0) continue;
+	if(jQuery.inArray('HardDisk',vboxHDTypes[i].deviceTypes) > -1) {
+		vboxHDTypesTbl.append("<tr style='vertical-align: top;'><td><label><input type='radio' onClick='wizardHDUpdateOptions()' class='vboxRadio' name='newHardDiskFileType' value='"+vboxHDTypes[i].id+"' /> "+vboxMedia.getFormat({'format':vboxHDTypes[i].name})+"</label></td></tr>");
+		vboxHDTypesTbl.find('tr').last().data('vboxFormat', vboxHDTypes[i]);
+	}
+}
+// Select default HD format and place it at the top
+vboxHDTypesTbl.find('input[value='+$('#vboxPane').data('vboxSystemProperties').defaultHardDiskFormat+']').prop('checked',true).closest('tr').detach().prependTo(vboxHDTypesTbl);
+
+wizardHDUpdateOptions();
+
+/*
+ * Location button
+ */
+ /* Choose location of new file button */
+ new vboxToolbarSingle({
+ 	'name' : 'mselecthdbtn',
+ 	'label' : trans('Choose a location for new virtual hard drive file...','UIWizardNewVD'),
+ 	'icon' : 'select_file',
+ 	'click' : function () {
+ 		wizardHDBrowseLocation();
+ 	}
+ }).renderTo('wizardHDBrowseLocationButton');		
+
+
+/*
+ * Translations
+ */
+$('#wizardNewHDStep1').find('span.translatevar').html(function(i,h){return trans(h,'UIWizardNewVDPageVariant');});
+ 
+/* Browse for new VDI location */
+function wizardHDBrowseLocation() {
+
+	// Get current location
+	var loc = $('<div />').html(document.forms['frmwizardNewHD'].elements.wizardNewHDLocation.value).text();
+	if(!loc) {
+		// no path set
+		loc = $('#vboxPane').data('vboxSystemProperties').homeFolder;
+	} else {
+		loc = vboxDirname(loc);
+	}
+	
+	if(loc.indexOf($('#vboxPane').data('vboxConfig').DSEP) < 0 && $('#wizardNewHDStep1').data('wizSuggested')['path']) {
+		loc = $('#wizardNewHDStep1').data('wizSuggested')['path'];
+	}
+
+	vboxFileBrowser(loc,function(f){
+		if(!f) return;
+		// get file name
+		prefile = document.forms['frmwizardNewHD'].elements.wizardNewHDLocation.value;
+		var lastindex = -1;
+		if(prefile.lastIndexOf("\\") >= 0){ lastindex = prefile.lastIndexOf("\\"); }
+		if(prefile.lastIndexOf("/") >= 0) { lastindex = prefile.lastIndexOf("/"); }
+		filename = prefile.substring(lastindex+1,prefile.length);
+		var laststring = f.charAt(f.length-1);
+		if(laststring=="\\" || laststring=="/"){
+		// has slash at end so get rid off it...
+		f=f.substring(0,f.length-1);
+		}
+		var path = f+$('#vboxPane').data('vboxConfig').DSEP+filename;
+		document.forms['frmwizardNewHD'].elements.wizardNewHDLocation.value = path;
+	},true,trans('Location','UIWizardNewVD'));
+
+}
+
+/* Changing HD type, show / hide split option */
+function wizardHDUpdateOptions() {
+	
+	var caps = 0;
+	for(var i = 0; i < document.forms['frmwizardNewHD'].newHardDiskFileType.length; i++) {
+		if(document.forms['frmwizardNewHD'].newHardDiskFileType[i].checked) {
+			caps = $(document.forms['frmwizardNewHD'].newHardDiskFileType[i]).closest('tr').data('vboxFormat').capabilities;
+			break;
+		}
+	}
+	
+	var capOpts = ['CreateFixed','CreateDynamic','CreateSplit2G'];
+	for(var i = 0; i < capOpts.length; i++) {
+		if(jQuery.inArray(capOpts[i],caps) < 0) {
+			$('#wizardNewHDStep1').find('tr.vbox'+capOpts[i]).addClass('disabled').find('input').prop({'disabled':true,'checked':false});
+		} else {
+			$('#wizardNewHDStep1').find('tr.vbox'+capOpts[i]).removeClass('disabled').find('input').prop('disabled',false);
+		}
+	}
+		
+}
+
+/*
+ * 
+ * Elect a filename for use
+ *
+ */
+function vboxWizardNewHDElectName(wiz) {
+	
+	// check for path and use it to elect name
+	var baseName = null;
+	var start = 1;
+	if(wiz && wiz.suggested && wiz.suggested.vmName) {
+		baseName = wiz.suggested.vmName;
+		start = 2;
+	}
+	document.forms['frmwizardNewHD'].elements.wizardNewHDLocation.value = vboxMedia.electHardDiskName(baseName, start);
+	
+}
+
+/* Size slider */
+var min = 1024;
+var max = Math.max(parseInt($('#vboxPane').data('vboxSystemProperties').infoVDSize),2199022206980) / 1048576;
+// Over 512GB and the slider becomes useless
+max = Math.min(max,512*1024);
+
+$('#wizardNewHDSize').data('form','frmwizardNewHD');
+$('#wizardNewHDSize').data('display',vboxMbytesConvert);
+$('#wizardNewHDSize').slider({'min':min,'max':max,'step':1024});
+$('#wizardNewHDSize').slider('value',2048);
+
+$('#wizardNewHDMin').html(vboxMbytesConvert(min));
+$('#wizardNewHDMax').html(vboxMbytesConvert(max));
+
+ /* Suggested Data exists */
+$('#wizardNewHDStep1').on('show',function(e,wiz){
+
+	// Already initialized?
+	if($('#wizardNewHDStep1').data('init') || !wiz || !wiz.suggested) return;
+	
+	$(document.forms['frmwizardNewHD'].elements.wizardNewHDLocation).focus();
+	
+	/* Keep suggested options */
+	$('#wizardNewHDStep1').data('wizSuggested', wiz.suggested);
+
+	if(wiz.suggested.name) {
+		document.forms['frmwizardNewHD'].elements.wizardNewHDLocation.value = wiz.suggested.name;
+	}
+	
+	if(wiz.suggested.size) {
+		$('#wizardNewHDSize').slider('value',wiz.suggested.size);
+	}
+	
+	if(wiz.suggested.path){
+		if($('#vboxPane').data('vboxConfig').enforceVMOwnership==true){
+			var nameIndex = wiz.suggested.path.lastIndexOf(wiz.suggested.name+$('#vboxPane').data('vboxConfig').DSEP);
+			var path = wiz.suggested.path.substr(0,nameIndex);
+			wiz.suggested.path = path + $('#vboxPane').data('vboxSession').user + "_" + wiz.suggested.name+$('#vboxPane').data('vboxConfig').DSEP;
+		}	
+	}
+
+	if(!(wiz && wiz.suggested && wiz.suggested.name))
+		vboxWizardNewHDElectName(wiz);
+
+	$('#wizardNewHDStep1').data('init',true);
+
+	
+});
+</script>
