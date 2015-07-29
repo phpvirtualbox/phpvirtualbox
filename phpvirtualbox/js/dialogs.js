@@ -1341,7 +1341,7 @@ function vboxVMsettingsDialog(vm,pane) {
                         if(media[i].deviceType != 'HardDisk') continue;
                         
                         var id = vm.name;
-                        var oldpw = null;
+                        var oldpw = "";
                         var cipher = null;
                         
                         // Check for existing encryption setting

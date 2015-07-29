@@ -625,6 +625,7 @@ class vboxconnector {
 
 					} catch (Exception $e) {
 						// pass
+						$this->errors[] = $e;
 					}
 					break;
 
@@ -723,7 +724,7 @@ class vboxconnector {
 
 		// Create and register event listener
 		$listener = $this->vbox->eventSource->createListener();
-		$this->vbox->eventSource->registerListener($listener,array('MachineEvent','SnapshotEvent','OnMediumRegistered','OnExtraDataChanged'), false);
+		$this->vbox->eventSource->registerListener($listener,array('MachineEvent', 'SnapshotEvent', 'OnMediumRegistered', 'OnExtraDataChanged', 'OnSnapshotRestored'), false);
 
 		// Add to event listener list
 		$this->persistentRequest['vboxEventListeners']['vbox'] = array(
@@ -2368,8 +2369,10 @@ class vboxconnector {
 			try {
 
 				// Force web call to keep session open.
-				$this->session = new ISession($this->client, $this->persistentRequest['sessionHandle']);
-				if((string)$this->session->state) {}
+				if($this->persistentRequest['sessionHandle']) {
+    				$this->session = new ISession($this->client, $this->persistentRequest['sessionHandle']);
+    				if((string)$this->session->state) {}
+				}
 
 				/* @var $progress IProgress */
 				$progress = new IProgress($this->client, $args['progress']);
@@ -2489,15 +2492,14 @@ class vboxconnector {
 			// Close session and logoff
 			try {
 
-				if(!$this->session)
-					$this->session = $this->websessionManager->getSessionObject($this->vbox->handle);
-
-				if($this->session && (string)$this->session->state != 'Unlocked') {
-					$this->session->unlockMachine();
+				if($this->session->handle) {
+				    if((string)$this->session->state != 'Unlocked') {
+    					$this->session->unlockMachine();
+				    }
+    				$this->session->releaseRemote();
+    				unset($this->session);
 				}
 
-				$this->session->releaseRemote();
-				unset($this->session);
 
 			} catch (Exception $e) {
 				$this->errors[] = $e;
@@ -3291,7 +3293,7 @@ class vboxconnector {
 			if($state == 'saveState') {
 				$progress = $this->session->machine->saveState();
 			} else {
-				$progress = $this->session->console->$state();				
+				$progress = $this->session->console->$state();
 			}
 
 			if(!$progress->handle) {
@@ -4700,7 +4702,7 @@ class vboxconnector {
 			$machine->lockMachine($this->session->handle, ((string)$machine->sessionState == 'Unlocked' ? 'Write' : 'Shared'));
 
 			/* @var $progress IProgress */
-			$progress = $this->session->machine->takeSnapshot($args['name'], $args['description']);
+			list($progress, $snapshotId) = $this->session->machine->takeSnapshot($args['name'], $args['description']);
 
 			// Does an exception exist?
 			try {
@@ -4716,8 +4718,6 @@ class vboxconnector {
 			$this->_util_progressStore($progress);
 
 		} catch (Exception $e) {
-
-			$this->errors[] = $e;
 
 			if(!$progress->handle && $this->session->handle) {
 				try{$this->session->unlockMachine();$this->session=null;}catch(Exception $e){}
@@ -4886,11 +4886,11 @@ class vboxconnector {
 	    // Connect to vboxwebsrv
 	    $this->connect();
 
-	    $m = $this->vbox->openMedium($args['medium'],'HardDisk');
+	    $m = $this->vbox->openMedium($args['medium'], 'HardDisk', 'ReadWrite');
 
 	    /* @var $progress IProgress */
-	    $progress = $m->changeEncryption($args['old_pw'],
-	            $args['cipher'], $args['new_pw'], $args['new_pwid']);
+	    $progress = $m->changeEncryption($args['old_password'],
+	            $args['cipher'], $args['password'], $args['id']);
 
 	    // Does an exception exist?
 	    try {
@@ -4927,7 +4927,7 @@ class vboxconnector {
 		// Connect to vboxwebsrv
 		$this->connect();
 
-		$m = $this->vbox->openMedium($args['medium'],'HardDisk');
+		$m = $this->vbox->openMedium($args['medium'], 'HardDisk');
 
 		/* @var $progress IProgress */
 		$progress = $m->resize($args['bytes']);
@@ -4965,7 +4965,7 @@ class vboxconnector {
 		$mid = $target->id;
 
 		/* @var $src IMedium */
-		$src = $this->vbox->openMedium($args['src'],'HardDisk');
+		$src = $this->vbox->openMedium($args['src'], 'HardDisk');
 
 		$type = array(($args['type'] == 'fixed' ? 'Fixed' : 'Standard'));
 		if($args['split']) $type[] = 'VmdkSplit2G';
@@ -5003,7 +5003,7 @@ class vboxconnector {
 		$this->connect();
 
 		/* @var $m IMedium */
-		$m = $this->vbox->openMedium($args['medium'],'HardDisk');
+		$m = $this->vbox->openMedium($args['medium'], 'HardDisk');
 		$m->type = $args['type'];
 		$m->releaseRemote();
 
@@ -5067,7 +5067,7 @@ class vboxconnector {
 		$this->connect();
 
 		/* @var $m IMedium */
-		$m = $this->vbox->openMedium($args['path'],$args['type'],'ReadWrite',false);
+		$m = $this->vbox->openMedium($args['path'], $args['type'], 'ReadWrite', false);
 
 		$mid = $m->id;
 		$m->releaseRemote();
@@ -5470,13 +5470,14 @@ class vboxconnector {
 		if((string)$m->deviceType == 'HardDisk') {
     		try {
     		    list($id, $cipher) = $m->getEncryptionSettings();
-    		    $encryptionSettings = array(
-    		      'id' => $id,
-    		      'cipher' => $cipher,
-    		    );
+    		    if($id) {
+        		    $encryptionSettings = array(
+        		      'id' => $id,
+        		      'cipher' => $cipher,
+        		    );
+    		    }
 		    } catch (Exception $e) {
 		        // Pass. Encryption is not configured
-		        $encryptionSettings = array();
     		}
 
 		}
@@ -5515,9 +5516,11 @@ class vboxconnector {
 	 */
 	private function _util_progressStore(&$progress) {
 
-		/* Store vbox handle */
+		/* Store vbox and session handle */
 		$this->persistentRequest['vboxHandle'] = $this->vbox->handle;
-		$this->persistentRequest['sessionHandle'] = $this->session->handle;
+		if($this->session->handle) {
+		    $this->persistentRequest['sessionHandle'] = $this->session->handle;
+		}
 
 		/* Store server if multiple servers are configured */
 		if(@is_array($this->settings->servers) && count($this->settings->servers) > 1)
@@ -5559,12 +5562,12 @@ class vboxconnector {
 		$scs = array();
 
 		$scts = array('LsiLogic',
-'BusLogic',
-'IntelAhci',
-'PIIX4',
-'ICH6',
-'I82078',
-'USB');
+                    'BusLogic',
+                    'IntelAhci',
+                    'PIIX4',
+                    'ICH6',
+                    'I82078',
+                    'USB');
 
 		foreach($scts as $t) {
 		    $scs[$t] = $sp->getStorageControllerHotplugCapable($t);

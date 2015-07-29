@@ -149,7 +149,7 @@ var vboxSnapshotButtons = [
 								// callback passed to click()? else Refresh vm list
 								if(typeof callback == 'function') { callback(pres); }
 	
-							},'progress_snapshot_create_90px.png',trans('Take a snapshot of the current virtual machine state','VBoxSnapshotsWgt'),
+							},'progress_snapshot_create_90px.png', trans('Take a snapshot of the current virtual machine state','VBoxSnapshotsWgt'),
 								vm.name);
 							
 						} else {
@@ -190,7 +190,7 @@ var vboxSnapshotButtons = [
   			};
   			buttons[trans('Cancel','QIMessageBox')] = function() { $(this).dialog('close'); };
   			
-  			$('#vboxSnapshotNew').dialog({'closeOnEscape':false,'width':'400px','height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/take_snapshot_16px.png" class="vboxDialogTitleIcon" height="16" width="16" /> ' + trans('Take Snapshot of Virtual Machine','VBoxTakeSnapshotDlg')});
+  			$('#vboxSnapshotNew').dialog({'closeOnEscape':false,'width':'400px','height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/snapshot_take_16px.png" class="vboxDialogTitleIcon" height="16" width="16" /> ' + trans('Take Snapshot of Virtual Machine','VBoxTakeSnapshotDlg')});
   			
   	  	}
   	},

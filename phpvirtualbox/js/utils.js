@@ -327,26 +327,21 @@ function vboxMachineStateIcon(state)
     {
         case "PoweredOff": strIcon = "state_powered_off_16px.png"; break;
         case "Saved": strIcon = "state_saved_16px.png"; break;
-        case "Teleported": strIcon = strNoIcon; break;
+        case "Saving": strIcon = "state_saving_16px.png"; break;
+        case "Snapshotting": strIcon = "snapshot_offline_16px.png"; break;
         case "LiveSnapshotting": strIcon = "snapshot_online_16px.png"; break;
         case "Aborted": strIcon = "state_aborted_16px.png"; break;
         case "Running": strIcon = "state_running_16px.png"; break;
         case "Paused": strIcon = "state_paused_16px.png"; break;
         case "Stuck": strIcon = "state_stuck_16px.png"; break;
-        case "Teleporting": strIcon = strNoIcon; break;
-        case "Starting": strIcon = strNoIcon; break;
-        case "Stopping": strIcon = strNoIcon; break;
         case "Saving": strIcon = "state_discarding_16px.png"; break;
         case "Restoring": strIcon = "vm_settings_16px.png"; break;
-        case "TeleportingPausedVM": strIcon = strNoIcon; break;
-        case "TeleportingIn": strIcon = strNoIcon; break;
         case "RestoringSnapshot": strIcon = "discard_cur_state_16px.png"; break;
         case "DeletingSnapshot": strIcon = "state_discarding_16px.png"; break;
-        case "SettingUp": strIcon = strNoIcon; break;
         case "Hosting" : strIcon = "vm_settings_16px.png"; break;
         case "Inaccessible": strIcon = "state_aborted_16px.png"; break;
         default:
-            break;
+            strIcon = strNoIcon;
     }
     
     return strIcon;
@@ -720,7 +715,7 @@ function vboxProgress(prequest,callback,icon,title,target,blocking) {
 		'progress' : prequest.progress,
 		'catcherrs' : prequest.catcherrs
 	};
-	
+
 	// Blocking creates a dialog
 	if(!blocking) {
 	

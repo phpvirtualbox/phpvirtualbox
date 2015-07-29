@@ -2286,7 +2286,7 @@ var vboxMedia = {
      * Get encryption settings for medium
      */
     getEncryptionSettings: function(m) {
-        if(m.encryptionSettings) {
+        if(m && m.encryptionSettings) {
             return m.encryptionSettings
         }
         return null;
