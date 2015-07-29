@@ -248,12 +248,12 @@ class vboxconnector {
 
 			$this->version = explode('.',$this->vbox->version);
 			$this->version = array(
-				'ose'=>(stripos($this->version[2],'ose') > 0),
-				'string'=>join('.',$this->version),
-				'major'=>intval(array_shift($this->version)),
-				'minor'=>intval(array_shift($this->version)),
-				'sub'=>intval(array_shift($this->version)),
-				'revision'=>(string)$this->vbox->revision,
+				'ose' => (stripos($this->version[2],'ose') > 0),
+				'string' => join('.',$this->version),
+				'major' => intval(array_shift($this->version)),
+				'minor' => intval(array_shift($this->version)),
+				'sub' => intval(array_shift($this->version)),
+				'revision' => (string)$this->vbox->revision,
 				'settingsFilePath' => $this->vbox->settingsFilePath
 			);
 		}
@@ -269,7 +269,7 @@ class vboxconnector {
 	public function __destruct() {
 
 		// Do not logout if there are persistent handles
-		if($this->connected && @$this->vbox->handle && !array_key_exists('vboxHandle',$this->persistentRequest)) {
+		if($this->connected && @$this->vbox->handle && !array_key_exists('vboxHandle' ,$this->persistentRequest)) {
 
 			// Failsafe to close session
 			if(@$this->session && @(string)$this->session->state == 'Locked') {
@@ -611,6 +611,7 @@ class vboxconnector {
 				/* enrich with snapshot name and new snapshot count*/
 				case 'OnSnapshotTaken':
 				case 'OnSnapshotDeleted':
+				case 'OnSnapshotRestored':
 				case 'OnSnapshotChanged':
 
 					try {
@@ -802,6 +803,7 @@ class vboxconnector {
 		    /* Snapshot events */
 			case 'OnSnapshotTaken':
 			case 'OnSnapshotDeleted':
+			case 'OnSnapshotRestored':
 			case 'OnSnapshotChanged':
 				$data['machineId'] = $eventDataObject->machineId;
 				$data['snapshotId'] = $eventDataObject->snapshotId;
@@ -2366,19 +2368,17 @@ class vboxconnector {
 			try {
 
 				// Force web call to keep session open.
-				// Not sure if this is needed.
-				$this->session = $this->websessionManager->getSessionObject($this->vbox->handle);
+				$this->session = new ISession($this->client, $this->persistentRequest['sessionHandle']);
 				if((string)$this->session->state) {}
 
 				/* @var $progress IProgress */
-				$progress = new IProgress($this->client,$args['progress']);
+				$progress = new IProgress($this->client, $args['progress']);
 
 			} catch (Exception $e) {
 				$this->errors[] = $e;
 				throw new Exception('Could not obtain progress operation: '.$args['progress']);
 				$success = 0;
 			}
-
 
 			$response['progress'] = $args['progress'];
 
@@ -2390,7 +2390,7 @@ class vboxconnector {
 				'timeRemaining' => $this->_util_splitTime($progress->timeRemaining),
 				'timeElapsed' => $this->_util_splitTime((time() - $pop['started'])),
 				'percent' => $progress->percent
-				);
+			);
 
 
 			// Completed? Do not return. Fall to _util_progressDestroy() called later
@@ -3252,7 +3252,7 @@ class vboxconnector {
 				}
 
 				/* @var $progress IProgress */
-				$progress = $machine->launchVMProcess($this->session->handle, 'headless', '');
+				$progress = $machine->launchVMProcess($this->session->handle, "headless", "");
 
 			} catch (Exception $e) {
 				// Error opening session
@@ -3288,7 +3288,11 @@ class vboxconnector {
 		if($states[$state]['progress']) {
 
 			/* @var $progress IProgress */
-			$progress = $this->session->console->$state();
+			if($state == 'saveState') {
+				$progress = $this->session->machine->saveState();
+			} else {
+				$progress = $this->session->console->$state();				
+			}
 
 			if(!$progress->handle) {
 
@@ -3321,7 +3325,11 @@ class vboxconnector {
 		// Just call the function
 		} else {
 
-			$this->session->console->$state(($states[$state]['force'] ? true : null));
+			if($state == 'discardSavedState') {
+				$this->session->machine->$state(($states[$state]['force'] ? true : null));
+			} else {
+				$this->session->console->$state(($states[$state]['force'] ? true : null));
+			}
 
 		}
 
@@ -4579,13 +4587,13 @@ class vboxconnector {
 
 			/* @var $machine IMachine */
 			$machine = $this->vbox->findMachine($args['vm']);
-			$machine->lockMachine($this->session->handle,'Write');
+			$machine->lockMachine($this->session->handle, 'Write');
 
 			/* @var $snapshot ISnapshot */
 			$snapshot = $this->session->machine->findSnapshot($args['snapshot']);
 
 			/* @var $progress IProgress */
-			$progress = $this->session->console->restoreSnapshot($snapshot->handle);
+			$progress = $this->session->machine->restoreSnapshot($snapshot->handle);
 
 			$snapshot->releaseRemote();
 			$machine->releaseRemote();
@@ -4638,7 +4646,7 @@ class vboxconnector {
 			$machine->lockMachine($this->session->handle, 'Shared');
 
 			/* @var $progress IProgress */
-			$progress = $this->session->console->deleteSnapshot($args['snapshot']);
+			$progress = $this->session->machine->deleteSnapshot($args['snapshot']);
 
 			$machine->releaseRemote();
 
@@ -4692,7 +4700,7 @@ class vboxconnector {
 			$machine->lockMachine($this->session->handle, ((string)$machine->sessionState == 'Unlocked' ? 'Write' : 'Shared'));
 
 			/* @var $progress IProgress */
-			$progress = $this->session->console->takeSnapshot($args['name'],$args['description']);
+			$progress = $this->session->machine->takeSnapshot($args['name'], $args['description']);
 
 			// Does an exception exist?
 			try {
@@ -5509,6 +5517,7 @@ class vboxconnector {
 
 		/* Store vbox handle */
 		$this->persistentRequest['vboxHandle'] = $this->vbox->handle;
+		$this->persistentRequest['sessionHandle'] = $this->session->handle;
 
 		/* Store server if multiple servers are configured */
 		if(@is_array($this->settings->servers) && count($this->settings->servers) > 1)

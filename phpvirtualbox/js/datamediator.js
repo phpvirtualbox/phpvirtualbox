@@ -306,7 +306,7 @@ $(document).ready(function(){
 
 	
 	// Snapshot changed
-	}).on('vboxOnSnapshotTaken vboxOnSnapshotDeleted vboxOnSnapshotChanged',function(e,eventData) {
+	}).on('vboxOnSnapshotTaken vboxOnSnapshotDeleted vboxOnSnapshotChanged vboxOnSnapshotRestored',function(e,eventData) {
 		
 		if(vboxVMDataMediator.vmData[eventData.machineId]) {
 			

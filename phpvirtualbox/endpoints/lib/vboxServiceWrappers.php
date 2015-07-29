@@ -1091,6 +1091,14 @@ class IVirtualBox extends VBox_ManagedObject
         return (string)$response->returnval;
     }
 
+    public function getAPIRevision()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IVirtualBox_getAPIRevision', array((array)$request));
+        return (float)$response->returnval;
+    }
+
     public function getHomeFolder()
     {
         $request = new stdClass();
@@ -1384,6 +1392,33 @@ class IAppliance extends VBox_ManagedObject
         $request->_this = $this->handle;
         $response = $this->connection->__soapCall('IAppliance_getWarnings', array((array)$request));
         return (array)$response->returnval;
+    }
+
+    public function getPasswordIds()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IAppliance_getPasswordIds', array((array)$request));
+        return (array)$response->returnval;
+    }
+
+    public function getMediumIdsForPasswordId($arg_passwordId)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->passwordId = $arg_passwordId;
+        $response = $this->connection->__soapCall('IAppliance_getMediumIdsForPasswordId', array((array)$request));
+        return (array)$response->returnval;
+    }
+
+    public function addPasswords($arg_identifiers, $arg_passwords)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->identifiers = $arg_identifiers;
+        $request->passwords = $arg_passwords;
+        $response = $this->connection->__soapCall('IAppliance_addPasswords', array((array)$request));
+        return ;
     }
 
     public function getPath()
@@ -1846,12 +1881,12 @@ class IMachine extends VBox_ManagedObject
         return ;
     }
 
-    public function launchVMProcess($arg_session, $arg_type, $arg_environment)
+    public function launchVMProcess($arg_session, $arg_name, $arg_environment)
     {
         $request = new stdClass();
         $request->_this = $this->handle;
         $request->session = $arg_session;
-        $request->type = $arg_type;
+        $request->name = $arg_name;
         $request->environment = $arg_environment;
         $response = $this->connection->__soapCall('IMachine_launchVMProcess', array((array)$request));
         return new IProgress ($this->connection, $response->returnval);
@@ -2099,10 +2134,11 @@ class IMachine extends VBox_ManagedObject
         return new IStorageController ($this->connection, $response->returnval);
     }
 
-    public function getStorageControllerByInstance($arg_instance)
+    public function getStorageControllerByInstance($arg_connectionType, $arg_instance)
     {
         $request = new stdClass();
         $request->_this = $this->handle;
+        $request->connectionType = $arg_connectionType;
         $request->instance = $arg_instance;
         $response = $this->connection->__soapCall('IMachine_getStorageControllerByInstance', array((array)$request));
         return new IStorageController ($this->connection, $response->returnval);
@@ -2460,15 +2496,6 @@ class IMachine extends VBox_ManagedObject
         return array((float)$response->originX, (float)$response->originY, (float)$response->width, (float)$response->height, (bool)$response->enabled);
     }
 
-    public function querySavedThumbnailSize($arg_screenId)
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $request->screenId = $arg_screenId;
-        $response = $this->connection->__soapCall('IMachine_querySavedThumbnailSize', array((array)$request));
-        return array((float)$response->size, (float)$response->width, (float)$response->height);
-    }
-
     public function readSavedThumbnailToArray($arg_screenId, $arg_bitmapFormat)
     {
         $request = new stdClass();
@@ -2479,21 +2506,22 @@ class IMachine extends VBox_ManagedObject
         return array((array)$response->returnval, (float)$response->width, (float)$response->height);
     }
 
-    public function querySavedScreenshotPNGSize($arg_screenId)
+    public function querySavedScreenshotInfo($arg_screenId)
     {
         $request = new stdClass();
         $request->_this = $this->handle;
         $request->screenId = $arg_screenId;
-        $response = $this->connection->__soapCall('IMachine_querySavedScreenshotPNGSize', array((array)$request));
-        return array((float)$response->size, (float)$response->width, (float)$response->height);
+        $response = $this->connection->__soapCall('IMachine_querySavedScreenshotInfo', array((array)$request));
+        return array(new BitmapFormatCollection ($this->connection, (array)$response->returnval), (float)$response->width, (float)$response->height);
     }
 
-    public function readSavedScreenshotPNGToArray($arg_screenId)
+    public function readSavedScreenshotToArray($arg_screenId, $arg_bitmapFormat)
     {
         $request = new stdClass();
         $request->_this = $this->handle;
         $request->screenId = $arg_screenId;
-        $response = $this->connection->__soapCall('IMachine_readSavedScreenshotPNGToArray', array((array)$request));
+        $request->bitmapFormat = $arg_bitmapFormat;
+        $response = $this->connection->__soapCall('IMachine_readSavedScreenshotToArray', array((array)$request));
         return array((array)$response->returnval, (float)$response->width, (float)$response->height);
     }
 
@@ -2561,6 +2589,89 @@ class IMachine extends VBox_ManagedObject
         $request->options = $arg_options;
         $response = $this->connection->__soapCall('IMachine_cloneTo', array((array)$request));
         return new IProgress ($this->connection, $response->returnval);
+    }
+
+    public function saveState()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IMachine_saveState', array((array)$request));
+        return new IProgress ($this->connection, $response->returnval);
+    }
+
+    public function adoptSavedState($arg_savedStateFile)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->savedStateFile = $arg_savedStateFile;
+        $response = $this->connection->__soapCall('IMachine_adoptSavedState', array((array)$request));
+        return ;
+    }
+
+    public function discardSavedState($arg_fRemoveFile)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->fRemoveFile = $arg_fRemoveFile;
+        $response = $this->connection->__soapCall('IMachine_discardSavedState', array((array)$request));
+        return ;
+    }
+
+    public function takeSnapshot($arg_name, $arg_description, $arg_pause)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->name = $arg_name;
+        $request->description = $arg_description;
+        $request->pause = $arg_pause;
+        $response = $this->connection->__soapCall('IMachine_takeSnapshot', array((array)$request));
+        return array(new IProgress ($this->connection, $response->returnval), (string)$response->id);
+    }
+
+    public function deleteSnapshot($arg_id)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->id = $arg_id;
+        $response = $this->connection->__soapCall('IMachine_deleteSnapshot', array((array)$request));
+        return new IProgress ($this->connection, $response->returnval);
+    }
+
+    public function deleteSnapshotAndAllChildren($arg_id)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->id = $arg_id;
+        $response = $this->connection->__soapCall('IMachine_deleteSnapshotAndAllChildren', array((array)$request));
+        return new IProgress ($this->connection, $response->returnval);
+    }
+
+    public function deleteSnapshotRange($arg_startId, $arg_endId)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->startId = $arg_startId;
+        $request->endId = $arg_endId;
+        $response = $this->connection->__soapCall('IMachine_deleteSnapshotRange', array((array)$request));
+        return new IProgress ($this->connection, $response->returnval);
+    }
+
+    public function restoreSnapshot($arg_snapshot)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->snapshot = $arg_snapshot;
+        $response = $this->connection->__soapCall('IMachine_restoreSnapshot', array((array)$request));
+        return new IProgress ($this->connection, $response->returnval);
+    }
+
+    public function applyDefaults($arg_flags)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->flags = $arg_flags;
+        $response = $this->connection->__soapCall('IMachine_applyDefaults', array((array)$request));
+        return ;
     }
 
     public function getParent()
@@ -2823,6 +2934,29 @@ class IMachine extends VBox_ManagedObject
             $request->CPUExecutionCap = $value->handle;
         }
         $this->connection->__soapCall('IMachine_setCPUExecutionCap', array((array)$request));
+    }
+
+    public function getCPUIDPortabilityLevel()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IMachine_getCPUIDPortabilityLevel', array((array)$request));
+        return (float)$response->returnval;
+    }
+
+    public function setCPUIDPortabilityLevel($value)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        if (is_null($value) || is_scalar($value))
+        {
+            $request->CPUIDPortabilityLevel = $value;
+        }
+        else
+        {
+            $request->CPUIDPortabilityLevel = $value->handle;
+        }
+        $this->connection->__soapCall('IMachine_setCPUIDPortabilityLevel', array((array)$request));
     }
 
     public function getMemorySize()
@@ -3480,11 +3614,11 @@ class IMachine extends VBox_ManagedObject
         return new SessionState ($this->connection, $response->returnval);
     }
 
-    public function getSessionType()
+    public function getSessionName()
     {
         $request = new stdClass();
         $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('IMachine_getSessionType', array((array)$request));
+        $response = $this->connection->__soapCall('IMachine_getSessionName', array((array)$request));
         return (string)$response->returnval;
     }
 
@@ -3604,29 +3738,6 @@ class IMachine extends VBox_ManagedObject
             $request->dnDMode = $value->handle;
         }
         $this->connection->__soapCall('IMachine_setDnDMode', array((array)$request));
-    }
-
-    public function getGuestPropertyNotificationPatterns()
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('IMachine_getGuestPropertyNotificationPatterns', array((array)$request));
-        return (string)$response->returnval;
-    }
-
-    public function setGuestPropertyNotificationPatterns($value)
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        if (is_null($value) || is_scalar($value))
-        {
-            $request->guestPropertyNotificationPatterns = $value;
-        }
-        else
-        {
-            $request->guestPropertyNotificationPatterns = $value->handle;
-        }
-        $this->connection->__soapCall('IMachine_setGuestPropertyNotificationPatterns', array((array)$request));
     }
 
     public function getTeleporterEnabled()
@@ -4112,6 +4223,29 @@ class IMachine extends VBox_ManagedObject
         $response = $this->connection->__soapCall('IMachine_getUSBProxyAvailable', array((array)$request));
         return (bool)$response->returnval;
     }
+
+    public function getVMProcessPriority()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IMachine_getVMProcessPriority', array((array)$request));
+        return (string)$response->returnval;
+    }
+
+    public function setVMProcessPriority($value)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        if (is_null($value) || is_scalar($value))
+        {
+            $request->VMProcessPriority = $value;
+        }
+        else
+        {
+            $request->VMProcessPriority = $value->handle;
+        }
+        $this->connection->__soapCall('IMachine_setVMProcessPriority', array((array)$request));
+    }
 }
 
 /**
@@ -4250,32 +4384,6 @@ class IConsole extends VBox_ManagedObject
         return (bool)$response->returnval;
     }
 
-    public function saveState()
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('IConsole_saveState', array((array)$request));
-        return new IProgress ($this->connection, $response->returnval);
-    }
-
-    public function adoptSavedState($arg_savedStateFile)
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $request->savedStateFile = $arg_savedStateFile;
-        $response = $this->connection->__soapCall('IConsole_adoptSavedState', array((array)$request));
-        return ;
-    }
-
-    public function discardSavedState($arg_fRemoveFile)
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $request->fRemoveFile = $arg_fRemoveFile;
-        $response = $this->connection->__soapCall('IConsole_discardSavedState', array((array)$request));
-        return ;
-    }
-
     public function getDeviceActivity($arg_type)
     {
         $request = new stdClass();
@@ -4341,53 +4449,6 @@ class IConsole extends VBox_ManagedObject
         $request->name = $arg_name;
         $response = $this->connection->__soapCall('IConsole_removeSharedFolder', array((array)$request));
         return ;
-    }
-
-    public function takeSnapshot($arg_name, $arg_description)
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $request->name = $arg_name;
-        $request->description = $arg_description;
-        $response = $this->connection->__soapCall('IConsole_takeSnapshot', array((array)$request));
-        return new IProgress ($this->connection, $response->returnval);
-    }
-
-    public function deleteSnapshot($arg_id)
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $request->id = $arg_id;
-        $response = $this->connection->__soapCall('IConsole_deleteSnapshot', array((array)$request));
-        return new IProgress ($this->connection, $response->returnval);
-    }
-
-    public function deleteSnapshotAndAllChildren($arg_id)
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $request->id = $arg_id;
-        $response = $this->connection->__soapCall('IConsole_deleteSnapshotAndAllChildren', array((array)$request));
-        return new IProgress ($this->connection, $response->returnval);
-    }
-
-    public function deleteSnapshotRange($arg_startId, $arg_endId)
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $request->startId = $arg_startId;
-        $request->endId = $arg_endId;
-        $response = $this->connection->__soapCall('IConsole_deleteSnapshotRange', array((array)$request));
-        return new IProgress ($this->connection, $response->returnval);
-    }
-
-    public function restoreSnapshot($arg_snapshot)
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $request->snapshot = $arg_snapshot;
-        $response = $this->connection->__soapCall('IConsole_restoreSnapshot', array((array)$request));
-        return new IProgress ($this->connection, $response->returnval);
     }
 
     public function teleport($arg_hostname, $arg_tcpport, $arg_password, $arg_maxDowntime)
@@ -5295,6 +5356,14 @@ class ISystemProperties extends VBox_ManagedObject
         return (float)$response->returnval;
     }
 
+    public function getRawModeSupported()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('ISystemProperties_getRawModeSupported', array((array)$request));
+        return (bool)$response->returnval;
+    }
+
     public function getExclusiveHwVirt()
     {
         $request = new stdClass();
@@ -5713,6 +5782,14 @@ class IDnDBase extends VBox_ManagedObject
         $response = $this->connection->__soapCall('IDnDBase_getFormats', array((array)$request));
         return (array)$response->returnval;
     }
+
+    public function getProtocolVersion()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IDnDBase_getProtocolVersion', array((array)$request));
+        return (float)$response->returnval;
+    }
 }
 
 /**
@@ -5770,6 +5847,14 @@ class IDnDSourceCollection extends VBox_ManagedObjectCollection
  */
 class IGuestDnDSource extends IDnDSource
 {
+
+    public function getMidlDoesNotLikeEmptyInterfaces()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IGuestDnDSource_getMidlDoesNotLikeEmptyInterfaces', array((array)$request));
+        return (bool)$response->returnval;
+    }
 }
 
 /**
@@ -5847,6 +5932,14 @@ class IDnDTarget extends IDnDBase
         $response = $this->connection->__soapCall('IDnDTarget_sendData', array((array)$request));
         return new IProgress ($this->connection, $response->returnval);
     }
+
+    public function cancel()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IDnDTarget_cancel', array((array)$request));
+        return (bool)$response->returnval;
+    }
 }
 
 /**
@@ -5862,6 +5955,14 @@ class IDnDTargetCollection extends VBox_ManagedObjectCollection
  */
 class IGuestDnDTarget extends IDnDTarget
 {
+
+    public function getMidlDoesNotLikeEmptyInterfaces()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IGuestDnDTarget_getMidlDoesNotLikeEmptyInterfaces', array((array)$request));
+        return (bool)$response->returnval;
+    }
 }
 
 /**
@@ -5886,25 +5987,36 @@ class IGuestSession extends VBox_ManagedObject
         return ;
     }
 
-    public function copyFrom($arg_source, $arg_dest, $arg_flags)
+    public function directoryCopy($arg_source, $arg_destination, $arg_flags)
     {
         $request = new stdClass();
         $request->_this = $this->handle;
         $request->source = $arg_source;
-        $request->dest = $arg_dest;
+        $request->destination = $arg_destination;
         $request->flags = $arg_flags;
-        $response = $this->connection->__soapCall('IGuestSession_copyFrom', array((array)$request));
+        $response = $this->connection->__soapCall('IGuestSession_directoryCopy', array((array)$request));
         return new IProgress ($this->connection, $response->returnval);
     }
 
-    public function copyTo($arg_source, $arg_dest, $arg_flags)
+    public function directoryCopyFromGuest($arg_source, $arg_destination, $arg_flags)
     {
         $request = new stdClass();
         $request->_this = $this->handle;
         $request->source = $arg_source;
-        $request->dest = $arg_dest;
+        $request->destination = $arg_destination;
         $request->flags = $arg_flags;
-        $response = $this->connection->__soapCall('IGuestSession_copyTo', array((array)$request));
+        $response = $this->connection->__soapCall('IGuestSession_directoryCopyFromGuest', array((array)$request));
+        return new IProgress ($this->connection, $response->returnval);
+    }
+
+    public function directoryCopyToGuest($arg_source, $arg_destination, $arg_flags)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->source = $arg_source;
+        $request->destination = $arg_destination;
+        $request->flags = $arg_flags;
+        $response = $this->connection->__soapCall('IGuestSession_directoryCopyToGuest', array((array)$request));
         return new IProgress ($this->connection, $response->returnval);
     }
 
@@ -5931,11 +6043,12 @@ class IGuestSession extends VBox_ManagedObject
         return (string)$response->returnval;
     }
 
-    public function directoryExists($arg_path)
+    public function directoryExists($arg_path, $arg_followSymlinks)
     {
         $request = new stdClass();
         $request->_this = $this->handle;
         $request->path = $arg_path;
+        $request->followSymlinks = $arg_followSymlinks;
         $response = $this->connection->__soapCall('IGuestSession_directoryExists', array((array)$request));
         return (bool)$response->returnval;
     }
@@ -5949,15 +6062,6 @@ class IGuestSession extends VBox_ManagedObject
         $request->flags = $arg_flags;
         $response = $this->connection->__soapCall('IGuestSession_directoryOpen', array((array)$request));
         return new IGuestDirectory ($this->connection, $response->returnval);
-    }
-
-    public function directoryQueryInfo($arg_path)
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $request->path = $arg_path;
-        $response = $this->connection->__soapCall('IGuestSession_directoryQueryInfo', array((array)$request));
-        return new IGuestFsObjInfo ($this->connection, $response->returnval);
     }
 
     public function directoryRemove($arg_path)
@@ -5979,61 +6083,74 @@ class IGuestSession extends VBox_ManagedObject
         return new IProgress ($this->connection, $response->returnval);
     }
 
-    public function directoryRename($arg_source, $arg_dest, $arg_flags)
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $request->source = $arg_source;
-        $request->dest = $arg_dest;
-        $request->flags = $arg_flags;
-        $response = $this->connection->__soapCall('IGuestSession_directoryRename', array((array)$request));
-        return ;
-    }
-
-    public function directorySetACL($arg_path, $arg_acl)
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $request->path = $arg_path;
-        $request->acl = $arg_acl;
-        $response = $this->connection->__soapCall('IGuestSession_directorySetACL', array((array)$request));
-        return ;
-    }
-
-    public function environmentClear()
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('IGuestSession_environmentClear', array((array)$request));
-        return ;
-    }
-
-    public function environmentGet($arg_name)
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $request->name = $arg_name;
-        $response = $this->connection->__soapCall('IGuestSession_environmentGet', array((array)$request));
-        return (string)$response->returnval;
-    }
-
-    public function environmentSet($arg_name, $arg_value)
+    public function environmentScheduleSet($arg_name, $arg_value)
     {
         $request = new stdClass();
         $request->_this = $this->handle;
         $request->name = $arg_name;
         $request->value = $arg_value;
-        $response = $this->connection->__soapCall('IGuestSession_environmentSet', array((array)$request));
+        $response = $this->connection->__soapCall('IGuestSession_environmentScheduleSet', array((array)$request));
         return ;
     }
 
-    public function environmentUnset($arg_name)
+    public function environmentScheduleUnset($arg_name)
     {
         $request = new stdClass();
         $request->_this = $this->handle;
         $request->name = $arg_name;
-        $response = $this->connection->__soapCall('IGuestSession_environmentUnset', array((array)$request));
+        $response = $this->connection->__soapCall('IGuestSession_environmentScheduleUnset', array((array)$request));
         return ;
+    }
+
+    public function environmentGetBaseVariable($arg_name)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->name = $arg_name;
+        $response = $this->connection->__soapCall('IGuestSession_environmentGetBaseVariable', array((array)$request));
+        return (string)$response->returnval;
+    }
+
+    public function environmentDoesBaseVariableExist($arg_name)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->name = $arg_name;
+        $response = $this->connection->__soapCall('IGuestSession_environmentDoesBaseVariableExist', array((array)$request));
+        return (bool)$response->returnval;
+    }
+
+    public function fileCopy($arg_source, $arg_destination, $arg_flags)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->source = $arg_source;
+        $request->destination = $arg_destination;
+        $request->flags = $arg_flags;
+        $response = $this->connection->__soapCall('IGuestSession_fileCopy', array((array)$request));
+        return new IProgress ($this->connection, $response->returnval);
+    }
+
+    public function fileCopyFromGuest($arg_source, $arg_destination, $arg_flags)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->source = $arg_source;
+        $request->destination = $arg_destination;
+        $request->flags = $arg_flags;
+        $response = $this->connection->__soapCall('IGuestSession_fileCopyFromGuest', array((array)$request));
+        return new IProgress ($this->connection, $response->returnval);
+    }
+
+    public function fileCopyToGuest($arg_source, $arg_destination, $arg_flags)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->source = $arg_source;
+        $request->destination = $arg_destination;
+        $request->flags = $arg_flags;
+        $response = $this->connection->__soapCall('IGuestSession_fileCopyToGuest', array((array)$request));
+        return new IProgress ($this->connection, $response->returnval);
     }
 
     public function fileCreateTemp($arg_templateName, $arg_mode, $arg_path, $arg_secure)
@@ -6048,109 +6165,135 @@ class IGuestSession extends VBox_ManagedObject
         return new IGuestFile ($this->connection, $response->returnval);
     }
 
-    public function fileExists($arg_path)
+    public function fileExists($arg_path, $arg_followSymlinks)
     {
         $request = new stdClass();
         $request->_this = $this->handle;
         $request->path = $arg_path;
+        $request->followSymlinks = $arg_followSymlinks;
         $response = $this->connection->__soapCall('IGuestSession_fileExists', array((array)$request));
         return (bool)$response->returnval;
     }
 
-    public function fileRemove($arg_path)
+    public function fileOpen($arg_path, $arg_accessMode, $arg_openAction, $arg_creationMode)
     {
         $request = new stdClass();
         $request->_this = $this->handle;
         $request->path = $arg_path;
-        $response = $this->connection->__soapCall('IGuestSession_fileRemove', array((array)$request));
-        return ;
-    }
-
-    public function fileOpen($arg_path, $arg_openMode, $arg_disposition, $arg_creationMode)
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $request->path = $arg_path;
-        $request->openMode = $arg_openMode;
-        $request->disposition = $arg_disposition;
+        $request->accessMode = $arg_accessMode;
+        $request->openAction = $arg_openAction;
         $request->creationMode = $arg_creationMode;
         $response = $this->connection->__soapCall('IGuestSession_fileOpen', array((array)$request));
         return new IGuestFile ($this->connection, $response->returnval);
     }
 
-    public function fileOpenEx($arg_path, $arg_openMode, $arg_disposition, $arg_sharingMode, $arg_creationMode, $arg_offset)
+    public function fileOpenEx($arg_path, $arg_accessMode, $arg_openAction, $arg_sharingMode, $arg_creationMode, $arg_flags)
     {
         $request = new stdClass();
         $request->_this = $this->handle;
         $request->path = $arg_path;
-        $request->openMode = $arg_openMode;
-        $request->disposition = $arg_disposition;
+        $request->accessMode = $arg_accessMode;
+        $request->openAction = $arg_openAction;
         $request->sharingMode = $arg_sharingMode;
         $request->creationMode = $arg_creationMode;
-        $request->offset = $arg_offset;
+        $request->flags = $arg_flags;
         $response = $this->connection->__soapCall('IGuestSession_fileOpenEx', array((array)$request));
         return new IGuestFile ($this->connection, $response->returnval);
     }
 
-    public function fileQueryInfo($arg_path)
+    public function fileQuerySize($arg_path, $arg_followSymlinks)
     {
         $request = new stdClass();
         $request->_this = $this->handle;
         $request->path = $arg_path;
-        $response = $this->connection->__soapCall('IGuestSession_fileQueryInfo', array((array)$request));
-        return new IGuestFsObjInfo ($this->connection, $response->returnval);
-    }
-
-    public function fileQuerySize($arg_path)
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $request->path = $arg_path;
+        $request->followSymlinks = $arg_followSymlinks;
         $response = $this->connection->__soapCall('IGuestSession_fileQuerySize', array((array)$request));
         return (float)$response->returnval;
     }
 
-    public function fileRename($arg_source, $arg_dest, $arg_flags)
+    public function fsObjExists($arg_path, $arg_followSymlinks)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->path = $arg_path;
+        $request->followSymlinks = $arg_followSymlinks;
+        $response = $this->connection->__soapCall('IGuestSession_fsObjExists', array((array)$request));
+        return (bool)$response->returnval;
+    }
+
+    public function fsObjQueryInfo($arg_path, $arg_followSymlinks)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->path = $arg_path;
+        $request->followSymlinks = $arg_followSymlinks;
+        $response = $this->connection->__soapCall('IGuestSession_fsObjQueryInfo', array((array)$request));
+        return new IGuestFsObjInfo ($this->connection, $response->returnval);
+    }
+
+    public function fsObjRemove($arg_path)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->path = $arg_path;
+        $response = $this->connection->__soapCall('IGuestSession_fsObjRemove', array((array)$request));
+        return ;
+    }
+
+    public function fsObjRename($arg_oldPath, $arg_newPath, $arg_flags)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->oldPath = $arg_oldPath;
+        $request->newPath = $arg_newPath;
+        $request->flags = $arg_flags;
+        $response = $this->connection->__soapCall('IGuestSession_fsObjRename', array((array)$request));
+        return ;
+    }
+
+    public function fsObjMove($arg_source, $arg_destination, $arg_flags)
     {
         $request = new stdClass();
         $request->_this = $this->handle;
         $request->source = $arg_source;
-        $request->dest = $arg_dest;
+        $request->destination = $arg_destination;
         $request->flags = $arg_flags;
-        $response = $this->connection->__soapCall('IGuestSession_fileRename', array((array)$request));
-        return ;
+        $response = $this->connection->__soapCall('IGuestSession_fsObjMove', array((array)$request));
+        return new IProgress ($this->connection, $response->returnval);
     }
 
-    public function fileSetACL($arg_file, $arg_acl)
+    public function fsObjSetACL($arg_path, $arg_followSymlinks, $arg_acl, $arg_mode)
     {
         $request = new stdClass();
         $request->_this = $this->handle;
-        $request->file = $arg_file;
+        $request->path = $arg_path;
+        $request->followSymlinks = $arg_followSymlinks;
         $request->acl = $arg_acl;
-        $response = $this->connection->__soapCall('IGuestSession_fileSetACL', array((array)$request));
+        $request->mode = $arg_mode;
+        $response = $this->connection->__soapCall('IGuestSession_fsObjSetACL', array((array)$request));
         return ;
     }
 
-    public function processCreate($arg_command, $arg_arguments, $arg_environment, $arg_flags, $arg_timeoutMS)
+    public function processCreate($arg_executable, $arg_arguments, $arg_environmentChanges, $arg_flags, $arg_timeoutMS)
     {
         $request = new stdClass();
         $request->_this = $this->handle;
-        $request->command = $arg_command;
+        $request->executable = $arg_executable;
         $request->arguments = $arg_arguments;
-        $request->environment = $arg_environment;
+        $request->environmentChanges = $arg_environmentChanges;
         $request->flags = $arg_flags;
         $request->timeoutMS = $arg_timeoutMS;
         $response = $this->connection->__soapCall('IGuestSession_processCreate', array((array)$request));
         return new IGuestProcess ($this->connection, $response->returnval);
     }
 
-    public function processCreateEx($arg_command, $arg_arguments, $arg_environment, $arg_flags, $arg_timeoutMS, $arg_priority, $arg_affinity)
+    public function processCreateEx($arg_executable, $arg_arguments, $arg_environmentChanges, $arg_flags, $arg_timeoutMS, $arg_priority, $arg_affinity)
     {
         $request = new stdClass();
         $request->_this = $this->handle;
-        $request->command = $arg_command;
+        $request->executable = $arg_executable;
         $request->arguments = $arg_arguments;
-        $request->environment = $arg_environment;
+        $request->environmentChanges = $arg_environmentChanges;
         $request->flags = $arg_flags;
         $request->timeoutMS = $arg_timeoutMS;
         $request->priority = $arg_priority;
@@ -6168,11 +6311,11 @@ class IGuestSession extends VBox_ManagedObject
         return new IGuestProcess ($this->connection, $response->returnval);
     }
 
-    public function symlinkCreate($arg_source, $arg_target, $arg_type)
+    public function symlinkCreate($arg_symlink, $arg_target, $arg_type)
     {
         $request = new stdClass();
         $request->_this = $this->handle;
-        $request->source = $arg_source;
+        $request->symlink = $arg_symlink;
         $request->target = $arg_target;
         $request->type = $arg_type;
         $response = $this->connection->__soapCall('IGuestSession_symlinkCreate', array((array)$request));
@@ -6196,24 +6339,6 @@ class IGuestSession extends VBox_ManagedObject
         $request->flags = $arg_flags;
         $response = $this->connection->__soapCall('IGuestSession_symlinkRead', array((array)$request));
         return (string)$response->returnval;
-    }
-
-    public function symlinkRemoveDirectory($arg_path)
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $request->path = $arg_path;
-        $response = $this->connection->__soapCall('IGuestSession_symlinkRemoveDirectory', array((array)$request));
-        return ;
-    }
-
-    public function symlinkRemoveFile($arg_file)
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $request->file = $arg_file;
-        $response = $this->connection->__soapCall('IGuestSession_symlinkRemoveFile', array((array)$request));
-        return ;
     }
 
     public function waitFor($arg_waitFor, $arg_timeoutMS)
@@ -6307,27 +6432,35 @@ class IGuestSession extends VBox_ManagedObject
         return new GuestSessionStatus ($this->connection, $response->returnval);
     }
 
-    public function getEnvironment()
+    public function getEnvironmentChanges()
     {
         $request = new stdClass();
         $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('IGuestSession_getEnvironment', array((array)$request));
+        $response = $this->connection->__soapCall('IGuestSession_getEnvironmentChanges', array((array)$request));
         return (array)$response->returnval;
     }
 
-    public function setEnvironment($value)
+    public function setEnvironmentChanges($value)
     {
         $request = new stdClass();
         $request->_this = $this->handle;
         if (is_array($value) || is_null($value) || is_scalar($value))
         {
-            $request->environment = $value;
+            $request->environmentChanges = $value;
         }
         else
         {
-            $request->environment = $value->handle;
+            $request->environmentChanges = $value->handle;
         }
-        $this->connection->__soapCall('IGuestSession_setEnvironment', array((array)$request));
+        $this->connection->__soapCall('IGuestSession_setEnvironmentChanges', array((array)$request));
+    }
+
+    public function getEnvironmentBase()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IGuestSession_getEnvironmentBase', array((array)$request));
+        return (array)$response->returnval;
     }
 
     public function getProcesses()
@@ -6336,6 +6469,37 @@ class IGuestSession extends VBox_ManagedObject
         $request->_this = $this->handle;
         $response = $this->connection->__soapCall('IGuestSession_getProcesses', array((array)$request));
         return new IGuestProcessCollection ($this->connection, (array)$response->returnval);
+    }
+
+    public function getPathStyle()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IGuestSession_getPathStyle', array((array)$request));
+        return new PathStyle ($this->connection, $response->returnval);
+    }
+
+    public function getCurrentDirectory()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IGuestSession_getCurrentDirectory', array((array)$request));
+        return (string)$response->returnval;
+    }
+
+    public function setCurrentDirectory($value)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        if (is_null($value) || is_scalar($value))
+        {
+            $request->currentDirectory = $value;
+        }
+        else
+        {
+            $request->currentDirectory = $value->handle;
+        }
+        $this->connection->__soapCall('IGuestSession_setCurrentDirectory', array((array)$request));
     }
 
     public function getDirectories()
@@ -6518,6 +6682,14 @@ class IProcessCollection extends VBox_ManagedObjectCollection
  */
 class IGuestProcess extends IProcess
 {
+
+    public function getMidlDoesNotLikeEmptyInterfaces()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IGuestProcess_getMidlDoesNotLikeEmptyInterfaces', array((array)$request));
+        return (bool)$response->returnval;
+    }
 }
 
 /**
@@ -6580,6 +6752,14 @@ class IDirectoryCollection extends VBox_ManagedObjectCollection
  */
 class IGuestDirectory extends IDirectory
 {
+
+    public function getMidlDoesNotLikeEmptyInterfaces()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IGuestDirectory_getMidlDoesNotLikeEmptyInterfaces', array((array)$request));
+        return (bool)$response->returnval;
+    }
 }
 
 /**
@@ -6612,6 +6792,14 @@ class IFile extends VBox_ManagedObject
         return new IFsObjInfo ($this->connection, $response->returnval);
     }
 
+    public function querySize()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IFile_querySize', array((array)$request));
+        return (float)$response->returnval;
+    }
+
     public function read($arg_toRead, $arg_timeoutMS)
     {
         $request = new stdClass();
@@ -6640,15 +6828,25 @@ class IFile extends VBox_ManagedObject
         $request->offset = $arg_offset;
         $request->whence = $arg_whence;
         $response = $this->connection->__soapCall('IFile_seek', array((array)$request));
-        return ;
+        return (float)$response->returnval;
     }
 
-    public function setACL($arg_acl)
+    public function setACL($arg_acl, $arg_mode)
     {
         $request = new stdClass();
         $request->_this = $this->handle;
         $request->acl = $arg_acl;
+        $request->mode = $arg_mode;
         $response = $this->connection->__soapCall('IFile_setACL', array((array)$request));
+        return ;
+    }
+
+    public function setSize($arg_size)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->size = $arg_size;
+        $response = $this->connection->__soapCall('IFile_setSize', array((array)$request));
         return ;
     }
 
@@ -6673,36 +6871,12 @@ class IFile extends VBox_ManagedObject
         return (float)$response->returnval;
     }
 
-    public function getCreationMode()
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('IFile_getCreationMode', array((array)$request));
-        return (float)$response->returnval;
-    }
-
-    public function getDisposition()
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('IFile_getDisposition', array((array)$request));
-        return (string)$response->returnval;
-    }
-
     public function getEventSource()
     {
         $request = new stdClass();
         $request->_this = $this->handle;
         $response = $this->connection->__soapCall('IFile_getEventSource', array((array)$request));
         return new IEventSource ($this->connection, $response->returnval);
-    }
-
-    public function getFileName()
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('IFile_getFileName', array((array)$request));
-        return (string)$response->returnval;
     }
 
     public function getId()
@@ -6721,14 +6895,6 @@ class IFile extends VBox_ManagedObject
         return (float)$response->returnval;
     }
 
-    public function getOpenMode()
-    {
-        $request = new stdClass();
-        $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('IFile_getOpenMode', array((array)$request));
-        return (string)$response->returnval;
-    }
-
     public function getOffset()
     {
         $request = new stdClass();
@@ -6743,6 +6909,38 @@ class IFile extends VBox_ManagedObject
         $request->_this = $this->handle;
         $response = $this->connection->__soapCall('IFile_getStatus', array((array)$request));
         return new FileStatus ($this->connection, $response->returnval);
+    }
+
+    public function getFileName()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IFile_getFileName', array((array)$request));
+        return (string)$response->returnval;
+    }
+
+    public function getCreationMode()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IFile_getCreationMode', array((array)$request));
+        return (float)$response->returnval;
+    }
+
+    public function getOpenAction()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IFile_getOpenAction', array((array)$request));
+        return new FileOpenAction ($this->connection, $response->returnval);
+    }
+
+    public function getAccessMode()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IFile_getAccessMode', array((array)$request));
+        return new FileAccessMode ($this->connection, $response->returnval);
     }
 }
 
@@ -6759,6 +6957,14 @@ class IFileCollection extends VBox_ManagedObjectCollection
  */
 class IGuestFile extends IFile
 {
+
+    public function getMidlDoesNotLikeEmptyInterfaces()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IGuestFile_getMidlDoesNotLikeEmptyInterfaces', array((array)$request));
+        return (bool)$response->returnval;
+    }
 }
 
 /**
@@ -6941,6 +7147,14 @@ class IFsObjInfoCollection extends VBox_ManagedObjectCollection
  */
 class IGuestFsObjInfo extends IFsObjInfo
 {
+
+    public function getMidlDoesNotLikeEmptyInterfaces()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IGuestFsObjInfo_getMidlDoesNotLikeEmptyInterfaces', array((array)$request));
+        return (bool)$response->returnval;
+    }
 }
 
 /**
@@ -8512,14 +8726,15 @@ class IDisplay extends VBox_ManagedObject
         $request->screenId = $arg_screenId;
         $request->framebuffer = $arg_framebuffer;
         $response = $this->connection->__soapCall('IDisplay_attachFramebuffer', array((array)$request));
-        return ;
+        return (string)$response->returnval;
     }
 
-    public function detachFramebuffer($arg_screenId)
+    public function detachFramebuffer($arg_screenId, $arg_id)
     {
         $request = new stdClass();
         $request->_this = $this->handle;
         $request->screenId = $arg_screenId;
+        $request->id = $arg_id;
         $response = $this->connection->__soapCall('IDisplay_detachFramebuffer', array((array)$request));
         return ;
     }
@@ -9447,11 +9662,38 @@ class IMachineDebugger extends VBox_ManagedObject
         return ;
     }
 
+    public function loadPlugIn($arg_name)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->name = $arg_name;
+        $response = $this->connection->__soapCall('IMachineDebugger_loadPlugIn', array((array)$request));
+        return (string)$response->returnval;
+    }
+
+    public function unloadPlugIn($arg_name)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->name = $arg_name;
+        $response = $this->connection->__soapCall('IMachineDebugger_unloadPlugIn', array((array)$request));
+        return ;
+    }
+
     public function detectOS()
     {
         $request = new stdClass();
         $request->_this = $this->handle;
         $response = $this->connection->__soapCall('IMachineDebugger_detectOS', array((array)$request));
+        return (string)$response->returnval;
+    }
+
+    public function queryOSKernelLog($arg_maxMessages)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->maxMessages = $arg_maxMessages;
+        $response = $this->connection->__soapCall('IMachineDebugger_queryOSKernelLog', array((array)$request));
         return (string)$response->returnval;
     }
 
@@ -9903,12 +10145,42 @@ class IUSBController extends VBox_ManagedObject
         return (string)$response->returnval;
     }
 
+    public function setName($value)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        if (is_null($value) || is_scalar($value))
+        {
+            $request->name = $value;
+        }
+        else
+        {
+            $request->name = $value->handle;
+        }
+        $this->connection->__soapCall('IUSBController_setName', array((array)$request));
+    }
+
     public function getType()
     {
         $request = new stdClass();
         $request->_this = $this->handle;
         $response = $this->connection->__soapCall('IUSBController_getType', array((array)$request));
         return new USBControllerType ($this->connection, $response->returnval);
+    }
+
+    public function setType($value)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        if (is_null($value) || is_scalar($value))
+        {
+            $request->type = $value;
+        }
+        else
+        {
+            $request->type = $value->handle;
+        }
+        $this->connection->__soapCall('IUSBController_setType', array((array)$request));
     }
 
     public function getUSBStandard()
@@ -10382,6 +10654,25 @@ class IHostUSBDeviceFilterCollection extends VBox_ManagedObjectCollection
 class IAudioAdapter extends VBox_ManagedObject
 {
 
+    public function setProperty($arg_key, $arg_value)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->key = $arg_key;
+        $request->value = $arg_value;
+        $response = $this->connection->__soapCall('IAudioAdapter_setProperty', array((array)$request));
+        return ;
+    }
+
+    public function getProperty($arg_key)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->key = $arg_key;
+        $response = $this->connection->__soapCall('IAudioAdapter_getProperty', array((array)$request));
+        return (string)$response->returnval;
+    }
+
     public function getEnabled()
     {
         $request = new stdClass();
@@ -10403,6 +10694,52 @@ class IAudioAdapter extends VBox_ManagedObject
             $request->enabled = $value->handle;
         }
         $this->connection->__soapCall('IAudioAdapter_setEnabled', array((array)$request));
+    }
+
+    public function getEnabledIn()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IAudioAdapter_getEnabledIn', array((array)$request));
+        return (bool)$response->returnval;
+    }
+
+    public function setEnabledIn($value)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        if (is_null($value) || is_scalar($value))
+        {
+            $request->enabledIn = $value;
+        }
+        else
+        {
+            $request->enabledIn = $value->handle;
+        }
+        $this->connection->__soapCall('IAudioAdapter_setEnabledIn', array((array)$request));
+    }
+
+    public function getEnabledOut()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IAudioAdapter_getEnabledOut', array((array)$request));
+        return (bool)$response->returnval;
+    }
+
+    public function setEnabledOut($value)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        if (is_null($value) || is_scalar($value))
+        {
+            $request->enabledOut = $value;
+        }
+        else
+        {
+            $request->enabledOut = $value->handle;
+        }
+        $this->connection->__soapCall('IAudioAdapter_setEnabledOut', array((array)$request));
     }
 
     public function getAudioController()
@@ -10428,6 +10765,29 @@ class IAudioAdapter extends VBox_ManagedObject
         $this->connection->__soapCall('IAudioAdapter_setAudioController', array((array)$request));
     }
 
+    public function getAudioCodec()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IAudioAdapter_getAudioCodec', array((array)$request));
+        return new AudioCodecType ($this->connection, $response->returnval);
+    }
+
+    public function setAudioCodec($value)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        if (is_null($value) || is_scalar($value))
+        {
+            $request->audioCodec = $value;
+        }
+        else
+        {
+            $request->audioCodec = $value->handle;
+        }
+        $this->connection->__soapCall('IAudioAdapter_setAudioCodec', array((array)$request));
+    }
+
     public function getAudioDriver()
     {
         $request = new stdClass();
@@ -10449,6 +10809,14 @@ class IAudioAdapter extends VBox_ManagedObject
             $request->audioDriver = $value->handle;
         }
         $this->connection->__soapCall('IAudioAdapter_setAudioDriver', array((array)$request));
+    }
+
+    public function getPropertiesList()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IAudioAdapter_getPropertiesList', array((array)$request));
+        return (array)$response->returnval;
     }
 }
 
@@ -10693,6 +11061,29 @@ class ISession extends VBox_ManagedObject
         return new SessionType ($this->connection, $response->returnval);
     }
 
+    public function getName()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('ISession_getName', array((array)$request));
+        return (string)$response->returnval;
+    }
+
+    public function setName($value)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        if (is_null($value) || is_scalar($value))
+        {
+            $request->name = $value;
+        }
+        else
+        {
+            $request->name = $value->handle;
+        }
+        $this->connection->__soapCall('ISession_setName', array((array)$request));
+    }
+
     public function getMachine()
     {
         $request = new stdClass();
@@ -10730,6 +11121,21 @@ class IStorageController extends VBox_ManagedObject
         $request->_this = $this->handle;
         $response = $this->connection->__soapCall('IStorageController_getName', array((array)$request));
         return (string)$response->returnval;
+    }
+
+    public function setName($value)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        if (is_null($value) || is_scalar($value))
+        {
+            $request->name = $value;
+        }
+        else
+        {
+            $request->name = $value->handle;
+        }
+        $this->connection->__soapCall('IStorageController_setName', array((array)$request));
     }
 
     public function getMaxDevicesPerPortCount()
@@ -11801,6 +12207,29 @@ class IMediumRegisteredEventCollection extends VBox_ManagedObjectCollection
 /**
  * Generated VBoxWebService Interface Wrapper
  */
+class IMediumConfigChangedEvent extends IEvent
+{
+
+    public function getMedium()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IMediumConfigChangedEvent_getMedium', array((array)$request));
+        return new IMedium ($this->connection, $response->returnval);
+    }
+}
+
+/**
+ * Generated VBoxWebService Managed Object Collection
+ */
+class IMediumConfigChangedEventCollection extends VBox_ManagedObjectCollection
+{
+    protected $_interfaceName = "IMediumConfigChangedEvent";
+}
+
+/**
+ * Generated VBoxWebService Interface Wrapper
+ */
 class IMachineRegisteredEvent extends IMachineEvent
 {
 
@@ -11912,11 +12341,11 @@ class ISnapshotEventCollection extends VBox_ManagedObjectCollection
 class ISnapshotTakenEvent extends ISnapshotEvent
 {
 
-    public function getMidlDoesNotLikEmptyInterfaces()
+    public function getMidlDoesNotLikeEmptyInterfaces()
     {
         $request = new stdClass();
         $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('ISnapshotTakenEvent_getMidlDoesNotLikEmptyInterfaces', array((array)$request));
+        $response = $this->connection->__soapCall('ISnapshotTakenEvent_getMidlDoesNotLikeEmptyInterfaces', array((array)$request));
         return (bool)$response->returnval;
     }
 }
@@ -11935,11 +12364,11 @@ class ISnapshotTakenEventCollection extends VBox_ManagedObjectCollection
 class ISnapshotDeletedEvent extends ISnapshotEvent
 {
 
-    public function getMidlDoesNotLikEmptyInterfaces()
+    public function getMidlDoesNotLikeEmptyInterfaces()
     {
         $request = new stdClass();
         $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('ISnapshotDeletedEvent_getMidlDoesNotLikEmptyInterfaces', array((array)$request));
+        $response = $this->connection->__soapCall('ISnapshotDeletedEvent_getMidlDoesNotLikeEmptyInterfaces', array((array)$request));
         return (bool)$response->returnval;
     }
 }
@@ -11955,14 +12384,37 @@ class ISnapshotDeletedEventCollection extends VBox_ManagedObjectCollection
 /**
  * Generated VBoxWebService Interface Wrapper
  */
-class ISnapshotChangedEvent extends ISnapshotEvent
+class ISnapshotRestoredEvent extends ISnapshotEvent
 {
 
-    public function getMidlDoesNotLikEmptyInterfaces()
+    public function getMidlDoesNotLikeEmptyInterfaces()
     {
         $request = new stdClass();
         $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('ISnapshotChangedEvent_getMidlDoesNotLikEmptyInterfaces', array((array)$request));
+        $response = $this->connection->__soapCall('ISnapshotRestoredEvent_getMidlDoesNotLikeEmptyInterfaces', array((array)$request));
+        return (bool)$response->returnval;
+    }
+}
+
+/**
+ * Generated VBoxWebService Managed Object Collection
+ */
+class ISnapshotRestoredEventCollection extends VBox_ManagedObjectCollection
+{
+    protected $_interfaceName = "ISnapshotRestoredEvent";
+}
+
+/**
+ * Generated VBoxWebService Interface Wrapper
+ */
+class ISnapshotChangedEvent extends ISnapshotEvent
+{
+
+    public function getMidlDoesNotLikeEmptyInterfaces()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('ISnapshotChangedEvent_getMidlDoesNotLikeEmptyInterfaces', array((array)$request));
         return (bool)$response->returnval;
     }
 }
@@ -12161,11 +12613,11 @@ class IStateChangedEventCollection extends VBox_ManagedObjectCollection
 class IAdditionsStateChangedEvent extends IEvent
 {
 
-    public function getMidlDoesNotLikEmptyInterfaces()
+    public function getMidlDoesNotLikeEmptyInterfaces()
     {
         $request = new stdClass();
         $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('IAdditionsStateChangedEvent_getMidlDoesNotLikEmptyInterfaces', array((array)$request));
+        $response = $this->connection->__soapCall('IAdditionsStateChangedEvent_getMidlDoesNotLikeEmptyInterfaces', array((array)$request));
         return (bool)$response->returnval;
     }
 }
@@ -12253,11 +12705,11 @@ class IParallelPortChangedEventCollection extends VBox_ManagedObjectCollection
 class IStorageControllerChangedEvent extends IEvent
 {
 
-    public function getMidlDoesNotLikEmptyInterfaces()
+    public function getMidlDoesNotLikeEmptyInterfaces()
     {
         $request = new stdClass();
         $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('IStorageControllerChangedEvent_getMidlDoesNotLikEmptyInterfaces', array((array)$request));
+        $response = $this->connection->__soapCall('IStorageControllerChangedEvent_getMidlDoesNotLikeEmptyInterfaces', array((array)$request));
         return (bool)$response->returnval;
     }
 }
@@ -12903,11 +13355,11 @@ class IGuestFileIOEventCollection extends VBox_ManagedObjectCollection
 class IGuestFileOffsetChangedEvent extends IGuestFileIOEvent
 {
 
-    public function getMidlDoesNotLikEmptyInterfaces()
+    public function getMidlDoesNotLikeEmptyInterfaces()
     {
         $request = new stdClass();
         $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('IGuestFileOffsetChangedEvent_getMidlDoesNotLikEmptyInterfaces', array((array)$request));
+        $response = $this->connection->__soapCall('IGuestFileOffsetChangedEvent_getMidlDoesNotLikeEmptyInterfaces', array((array)$request));
         return (bool)$response->returnval;
     }
 }
@@ -12949,11 +13401,11 @@ class IGuestFileReadEventCollection extends VBox_ManagedObjectCollection
 class IGuestFileWriteEvent extends IGuestFileIOEvent
 {
 
-    public function getMidlDoesNotLikEmptyInterfaces()
+    public function getMidlDoesNotLikeEmptyInterfaces()
     {
         $request = new stdClass();
         $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('IGuestFileWriteEvent_getMidlDoesNotLikEmptyInterfaces', array((array)$request));
+        $response = $this->connection->__soapCall('IGuestFileWriteEvent_getMidlDoesNotLikeEmptyInterfaces', array((array)$request));
         return (bool)$response->returnval;
     }
 }
@@ -12972,11 +13424,11 @@ class IGuestFileWriteEventCollection extends VBox_ManagedObjectCollection
 class IVRDEServerChangedEvent extends IEvent
 {
 
-    public function getMidlDoesNotLikEmptyInterfaces()
+    public function getMidlDoesNotLikeEmptyInterfaces()
     {
         $request = new stdClass();
         $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('IVRDEServerChangedEvent_getMidlDoesNotLikEmptyInterfaces', array((array)$request));
+        $response = $this->connection->__soapCall('IVRDEServerChangedEvent_getMidlDoesNotLikeEmptyInterfaces', array((array)$request));
         return (bool)$response->returnval;
     }
 }
@@ -12995,11 +13447,11 @@ class IVRDEServerChangedEventCollection extends VBox_ManagedObjectCollection
 class IVRDEServerInfoChangedEvent extends IEvent
 {
 
-    public function getMidlDoesNotLikEmptyInterfaces()
+    public function getMidlDoesNotLikeEmptyInterfaces()
     {
         $request = new stdClass();
         $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('IVRDEServerInfoChangedEvent_getMidlDoesNotLikEmptyInterfaces', array((array)$request));
+        $response = $this->connection->__soapCall('IVRDEServerInfoChangedEvent_getMidlDoesNotLikeEmptyInterfaces', array((array)$request));
         return (bool)$response->returnval;
     }
 }
@@ -13018,11 +13470,11 @@ class IVRDEServerInfoChangedEventCollection extends VBox_ManagedObjectCollection
 class IVideoCaptureChangedEvent extends IEvent
 {
 
-    public function getMidlDoesNotLikEmptyInterfaces()
+    public function getMidlDoesNotLikeEmptyInterfaces()
     {
         $request = new stdClass();
         $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('IVideoCaptureChangedEvent_getMidlDoesNotLikEmptyInterfaces', array((array)$request));
+        $response = $this->connection->__soapCall('IVideoCaptureChangedEvent_getMidlDoesNotLikeEmptyInterfaces', array((array)$request));
         return (bool)$response->returnval;
     }
 }
@@ -13041,11 +13493,11 @@ class IVideoCaptureChangedEventCollection extends VBox_ManagedObjectCollection
 class IUSBControllerChangedEvent extends IEvent
 {
 
-    public function getMidlDoesNotLikEmptyInterfaces()
+    public function getMidlDoesNotLikeEmptyInterfaces()
     {
         $request = new stdClass();
         $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('IUSBControllerChangedEvent_getMidlDoesNotLikEmptyInterfaces', array((array)$request));
+        $response = $this->connection->__soapCall('IUSBControllerChangedEvent_getMidlDoesNotLikeEmptyInterfaces', array((array)$request));
         return (bool)$response->returnval;
     }
 }
@@ -13259,6 +13711,31 @@ class IVetoEvent extends IEvent
         $response = $this->connection->__soapCall('IVetoEvent_getVetos', array((array)$request));
         return (array)$response->returnval;
     }
+
+    public function addApproval($arg_reason)
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $request->reason = $arg_reason;
+        $response = $this->connection->__soapCall('IVetoEvent_addApproval', array((array)$request));
+        return ;
+    }
+
+    public function isApproved()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IVetoEvent_isApproved', array((array)$request));
+        return (bool)$response->returnval;
+    }
+
+    public function getApprovals()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('IVetoEvent_getApprovals', array((array)$request));
+        return (array)$response->returnval;
+    }
 }
 
 /**
@@ -13314,11 +13791,11 @@ class IExtraDataCanChangeEventCollection extends VBox_ManagedObjectCollection
 class ICanShowWindowEvent extends IVetoEvent
 {
 
-    public function getMidlDoesNotLikEmptyInterfaces()
+    public function getMidlDoesNotLikeEmptyInterfaces()
     {
         $request = new stdClass();
         $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('ICanShowWindowEvent_getMidlDoesNotLikEmptyInterfaces', array((array)$request));
+        $response = $this->connection->__soapCall('ICanShowWindowEvent_getMidlDoesNotLikeEmptyInterfaces', array((array)$request));
         return (bool)$response->returnval;
     }
 }
@@ -13741,6 +14218,14 @@ class INATNetworkStartStopEventCollection extends VBox_ManagedObjectCollection
  */
 class INATNetworkAlterEvent extends INATNetworkChangedEvent
 {
+
+    public function getMidlDoesNotLikeEmptyInterfaces()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('INATNetworkAlterEvent_getMidlDoesNotLikeEmptyInterfaces', array((array)$request));
+        return (bool)$response->returnval;
+    }
 }
 
 /**
@@ -13914,11 +14399,11 @@ class INATNetworkPortForwardEventCollection extends VBox_ManagedObjectCollection
 class IHostNameResolutionConfigurationChangeEvent extends IEvent
 {
 
-    public function getMidlDoesNotLikEmptyInterfaces()
+    public function getMidlDoesNotLikeEmptyInterfaces()
     {
         $request = new stdClass();
         $request->_this = $this->handle;
-        $response = $this->connection->__soapCall('IHostNameResolutionConfigurationChangeEvent_getMidlDoesNotLikEmptyInterfaces', array((array)$request));
+        $response = $this->connection->__soapCall('IHostNameResolutionConfigurationChangeEvent_getMidlDoesNotLikeEmptyInterfaces', array((array)$request));
         return (bool)$response->returnval;
     }
 }
@@ -14117,6 +14602,7 @@ class IGuestOSType extends VBox_Struct
     protected $recommendedRTCUseUTC;
     protected $recommendedChipset;
     protected $recommendedAudioController;
+    protected $recommendedAudioCodec;
     protected $recommendedFloppy;
     protected $recommendedUSB;
     protected $recommendedTFReset;
@@ -14149,6 +14635,7 @@ class IGuestOSType extends VBox_Struct
         $this->recommendedRTCUseUTC = $values->recommendedRTCUseUTC;
         $this->recommendedChipset = $values->recommendedChipset;
         $this->recommendedAudioController = $values->recommendedAudioController;
+        $this->recommendedAudioCodec = $values->recommendedAudioCodec;
         $this->recommendedFloppy = $values->recommendedFloppy;
         $this->recommendedUSB = $values->recommendedUSB;
         $this->recommendedTFReset = $values->recommendedTFReset;
@@ -14253,6 +14740,10 @@ class IGuestOSType extends VBox_Struct
     public function getRecommendedAudioController()
     {
         return new AudioControllerType ($this->connection, $this->recommendedAudioController);
+    }
+    public function getRecommendedAudioCodec()
+    {
+        return new AudioCodecType ($this->connection, $this->recommendedAudioCodec);
     }
     public function getRecommendedFloppy()
     {
@@ -14516,8 +15007,8 @@ class AccessModeCollection extends VBox_EnumCollection
  */
 class MachineState extends VBox_Enum
 {
-    public $NameMap = array(0 => 'Null', 1 => 'PoweredOff', 2 => 'Saved', 3 => 'Teleported', 4 => 'Aborted', 5 => 'Running', 6 => 'Paused', 7 => 'Stuck', 8 => 'Teleporting', 9 => 'LiveSnapshotting', 10 => 'Starting', 11 => 'Stopping', 12 => 'Saving', 13 => 'Restoring', 14 => 'TeleportingPausedVM', 15 => 'TeleportingIn', 16 => 'FaultTolerantSyncing', 17 => 'DeletingSnapshotOnline', 18 => 'DeletingSnapshotPaused', 19 => 'RestoringSnapshot', 20 => 'DeletingSnapshot', 21 => 'SettingUp', );
-    public $ValueMap = array('Null' => 0, 'PoweredOff' => 1, 'Saved' => 2, 'Teleported' => 3, 'Aborted' => 4, 'Running' => 5, 'Paused' => 6, 'Stuck' => 7, 'Teleporting' => 8, 'LiveSnapshotting' => 9, 'Starting' => 10, 'Stopping' => 11, 'Saving' => 12, 'Restoring' => 13, 'TeleportingPausedVM' => 14, 'TeleportingIn' => 15, 'FaultTolerantSyncing' => 16, 'DeletingSnapshotOnline' => 17, 'DeletingSnapshotPaused' => 18, 'RestoringSnapshot' => 19, 'DeletingSnapshot' => 20, 'SettingUp' => 21, );
+    public $NameMap = array(0 => 'Null', 1 => 'PoweredOff', 2 => 'Saved', 3 => 'Teleported', 4 => 'Aborted', 5 => 'Running', 6 => 'Paused', 7 => 'Stuck', 8 => 'Teleporting', 9 => 'LiveSnapshotting', 10 => 'Starting', 11 => 'Stopping', 12 => 'Saving', 13 => 'Restoring', 14 => 'TeleportingPausedVM', 15 => 'TeleportingIn', 16 => 'FaultTolerantSyncing', 17 => 'DeletingSnapshotOnline', 18 => 'DeletingSnapshotPaused', 19 => 'OnlineSnapshotting', 20 => 'RestoringSnapshot', 21 => 'DeletingSnapshot', 22 => 'SettingUp', 23 => 'Snapshotting', );
+    public $ValueMap = array('Null' => 0, 'PoweredOff' => 1, 'Saved' => 2, 'Teleported' => 3, 'Aborted' => 4, 'Running' => 5, 'Paused' => 6, 'Stuck' => 7, 'Teleporting' => 8, 'LiveSnapshotting' => 9, 'Starting' => 10, 'Stopping' => 11, 'Saving' => 12, 'Restoring' => 13, 'TeleportingPausedVM' => 14, 'TeleportingIn' => 15, 'FaultTolerantSyncing' => 16, 'DeletingSnapshotOnline' => 17, 'DeletingSnapshotPaused' => 18, 'OnlineSnapshotting' => 19, 'RestoringSnapshot' => 20, 'DeletingSnapshot' => 21, 'SettingUp' => 22, 'Snapshotting' => 23, );
 }
 
 /**
@@ -14550,8 +15041,8 @@ class SessionStateCollection extends VBox_EnumCollection
  */
 class CPUPropertyType extends VBox_Enum
 {
-    public $NameMap = array(0 => 'Null', 1 => 'PAE', 2 => 'Synthetic', 3 => 'LongMode', 4 => 'TripleFaultReset');
-    public $ValueMap = array('Null' => 0, 'PAE' => 1, 'Synthetic' => 2, 'LongMode' => 3, 'TripleFaultReset' => 4);
+    public $NameMap = array(0 => 'Null', 1 => 'PAE', 2 => 'LongMode', 3 => 'TripleFaultReset');
+    public $ValueMap = array('Null' => 0, 'PAE' => 1, 'LongMode' => 2, 'TripleFaultReset' => 3);
 }
 
 /**
@@ -14618,8 +15109,8 @@ class FaultToleranceStateCollection extends VBox_EnumCollection
  */
 class LockType extends VBox_Enum
 {
-    public $NameMap = array(2 => 'Write', 1 => 'Shared', 3 => 'VM');
-    public $ValueMap = array('Write' => 2, 'Shared' => 1, 'VM' => 3);
+    public $NameMap = array(0 => 'Null', 1 => 'Shared', 2 => 'Write', 3 => 'VM');
+    public $ValueMap = array('Null' => 0, 'Shared' => 1, 'Write' => 2, 'VM' => 3);
 }
 
 /**
@@ -14883,23 +15374,6 @@ class VFSType extends VBox_Enum
 class VFSTypeCollection extends VBox_EnumCollection
 {
     protected $_interfaceName = "VFSType";
-}
-
-/**
- * Generated VBoxWebService ENUM
- */
-class VFSFileType extends VBox_Enum
-{
-    public $NameMap = array(1 => 'Unknown', 2 => 'Fifo', 3 => 'DevChar', 4 => 'Directory', 5 => 'DevBlock', 6 => 'File', 7 => 'SymLink', 8 => 'Socket', 9 => 'WhiteOut');
-    public $ValueMap = array('Unknown' => 1, 'Fifo' => 2, 'DevChar' => 3, 'Directory' => 4, 'DevBlock' => 5, 'File' => 6, 'SymLink' => 7, 'Socket' => 8, 'WhiteOut' => 9);
-}
-
-/**
- * Generated VBoxWebService Enum Collection
- */
-class VFSFileTypeCollection extends VBox_EnumCollection
-{
-    protected $_interfaceName = "VFSFileType";
 }
 
 /**
@@ -15262,18 +15736,18 @@ class GuestUserStateCollection extends VBox_EnumCollection
 /**
  * Generated VBoxWebService ENUM
  */
-class FileSeekType extends VBox_Enum
+class FileSeekOrigin extends VBox_Enum
 {
-    public $NameMap = array(0 => 'Set', 1 => 'Current');
-    public $ValueMap = array('Set' => 0, 'Current' => 1);
+    public $NameMap = array(0 => 'Begin', 1 => 'Current', 2 => 'End');
+    public $ValueMap = array('Begin' => 0, 'Current' => 1, 'End' => 2);
 }
 
 /**
  * Generated VBoxWebService Enum Collection
  */
-class FileSeekTypeCollection extends VBox_EnumCollection
+class FileSeekOriginCollection extends VBox_EnumCollection
 {
-    protected $_interfaceName = "FileSeekType";
+    protected $_interfaceName = "FileSeekOrigin";
 }
 
 /**
@@ -15347,18 +15821,35 @@ class ProcessWaitResultCollection extends VBox_EnumCollection
 /**
  * Generated VBoxWebService ENUM
  */
-class CopyFileFlag extends VBox_Enum
+class FileCopyFlag extends VBox_Enum
 {
-    public $NameMap = array(0 => 'None', 1 => 'Recursive', 2 => 'Update', 4 => 'FollowLinks');
-    public $ValueMap = array('None' => 0, 'Recursive' => 1, 'Update' => 2, 'FollowLinks' => 4);
+    public $NameMap = array(0 => 'None', 1 => 'NoReplace', 2 => 'FollowLinks', 4 => 'Update');
+    public $ValueMap = array('None' => 0, 'NoReplace' => 1, 'FollowLinks' => 2, 'Update' => 4);
 }
 
 /**
  * Generated VBoxWebService Enum Collection
  */
-class CopyFileFlagCollection extends VBox_EnumCollection
+class FileCopyFlagCollection extends VBox_EnumCollection
 {
-    protected $_interfaceName = "CopyFileFlag";
+    protected $_interfaceName = "FileCopyFlag";
+}
+
+/**
+ * Generated VBoxWebService ENUM
+ */
+class FsObjMoveFlags extends VBox_Enum
+{
+    public $NameMap = array(0 => 'None', 1 => 'Replace', 2 => 'FollowLinks', 4 => 'AllowDirectoryMoves');
+    public $ValueMap = array('None' => 0, 'Replace' => 1, 'FollowLinks' => 2, 'AllowDirectoryMoves' => 4);
+}
+
+/**
+ * Generated VBoxWebService Enum Collection
+ */
+class FsObjMoveFlagsCollection extends VBox_EnumCollection
+{
+    protected $_interfaceName = "FsObjMoveFlags";
 }
 
 /**
@@ -15381,6 +15872,23 @@ class DirectoryCreateFlagCollection extends VBox_EnumCollection
 /**
  * Generated VBoxWebService ENUM
  */
+class DirectoryCopyFlags extends VBox_Enum
+{
+    public $NameMap = array(0 => 'None', 1 => 'CopyIntoExisting');
+    public $ValueMap = array('None' => 0, 'CopyIntoExisting' => 1);
+}
+
+/**
+ * Generated VBoxWebService Enum Collection
+ */
+class DirectoryCopyFlagsCollection extends VBox_EnumCollection
+{
+    protected $_interfaceName = "DirectoryCopyFlags";
+}
+
+/**
+ * Generated VBoxWebService ENUM
+ */
 class DirectoryRemoveRecFlag extends VBox_Enum
 {
     public $NameMap = array(0 => 'None', 1 => 'ContentAndDir', 2 => 'ContentOnly');
@@ -15398,18 +15906,18 @@ class DirectoryRemoveRecFlagCollection extends VBox_EnumCollection
 /**
  * Generated VBoxWebService ENUM
  */
-class PathRenameFlag extends VBox_Enum
+class FsObjRenameFlag extends VBox_Enum
 {
-    public $NameMap = array(0 => 'None', 1 => 'NoReplace', 2 => 'Replace', 4 => 'NoSymlinks');
-    public $ValueMap = array('None' => 0, 'NoReplace' => 1, 'Replace' => 2, 'NoSymlinks' => 4);
+    public $NameMap = array(0 => 'NoReplace', 1 => 'Replace');
+    public $ValueMap = array('NoReplace' => 0, 'Replace' => 1);
 }
 
 /**
  * Generated VBoxWebService Enum Collection
  */
-class PathRenameFlagCollection extends VBox_EnumCollection
+class FsObjRenameFlagCollection extends VBox_EnumCollection
 {
-    protected $_interfaceName = "PathRenameFlag";
+    protected $_interfaceName = "FsObjRenameFlag";
 }
 
 /**
@@ -15417,8 +15925,8 @@ class PathRenameFlagCollection extends VBox_EnumCollection
  */
 class ProcessCreateFlag extends VBox_Enum
 {
-    public $NameMap = array(0 => 'None', 1 => 'WaitForProcessStartOnly', 2 => 'IgnoreOrphanedProcesses', 4 => 'Hidden', 8 => 'NoProfile', 16 => 'WaitForStdOut', 32 => 'WaitForStdErr', 64 => 'ExpandArguments');
-    public $ValueMap = array('None' => 0, 'WaitForProcessStartOnly' => 1, 'IgnoreOrphanedProcesses' => 2, 'Hidden' => 4, 'NoProfile' => 8, 'WaitForStdOut' => 16, 'WaitForStdErr' => 32, 'ExpandArguments' => 64);
+    public $NameMap = array(0 => 'None', 1 => 'WaitForProcessStartOnly', 2 => 'IgnoreOrphanedProcesses', 4 => 'Hidden', 8 => 'NoProfile', 16 => 'WaitForStdOut', 32 => 'WaitForStdErr', 64 => 'ExpandArguments', 128 => 'UnquotedArguments');
+    public $ValueMap = array('None' => 0, 'WaitForProcessStartOnly' => 1, 'IgnoreOrphanedProcesses' => 2, 'Hidden' => 4, 'NoProfile' => 8, 'WaitForStdOut' => 16, 'WaitForStdErr' => 32, 'ExpandArguments' => 64, 'UnquotedArguments' => 128);
 }
 
 /**
@@ -15517,6 +16025,91 @@ class ProcessInputStatusCollection extends VBox_EnumCollection
 /**
  * Generated VBoxWebService ENUM
  */
+class PathStyle extends VBox_Enum
+{
+    public $NameMap = array(1 => 'DOS', 2 => 'UNIX', 8 => 'Unknown');
+    public $ValueMap = array('DOS' => 1, 'UNIX' => 2, 'Unknown' => 8);
+}
+
+/**
+ * Generated VBoxWebService Enum Collection
+ */
+class PathStyleCollection extends VBox_EnumCollection
+{
+    protected $_interfaceName = "PathStyle";
+}
+
+/**
+ * Generated VBoxWebService ENUM
+ */
+class FileAccessMode extends VBox_Enum
+{
+    public $NameMap = array(1 => 'ReadOnly', 2 => 'WriteOnly', 3 => 'ReadWrite', 4 => 'AppendOnly', 5 => 'AppendRead');
+    public $ValueMap = array('ReadOnly' => 1, 'WriteOnly' => 2, 'ReadWrite' => 3, 'AppendOnly' => 4, 'AppendRead' => 5);
+}
+
+/**
+ * Generated VBoxWebService Enum Collection
+ */
+class FileAccessModeCollection extends VBox_EnumCollection
+{
+    protected $_interfaceName = "FileAccessMode";
+}
+
+/**
+ * Generated VBoxWebService ENUM
+ */
+class FileOpenAction extends VBox_Enum
+{
+    public $NameMap = array(1 => 'OpenExisting', 2 => 'OpenOrCreate', 3 => 'CreateNew', 4 => 'CreateOrReplace', 5 => 'OpenExistingTruncated', 99 => 'AppendOrCreate');
+    public $ValueMap = array('OpenExisting' => 1, 'OpenOrCreate' => 2, 'CreateNew' => 3, 'CreateOrReplace' => 4, 'OpenExistingTruncated' => 5, 'AppendOrCreate' => 99);
+}
+
+/**
+ * Generated VBoxWebService Enum Collection
+ */
+class FileOpenActionCollection extends VBox_EnumCollection
+{
+    protected $_interfaceName = "FileOpenAction";
+}
+
+/**
+ * Generated VBoxWebService ENUM
+ */
+class FileSharingMode extends VBox_Enum
+{
+    public $NameMap = array(1 => 'Read', 2 => 'Write', 3 => 'ReadWrite', 4 => 'Delete', 5 => 'ReadDelete', 6 => 'WriteDelete', 7 => 'All');
+    public $ValueMap = array('Read' => 1, 'Write' => 2, 'ReadWrite' => 3, 'Delete' => 4, 'ReadDelete' => 5, 'WriteDelete' => 6, 'All' => 7);
+}
+
+/**
+ * Generated VBoxWebService Enum Collection
+ */
+class FileSharingModeCollection extends VBox_EnumCollection
+{
+    protected $_interfaceName = "FileSharingMode";
+}
+
+/**
+ * Generated VBoxWebService ENUM
+ */
+class FileOpenExFlags extends VBox_Enum
+{
+    public $NameMap = array(0 => 'None');
+    public $ValueMap = array('None' => 0);
+}
+
+/**
+ * Generated VBoxWebService Enum Collection
+ */
+class FileOpenExFlagsCollection extends VBox_EnumCollection
+{
+    protected $_interfaceName = "FileOpenExFlags";
+}
+
+/**
+ * Generated VBoxWebService ENUM
+ */
 class FileStatus extends VBox_Enum
 {
     public $NameMap = array(0 => 'Undefined', 10 => 'Opening', 100 => 'Open', 150 => 'Closing', 200 => 'Closed', 600 => 'Down', 800 => 'Error');
@@ -15536,8 +16129,8 @@ class FileStatusCollection extends VBox_EnumCollection
  */
 class FsObjType extends VBox_Enum
 {
-    public $NameMap = array(0 => 'Undefined', 1 => 'FIFO', 10 => 'DevChar', 11 => 'DevBlock', 50 => 'Directory', 80 => 'File', 100 => 'Symlink', 200 => 'Socket', 400 => 'Whiteout');
-    public $ValueMap = array('Undefined' => 0, 'FIFO' => 1, 'DevChar' => 10, 'DevBlock' => 11, 'Directory' => 50, 'File' => 80, 'Symlink' => 100, 'Socket' => 200, 'Whiteout' => 400);
+    public $NameMap = array(1 => 'Unknown', 2 => 'Fifo', 3 => 'DevChar', 4 => 'Directory', 5 => 'DevBlock', 6 => 'File', 7 => 'Symlink', 8 => 'Socket', 9 => 'WhiteOut');
+    public $ValueMap = array('Unknown' => 1, 'Fifo' => 2, 'DevChar' => 3, 'Directory' => 4, 'DevBlock' => 5, 'File' => 6, 'Symlink' => 7, 'Socket' => 8, 'WhiteOut' => 9);
 }
 
 /**
@@ -15825,8 +16418,8 @@ class NetworkAdapterPromiscModePolicyCollection extends VBox_EnumCollection
  */
 class PortMode extends VBox_Enum
 {
-    public $NameMap = array(0 => 'Disconnected', 1 => 'HostPipe', 2 => 'HostDevice', 3 => 'RawFile');
-    public $ValueMap = array('Disconnected' => 0, 'HostPipe' => 1, 'HostDevice' => 2, 'RawFile' => 3);
+    public $NameMap = array(0 => 'Disconnected', 1 => 'HostPipe', 2 => 'HostDevice', 3 => 'RawFile', 4 => 'TCP');
+    public $ValueMap = array('Disconnected' => 0, 'HostPipe' => 1, 'HostDevice' => 2, 'RawFile' => 3, 'TCP' => 4);
 }
 
 /**
@@ -15942,6 +16535,23 @@ class AudioControllerTypeCollection extends VBox_EnumCollection
 /**
  * Generated VBoxWebService ENUM
  */
+class AudioCodecType extends VBox_Enum
+{
+    public $NameMap = array(0 => 'Null', 1 => 'SB16', 2 => 'STAC9700', 3 => 'AD1980', 4 => 'STAC9221');
+    public $ValueMap = array('Null' => 0, 'SB16' => 1, 'STAC9700' => 2, 'AD1980' => 3, 'STAC9221' => 4);
+}
+
+/**
+ * Generated VBoxWebService Enum Collection
+ */
+class AudioCodecTypeCollection extends VBox_EnumCollection
+{
+    protected $_interfaceName = "AudioCodecType";
+}
+
+/**
+ * Generated VBoxWebService ENUM
+ */
 class AuthType extends VBox_Enum
 {
     public $NameMap = array(0 => 'Null', 1 => 'External', 2 => 'Guest');
@@ -15961,8 +16571,8 @@ class AuthTypeCollection extends VBox_EnumCollection
  */
 class Reason extends VBox_Enum
 {
-    public $NameMap = array(0 => 'Unspecified', 1 => 'HostSuspend', 2 => 'HostResume', 3 => 'HostBatteryLow');
-    public $ValueMap = array('Unspecified' => 0, 'HostSuspend' => 1, 'HostResume' => 2, 'HostBatteryLow' => 3);
+    public $NameMap = array(0 => 'Unspecified', 1 => 'HostSuspend', 2 => 'HostResume', 3 => 'HostBatteryLow', 4 => 'Snapshot');
+    public $ValueMap = array('Unspecified' => 0, 'HostSuspend' => 1, 'HostResume' => 2, 'HostBatteryLow' => 3, 'Snapshot' => 4);
 }
 
 /**
@@ -16080,8 +16690,8 @@ class BandwidthGroupTypeCollection extends VBox_EnumCollection
  */
 class VBoxEventType extends VBox_Enum
 {
-    public $NameMap = array(0 => 'Invalid', 1 => 'Any', 2 => 'Vetoable', 3 => 'MachineEvent', 4 => 'SnapshotEvent', 5 => 'InputEvent', 31 => 'LastWildcard', 32 => 'OnMachineStateChanged', 33 => 'OnMachineDataChanged', 34 => 'OnExtraDataChanged', 35 => 'OnExtraDataCanChange', 36 => 'OnMediumRegistered', 37 => 'OnMachineRegistered', 38 => 'OnSessionStateChanged', 39 => 'OnSnapshotTaken', 40 => 'OnSnapshotDeleted', 41 => 'OnSnapshotChanged', 42 => 'OnGuestPropertyChanged', 43 => 'OnMousePointerShapeChanged', 44 => 'OnMouseCapabilityChanged', 45 => 'OnKeyboardLedsChanged', 46 => 'OnStateChanged', 47 => 'OnAdditionsStateChanged', 48 => 'OnNetworkAdapterChanged', 49 => 'OnSerialPortChanged', 50 => 'OnParallelPortChanged', 51 => 'OnStorageControllerChanged', 52 => 'OnMediumChanged', 53 => 'OnVRDEServerChanged', 54 => 'OnUSBControllerChanged', 55 => 'OnUSBDeviceStateChanged', 56 => 'OnSharedFolderChanged', 57 => 'OnRuntimeError', 58 => 'OnCanShowWindow', 59 => 'OnShowWindow', 60 => 'OnCPUChanged', 61 => 'OnVRDEServerInfoChanged', 62 => 'OnEventSourceChanged', 63 => 'OnCPUExecutionCapChanged', 64 => 'OnGuestKeyboard', 65 => 'OnGuestMouse', 66 => 'OnNATRedirect', 67 => 'OnHostPCIDevicePlug', 68 => 'OnVBoxSVCAvailabilityChanged', 69 => 'OnBandwidthGroupChanged', 70 => 'OnGuestMonitorChanged', 71 => 'OnStorageDeviceChanged', 72 => 'OnClipboardModeChanged', 73 => 'OnDnDModeChanged', 74 => 'OnNATNetworkChanged', 75 => 'OnNATNetworkStartStop', 76 => 'OnNATNetworkAlter', 77 => 'OnNATNetworkCreationDeletion', 78 => 'OnNATNetworkSetting', 79 => 'OnNATNetworkPortForward', 80 => 'OnGuestSessionStateChanged', 81 => 'OnGuestSessionRegistered', 82 => 'OnGuestProcessRegistered', 83 => 'OnGuestProcessStateChanged', 84 => 'OnGuestProcessInputNotify', 85 => 'OnGuestProcessOutput', 86 => 'OnGuestFileRegistered', 87 => 'OnGuestFileStateChanged', 88 => 'OnGuestFileOffsetChanged', 89 => 'OnGuestFileRead', 90 => 'OnGuestFileWrite', 91 => 'OnVideoCaptureChanged', 92 => 'OnGuestUserStateChanged', 93 => 'OnGuestMultiTouch', 94 => 'OnHostNameResolutionConfigurationChange', 95 => 'Last');
-    public $ValueMap = array('Invalid' => 0, 'Any' => 1, 'Vetoable' => 2, 'MachineEvent' => 3, 'SnapshotEvent' => 4, 'InputEvent' => 5, 'LastWildcard' => 31, 'OnMachineStateChanged' => 32, 'OnMachineDataChanged' => 33, 'OnExtraDataChanged' => 34, 'OnExtraDataCanChange' => 35, 'OnMediumRegistered' => 36, 'OnMachineRegistered' => 37, 'OnSessionStateChanged' => 38, 'OnSnapshotTaken' => 39, 'OnSnapshotDeleted' => 40, 'OnSnapshotChanged' => 41, 'OnGuestPropertyChanged' => 42, 'OnMousePointerShapeChanged' => 43, 'OnMouseCapabilityChanged' => 44, 'OnKeyboardLedsChanged' => 45, 'OnStateChanged' => 46, 'OnAdditionsStateChanged' => 47, 'OnNetworkAdapterChanged' => 48, 'OnSerialPortChanged' => 49, 'OnParallelPortChanged' => 50, 'OnStorageControllerChanged' => 51, 'OnMediumChanged' => 52, 'OnVRDEServerChanged' => 53, 'OnUSBControllerChanged' => 54, 'OnUSBDeviceStateChanged' => 55, 'OnSharedFolderChanged' => 56, 'OnRuntimeError' => 57, 'OnCanShowWindow' => 58, 'OnShowWindow' => 59, 'OnCPUChanged' => 60, 'OnVRDEServerInfoChanged' => 61, 'OnEventSourceChanged' => 62, 'OnCPUExecutionCapChanged' => 63, 'OnGuestKeyboard' => 64, 'OnGuestMouse' => 65, 'OnNATRedirect' => 66, 'OnHostPCIDevicePlug' => 67, 'OnVBoxSVCAvailabilityChanged' => 68, 'OnBandwidthGroupChanged' => 69, 'OnGuestMonitorChanged' => 70, 'OnStorageDeviceChanged' => 71, 'OnClipboardModeChanged' => 72, 'OnDnDModeChanged' => 73, 'OnNATNetworkChanged' => 74, 'OnNATNetworkStartStop' => 75, 'OnNATNetworkAlter' => 76, 'OnNATNetworkCreationDeletion' => 77, 'OnNATNetworkSetting' => 78, 'OnNATNetworkPortForward' => 79, 'OnGuestSessionStateChanged' => 80, 'OnGuestSessionRegistered' => 81, 'OnGuestProcessRegistered' => 82, 'OnGuestProcessStateChanged' => 83, 'OnGuestProcessInputNotify' => 84, 'OnGuestProcessOutput' => 85, 'OnGuestFileRegistered' => 86, 'OnGuestFileStateChanged' => 87, 'OnGuestFileOffsetChanged' => 88, 'OnGuestFileRead' => 89, 'OnGuestFileWrite' => 90, 'OnVideoCaptureChanged' => 91, 'OnGuestUserStateChanged' => 92, 'OnGuestMultiTouch' => 93, 'OnHostNameResolutionConfigurationChange' => 94, 'Last' => 95);
+    public $NameMap = array(0 => 'Invalid', 1 => 'Any', 2 => 'Vetoable', 3 => 'MachineEvent', 4 => 'SnapshotEvent', 5 => 'InputEvent', 31 => 'LastWildcard', 32 => 'OnMachineStateChanged', 33 => 'OnMachineDataChanged', 34 => 'OnExtraDataChanged', 35 => 'OnExtraDataCanChange', 36 => 'OnMediumRegistered', 37 => 'OnMachineRegistered', 38 => 'OnSessionStateChanged', 39 => 'OnSnapshotTaken', 40 => 'OnSnapshotDeleted', 41 => 'OnSnapshotChanged', 42 => 'OnGuestPropertyChanged', 43 => 'OnMousePointerShapeChanged', 44 => 'OnMouseCapabilityChanged', 45 => 'OnKeyboardLedsChanged', 46 => 'OnStateChanged', 47 => 'OnAdditionsStateChanged', 48 => 'OnNetworkAdapterChanged', 49 => 'OnSerialPortChanged', 50 => 'OnParallelPortChanged', 51 => 'OnStorageControllerChanged', 52 => 'OnMediumChanged', 53 => 'OnVRDEServerChanged', 54 => 'OnUSBControllerChanged', 55 => 'OnUSBDeviceStateChanged', 56 => 'OnSharedFolderChanged', 57 => 'OnRuntimeError', 58 => 'OnCanShowWindow', 59 => 'OnShowWindow', 60 => 'OnCPUChanged', 61 => 'OnVRDEServerInfoChanged', 62 => 'OnEventSourceChanged', 63 => 'OnCPUExecutionCapChanged', 64 => 'OnGuestKeyboard', 65 => 'OnGuestMouse', 66 => 'OnNATRedirect', 67 => 'OnHostPCIDevicePlug', 68 => 'OnVBoxSVCAvailabilityChanged', 69 => 'OnBandwidthGroupChanged', 70 => 'OnGuestMonitorChanged', 71 => 'OnStorageDeviceChanged', 72 => 'OnClipboardModeChanged', 73 => 'OnDnDModeChanged', 74 => 'OnNATNetworkChanged', 75 => 'OnNATNetworkStartStop', 76 => 'OnNATNetworkAlter', 77 => 'OnNATNetworkCreationDeletion', 78 => 'OnNATNetworkSetting', 79 => 'OnNATNetworkPortForward', 80 => 'OnGuestSessionStateChanged', 81 => 'OnGuestSessionRegistered', 82 => 'OnGuestProcessRegistered', 83 => 'OnGuestProcessStateChanged', 84 => 'OnGuestProcessInputNotify', 85 => 'OnGuestProcessOutput', 86 => 'OnGuestFileRegistered', 87 => 'OnGuestFileStateChanged', 88 => 'OnGuestFileOffsetChanged', 89 => 'OnGuestFileRead', 90 => 'OnGuestFileWrite', 91 => 'OnVideoCaptureChanged', 92 => 'OnGuestUserStateChanged', 93 => 'OnGuestMultiTouch', 94 => 'OnHostNameResolutionConfigurationChange', 95 => 'OnSnapshotRestored', 96 => 'OnMediumConfigChanged', 97 => 'Last');
+    public $ValueMap = array('Invalid' => 0, 'Any' => 1, 'Vetoable' => 2, 'MachineEvent' => 3, 'SnapshotEvent' => 4, 'InputEvent' => 5, 'LastWildcard' => 31, 'OnMachineStateChanged' => 32, 'OnMachineDataChanged' => 33, 'OnExtraDataChanged' => 34, 'OnExtraDataCanChange' => 35, 'OnMediumRegistered' => 36, 'OnMachineRegistered' => 37, 'OnSessionStateChanged' => 38, 'OnSnapshotTaken' => 39, 'OnSnapshotDeleted' => 40, 'OnSnapshotChanged' => 41, 'OnGuestPropertyChanged' => 42, 'OnMousePointerShapeChanged' => 43, 'OnMouseCapabilityChanged' => 44, 'OnKeyboardLedsChanged' => 45, 'OnStateChanged' => 46, 'OnAdditionsStateChanged' => 47, 'OnNetworkAdapterChanged' => 48, 'OnSerialPortChanged' => 49, 'OnParallelPortChanged' => 50, 'OnStorageControllerChanged' => 51, 'OnMediumChanged' => 52, 'OnVRDEServerChanged' => 53, 'OnUSBControllerChanged' => 54, 'OnUSBDeviceStateChanged' => 55, 'OnSharedFolderChanged' => 56, 'OnRuntimeError' => 57, 'OnCanShowWindow' => 58, 'OnShowWindow' => 59, 'OnCPUChanged' => 60, 'OnVRDEServerInfoChanged' => 61, 'OnEventSourceChanged' => 62, 'OnCPUExecutionCapChanged' => 63, 'OnGuestKeyboard' => 64, 'OnGuestMouse' => 65, 'OnNATRedirect' => 66, 'OnHostPCIDevicePlug' => 67, 'OnVBoxSVCAvailabilityChanged' => 68, 'OnBandwidthGroupChanged' => 69, 'OnGuestMonitorChanged' => 70, 'OnStorageDeviceChanged' => 71, 'OnClipboardModeChanged' => 72, 'OnDnDModeChanged' => 73, 'OnNATNetworkChanged' => 74, 'OnNATNetworkStartStop' => 75, 'OnNATNetworkAlter' => 76, 'OnNATNetworkCreationDeletion' => 77, 'OnNATNetworkSetting' => 78, 'OnNATNetworkPortForward' => 79, 'OnGuestSessionStateChanged' => 80, 'OnGuestSessionRegistered' => 81, 'OnGuestProcessRegistered' => 82, 'OnGuestProcessStateChanged' => 83, 'OnGuestProcessInputNotify' => 84, 'OnGuestProcessOutput' => 85, 'OnGuestFileRegistered' => 86, 'OnGuestFileStateChanged' => 87, 'OnGuestFileOffsetChanged' => 88, 'OnGuestFileRead' => 89, 'OnGuestFileWrite' => 90, 'OnVideoCaptureChanged' => 91, 'OnGuestUserStateChanged' => 92, 'OnGuestMultiTouch' => 93, 'OnHostNameResolutionConfigurationChange' => 94, 'OnSnapshotRestored' => 95, 'OnMediumConfigChanged' => 96, 'Last' => 97);
 }
 
 /**

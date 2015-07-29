@@ -80,7 +80,7 @@ function vboxAjaxRequest(fn,params,config) {
         'params': params ? params : null,
         'persist': config && config.persist ? config.persist : null
 	};
-		
+
 	$.when($.post(vboxEndpointConfig.api, JSON.stringify(data), undefined,"json")
 	
 		// Run on error
@@ -707,7 +707,7 @@ function vboxDivOverflowHidden(p) {
  * @see vboxconnector::progressGet()
  */
 function vboxProgress(prequest,callback,icon,title,target,blocking) {
-	
+
 	// Fix title
 	title = title.replace('\.+$','');
 	
@@ -715,6 +715,7 @@ function vboxProgress(prequest,callback,icon,title,target,blocking) {
 	target = $('<div />').text(target).html();
 	
 	// Sanitize progress request data
+	var persist = prequest.persist;
 	prequest = {
 		'progress' : prequest.progress,
 		'catcherrs' : prequest.catcherrs
@@ -725,13 +726,13 @@ function vboxProgress(prequest,callback,icon,title,target,blocking) {
 	
 		vboxProgressCreateListElement(prequest,icon,title,target,callback);
 		
-		$.when(prequest, vboxAjaxRequest('progressGet',prequest,{'persist':prequest.persist})).done(vboxProgressUpdate);
+		$.when(prequest, vboxAjaxRequest('progressGet',prequest,{'persist':persist})).done(vboxProgressUpdate);
 
 	} else {
 		
 		vboxProgressCreateDialog(prequest,icon,title,target,callback);
 				
-		$.when(prequest, vboxAjaxRequest('progressGet',prequest,{'persist':prequest.persist})).done(vboxProgressUpdateModal);
+		$.when(prequest, vboxAjaxRequest('progressGet',prequest,{'persist':persist})).done(vboxProgressUpdateModal);
 	}
 	
 	
@@ -885,7 +886,7 @@ function vboxProgressUpdate(prequest,d,modal) {
 	
 	// Shorthand
 	var pid = prequest.progress;
-	
+
 	// check for completed progress
 	if(!d || !d.responseData || !d.responseData['progress'] || !d.responseData['info'] || d.responseData['info']['completed'] || d.responseData['info']['canceled']) {
 		
@@ -956,8 +957,8 @@ function vboxProgressUpdate(prequest,d,modal) {
 	// Get request
 	var def = $.Deferred();
 	def.done(function(){
-		
-		$.when(prequest, vboxAjaxRequest('progressGet', prequest))
+
+		$.when(prequest, vboxAjaxRequest('progressGet', prequest, {'persist': d.persist}))
 			.done((modal ? vboxProgressUpdateModal : vboxProgressUpdate));
 		
 	});
