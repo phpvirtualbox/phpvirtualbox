@@ -1,6 +1,5 @@
 /*
  * Endpoint configuration for phpVirtualBox
- * $Id$
  */
 var vboxEndpointConfig = {
 	api: 'endpoints/api.php',
