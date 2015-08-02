@@ -179,7 +179,7 @@ try {
 
 			$settings = new phpVBoxConfigClass();
 			$response['data']['success'] = $settings->auth->changePassword($request['params']['old'],
-					                                                       $request['parans']['new']);
+					                                                       $request['params']['new']);
 
 			// We're done writing to session
 			if(function_exists('session_write_close'))
