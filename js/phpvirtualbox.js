@@ -923,7 +923,7 @@ var vboxVMDetailsSections = {
 					   
 					   // RDP
 					   } else if(d['VRDEServer']['VRDEExtPack'].indexOf("VNC") == -1) {
-						   rowStr = " <a href='rdp.php?host=" + chost + '&port=' + d['VRDEServerInfo']['port'] + "&id=" + d['id'] + "&vm=" + encodeURIComponent(d['name']) + "'>" + d['VRDEServerInfo']['port'] + "</a>";						   
+						   rowStr = " <a href='" + vboxEndpointConfig.rdpGen + "?host=" + chost + '&port=' + d['VRDEServerInfo']['port'] + "&id=" + d['id'] + "&vm=" + encodeURIComponent(d['name']) + "'>" + d['VRDEServerInfo']['port'] + "</a>";
 						   rowStr += ' <img src="images/vbox/blank.gif" style="vspace:0px;hspace:0px;height2px;width:10px;" /> (' + chost + ':' + d['VRDEServerInfo']['port'] + ')';
 					   // VNC   
 					   } else {
