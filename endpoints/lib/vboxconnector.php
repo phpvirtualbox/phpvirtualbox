@@ -3827,7 +3827,7 @@ class vboxconnector {
 			}
 
 			// set the vboxauthsimple in VM config
-			$this->session->machine->setExtraData('VBoxAuthSimple/users/'.$_SESSION['user'].'', $_SESSION['uHash256']);
+			$this->session->machine->setExtraData('VBoxAuthSimple/users/'.$_SESSION['user'].'', $_SESSION['uHash']);
 
 			// Always set
 			$this->session->machine->setExtraData('GUI/SaveMountedAtRuntime', 'yes');
