@@ -819,11 +819,6 @@ class vboxconnector {
 				$data['dedupId'] .= '-'. $data['machineId'] .'-' . $data['name'];
 		        break;
 
-			case 'OnAdditionsStateChanged':
-		        $data['machineId'] = $eventDataObject->machineId;
-		        $data['dedupId'] .= '-'. $data['machineId'];
-		        break;
-
 			case 'OnCPUChanged':
 				$data['machineId'] = $data['sourceId'];
 				$data['cpu'] = $eventDataObject->cpu;
@@ -1297,12 +1292,12 @@ class vboxconnector {
 
 				$this->session = $this->websessionManager->getSessionObject($this->vbox->handle);
 
-				$machine->lockMachine($this->session->handle, 'Write');
+				$machine->lockMachine($this->session->handle, 'Shared');
 
 				usort($newGroups,'strnatcasecmp');
 
 				if($this->settings->phpVboxGroups) {
-					$machine->setExtraData(vboxconnector::phpVboxGroupKey, implode(',',$newGroups));
+					$this->session->machine->setExtraData(vboxconnector::phpVboxGroupKey, implode(',', $newGroups));
 				} else {
 					$this->session->machine->groups = $newGroups;
 				}
@@ -1317,6 +1312,13 @@ class vboxconnector {
 
 				$this->errors[] = $e;
 				$response['errored'] = true;
+
+				try {
+				    $this->session->unlockMachine();
+				    unset($this->session);
+				} catch (Exception $e) {
+				    // pass
+				}
 
 				continue;
 

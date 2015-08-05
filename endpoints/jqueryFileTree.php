@@ -73,32 +73,32 @@ if(!is_array($allowed_folders))
 	$allowed_folders = array();
 
 /*
+ * Get a list of windows drives
+ */
+function get_windows_drives() {
+    $checklist = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    $drives = array();
+    for($i = 0; $i < strlen($d); $i++) {
+        if(is_dir($checklist[$i].':\\')) {
+            $drives[] = $checklist[$i].':\\';
+        }
+    }
+    return $drives;
+}
+
+/*
  * Allowed folders in windows if none are set
  */
 if(stripos($vbox->vbox->host->operatingSystem,'win') === 0 && !count($allowed_folders)) {
-	
+
 	/*
-	 * Get from WMIC. Assumes web server and vbox host are the same physical machine
+	 * Assumes web server and vbox host are the same physical machine
 	 */
     if($request['fullpath'] && !$settings->forceWindowsAllDriveList && !$settings->noWindowsDriveList && stripos(PHP_OS,'win') === 0) {
-    
-        exec("wmic logicaldisk get caption", $out);
-        if(is_array($out) && count($out) > 2) {
-        	
-        	$allowed_folders = array();
-        	
-    	    // Shift off header
-    	    array_shift($out);
-    	    
-    	    // Shift off footer
-    	    array_pop($out);
-    	    
-    	    // These are now restricted folders
-    	    foreach ($out as $val) {
-    	        $allowed_folders[] = $val . '\\';
-    	    }
-        }
-        
+
+
+        $allowed_folders = get_windows_drives();
+
     /*
      * Just show all C-Z drive letters if vboxhost is windows and our web server is not...
      */
@@ -109,7 +109,7 @@ if(stripos($vbox->vbox->host->operatingSystem,'win') === 0 && !count($allowed_fo
         }
     }
     $allowed_folders = array_combine($allowed_folders,$allowed_folders);
-    
+
 }
 
 
@@ -124,7 +124,7 @@ if(strpos($request['dir'],DSEP)===false) {
 $request['dir'] = str_replace(DSEP.DSEP,DSEP,$request['dir']);
 
 
-/* 
+/*
  * Check that folder restriction validates if it exists
  */
 if($request['dir'] != DSEP && count($allowed_folders)) {
@@ -147,32 +147,32 @@ $returnData = array();
 
 /* Folder Restriction with root '/' requested */
 if($request['dir'] == DSEP && count($allowed_folders)) {
-	
+
 	/* Just return restricted folders */
 	foreach($allowed_folders as $f) {
 		array_push($returnData, folder_entry($f, true));
-		
+
 	}
-	
+
 } else {
 
 
     /* Full, expanded path to $dir */
     if($request['fullpath']) {
-    	
-    	
+
+
     	/* Go through allowed folders if it is set */
     	if(count($allowed_folders)) {
-    		
-    		
+
+
     		foreach($allowed_folders as $f) {
-    			
+
     			/* If this was not exactly the requested folder, but a parent,
     			 * list everything below it.
     			 */
     			if((strtoupper($request['dir']) != strtoupper($f)) && strpos(strtoupper($request['dir']),strtoupper($f)) === 0) {
-    				
-    				
+
+
     				// List entries in this folder
     				$path = explode(DSEP,substr($request['dir'],strlen($f)));
 
@@ -180,7 +180,7 @@ if($request['dir'] == DSEP && count($allowed_folders)) {
     				array_push($returnData, getdir($f, $request['dirsOnly'], $path));
 
     			} else {
-    				
+
     				array_push($returnData, folder_entry($f,true));
     			}
     		}
@@ -191,25 +191,23 @@ if($request['dir'] == DSEP && count($allowed_folders)) {
 			// List entries in this folder
 			$path = explode(DSEP,$request['dir']);
 			$root = array_shift($path).DSEP;
-			
+
 			// Folder entry
 			$returnData = getdir($root, $request['dirsOnly'], $path);
 
     	}
-    
+
 
     } else {
-    	
+
         /* Default action. Return dir requested */
         $returnData = getdir($request['dir'], $request['dirsOnly']);
 
     }
-    
+
 }
 
 header('Content-type', 'application/json');
-#echo("<pre>");
-#print_r($returnData);
 echo(json_encode($returnData));
 
 
@@ -221,41 +219,41 @@ function getdir($dir, $dirsOnly=false, $recurse=array()) {
 	if(!$dir) $dir = DSEP;
 
 	$entries = getDirEntries($dir, $dirsOnly);
-	
+
     if(!count($entries))
     	return array();
-    
+
     $dirents = array();
     foreach($entries as $path => $type) {
-    	
+
         if($type == 'folder' && count($recurse) && (strcasecmp($recurse[0],vbox_basename($path)) == 0)) {
 
         	$entry = folder_entry($path, false, true);
-        	
+
             $entry['children'] = getdir($dir.DSEP.array_shift($recurse), $dirsOnly, $recurse);
-            
+
             array_push($dirents, $entry);
-            
+
         } else {
-        	
+
         	// Push folder on to stack
         	if($type == 'folder') {
-        		
+
         	   array_push($dirents, folder_entry($path));
-        	   
+
         	// Push file on to stack
         	} else {
-                
+
         		$ext = strtolower(preg_replace('/^.*\./', '', $file));
 
                 if(count($allowed) && !$allowed['.'.$ext]) continue;
-        		
+
                 array_push($dirents, file_entry($path));
         	}
         }
-    	
+
     }
-    
+
     return $dirents;
 
 }
@@ -288,55 +286,55 @@ function folder_entry($f,$full=false,$expanded=false) {
 
 /**
  * Rreturn a list of directory entries
- * 
+ *
  * @param String $dir
  * @return Array of entries
  */
 
 function getDirEntries($dir, $foldersOnly=false) {
-	
+
 	global $localbrowser, $allowed_exts, $vbox;
-	
+
 	// Append trailing slash if it isn't here
 	if(substr($dir,-1) != DSEP)
 	    $dir .= DSEP;
-	
-	
-    /* 
+
+
+    /*
      * Use local file / folder browser (PHP)
      */
 	if($localbrowser) {
-	
+
 		// If the dir doesn't exist or we can't scan it, just return
 		if(!(file_exists($dir) && ($ents = @scandir($dir))))
 			return array();
-		
+
 		$newtypes = array();
 		$newents = array();
 		for($i = 0; $i < count($ents); $i++) {
-			
+
 			// Skip . and ..
 			if($ents[$i] == '.' || $ents[$i] == '..')
 				continue;
-			
+
 			$fullpath = $dir.$ents[$i];
 			$isdir = @is_dir($fullpath);
-			
+
 			if(!$isdir && $foldersOnly)
 				continue;
-			
+
 			array_push($newtypes, $isdir ? 'folder' : 'file');
 			array_push($newents, $fullpath);
 		}
 		return array_combine($newents, $newtypes);
-		
+
 	/*
 	 * Use remote file / folder browser (vbox)
 	 */
 	} else {
-		
+
 		try {
-		
+
 
 		    $appl = $vbox->vbox->createAppliance();
 		    $vfs = $appl->createVFSExplorer('file://'.str_replace(DSEP.DSEP,DSEP,$dir));
@@ -346,35 +344,35 @@ function getDirEntries($dir, $foldersOnly=false) {
 		    list($ents,$types) = $vfs->entryList();
 		    $vfs->releaseRemote();
 		    $appl->releaseRemote();
-		
+
 		} catch (Exception $e) {
-		
+
 		    echo($e->getMessage());
-		
+
 		    return array();
-		
+
 		}
-		
+
 		// Convert types to file / folder
 		$newtypes = array();
 		$newents = array();
 		for($i = 0; $i < count($types); $i++) {
-			
+
 			// Skip . and ..
 			if($ents[$i] == '.' || $ents[$i] == '..')
 			    continue;
-				
+
 			$isdir = $types[$i] == 4;
-			
+
 			if(!$isdir && $foldersOnly)
 				continue;
-			
+
 			array_push($newtypes, $isdir ? 'folder' : 'file');
 			array_push($newents, $dir.$ents[$i]);
 		}
 		return array_combine($newents,$newtypes);
-		
+
 	}
-	
-	
+
+
 }
