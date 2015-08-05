@@ -2,24 +2,24 @@
 /**
  * phpVirtualBox configuration class. Parses user configuration, applies
  * defaults, and sanitizes user values.
- * 
+ *
  * @author Ian Moore (imoore76 at yahoo dot com)
  * @copyright Copyright (C) 2010-2015 Ian Moore (imoore76 at yahoo dot com)
  * @version $Id: config.php 595 2015-04-17 09:50:36Z imoore76 $
  * @package phpVirtualBox
  * @see config.php-example
- * 
+ *
 */
 
 /*
  * This version of phpVirtualBox
  */
-define('PHPVBOX_VER', '5.0-0');
+define('PHPVBOX_VER', '5.0-1');
 
 class phpVBoxConfigClass {
 
 	/* DEFAULTS */
-	
+
 	/**
 	 * Default language
 	 * @var string
@@ -31,13 +31,13 @@ class phpVBoxConfigClass {
 	 * VirtualBox groups
 	 */
 	var $phpVboxGroups = false;
-	
+
 	/**
 	 * Preview screen width
 	 * @var integer
-	 */	
+	 */
 	var $previewWidth = 180;
-	
+
 	/**
 	 * Aspect ratio of preview screen
 	 * @var float
@@ -62,13 +62,13 @@ class phpVBoxConfigClass {
 	 * @var boolean
 	 */
 	var $browserLocal = false;
-	
+
 	/**
 	 * List of console resolutions available on console tab
 	 * @var array
 	 */
 	var $consoleResolutions = array('640x480','800x600','1024x768','1280x720','1440x900');
-	
+
 	/**
 	 * Maximum number of NICs displayed per VM
 	 * @var integer
@@ -80,7 +80,7 @@ class phpVBoxConfigClass {
 	 * @var integer
 	 */
 	var $maxProgressList = 5;
-	
+
 	/**
 	 * Enable custom icon per VM
 	 * @var boolean
@@ -99,7 +99,7 @@ class phpVBoxConfigClass {
 	 * @var string
 	 */
 	var $vrdeports = '9000-9100';
-	
+
 	/**
 	 * Key used to uniquely identify the current server in this
 	 * instantiation of phpVBoxConfigClass.
@@ -107,50 +107,50 @@ class phpVBoxConfigClass {
 	 * @var string
 	 */
 	var $key = null;
-	
+
 	/**
 	 * Auth library object instance. See lib/auth for classes.
 	 * Set in __construct() based on authLib config setting value.
 	 * @var phpvbAuth
 	 */
 	var $auth = null;
-	
+
 	/**
 	 * Enable VirtualBox start / stop configuration.
 	 * Only available in Linux (I beleive)
 	 * @var boolean
 	 */
 	var $vboxAutostartConfig = false;
-	
+
 	/**
 	 * Authentication capabilities provided by authentication module.
 	 * Set in __construct
 	 * @var phpvbAuthBuiltin::authCapabilities
 	 */
 	var $authCapabilities = null;
-	
+
 	/**
 	 * Configuration passed to authentication module
 	 * @var array
 	 */
 	var $authConfig = array();
-	
+
 	/**
 	 * Event listener timeout in seconds.
 	 * @var integer
 	 */
 	var $eventListenerTimeout = 20;
-	
+
 	/**
 	 * Read user configuration, apply defaults, and do some sanity checking
 	 * @see vboxconnector
 	 */
 	function __construct() {
-		
+
 		@include_once(dirname(dirname(dirname(__FILE__))).'/config.php');
-		
+
 		$ep = error_reporting(0);
-	
+
 		/* Apply object vars of configuration class to this class */
 		if(class_exists('phpVBoxConfig')) {
 			$c = new phpVBoxConfig();
@@ -161,12 +161,12 @@ class phpVBoxConfigClass {
 				if($k == 'browserRestrictFolders' && !is_array($v)) continue;
 				$this->$k = $v;
 			}
-				
+
 		/* User config.php does not exist. Send warning */
 		} else {
 			$this->warnDefault = true;
 		}
-			
+
 		// Ignore any server settings if we have servers
 		// in the servers array
 		if(isset($this->servers) && is_array($this->servers) && count($this->servers) && is_array($this->servers[0])) {
@@ -177,7 +177,7 @@ class phpVBoxConfigClass {
 		// Set to selected server based on browser cookie
 		if(isset($_COOKIE['vboxServer']) && isset($this->servers) && is_array($this->servers) && count($this->servers)) {
 			foreach($this->servers as $s) {
-				if($s['name'] == $_COOKIE['vboxServer']) {				
+				if($s['name'] == $_COOKIE['vboxServer']) {
 					foreach($s as $k=>$v) $this->$k = $v;
 					break;
 				}
@@ -196,37 +196,37 @@ class phpVBoxConfigClass {
 			$this->name = parse_url($this->location);
 			$this->name = $this->name['host'];
 		}
-		
+
 		// Key used to uniquely identify this server in this
 		// phpvirtualbox installation
 		$this->setKey();
-		
+
 		// legacy rdpHost setting
 		if(!empty($this->rdpHost) && empty($this->consoleHost))
 			$this->consoleHost = $this->rdpHost;
-			
+
 		// Ensure authlib is set
 		if(empty($this->authLib)) $this->authLib = 'Builtin';
 		// include interface
 		include_once(dirname(__FILE__).'/authinterface.php');
 		include_once(dirname(__FILE__).'/auth/'.str_replace(array('.','/','\\'),'',$this->authLib).'.php');
-		
+
 		// Check for session functionality
 		if(!function_exists('session_start')) $this->noAuth = true;
-		
+
 		$alib = "phpvbAuth{$this->authLib}";
 		$this->auth = new $alib(@$this->authConfig);
 		$this->authCapabilities = $this->auth->capabilities;
-		
+
 		/* Sanity checks */
 		if(!@$this->nicMax)
 			$this->nicMax = 4;
-		
+
 		$this->previewUpdateInterval = max(3, @$this->previewUpdateInterval);
-		
+
 		error_reporting($ep);
 	}
-	
+
 	/**
 	 * Set VirtualBox server to use
 	 * @param string $server server from config.php $servers array
@@ -235,28 +235,28 @@ class phpVBoxConfigClass {
 		// do nothing if we are already using this server
 		if($server == $this->name) return;
 		foreach($this->servers as $s) {
-			if($s['name'] == $server) {				
+			if($s['name'] == $server) {
 				foreach($s as $k=>$v) $this->$k = $v;
 				$this->setKey();
 				break;
 			}
 		}
 	}
-	
+
 	/**
 	 * Generate a key for current server settings and populate $this->key
 	 */
 	function setKey() {
 		$this->key = md5($this->location);
 	}
-	
+
 	/**
 	 * Return the name of the server marked as the authentication master
 	 * @return string name of server marked as authMaster
 	 */
 	function getServerAuthMaster() {
 		foreach($this->servers as $s) {
-			if($s['authMaster']) {				
+			if($s['authMaster']) {
 				return $s['name'];
 			}
 		}

@@ -1,4 +1,17 @@
 -------------------------------------
+    5.0-1   2015-08-04
+-------------------------------------
+Fix paths in recovery.php-disabled
+
+Fix Content-type header in api.php
+
+Fix add medium button context menu in VM settings
+
+Fix RDP link
+
+Fix bug when changing password
+
+-------------------------------------
     5.0-0	2015-07-18
 -------------------------------------
 VirtualBox 5.0 compatibility.
