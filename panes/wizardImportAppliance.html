@@ -54,7 +54,7 @@
 /* Draw button */
 new vboxToolbarSingle({button: {
 	'name' : 'mselecthdbtn',
-	'label' : 'Open appliance...',
+	'label' : 'Choose a virtual appliance file to import...',
 	'language_context': 'UIWizardImportApp',
 	'icon' : 'select_file',
 	'click' : function () {
@@ -120,10 +120,10 @@ var vboxApplianceImportProps = {
 			return trans(vboxNetworkAdapterType($('#vboxPane').data('vboxNetworkAdapterTypes')[val]),'VBoxGlobal');
 		}},
 		'Floppy' : {'label':'Floppy','icon':'floppy','checkbox':true},
-		'HardDiskControllerIDE' : {'label':'Hard Disk Controller (IDE)','icon':'ide','edit':''},
-		'HardDiskControllerSATA' : {'label':'Hard Disk Controller (SATA)','icon':'sata','edit':null},
-		'HardDiskControllerSAS' : {'label':'Hard Disk Controller (SAS)','icon':'scsi','edit':null},
-		'HardDiskControllerSCSI' : {'label':'Hard Disk Controller (SCSI)','icon':'scsi','edit':null},
+		'HardDiskControllerIDE' : {'label':'Storage Controller (IDE)','icon':'ide','edit':''},
+		'HardDiskControllerSATA' : {'label':'Storage Controller (SATA)','icon':'sata','edit':null},
+		'HardDiskControllerSAS' : {'label':'Storage Controller (SAS)','icon':'scsi','edit':null},
+		'HardDiskControllerSCSI' : {'label':'Storage Controller (SCSI)','icon':'scsi','edit':null},
 		'HardDiskImage' : {'label':'Virtual Disk Image','icon':'hd','edit':'text'}
 };
 

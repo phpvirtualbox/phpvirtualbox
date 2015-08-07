@@ -24,7 +24,7 @@
 	<div id='vboxVMMTabs'>
 
 		<ul id='vboxVMMTabList'>
-			<li><a href="#vmmDisks"><span><img id='vmmDisksIcon' style="height:16px;width:16px;vertical-align: middle" src="images/vbox/hd_16px.png" border="0" /> <span class='translate'>Hard drives</span></span></a></li>
+			<li><a href="#vmmDisks"><span><img id='vmmDisksIcon' style="height:16px;width:16px;vertical-align: middle" src="images/vbox/hd_16px.png" border="0" /> <span class='translate'>Hard disks</span></span></a></li>
 			<li><a href="#vmmCDs"><span><img id='vmmCDsIcon' style="height:16px;width:16px;vertical-align: middle" src="images/vbox/cd_16px.png" border="0" /> <span class='translate'>Optical disks</span></span></a></li>
 			<li><a href="#vmmFloppys"><span><img id='vmmFloppysIcon' style="height:16px;width:16px;vertical-align: middle" src="images/vbox/fd_16px.png" border="0" /> <span class='translate'>Floppy disks</span></span></a></li>		
 		</ul>
@@ -463,7 +463,7 @@ var vmmButtons = new Array(
 			l.addFileToDOM("panes/vmmModify.html",$(d));
 			l.onLoad = function() {
 				
-				var msg = trans('<p>You are about to change the attributes of the virtual disk located in <b>%1</b>.</p><p>Please choose one of the following medium types and press <b>%2</b> to proceed or <b>%3</b> otherwise.</p>','UIMediumTypeChangeDialog');
+				var msg = trans('<p>You are about to change the settings of the disk image file <b>%1</b>.</p><p>Please choose one of the following modes and press <b>%2</b> to proceed or <b>%3</b> otherwise.</p>','UIMediumTypeChangeDialog');
 				var title = trans('Modify medium attributes','UIMediumTypeChangeDialog');
 				
 				msg = msg.replace('%1',med.location).replace('%2',trans('OK','QIMessageBox')).replace('%3',trans('Cancel','QIMessageBox'));
@@ -475,7 +475,7 @@ var vmmButtons = new Array(
 				
 				$('#vboxVMMModify').find(".translate").html(function(i,h){return trans(h,'UIMediumTypeChangeDialog');}).removeClass('translate');
 
-				$('#vboxVMMModify').find('table.vboxOptions').find('span').html(function(i,h){return trans(h,'VBoxGlobal');});
+				$('#vboxVMMModify').find('table.vboxOptions').find('span').html(function(i,h){return trans(h,'VBoxGlobal', 'MediumType');});
 				
 				// Set correct option
 				$('#vboxVMMModify').find('input').prop('checked',false);
@@ -526,10 +526,11 @@ var vmmButtons = new Array(
 			if(m.deviceType == 'HardDisk' && $('#vboxPane').data('vboxConfig').deleteOnRemove && m.format != 'iSCSI') {
 
 				
-				q = trans('<p>Do you want to delete the storage unit of the hard disk <nobr><b>%1</b></nobr>?</p><p>If you select <b>Delete</b> ' +
-						'then the specified storage unit will be permanently deleted. This operation <b>cannot be undone</b>.</p><p>If you select '+
-						'<b>Keep</b> then the hard disk will be only removed from the list of known hard disks, but the storage unit will be left '+
-						'untouched which makes it possible to add this hard disk to the list later again.</p>','UIMessageCenter').replace('%1',m.location);
+				q = trans('<p>Do you want to delete the storage unit of the virtual hard disk <nobr><b>%1</b></nobr>?'+
+				        '</p><p>If you select <b>Delete</b> then the specified storage unit will be permanently deleted. '+
+				        'This operation <b>cannot be undone</b>.</p><p>If you select <b>Keep</b> then the hard disk will '+
+				        'be only removed from the list of known hard disks, but the storage unit will be left untouched '+
+				        'which makes it possible to add this hard disk to the list later again.</p>','UIMessageCenter').replace('%1',m.location);
 				
 				buttons[trans('Delete','UIMessageCenter')] = function(){
 					$.when(vboxAjaxRequest('mediumRemove',{'medium':m.location,'type':m.deviceType,'delete':1})).done(function(ret){
@@ -609,7 +610,8 @@ var vmmButtons = new Array(
 			
 			
 			var m = vboxMedia.getMediumById($(elm).find('tr.vboxListItemSelected').first().data('medium'));
-			var q = trans('<p>Are you sure you want to release the %1 <nobr><b>%2</b></nobr>?</p><p>This will detach it from the following virtual machine(s): <b>%3</b>.</p>','UIMessageCenter').replace('%1',trans(mtype,'UIMessageCenter')).replace('%2',m.location);
+			var q = trans('<p>Are you sure you want to release the disk image file <nobr><b>%1</b></nobr>?</p><p>This will detach it from the following virtual machine(s): <b>%2</b>.</p>','UIMessageCenter');
+			q = q.replace('%1',m.location);
 			
 			var buttons = {};
 			buttons[trans('Release','UIMessageCenter')] = function(){
@@ -631,7 +633,7 @@ var vmmButtons = new Array(
 				for(var i = 0; i < m.attachedTo.length; i++) {
 					machines[machines.length] = m.attachedTo[i].machine;
 				}
-				q = q.replace('%3','<b>'+machines.join('</b>, <b>') + '</b>');
+				q = q.replace('%2','<b>'+machines.join('</b>, <b>') + '</b>');
 			};
 			
 			
@@ -715,7 +717,7 @@ function vboxVMMMediaInfo(med) {
 	if(m) {
 		attch = vboxMedia.attachedTo(m,true);
 		if(!attch) {
-			attch = trans('Not Attached','UIDetailsPagePrivate');
+			attch = trans('Not Attached','UIGDetails','details (storage)');
 			attchElm.css({'font-style':'italic'});
 		}
 		attchElm.val(attch);

@@ -456,7 +456,7 @@ var vboxVMDetailsSections = {
 					).append(
 							
 						$('<span />')
-							.html(trans('Update Disabled','UIVMPreviewWindow'))
+							.html(trans('Update disabled','UIGMachinePreview'))
 					)
 					
 				).appendTo(ul);
@@ -504,7 +504,7 @@ var vboxVMDetailsSections = {
 					.append(radio)
 					.append(
 						$('<span />')
-							.html(trans('Every %1 seconds','UIVMPreviewWindow').replace('%1',ints[i]))
+							.html(trans('Every %1 seconds','UIGMachinePreview').replace('%1',ints[i]))
 					)
 					.appendTo(li);
 
@@ -1029,7 +1029,7 @@ var vboxVMDetailsSections = {
 					rows[rows.length] = {
 						title: portName,
 						indented: true,
-						data: (d['storageControllers'][a]['mediumAttachments'][b].type == 'DVD' ? trans('[CD/DVD]','UIGDetails') + ' ': '') + portDesc,
+						data: (d['storageControllers'][a]['mediumAttachments'][b].type == 'DVD' ? trans('[Optical Drive]','UIGDetails') + ' ': '') + portDesc,
 						html: true
 					};
 					
@@ -1115,18 +1115,18 @@ var vboxVMDetailsSections = {
 						case 'Generic':
 							// Check for properties
 							if(nic.properties) {
-								adp = trans('Generic driver, \'%1\' { %2 }','UIDetailsPagePrivate').replace('%1', $('<div />').text(nic.genericDriver).html());
+								adp = trans('Generic Driver, \'%1\' { %2 }','UIGDetails').replace('%1', $('<div />').text(nic.genericDriver).html());
 								var np = nic.properties.split("\n");
 								adp = adp.replace('%2', np.join(" ,"));
 								break;
 							}
-							adp = trans('Generic driver, \'%1\'','UIDetailsPagePrivate').replace('%1', $('<div />').text(nic.genericDriver).html());
+							adp = trans('Generic Driver, \'%1\'','UIGDetails').replace('%1', $('<div />').text(nic.genericDriver).html());
 							break;					
 						case 'VDE':
 							adp = trans('VDE network, \'%1\'').replace('%1', $('<div />').text(nic.VDENetwork).html());
 							break;
 						case 'NATNetwork':
-							adp = trans('NAT Network, \'%1\'','UIDetailsPagePrivate').replace('%1', $('<div />').text(nic.NATNetwork).html());
+							adp = trans('NAT Network, \'%1\'','UIGDetails').replace('%1', $('<div />').text(nic.NATNetwork).html());
 							break;
 					}
 
@@ -1216,7 +1216,7 @@ var vboxVMDetailsSections = {
 	 */
 	parallelports: {
 		title: 'Parallel Ports',
-		language_context: 'UIDetailsPagePrivate',
+		language_context: 'UISettingsDialogMachine',
 		icon: 'parallel_port_16px.png',
 		settingsLink: 'ParallelPorts',
 		condition: function() { return $('#vboxPane').data('vboxConfig').enableLPTConfig; },
@@ -1323,7 +1323,7 @@ var vboxVMDetailsSections = {
 	 */
 	sharedfolders: {
 		title: 'Shared Folders',
-		language_context: 'UIDetailsPagePrivate',
+		language_context: 'UIGDetails',
 		icon: 'sf_16px.png',
 		settingsLink: 'SharedFolders',
 		rows: function(d) {
@@ -1336,7 +1336,7 @@ var vboxVMDetailsSections = {
 			}
 			
 			return [{
-					title: trans('Shared Folders', 'UIDetailsPagePrivate'),
+					title: trans('Shared Folders', 'UIGDetails'),
 					data: d['sharedFolders'].length
 				}];
 		}
@@ -1348,7 +1348,7 @@ var vboxVMDetailsSections = {
 	description: {
 		icon: 'description_16px.png',
 		title: 'Description',
-		language_context: 'UIDetailsPagePrivate',
+		language_context: 'UIGDetails',
 		settingsLink: 'General:2',
 		rows: function(d) {
 			return [{
@@ -1414,7 +1414,7 @@ var vboxVMGroupActions = {
 	},
 	
 	ungroup: {
-		label: 'Ungroup...',
+		label: 'Ungroup',
 		icon: 'vm_group_remove',
 		name: 'remove_group',
 		enabled: function() {
@@ -1483,7 +1483,7 @@ var vboxVMActions = {
 				};
 				l.run();
 				
-			},false,trans('Add an existing virtual machine','UIActionPool'),'images/vbox/machine_16px.png',true);
+			},false,trans('Add existing virtual machine','UIActionPool'),'images/vbox/machine_16px.png',true);
 		}
 	},
 
@@ -1958,7 +1958,7 @@ var vboxVMActions = {
     
     /** Discard VM State */
     discard: {
-		label: 'Discard saved state...',
+		label: 'Discard Saved State...',
 		icon: 'vm_discard',
 		name: 'discard',
 		click: function(){
@@ -2360,7 +2360,7 @@ var vboxMedia = {
 	mediumPrint: function(m,nosize,usehtml) {
 		var name = vboxMedia.getName(m);
 		if(nosize || !m || m.hostDrive) return name;
-		return name + ' (' + (m.deviceType == 'HardDisk' ? (usehtml ? '<i>': '') + trans(m.type,'VBoxGlobal') + (usehtml ? '</i>': '') + ', ': '') + vboxMbytesConvert(m.logicalSize) + ')';
+		return name + ' (' + (m.deviceType == 'HardDisk' ? (usehtml ? '<i>': '') + trans(m.type,'VBoxGlobal', 'MediumType') + (usehtml ? '</i>': '') + ', ': '') + vboxMbytesConvert(m.logicalSize) + ')';
 	},
 
 	/**
@@ -2388,9 +2388,9 @@ var vboxMedia = {
 	 * @static
 	 */
 	getType: function(m) {
-		if(!m || !m.type) return trans('Normal','VBoxGlobal');
-		if(m.type == 'Normal' && m.base && m.base != m.id) return trans('Differencing','VBoxGlobal');
-		return trans(m.type,'VBoxGlobal');
+		if(!m || !m.type) return trans('Normal', 'VBoxGlobal', null, 'MediumType');
+		if(m.type == 'Normal' && m.base && m.base != m.id) return trans('Differencing', 'VBoxGlobal', null, 'MediumType');
+		return trans(m.type,'VBoxGlobal', null, 'MediumType');
 	},
 	
 	/**
@@ -2454,27 +2454,27 @@ var vboxMedia = {
 		switch(m.variant) {
 
 			case variants.Standard:
-	            return trans("Dynamically allocated storage", "VBoxGlobal");
+	            return trans("Dynamically allocated storage", "VBoxGlobal", null, 'MediumVariant');
 	        case (variants.Standard | variants.Diff):
-	            return trans("Dynamically allocated differencing storage", "VBoxGlobal");
+	            return trans("Dynamically allocated differencing storage", "VBoxGlobal"), null, 'MediumVariant';
 	        case (variants.Standard | variants.Fixed):
-	            return trans("Fixed size storage", "VBoxGlobal");
+	            return trans("Fixed size storage", "VBoxGlobal", null, 'MediumVariant');
 	        case (variants.Standard | variants.VmdkSplit2G):
-	            return trans("Dynamically allocated storage split into files of less than 2GB", "VBoxGlobal");
+	            return trans("Dynamically allocated storage split into files of less than 2GB", "VBoxGlobal", null, 'MediumVariant');
 	        case (variants.Standard | variants.VmdkSplit2G | variants.Diff):
-	            return trans("Dynamically allocated differencing storage split into files of less than 2GB", "VBoxGlobal");
+	            return trans("Dynamically allocated differencing storage split into files of less than 2GB", "VBoxGlobal", null, 'MediumVariant');
 	        case (variants.Standard | variants.Fixed | variants.VmdkSplit2G):
-	            return trans("Fixed size storage split into files of less than 2GB", "VBoxGlobal");
+	            return trans("Fixed size storage split into files of less than 2GB", "VBoxGlobal", null, 'MediumVariant');
 	        case (variants.Standard | variants.VmdkStreamOptimized):
-	            return trans("Dynamically allocated compressed storage", "VBoxGlobal");
+	            return trans("Dynamically allocated compressed storage", "VBoxGlobal", null, 'MediumVariant');
 	        case (variants.Standard | variants.VmdkStreamOptimized | variants.Diff):
-	            return trans("Dynamically allocated differencing compressed storage", "VBoxGlobal");
+	            return trans("Dynamically allocated differencing compressed storage", "VBoxGlobal", null, 'MediumVariant');
 	        case (variants.Standard | variants.Fixed | variants.VmdkESX):
-	            return trans("Fixed size ESX storage", "VBoxGlobal");
+	            return trans("Fixed size ESX storage", "VBoxGlobal", null, 'MediumVariant');
 	        case (variants.Standard | variants.Fixed | variants.VmdkRawDisk):
-	            return trans("Fixed size storage on raw disk", "VBoxGlobal");
+	            return trans("Fixed size storage on raw disk", "VBoxGlobal", null, 'MediumVariant');
 	        default:
-	        	return trans("Dynamically allocated storage", "VBoxGlobal");
+	        	return trans("Dynamically allocated storage", "VBoxGlobal", null, 'MediumVariant');
 	    }
 
 	},
@@ -2642,7 +2642,7 @@ var vboxMedia = {
 					icon = 'images/vbox/fd_16px.png';
 					break;
 				case 'DVD':
-					title = trans('Choose a virtual CD/DVD disk file...','UIMachineSettingsStorage');
+					title = trans('Choose a virtual optical disk file...','UIMachineSettingsStorage');
 					icon = 'images/vbox/cd_16px.png';
 					break;					
 			}
@@ -2823,7 +2823,7 @@ function vboxWizard() {
 				
 				self.stepButtons = jQuery.merge([{
 					
-					name: trans((self.mode == 'advanced' ? 'Show Description': 'Hide Description'), 'UIWizard'),
+					name: trans((self.mode == 'advanced' ? 'Guided Mode': 'Expert Mode'), 'UIWizard'),
 					click: function() {
 						
 						// Unbind any old resize handlers
@@ -2854,12 +2854,12 @@ function vboxWizard() {
 							vl.onLoad = function() {
 								
 								// Change this button text
-								$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('span:contains("'+trans('Hide Description', 'UIWizard')+'")')
-								.html(trans('Show Description', 'UIWizard'));
+								$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('span:contains("'+trans('Expert Mode', 'UIWizard')+'")')
+								.html(trans('Guided Mode', 'UIWizard'));
 								
 								for(var i = 0; i < self.stepButtons.length; i++) {
-									if(self.stepButtons[i].name == trans('Hide Description', 'UIWizard')) {
-										self.stepButtons[i].name = trans('Show Description', 'UIWizard');
+									if(self.stepButtons[i].name == trans('Expert Mode', 'UIWizard')) {
+										self.stepButtons[i].name = trans('Guided Mode', 'UIWizard');
 									}
 									
 								}
@@ -2903,12 +2903,12 @@ function vboxWizard() {
 								
 								// Change this button text
 								$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane')
-								.find('span:contains("'+trans('Show Description', 'UIWizard')+'")')
-								.html(trans('Hide Description', 'UIWizard'));
+								.find('span:contains("'+trans('Guided Mode', 'UIWizard')+'")')
+								.html(trans('Expert Mode', 'UIWizard'));
 								
 								for(var i = 0; i < self.stepButtons.length; i++) {
-									if(self.stepButtons[i].name == trans('Show Description', 'UIWizard')) {
-										self.stepButtons[i].name = trans('Hide Description', 'UIWizard');
+									if(self.stepButtons[i].name == trans('Guided Mode', 'UIWizard')) {
+										self.stepButtons[i].name = trans('Expert Mode', 'UIWizard');
 									}
 									
 								}
@@ -3599,7 +3599,7 @@ function vboxButtonMediaMenu(type,callback,mediumPath) {
 		
 		DVD: {
 			name: 'mselectcdbtn',
-			label: 'Set up the virtual CD/DVD drive',
+			label: 'Set up the virtual optical drive',
 			language_context: 'UIMachineSettingsStorage',
 			icon: 'cd',
 			click: function () {
@@ -3898,7 +3898,7 @@ function vboxMediaMenu(type,callback,mediumPath) {
 			case 'DVD':
 				
 				// Choose disk image
-				menus[menus.length] = {'name':'chooseD','icon':'select_file','label':trans('Choose a virtual CD/DVD disk file...','UIMachineSettingsStorage')};
+				menus[menus.length] = {'name':'chooseD','icon':'select_file','label':trans('Choose a virtual optical disk file...','UIMachineSettingsStorage')};
 
 				// Add VMM?
 				if($('#vboxPane').data('vboxConfig').enableAdvancedConfig) {
@@ -4793,18 +4793,18 @@ var vboxStorage = {
 		ignoreFlush: true,
 		slotName: function(p,d) {
 			switch(p+'-'+d) {
-				case '0-0': return (trans('IDE Primary Master','VBoxGlobal'));
-				case '0-1': return (trans('IDE Primary Slave','VBoxGlobal'));
-				case '1-0': return (trans('IDE Secondary Master','VBoxGlobal'));
-				case '1-1': return (trans('IDE Secondary Slave','VBoxGlobal'));
+				case '0-0': return (trans('IDE Primary Master','VBoxGlobal', null, 'StorageSlot'));
+				case '0-1': return (trans('IDE Primary Slave','VBoxGlobal', null, 'StorageSlot'));
+				case '1-0': return (trans('IDE Secondary Master','VBoxGlobal', null, 'StorageSlot'));
+				case '1-1': return (trans('IDE Secondary Slave','VBoxGlobal', null, 'StorageSlot'));
 			}
 		},
 		driveTypes: ['dvd','disk'],
 		slots: function() { return {
-		          	'0-0': (trans('IDE Primary Master','VBoxGlobal')),
-		          	'0-1': (trans('IDE Primary Slave','VBoxGlobal')),
-		          	'1-0': (trans('IDE Secondary Master','VBoxGlobal')),
-		          	'1-1': (trans('IDE Secondary Slave','VBoxGlobal'))
+		          	'0-0': (trans('IDE Primary Master','VBoxGlobal', null, 'StorageSlot')),
+		          	'0-1': (trans('IDE Primary Slave','VBoxGlobal', null, 'StorageSlot')),
+		          	'1-0': (trans('IDE Secondary Master','VBoxGlobal', null, 'StorageSlot')),
+		          	'1-1': (trans('IDE Secondary Slave','VBoxGlobal', null, 'StorageSlot'))
 			};
 		}
 	},
@@ -4815,11 +4815,11 @@ var vboxStorage = {
 		ignoreFlush: true,
 		types: ['IntelAhci'],
 		driveTypes: ['dvd','disk'],
-		slotName: function(p,d) { return trans('SATA Port %1','VBoxGlobal').replace('%1',p); },
+		slotName: function(p,d) { return trans('SATA Port %1','VBoxGlobal', null, 'StorageSlot').replace('%1',p); },
 		slots: function() {
 					var s = {};
 					for(var i = 0; i < 30; i++) {
-						s[i+'-0'] = trans('SATA Port %1','VBoxGlobal').replace('%1',i);
+						s[i+'-0'] = trans('SATA Port %1','VBoxGlobal', null, 'StorageSlot').replace('%1',i);
 					}
 					return s;
 				}
@@ -4831,11 +4831,11 @@ var vboxStorage = {
 		driveTypes: ['dvd','disk'],
 		types: ['LsiLogic','BusLogic'],
 		ignoreFlush: true,
-		slotName: function(p,d) { return trans('SCSI Port %1','VBoxGlobal').replace('%1',p); },
+		slotName: function(p,d) { return trans('SCSI Port %1','VBoxGlobal', null, 'StorageSlot').replace('%1',p); },
 		slots: function() {
 						var s = {};
 						for(var i = 0; i < 16; i++) {
-							s[i+'-0'] = trans('SCSI Port %1','VBoxGlobal').replace('%1',i);
+							s[i+'-0'] = trans('SCSI Port %1','VBoxGlobal', null, 'StorageSlot').replace('%1',i);
 						}
 						return s;				
 					}
@@ -4845,11 +4845,11 @@ var vboxStorage = {
 		maxDevicesPerPortCount: 1,
 		types: ['LsiLogicSas'],
 		driveTypes: ['dvd','disk'],
-		slotName: function(p,d) { return trans('SAS Port %1','VBoxGlobal').replace('%1',p); },
+		slotName: function(p,d) { return trans('SAS Port %1','VBoxGlobal', null, 'StorageSlot').replace('%1',p); },
 		slots: function() {
 			var s = {};
 			for(var i = 0; i < 8; i++) {
-				s[i+'-0'] = trans('SAS Port %1','VBoxGlobal').replace('%1',i);
+				s[i+'-0'] = trans('SAS Port %1','VBoxGlobal', null, 'StorageSlot').replace('%1',i);
 			}
 			return s;				
 		},
@@ -4863,8 +4863,9 @@ var vboxStorage = {
 		maxDevicesPerPortCount: 2,
 		types: ['I82078'],
 		driveTypes: ['floppy'],
-		slotName: function(p,d) { return trans('Floppy Device %1','VBoxGlobal').replace('%1',d); },
-		slots: function() { return { '0-0':trans('Floppy Device %1','VBoxGlobal').replace('%1','0'), '0-1' :trans('Floppy Device %1','VBoxGlobal').replace('%1','1') }; }	
+		slotName: function(p,d) { return trans('Floppy Device %1','VBoxGlobal', null, 'StorageSlot').replace('%1',d); },
+		slots: function() { return { '0-0':trans('Floppy Device %1','VBoxGlobal', null, 'StorageSlot').replace('%1','0'),
+		                            '0-1' :trans('Floppy Device %1','VBoxGlobal', null, 'StorageSlot').replace('%1','1') }; }	
 	},
 	
 	USB: {
@@ -4872,11 +4873,11 @@ var vboxStorage = {
         maxDevicesPerPortCount: 1,
         types: ['USB'],
         driveTypes: ['dvd','disk'],
-        slotName: function(p,d) { return trans('USB Port %1','VBoxGlobal').replace('%1',p); },
+        slotName: function(p,d) { return trans('USB Port %1','VBoxGlobal', null, 'StorageSlot').replace('%1',p); },
         slots: function() {
             var s = {};
             for(var i = 0; i < 8; i++) {
-                s[i+'-0'] = trans('USB Port %1','VBoxGlobal').replace('%1',i);
+                s[i+'-0'] = trans('USB Port %1','VBoxGlobal', null, 'StorageSlot').replace('%1',i);
             }
             return s;
         }
@@ -4974,7 +4975,7 @@ function vboxAudioDriver(d) {
  */
 function vboxDevice(d) {
 	switch(d) {
-		case 'DVD': return 'CD/DVD-ROM';
+		case 'DVD': return 'Optical';
 		case 'HardDisk': return 'Hard Disk';
 	}
 	return d;

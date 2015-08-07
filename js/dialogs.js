@@ -506,7 +506,7 @@ function vboxWizardNewVMDialog(vmgroup) {
 						$(this).empty().remove();
 						vboxNewVMFinish();
 					};
-					vboxConfirm(trans('You are about to create a new virtual machine without a hard drive. You will not be able to install an operating system on the machine until you add one. In the mean time you will only be able to start the machine using a virtual optical disk or from the network.','UIMessageCenter'), buttons, trans('Go Back','UIMessageCenter'));
+					vboxConfirm(trans('You are about to create a new virtual machine without a hard disk. You will not be able to install an operating system on the machine until you add one. In the mean time you will only be able to start the machine using a virtual optical disk or from the network.','UIMessageCenter'), buttons, trans('Go Back','UIMessageCenter'));
 					return;
 				}
 				
@@ -735,13 +735,13 @@ function vboxVMMDialog(select,type,hideDiff,mPath) {
 				$('#vboxVMMDialog').trigger('close').empty().remove();
 			};
 		}
-		buttons[trans('Close','UIMediumManager')] = function() {
+		buttons[trans('Close','UIMessageCenter')] = function() {
 			$('#vboxVMMDialog').trigger('close').empty().remove();
 			results.reject();
 		};
 
 		$("#vboxVMMDialog").dialog({'closeOnEscape':true,'width':800,'height':500,'buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent vboxVMMDialog','title':'<img src="images/vbox/diskimage_16px.png" class="vboxDialogTitleIcon" /> '+trans('Virtual Media Manager','VBoxMediaManagerDlg')}).on("dialogbeforeclose",function(){
-	    	$(this).parent().find('span:contains("'+trans('Close','VBoxMediaManagerDlg')+'")').trigger('click');
+	    	$(this).parent().find('span:contains("'+trans('Close','UIMessageCenter')+'")').trigger('click');
 	    });
 		
 		vboxVMMInit(hideDiff,mPath);
@@ -789,7 +789,7 @@ function vboxWizardNewHDDialog(suggested) {
 	
 	/* Common options */
 	this.name = 'wizardNewHD';
-	this.title = trans('Create Virtual Hard Drive','UIWizardNewVD');
+	this.title = trans('Create Virtual Hard Disk','UIWizardNewVD');
 	this.bg = 'images/vbox/vmw_new_harddisk_bg.png';
 	this.icon = 'hd';
 	this.steps = 3;
@@ -899,7 +899,7 @@ function vboxWizardNewHDDialog(suggested) {
 							}
 						};
 						ml.run();
-					},'progress_media_create_90px.png',trans('Create a new virtual hard drive','VBoxMediaManagerDlg'),
+					},'progress_media_create_90px.png',trans('Create a virtual hard disk now','UIWizardNewVM'),
 						vboxBasename(file),true);
 				} else {
 					self.completed.reject();
@@ -929,7 +929,7 @@ function vboxWizardCopyHDDialog(suggested) {
 
 	/* Common options */
 	this.name = 'wizardCopyHD';
-	this.title = trans('Copy Virtual Hard Drive','UIWizardCloneVD');
+	this.title = trans('Copy Virtual Hard Disk','UIWizardCloneVD');
 	this.bg = 'images/vbox/vmw_new_harddisk_bg.png';
 	this.icon = 'hd';
 	this.steps = 4;
@@ -1017,7 +1017,7 @@ function vboxWizardCopyHDDialog(suggested) {
 							self.completed.resolve(mid);
 						};
 						ml.run();
-					},'progress_media_create_90px.png',trans('Copy Virtual Hard Drive','UIWizardCloneVD'),
+					},'progress_media_create_90px.png',trans('Copy Virtual Hard Disk','UIWizardCloneVD'),
 						vboxBasename(vboxMedia.getMediumById(src).location) + ' > ' + vboxBasename(loc));
 				} else {
 					self.completed.reject();

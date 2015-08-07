@@ -84,7 +84,7 @@
 							<th></th>
 							<td style='width: 100%'>
 								<label><input type='checkbox' class='vboxCheckbox'
-								name='vboxSettingsStorageHostCache'/> <span class='translate'>Use host I/O cache</span></label></td>
+								name='vboxSettingsStorageHostCache'/> <span class='translate'>Use Host I/O Cache</span></label></td>
 						</tr>
 					</table>
 				</div>
@@ -466,7 +466,7 @@ scToolbar.getButtonElement("addcontroller").contextMenu({
 /* Menu for adding attachment */
 var mAttachMenu = new vboxMenu({id: 'vboxSettingsAddAttachmentsMenu',
     language_context: 'UIMachineSettingsStorage',
-    menuItems: [{name: 'addCD', icon: 'cd_add', label: 'Add CD/DVD Device'},
+    menuItems: [{name: 'addCD', icon: 'cd_add', label: 'Add Optical Drive'},
                 {name: 'addHD', icon: 'hd_add', label: 'Add Hard Disk'}]});
 
 
@@ -516,7 +516,7 @@ for(var i = 0; i < vboxStorageBusTypes.length; i++) {
 			case 'dvd':
 				b = {
 					'name' : btype+'addcd',
-					'label' : 'Add CD/DVD Device',
+					'label' : 'Add Optical Drive',
 					'icon' : 'cd_add',
 					'click' : function () { 
 						vboxSettingsStorageAddMedium($('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().parent(),'DVD');
@@ -536,7 +536,7 @@ for(var i = 0; i < vboxStorageBusTypes.length; i++) {
 			case 'floppy':
 				b = {
 					'name' : btype + 'addfloppy',
-					'label':trans('Add Floppy Device','UIMachineSettingsStorage'),
+					'label':trans('Add Floppy Drive','UIMachineSettingsStorage'),
 					'icon' : 'fd_add',
 					'click' : function (item) {
 						vboxSettingsStorageAddMedium($('#vboxSettingsStorageTree').find('table.vboxListItemSelected').first().parent(),'Floppy'); }
@@ -1220,7 +1220,7 @@ function vboxSettingsAddController(con,list) {
     	if(dtypes[i] == 'dvd') {
 		    b = {
 				'name' : con.bus+'addcd',
-				'label' : trans('Add CD/DVD Device','UIMachineSettingsStorage'),
+				'label' : trans('Add Optical Drive','UIMachineSettingsStorage'),
 				'icon' : 'cd_add',
 				'click' : function () { vboxSettingsStorageAddMedium(li,'DVD'); }
 			};
@@ -1233,7 +1233,7 @@ function vboxSettingsAddController(con,list) {
 		    	};
     		
     	} else if(dtypes[i] == 'floppy') {
-    		b = {'label':trans('Add Floppy Device','UIMachineSettingsStorage'),
+    		b = {'label':trans('Add Floppy Drive','UIMachineSettingsStorage'),
 				'icon' : 'fd_add',
 				'click' : function (item) { vboxSettingsStorageAddMedium(li,'Floppy'); }
 				};
