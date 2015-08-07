@@ -325,7 +325,7 @@ $('#vboxTabVMDetails').on('hide',function(){
 
 //Base function that returns a table row of machine detail data
 //Called from other functions
-function __vboxDetailRow(name,value,cssClass,html) {
+function __vboxDetailRow(name, value, cssClass, html) {
 	
 	// convert to strings
 	if(typeof(value) == 'undefined') value = '';
@@ -374,8 +374,9 @@ function __vboxDetailAddRows(data, rows, table) {
 		if(rows[i].rawRow) {
 			$(table).append(rowData);
 		} else {
+		    var title = trans(rows[i].title, rows[i].language_context);
 			$(table).append(__vboxDetailRow(
-			        rows[i].title,
+			        title,
 			        rowData, 
 			        'vboxDetailName ' + (rows[i].indented ? ' vboxDetailNameIndent' : '') + ' ' + (rows[i].cssClass ? rows[i].cssClass : ''),
 			        rows[i].html));
@@ -399,6 +400,7 @@ function __vboxCreateDetailsSection(data, sectionName, section) {
 		links = false;
 	}
 
+	var title = trans(section.title, section.language_context);
 	var vboxDetailsTable = $('<table />')
 		.attr({'class':'vboxDetailsTable vboxDetailsTableBox'})
 		.append($('<thead />')
@@ -411,7 +413,7 @@ function __vboxCreateDetailsSection(data, sectionName, section) {
 							$('<span />').css({'float':'left'}).addClass((links ? 'vboxDetailsSectionLink' : '')).click(function(){
 								if($(this).hasClass('vboxDetailsSectionLink'))
 									vboxVMsettingsDialog(data,section.settingsLink);
-							}).html(section.title)
+							}).html(title)
 						).append(
 							$('<span />').addClass('vboxArrowImage')
 								.click(function(){ $(this).parent().trigger("dblclick"); })
@@ -705,7 +707,7 @@ for(var i in vboxVMDetailsSections) {
 				})
 				
 			).append(
-				$('<span />').html(vboxVMDetailsSections[i].title)
+				$('<span />').html(trans(vboxVMDetailsSections[i].title, vboxVMDetailsSections[i].language_context))
 				
 			).disableSelection()
 			

@@ -107,17 +107,18 @@ $('#wizardNewVMStep1').find('table.vboxOptions').find('span.translate').html(fun
 
 
 
-var wizardNewVMToolbar = new vboxToolbarSingle({
+var wizardNewVMToolbar = new vboxToolbarSingle({button: {
 	/* Add Attachment Button */
 	'name' : 'mselecthdbtn',
-	'label' : trans('Choose a virtual hard disk file...','UIMachineSettingsStorage'),
+	'label' : 'Choose a virtual hard disk file...',
+	'language_context': 'UIMachineSettingsStorage',
 	'icon' : 'select_file',
 	'click' : function () {
 		vboxMedia.actions.choose(null,'HardDisk',function(med){
 			if(med) vmNewFillExistingDisks(med.base);
 		});
 	}
-});
+}});
 wizardNewVMToolbar.renderTo('newVMDiskVMM');		
 
 /* Toggle new / existing */

@@ -29,6 +29,8 @@
 		<table style='width: 100%'>
 			<tr class='vboxRunningEnabled'>
 				<td id='vboxSettingsUSBFilters' style='width: 100%;' class='vboxBordered vboxEnablerListen'>
+                    <!-- Hidden div for context menu -->
+                    <div id='vboxSettingsUSBAddDeviceClick' style='display: none' />
 					<ul id='vboxSettingsUSBFilterList' class='vboxList vboxHover' style='width: 100%'>
 						<li class='vboxListItem'><input type='checkbox' class='vboxCheckbox' />a</li>
 					</ul>
@@ -54,7 +56,7 @@
 
 	{
 		'name' : 'usbnew',
-		'label' : trans('Add Empty Filter','UIMachineSettingsUSB'),
+		'label' : 'Add Empty Filter',
 		'icon' : 'usb_new',
 		'click' : function () {
 			var list = $('#vboxSettingsUSBFilterList');
@@ -74,7 +76,7 @@
 
 	{
 		'name' : 'usbnewdevice',
-		'label' : trans('Add Filter From Device','UIMachineSettingsUSB'),
+		'label' : 'Add Filter From Device',
 		'icon' : 'usb_add',
 		'click' : function (e) {
 
@@ -129,7 +131,7 @@
 	
 	{
 		'name' : 'usbedit',
-		'label' : trans('Edit Filter','UIMachineSettingsUSB'),
+		'label' : 'Edit Filter',
 		'icon' : 'usb_filter_edit',
 		'enabled' : function (item) { return (item && $(item).data('filter') && $(item).data('filter').name); },
 		'click' : function () {
@@ -187,7 +189,7 @@
 
 	{
 		'name' : 'usbremove',
-		'label' : trans('Remove Filter','UIMachineSettingsUSB'),
+		'label' : 'Remove Filter',
 		'icon' : 'usb_remove',
 		'enabled' : function (item) { return (item && $(item).data('filter') && $(item).data('filter').name); },
 		'click' : function () {
@@ -207,7 +209,7 @@
 	
 	{
 		'name' : 'usbup',
-		'label' : trans('Move Filter Up','UIMachineSettingsUSB'),
+		'label' : 'Move Filter Up',
 		'icon' : 'usb_moveup',
 		'enabled' : function (item) {
 			return (item && $(item).data('filter') && $(item).data('filter').name && $(item).attr('id') != $('#vboxSettingsUSBFilterList').children().first().attr('id'));
@@ -229,7 +231,7 @@
 	
 	{
 		'name' : 'usbdown',
-		'label' : trans('Move Filter Down','UIMachineSettingsUSB'),
+		'label' : 'Move Filter Down',
 		'icon' : 'usb_movedown',
 		'enabled' : function (item) {
 			return (item && $(item).data('filter') && $(item).data('filter').name && $(item).attr('id') != $('#vboxSettingsUSBFilterList').children().last().attr('id'));
@@ -251,8 +253,8 @@
 			
  );
 
-var usbToolbar = new vboxToolbarSmall(sButtons);
-usbToolbar.renderTo('vboxSettingsUSBButtons');
+var usbToolbar = new vboxToolbarSmall({buttons: sButtons,
+    language_context: 'UIMachineSettingsUSB', renderTo: 'vboxSettingsUSBButtons'});
 
 $('#vboxSettingsUSBFilterList').on('select',function(e,el){usbToolbar.update(el);});
 
@@ -285,17 +287,8 @@ function vboxSettingsAddUSBFilter(f,noColor) {
 
 
 /* Menu for adding existing USB device */
-if($('#vboxSettingsUSBAddDevice').attr('id')) {
-	$('#vboxSettingsUSBAddDevice').empty();
-} else {
-	$('#vboxPane').append($('<ul />').attr({'class':'contextMenu contextMenuNoBG','style':'display: none','id':'vboxSettingsUSBAddDevice'}));
-}
 
-/* Hidden element that menu is bound to */
-if(!$('#vboxSettingsUSBAddDeviceClick').attr('id')) {
-	
-	$('#vboxSettingsUSBFilters').append($('<div />').attr({'style':'display: none','id':'vboxSettingsUSBAddDeviceClick'}));
-}
+var exUsb = new vboxMenu({id: 'vboxSettingsUSBAddDevice', menuItems: []});
 
 /* Add attachment button menu initialization  */
 $("#vboxSettingsUSBAddDeviceClick").contextMenu({

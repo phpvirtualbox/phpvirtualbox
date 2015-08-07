@@ -166,7 +166,7 @@ if($('#vboxPane').data('vboxConfig').vboxAutostartConfig) {
 	$('#vboxSettingsTabGeneralBasic .vboxAutostartConfig').empty().remove();
 }
 
-$('#vboxSettingsTabGeneralEncryption').find('option').html(function(i,h){ return trans(h, 'cipher type')});
+$('#vboxSettingsTabGeneralEncryption').find('option').html(function(i,h){ return trans(h, 'UIMachineSettingsGeneral', 'cipher type')});
 
 /* Browse for snapshot folder */
 function vboxSnapshotBrowseFolder(btn) {
@@ -439,20 +439,20 @@ function vboxSettingsGeneralValidate() {
     if(!encSettings.enabled && $(document.forms['frmVboxSettings'].vboxSettingsGeneralEncryptionEnable).prop('checked')) {
         
         if(!$(document.forms['frmVboxSettings'].vboxSettingsTabGeneralEncryptionCipher).val()) {
-            vboxAlert("Encryption cipher type not specified.");
+            vboxAlert(trans("Encryption cipher type not specified.", 'UIMachineSettingsGeneral'));
             return false;
         } else if(!$(document.forms['frmVboxSettings'].vboxGeneralEncryptionPassword).val()) {
-            vboxAlert("Encryption password empty.");
+            vboxAlert(trans("Encryption password empty.", 'UIMachineSettingsGeneral'));
             return false;
         } else if($(document.forms['frmVboxSettings'].vboxGeneralEncryptionPassword).val() != $(document.forms['frmVboxSettings'].vboxGeneralEncryptionPassword2).val()) {
-            vboxAlert("Encryption passwords do not match.");
+            vboxAlert(trans("Encryption passwords do not match.", 'UIMachineSettingsGeneral'));
             return false;
         }
         
     // If enabled and poasswords don't match
     } else if($(document.forms['frmVboxSettings'].vboxSettingsGeneralEncryptionEnable).prop('checked')) {
         if($(document.forms['frmVboxSettings'].vboxGeneralEncryptionPassword).val() != $(document.forms['frmVboxSettings'].vboxGeneralEncryptionPassword2).val()) {
-            vboxAlert("Encryption passwords do not match.");
+            vboxAlert(trans("Encryption passwords do not match.", 'UIMachineSettingsGeneral'));
             return false;
         }
     }

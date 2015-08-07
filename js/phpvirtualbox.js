@@ -1056,14 +1056,14 @@ var vboxVMDetailsSections = {
 			    data: ''
 		    },{
 		    	title: "Host Driver",
-		    	language_context: 'UIDetailsBlock',
+		    	language_context: 'VBoxGlobal',
 		    	callback: function(d) {
 		    		return trans(vboxAudioDriver(d['audioAdapter']['audioDriver']),'VBoxGlobal');
 		    	},
 		    	condition: function(d) { return d['audioAdapter']['enabled']; }
 		    },{
 		    	title: "Controller",
-		    	language_context: 'UIDetailsBlock',
+		    	language_context: 'VBoxGlobal',
 		    	callback: function (d) {
 		    		return trans(vboxAudioController(d['audioAdapter']['audioController']),'VBoxGlobal');
 		    	},
@@ -1374,6 +1374,7 @@ var vboxVMGroupActions = {
 	'newmachine': {
 		label: 'New Machine...',
 		icon: 'vm_new',
+		name: 'new',
 		click: function(){
 			vboxVMActions['new'].click(true);
 		},
@@ -1385,6 +1386,7 @@ var vboxVMGroupActions = {
 	addmachine: {
 		label: 'Add Machine...',
 		icon: 'vm_add',
+		name: 'add',
 		click: function() {
 			vboxVMActions['add'].click(true);
 		},
@@ -1396,6 +1398,7 @@ var vboxVMGroupActions = {
 	rename: {
 		label: 'Rename Group...',
 		icon: 'vm_group_name',
+		name: 'rename_group',
 		enabled: function() {
 			if(!$('#vboxPane').data('vboxSession').admin) return false;
 			if(!vboxChooser._editable) return false;
@@ -1413,6 +1416,7 @@ var vboxVMGroupActions = {
 	ungroup: {
 		label: 'Ungroup...',
 		icon: 'vm_group_remove',
+		name: 'remove_group',
 		enabled: function() {
 			if(!vboxChooser._editable) return false;
 			if(!$('#vboxPane').data('vboxSession').admin) return false;
@@ -1432,6 +1436,7 @@ var vboxVMGroupActions = {
 	'sort': {
 		label: 'Sort',
 		icon:'sort',
+		name: 'sort_group',
 		click: function() {
 			vboxChooser.sortSelectedGroup();
 		},
@@ -1455,6 +1460,7 @@ var vboxVMActions = {
 	'new':{
 			label: 'New...',
 			icon: 'vm_new',
+			name: 'new',
 			click: function(fromGroup){
 				new vboxWizardNewVMDialog((fromGroup ? $(vboxChooser.getSelectedGroupElements()[0]).data('vmGroupPath'): '')).run();
 			}
@@ -1464,6 +1470,7 @@ var vboxVMActions = {
 	add: {
 		label: 'Add...',
 		icon: 'vm_add',
+		name: 'add',
 		click: function(){
 			vboxFileBrowser($('#vboxPane').data('vboxSystemProperties').defaultMachineFolder,function(f){
 				if(!f) return;
@@ -1771,6 +1778,7 @@ var vboxVMActions = {
 	settings: {
 		label: 'Settings...',
 		icon: 'vm_settings',
+		name: 'settings',
 		click: function(){
 			
 			vboxVMsettingsDialog(vboxChooser.getSingleSelectedId());
@@ -1785,6 +1793,7 @@ var vboxVMActions = {
 	clone: {
 		label: 'Clone...',
 		icon: 'vm_clone',
+		name: 'clone',
 		click: function(){
 			new vboxWizardCloneVMDialog({vm:vboxChooser.getSingleSelected()}).run();
 		},
@@ -1798,6 +1807,7 @@ var vboxVMActions = {
 		label: 'Refresh',
 		language_context: 'UIVMLogViewer',
 		icon:'refresh',
+		name: 'refresh',
 		click:function(){
 			
 			var vmid = vboxChooser.getSingleSelectedId();
@@ -1815,7 +1825,8 @@ var vboxVMActions = {
     /** Delete / Remove a VM */
     remove: {
 		label: 'Remove...',
-		icon:'vm_delete',
+		icon: 'vm_delete',
+		name: 'remove_vm',
 		click:function(){
 
 			///////////////////
@@ -1926,6 +1937,7 @@ var vboxVMActions = {
     group: {
     	label: 'Group',
     	icon: 'vm_group_create',
+    	name: 'create_group',
     	click: function() {
     		vboxChooser.groupSelectedItems();
     	},
@@ -1948,6 +1960,7 @@ var vboxVMActions = {
     discard: {
 		label: 'Discard saved state...',
 		icon: 'vm_discard',
+		name: 'discard',
 		click: function(){
 			
 			var buttons = {};
@@ -1985,6 +1998,7 @@ var vboxVMActions = {
     guestAdditionsInstall: {
     	label: 'Install Guest Additions...',
     	icon: 'guesttools',
+    	name: 'guesttools',
     	click: function(vmid, mount_only) {
     		
     		if(!vmid)
@@ -2058,6 +2072,7 @@ var vboxVMActions = {
     logs: {
 		label: 'Show Log...',
 		icon: 'vm_show_logs',
+		name: 'show_logs',
 		click: function(){
     		vboxShowLogsDialogInit(vboxChooser.getSingleSelected());
 		},
@@ -2070,6 +2085,7 @@ var vboxVMActions = {
 	savestate: {
 		label: 'Save State',
 		icon: 'vm_save_state',
+		name: 'save_state',
 		stop_action: true,
 		enabled: function(){
 			return (vboxChooser.isSelectedInState('Running') || vboxChooser.isSelectedInState('Paused'));
@@ -2088,6 +2104,7 @@ var vboxVMActions = {
 	powerbutton: {
 		label: 'ACPI Shutdown',
 		icon: 'vm_shutdown',
+		name: 'vm_shutdown',
 		stop_action: true,
 		enabled: function(){
 			return vboxChooser.isSelectedInState('Running');
@@ -2124,6 +2141,7 @@ var vboxVMActions = {
 	pause: {
 		label: 'Pause',
 		icon: 'vm_pause',
+		name: 'vm_pause',
 		enabled: function(){
 			return vboxChooser.isSelectedInState('Running');
 		},
@@ -2140,6 +2158,7 @@ var vboxVMActions = {
 	powerdown: {
 		label: 'Power Off',
 		icon: 'vm_poweroff',
+		name: 'poweroff',
 		stop_action: true,
 		enabled: function() {
 			return (vboxChooser.isSelectedInState('Running') || vboxChooser.isSelectedInState('Paused') || vboxChooser.isSelectedInState('Stuck'));
@@ -2181,6 +2200,7 @@ var vboxVMActions = {
 	reset: {
 		label: 'Reset',
 		icon: 'vm_reset',
+		name: 'reset',
 		enabled: function(){
 			return vboxChooser.isSelectedInState('Running');
 		},
@@ -3101,19 +3121,25 @@ function vboxWizard() {
  * 
  * @constructor
  * @class vboxToolbar
- * @param {Array} buttons - buttons to add to toolbar
+ * @options {Object}
+ *      buttons - buttons to add to toolbar
+ *      language_context - context to use for translations
+ *      renderTo - element to render to
+ *      buttonStyle - CSS to add to button elements
+ *      size - size of button elements
  */
-function vboxToolbar(buttons) {
+function vboxToolbar(options) {
 
 	var self = this;
-	this.buttons = buttons;
-	this.size = 22;
+	this.buttons = options.buttons;
+	this.size = options.size ? options.size : 22;
 	this.addHeight = 24;
 	this.lastItem = null;
-	this.buttonStyle = '';
+	this.buttonStyle = options.buttonStyle;
 	this.enabled = true;
 	this.mutliSelect = false; // true if multiple items are selected
 	this._buttonElements = {}; // button elements by name
+	this.language_context = options.language_context;
 
 	/**
 	 * Add buttons to this object
@@ -3235,9 +3261,10 @@ function vboxToolbar(buttons) {
 		}
 		
 		// TD
+		var label = String(trans(b.toolbar_label ? b.toolbar_label: b.label, b.language_context ? b.language_context : self.language_context)).replace(/\.+$/g,'')
 		var td = $('<td />').attr({'class':'vboxToolbarButton ui-corner-all vboxEnabled vboxToolbarButton'+self.size,
 			'style':self.buttonStyle+'; min-width: '+(self.size+12)+'px;'
-		}).html('<img src="images/vbox/'+b.icon+'_'+self.size+'px.png" class="vboxToolbarImg" style="height:'+self.size+'px;width:'+self.size+'px;"/><br /><span class="vboxToolbarButtonLabel">' + String(b.toolbar_label ? b.toolbar_label: b.label).replace(/\.+$/g,'')+'</span>').on('click',function(){
+		}).html('<img src="images/vbox/'+b.icon+'_'+self.size+'px.png" class="vboxToolbarImg" style="height:'+self.size+'px;width:'+self.size+'px;"/><br /><span class="vboxToolbarButtonLabel">' + label +'</span>').on('click',function(){
 			if($(this).hasClass('vboxDisabled')) return;
 			$(this).data('toolbar').click($(this).data('name'));
 		// store data
@@ -3339,7 +3366,10 @@ function vboxToolbar(buttons) {
 		var b = self.getButtonByName(btn);
 		return b.click(btn);
 	};
-		
+
+   if(options.renderTo)
+        this.renderTo(options.renderTo);
+
 }
 
 /**
@@ -3348,16 +3378,21 @@ function vboxToolbar(buttons) {
  * @constructor
  * @class vboxToolbarSmall
  * @super vboxToolbar
- * @param {Object} buttons - button for toolbar
+ * @param {Object} options
+ *      button - button for toolbar
+ *      language_context - language context to use for translations
+ *      renderTo - element to render toolbar to
+ *     
 */
-function vboxToolbarSingle(button) {
+function vboxToolbarSingle(options) {
 
 	this.parentClass = vboxToolbarSmall;
-	this.parentClass();
-	this.buttons = [ button ];
-	this.disabledString = 'disabled'
+	options.buttons = [options.button]
+	renderTo = options.renderTo
+	options.renderTo = undefined
+	this.parentClass(options);
 	this._buttonElement = this.buttonElement; /* copy orig */
-	
+
 	/**
 	 * Generate HTML element for button
 	 * 
@@ -3367,9 +3402,12 @@ function vboxToolbarSingle(button) {
 	 * @return {HTMLNode} button element
 	 */
 	this.buttonElement = function(b) {
-		return this._buttonElement(b).attr({'title':String(b.toolbar_label ? b.toolbar_label: b.label)});
+	    var label = trans(b.toolbar_label ? b.toolbar_label: b.label, b.language_context ? b.language_context : self.language_context)
+		return this._buttonElement(b).attr({'title': label});
 	}
 	
+	if(renderTo)
+	    this.renderTo(renderTo);
 }
 
 /**
@@ -3378,22 +3416,32 @@ function vboxToolbarSingle(button) {
  * @constructor
  * @class vboxToolbarSmall
  * @super vboxToolbar
- * @param {Array}
+ * @param {Options}
  *            buttons - list of buttons for toolbar
+ *            language_context - context to use for translations
+ *            renderTo - element to render to
+ *            buttonStyle - style to use for button elements
+ *            noHover - do not add hover styling
+ *            size - button size
  */
-function vboxToolbarSmall(buttons) {
+function vboxToolbarSmall(options) {
 
 	var self = this;
-	this.parentClass = vboxToolbar;
-	this.parentClass();
-	this.selected = null;
-	this.buttons = buttons;
-	this.lastItem = null;
-	this.buttonStyle = '';
-	this.enabled = true;
-	this.size = 16;
-	this.disabledString = 'disabled';
+	this.buttonStyle = options.buttonStyle;
 	this.buttonCSS = {};
+
+	renderTo = options.renderTo
+    options.renderTo = undefined
+
+	this.parentClass = vboxToolbar;
+	this.parentClass(options);
+	this.selected = null;
+	this.lastItem = null;
+	this.enabled = true;
+	this.size = options.size ? options.size : 16;
+	this.disabledString = 'disabled';
+	this.noHover = options.noHover;
+	this.language_context = options.language_context;
 
 	/**
 	 * Enable a single button
@@ -3452,10 +3500,11 @@ function vboxToolbarSmall(buttons) {
 			a.src = "images/vbox/" + b.icon + '_'+self.disabledString+'_'+self.size+'px.png';
 		}
 
+		var label = String(trans(b.toolbar_label ? b.toolbar_label: b.label, b.language_context ? b.language_context : self.language_context)).replace(/\.+$/g,'')
 		var btn = $('<input />').attr({'type':'button','value':'',
-			'class':'vboxImgButton vboxToolbarSmallButton ui-corner-all',
-			'title':String(b.toolbar_label ? b.toolbar_label: b.label).replace(/\.+$/g,''),
-			'style':self.buttonStyle+' background-image: url(images/vbox/' + b.icon + '_'+self.size+'px.png);'
+			'class': 'vboxImgButton vboxToolbarSmallButton ui-corner-all',
+			'title': label,
+			'style': self.buttonStyle+' background-image: url(images/vbox/' + b.icon + '_'+self.size+'px.png);'
 		}).click(b.click);		
 		
 		if(!self.noHover) {
@@ -3506,7 +3555,10 @@ function vboxToolbarSmall(buttons) {
 		return this;
 		
 	};
-	
+
+   if(renderTo)
+        this.renderTo(renderTo);
+
 }
 
 /**
@@ -3530,14 +3582,15 @@ function vboxButtonMediaMenu(type,callback,mediumPath) {
 	this._buttonElement = null; // holds button node
 	
 	/** vboxMediaMenu to display when button is clicked */
-	this.mediaMenu = new vboxMediaMenu(type,callback,mediumPath);
+	this.mediaMenu = new vboxMediaMenu(type, callback, mediumPath);
 	
 	/* Static button type list */
 	this.buttons = {
 			
 		HardDisk: {
 			name: 'mselecthdbtn',
-			label: trans('Set up the virtual hard disk','UIMachineSettingsStorage'),
+			label: 'Set up the virtual hard disk',
+			language_context: 'UIMachineSettingsStorage',
 			icon: 'hd',
 			click: function () {
 				return;				
@@ -3546,7 +3599,8 @@ function vboxButtonMediaMenu(type,callback,mediumPath) {
 		
 		DVD: {
 			name: 'mselectcdbtn',
-			label: trans('Set up the virtual CD/DVD drive','UIMachineSettingsStorage'),
+			label: 'Set up the virtual CD/DVD drive',
+			language_context: 'UIMachineSettingsStorage',
 			icon: 'cd',
 			click: function () {
 				return;				
@@ -3555,7 +3609,8 @@ function vboxButtonMediaMenu(type,callback,mediumPath) {
 	
 		Floppy: {
 			name: 'mselectfdbtn',
-			label: trans('Set up the virtual floppy drive','UIMachineSettingsStorage'),
+			label: 'Set up the virtual floppy drive',
+			language_context: 'UIMachineSettingsStorage',
 			icon: 'fd',
 			click: function () {
 				return;				
@@ -3651,11 +3706,11 @@ function vboxButtonMediaMenu(type,callback,mediumPath) {
 			var a = new Image();
 			a.src = "images/vbox/" + b.icon + "_" + self.disabledString + "_" + self.size + "px.png";
 		}
-		
+		var label = trans(b.label, b.language_context);
 		return $('<td />').attr({'type':'button','value':'',
-			'class':'vboxImgButton vboxToolbarSmallButton vboxButtonMenuButton ui-corner-all',
-			'title':b.label,
-			'style':self.buttonStyle+' background-image: url(images/vbox/' + b.icon + '_'+self.size+'px.png);text-align:right;vertical-align:bottom;'
+			'class': 'vboxImgButton vboxToolbarSmallButton vboxButtonMenuButton ui-corner-all',
+			'title': label,
+			'style': self.buttonStyle+' background-image: url(images/vbox/' + b.icon + '_'+self.size+'px.png);text-align:right;vertical-align:bottom;'
 		}).click(function(e){
 			if($(this).hasClass('vboxDisabled')) return;
 			$(this).addClass('vboxButtonMenuButtonDown');
@@ -3770,7 +3825,7 @@ function vboxMediaMenu(type,callback,mediumPath) {
 		var id = self.menu_id();
 		
 		// Hold pointer
-		self._menu = new vboxMenu(id,id);
+		self._menu = new vboxMenu({'name': id, 'id': id});
 		
 		// Add menu
 		self._menu.addMenu(self.menuGetDefaults());
@@ -4026,21 +4081,21 @@ function vboxMediaMenu(type,callback,mediumPath) {
  * 
  * @constructor
  * @class vboxMenu
- * @param {String}
+ * @param {Object}
  *            name - name of menu
- * @param {String}
  *            id - optional HTMLNode id of menu to use
- * @param {Array}
  * 			  menuItems - list of menu items to add
+ *            language_context - translation language context
  */
-function vboxMenu(name, id, menuItems) {
+function vboxMenu(options) {
 
 	var self = this;
 	
-	this.name = name;
+	this.name = options.name;
 	this.menuItems = {};
 	this.iconStringDisabled = '_disabled';
-	this.id = id;
+	this.id = options.id;
+	this.language_context = options.language_context;
 		
 	/**
 	 * return menu id
@@ -4078,7 +4133,7 @@ function vboxMenu(name, id, menuItems) {
 	 *         <UL>
 	 *         node containing menu items and submenus
 	 */
-	this.menuElement = function(m,mid) {
+	this.menuElement = function(m, mid) {
 
 		var ul = null;
 		
@@ -4143,8 +4198,9 @@ function vboxMenu(name, id, menuItems) {
 	 */
 	this.menuItem = function(i) {
 
+	    var label = trans(i.label, i.language_context ? i.language_context : self.language_context);
 		return $('<li />').addClass((i.separator ? 'separator': '')).addClass((i.cssClass ? i.cssClass: '')).append($('<a />')
-			.html(i.label)
+			.html(label)
 			.attr({
 				'style': (i.icon ? 'background-image: url('+self.menuIcon(i,false)+')': ''),
 				'id': self.name+i.name,'href':'#'+i.name
@@ -4245,7 +4301,7 @@ function vboxMenu(name, id, menuItems) {
 	
 	
 	// Just add menu items if there were passed
-	if(menuItems) self.addMenu(menuItems);
+	if(options.menuItems) self.addMenu(options.menuItems);
 
 }
 
@@ -4257,13 +4313,14 @@ function vboxMenu(name, id, menuItems) {
  * @param {String}
  *            name - name of this menu bar
  */
-function vboxMenuBar(name) {
+function vboxMenuBar(options) {
 	
 	var self = this;
-	this.name = name;
+	this.name = options.name;
+	this.language_context = options.language_context;
 	this.menus = new Array();
 	this.menuClick = {};
-	this.iconStringDisabled = '_disabled';
+	this.iconStringDisabled = options.iconStringDisabled ? options.iconStringDisabled : '_disabled';
 	
 	/**
 	 * Add a menu to this object
@@ -4276,7 +4333,7 @@ function vboxMenuBar(name) {
 	this.addMenu = function(m) {
 		
 		// Create menu object
-		m.menuObj = new vboxMenu(m.name);
+		m.menuObj = new vboxMenu({'name': m.name, language_context: m.language_context ? m.language_context : self.language_context});
 		
 		// Propagate config
 		m.menuObj.iconStringDisabled = self.iconStringDisabled;
@@ -4299,8 +4356,9 @@ function vboxMenuBar(name) {
 		$('#'+id).prepend($('<div />').attr({'class':'vboxMenuBar','id':self.name+'MenuBar'}));
 		
 		for(var i = 0; i < self.menus.length; i++) {
+		    var label = trans(self.menus[i].label, self.menus[i].language_context ? self.menus[i].language_context : self.language_context);
 			$('#'+self.name+'MenuBar').append(
-					$('<span />').attr({'id':'vboxMenuBarMenu'+self.name+self.menus[i].name}).html(self.menus[i].label)
+					$('<span />').attr({'id':'vboxMenuBarMenu'+self.name+self.menus[i].name}).html(label)
 					.contextMenu({
 					 		menu: self.menus[i].menuObj.menuId(),
 					 		button: 0,

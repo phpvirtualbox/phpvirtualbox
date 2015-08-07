@@ -108,26 +108,28 @@ vboxHDTypesTbl.find('input[value='+$('#vboxPane').data('vboxSystemProperties').d
 
 
 /* Choose virtual hard drive button */
-new vboxToolbarSingle({
+new vboxToolbarSingle({button: {
 	'name' : 'mselecthdbtn',
-	'label' : trans('Choose a virtual hard drive file to copy...','UIWizardCloneVD'),
+	'label' : 'Choose a virtual hard drive file to copy...',
+	'language_context': 'UIWizardCloneVD',
 	'icon' : 'select_file',
 	'click' : function () {
 		vboxMedia.actions.choose(null,'HardDisk',function(med){
 			if(med) copyHDFillDisks(med.base);
 		});
 	}
-}).renderTo('newVMDiskVMM');		
+}}).renderTo('newVMDiskVMM');		
 
 /* Choose location of new file button */
-new vboxToolbarSingle({
+new vboxToolbarSingle({button: {
 	'name' : 'mselecthdbtn',
-	'label' : trans('Choose a location for new virtual hard drive file...','UIWizardNewVD'),
+	'label' : 'Choose a location for new virtual hard drive file...',
+	'language_context': 'UIWizardNewVD',
 	'icon' : 'select_file',
 	'click' : function () {
 		wizardCopyHDBrowseLocation();
 	}
-}).renderTo('newVMDiskVMMDest');		
+}}).renderTo('newVMDiskVMMDest');		
 
 	
 /* Set up disk selection box */

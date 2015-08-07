@@ -52,14 +52,15 @@
 <script type='text/javascript'>
 
 /* Draw button */
-new vboxToolbarSingle({
+new vboxToolbarSingle({button: {
 	'name' : 'mselecthdbtn',
-	'label' : trans('Open appliance...','UIWizardImportApp'),
+	'label' : 'Open appliance...',
+	'language_context': 'UIWizardImportApp',
 	'icon' : 'select_file',
 	'click' : function () {
 		wizardImportApplianceBrowseLocation()
 	}
-}).renderTo('wizardImportApplianceLocationButton');
+}}).renderTo('wizardImportApplianceLocationButton');
 
 $('#wizardImportApplianceStep2').find('span.translateglob').html(function(i,h){
 	return trans(h,'UIApplianceEditorWidget');

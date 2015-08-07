@@ -284,7 +284,7 @@ var vmmButtons = new Array(
 		 *	Create new HardDisk
 		 */
 		'name' : 'vmmnew',
-		'label' : trans('New','VBoxMediaManagerDlg'),
+		'label' : 'New',
 		'icon' : 'hd_new',
 		'enabled' : function (item) { return(!$("#vboxVMMTabs").tabs('option','active')); },
 		'click' : function () {
@@ -299,7 +299,7 @@ var vmmButtons = new Array(
 		 * Add existing medium to virtualbox
 		 */
 		'name' : 'vmmadd',
-		'label' : trans('Add','VBoxMediaManagerDlg'),
+		'label' : 'Add',
 		'icon' : 'hd_add',
 		'click' : function () {
 			var type = '';
@@ -377,7 +377,7 @@ var vmmButtons = new Array(
 		 *	Copy Medium
 		 */
 		'name' : 'vmmcopy',
-		'label' : trans('Copy...','VBoxMediaManagerDlg'),
+		'label' : 'Copy...',
 		'icon' : 'vdm_add',
 		'separator' : $('#vboxPane').data('vboxConfig').enableAdvancedConfig,
 		'enabled' : function (item) {
@@ -411,7 +411,7 @@ var vmmButtons = new Array(
 		 *	Modify Medium
 		 */
 		'name' : 'vmmmodify',
-		'label' : trans('Modify...','VBoxMediaManagerDlg'),
+		'label' : 'Modify...',
 		'icon' : 'vdm_new',
 		'enabled' : function (item) { 
 			if(!item) return false;
@@ -493,7 +493,7 @@ var vmmButtons = new Array(
 		 *	Remove a medium
 		 */
 		'name' : 'vmmremove',
-		'label' : trans('Remove','VBoxMediaManagerDlg'),
+		'label' : 'Remove',
 		'icon' : 'hd_remove',
 		'enabled' : function (item) {
 			if(!item || item.target) return false;
@@ -582,7 +582,7 @@ var vmmButtons = new Array(
 		 *	Release a medium from all attachments
 		 */
 		'name' : 'vmmrelease',
-		'label' : trans('Release','VBoxMediaManagerDlg'),
+		'label' : 'Release',
 		'icon' : 'hd_release',
 		'enabled' : function (item) {
 			if(!item || item.target) return false;
@@ -641,7 +641,7 @@ var vmmButtons = new Array(
 	
 	{
 		'name' : 'vmmrefresh',
-		'label' : trans('Refresh','VBoxMediaManagerDlg'),
+		'label' : 'Refresh',
 		'icon' : 'refresh',
 		'click' : function () {
 
@@ -665,15 +665,15 @@ if(!$('#vboxPane').data('vboxConfig').enableAdvancedConfig) {
 }
 
 /* Toolbar */
-var vmmToolbar = new vboxToolbar(vmmButtons);
-vmmToolbar.renderTo('vboxMMToolbar');
+var vmmToolbar = new vboxToolbar({buttons: vmmButtons,
+    language_context: 'VBoxMediaManagerDlg',
+    renderTo: 'vboxMMToolbar'});
 
 /* Actions Menu */
-var vmmMenu = new vboxMenuBar('vboxMMMenu');
-vmmMenu.iconStringDisabled = '_disabled';
+var vmmMenu = new vboxMenuBar({name: 'vboxMMMenu', language_context: 'VBoxMediaManagerDlg'});
 vmmMenu.addMenu({
 	'name':'vboxMMactions',
-	'label':trans('Actions','VBoxMediaManagerDlg'),
+	'label':'Actions',
 	'menu': vmmButtons
 });
 vmmMenu.renderTo('vboxMMMenu');
@@ -687,9 +687,8 @@ if($('#vboxPane').data('vboxConfig').enableAdvancedConfig) {
 } else {
 	vmmCMButtons = vmmButtons.slice(0,-1);
 }
-var vmmCMenu = new vboxMenu('vboxVMMMediaContextMenu');
-vmmCMenu.iconStringDisabled = '_disabled';
-vmmCMenu.addMenu(vmmCMButtons);
+var vmmCMenu = new vboxMenu({name: 'vboxVMMMediaContextMenu', menuItems: vmmCMButtons,
+    language_context: 'VBoxMediaManagerDlg'});
 
 
 /**

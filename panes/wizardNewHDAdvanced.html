@@ -105,14 +105,15 @@ wizardHDUpdateOptions();
  * Location button
  */
  /* Choose location of new file button */
- new vboxToolbarSingle({
+ new vboxToolbarSingle({button: {
  	'name' : 'mselecthdbtn',
- 	'label' : trans('Choose a location for new virtual hard drive file...','UIWizardNewVD'),
+ 	'label' : 'Choose a location for new virtual hard drive file...',
+ 	'language_context': 'UIWizardNewVD',
  	'icon' : 'select_file',
  	'click' : function () {
  		wizardHDBrowseLocation();
  	}
- }).renderTo('wizardHDBrowseLocationButton');		
+ }}).renderTo('wizardHDBrowseLocationButton');		
 
 
 /*
