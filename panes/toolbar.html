@@ -13,24 +13,23 @@
  * from this toolbar
  */
 var tButtons = [
-	
-	/* All toolbar items need a 'name' property */
-	vboxVMActions['new'],
-	$.extend({},vboxVMActions['settings'],{click: function(){
-		var vm = vboxChooser.getSingleSelected();
-		if(!vm || vboxVMStates.isRunning(vm) || vboxVMStates.isPaused(vm)) return;
-		vboxVMActions['settings'].click();
-		
-	}}),
-	vboxVMActions['start'],
-	{
-		name: 'stop',
-		icon: 'vm_poweroff',
-		label: 'Stop',
-		language_context: 'VBoxSelectorWnd',
-		enabled: vboxVMActions['stop'].enabled,
-		click : function() {return;}
-	}
+    
+    vboxVMActions['new'],
+    $.extend({},vboxVMActions['settings'],{click: function(){
+        var vm = vboxChooser.getSingleSelected();
+        if(!vm || vboxVMStates.isRunning(vm) || vboxVMStates.isPaused(vm)) return;
+        vboxVMActions['settings'].click();
+        
+    }}),
+    vboxVMActions['start'],
+    {
+        name: 'stop',
+        icon: 'vm_poweroff',
+        label: 'Stop',
+        language_context: 'VBoxSelectorWnd',
+        enabled: vboxVMActions['stop'].enabled,
+        click : function() {return;}
+    }
 ];
 
 /* Append Top Toolbar */
@@ -43,36 +42,89 @@ var stopMenuItems = [
     vboxVMActions['reset'],
 ];
 for(var i = 0; i < vboxVMActions.stop_actions.length; i++) {
-	var n = vboxVMActions.stop_actions[i];
-	if(i==0) n.separator = true;
-	stopMenuItems[stopMenuItems.length] = n;
+    var n = $.extend({}, vboxVMActions[vboxVMActions.stop_actions[i]]);
+    if(i==0) n.separator = true;
+    stopMenuItems[stopMenuItems.length] = n;
 }
 stopMenu = new vboxMenu({name: 'stopContextMenu', menuItems: stopMenuItems, language_context: 'UIActionPool'});
 
 vboxChooserToolbarTop.getButtonElement('stop').contextMenu({
-	menu: stopMenu.menuId(),
-	button: 0,
-	mode: 'menu'
-	},function(a, el, pos) {
-        vboxVMActions[a].click();
-	}
+    menu: stopMenu.menuId(),
+    button: 0,
+    mode: 'menu'
+    },function(a, el, pos) {
+        for(var i in vboxVMActions) {
+            if(typeof i == 'string' && vboxVMActions[i].name == a) {
+                vboxVMActions[i].click();
+                return;
+            }
+        }
+    }
 );
 
-
 /* 'Settings' menu items / actions */
-var vboxChooserSettingsMenu = new vboxMenu({name: 'vboxVMSettingsMenu', menuItems: [
-	vboxVMActions['settings'],
-	{name: 'storage', icon: 'hd'},
-	{name: 'usb', icon: 'usb', label: 'USB Devices', language_context: 'UIActionPool'},
-	{name: 'network', icon: 'nw', label: 'Network Adapters...', language_context: 'UIActionPool'},
-	{name: 'sharedfolders', icon: 'sf', label: 'Shared Folders...'},
-	{name: 'remotedisplay', icon: 'vrdp', label: 'Enable Remote Display', separator: true},
-	$.extend({}, vboxVMActions['guestAdditionsInstall'], {separator: true}),
-], language_context: 'UIActionPool'});
+var vboxChooserSettingsMenu = {
+		
+	'settings' : {
+		'label' : vboxVMActions['settings'].label,
+		'icon' : vboxVMActions['settings'].icon
+	},
+	'storage' : {
+		'icon' : 'hd'
+	},
+	'USB' : {
+		'label' : 'USB Devices',
+		'icon' : 'usb'
+	},
+	'Network' : {
+		'label' : 'Network Adapters...',
+		'icon' : 'nw'
+	},
+	'SharedFolders' : {
+		'label' : 'Shared Folders...',
+		'icon' : 'sf'
+	},
+	'RemoteDisplay' : {
+		'label' : 'Enable Remote Display',
+		'icon' : 'vrdp',
+		'separator' : true
+	},	
+	'GuestAdditions' : {
+		'label' : vboxVMActions['guestAdditionsInstall'].label,
+		'icon' : vboxVMActions['guestAdditionsInstall'].icon,
+		'separator' : true
+	}
+
+};
+
+
+/* 'Settings' menu */
+var ul = $('<ul />').attr({'class':'contextMenu','style':'display: none','id':'vboxVMSettingsMenu'});
+
+for(var i in vboxChooserSettingsMenu) {
+	
+	// add name
+	vboxChooserSettingsMenu[i].name = i;
+    var label = trans(vboxChooserSettingsMenu[i].label, 'UIActionPool'); 
+	var li = $('<li />').html("<span class='vboxMenuItemChecked' /><a href='#" + vboxChooserSettingsMenu[i].name + "' style='background-image: url(images/vbox/" + vboxChooserSettingsMenu[i].icon +"_16px.png);' >"+(label ? label : ' ')+"</a>");
+	if(i == 'storage') { $(li).attr({'style':'display:none','id':'vboxVMSettingsToolbarStorageHolder'}); }
+	if(i == 'USB') {
+		/* 'USB' menu */
+		$('<ul />').attr({'class':'vboxSettingsUSBAttachmentsMenu contextMenuNoBG','style':'display: none','id':'vboxVMSettingsUSBMenu'}).data({'callback':'vboxChooserToolbarUSBUpdate'}).appendTo(li);		
+	}
+	if(vboxChooserSettingsMenu[i].separator) $(li).addClass('separator');
+	$(ul).append(li);
+	
+}
+
+/* Append 'Settings' button Menu */
+$('#vboxPane').append(ul);
+
+
 
 /* 'Settings' button menu initialization  */
 vboxChooserToolbarTop.getButtonElement('settings').contextMenu({
-		menu: vboxChooserSettingsMenu.menuId(),
+		menu: 'vboxVMSettingsMenu',
 		button: 0,
 		mode: 'menu'
 	},
