@@ -481,11 +481,12 @@ function vboxSettingsGlobalNetEditDialog() {
 
 	
 	$('#vboxSettingsGlobalNetEdit').tabs('option','active',0);
+	$('#vboxSettingsGlobalNetDHCPEnabled').trigger('click');
 
 	if(nic.dhcpServer && nic.dhcpServer.enabled && !$('#vboxSettingsGlobalNetDHCPEnabled').prop('checked')) {
-		$('#vboxSettingsGlobalNetDHCPEnabled').prop('checked', true).trigger('click');
+		$('#vboxSettingsGlobalNetDHCPEnabled').trigger('click');
 	} else if(nic.dhcpServer && !nic.dhcpServer.enabled && $('#vboxSettingsGlobalNetDHCPEnabled').prop('checked')) {
-		$('#vboxSettingsGlobalNetDHCPEnabled').prop('checked', false).trigger('click');
+		$('#vboxSettingsGlobalNetDHCPEnabled').trigger('click');
 	}
 
 	$('#vboxSettingsGlobalNetEditDialog').dialog('open');

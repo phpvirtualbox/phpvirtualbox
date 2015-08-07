@@ -3,6 +3,10 @@
 -------------------------------------
 Translation fixes
 
+Fixed error when creating host-only networks
+
+Fixed host-only network DHCP server settings
+
 -------------------------------------
     5.0-1   2015-08-05
 -------------------------------------

@@ -2356,7 +2356,6 @@ class vboxconnector {
 
 		// progress operation result
 		$response = array();
-		$success = 1;
 		$error = 0;
 
 		// Connect to vboxwebsrv
@@ -2378,7 +2377,6 @@ class vboxconnector {
 			} catch (Exception $e) {
 				$this->errors[] = $e;
 				throw new Exception('Could not obtain progress operation: '.$args['progress']);
-				$success = 0;
 			}
 
 			$response['progress'] = $args['progress'];
@@ -2424,16 +2422,9 @@ class vboxconnector {
 				}
 			} catch (Exception $null) {}
 
-			// Some progress operations seem to go away after completion
-			if(!($this->session->handle && (string)$this->session->state == 'Unlocked')) {
-				$this->errors[] = $e;
-				$success = 0;
-			}
-
 		}
 
 		if($error) {
-			$success = 0;
 			if(@$args['catcherrs']) $response['error'] = $error;
 			else $this->errors[] = new Exception($error['message']);
 
