@@ -441,12 +441,6 @@ $(document).ready(function(){
 				
 				break;
 			
-			// Save mounted media changes at runtime
-			case 'GUI/SaveMountedAtRuntime':
-				if(vboxVMDataMediator.vmDetailsData[eventData.machineId])
-					vboxVMDataMediator.vmDetailsData[eventData.machineId].GUI.SaveMountedAtRuntime = eventData.value;
-				break;
-				
 			// First time run
 			case 'GUI/FirstRun':
 				if(vboxVMDataMediator.vmDetailsData[eventData.machineId])

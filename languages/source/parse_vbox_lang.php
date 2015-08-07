@@ -39,6 +39,7 @@ foreach($arrXml['TS']['context'] as $c) {
        if(is_array($m['translation']) && count($m['translation']) == 0)
           continue;
 
+       // Translation is a numerusfourm
        if(is_array($m['translation']) && @$m['translation']['numerusform']) {
           if(!is_array($m['translation']['numerusform'])) {
              $m['translation'] = clean($m['translation']['numerusform']);
@@ -48,11 +49,13 @@ foreach($arrXml['TS']['context'] as $c) {
                 $m['translation']['numerusform'][$k] = clean($v);
              }
           }
+       // Translation exists
        } else if(is_array($m['translation'])) {
 
            // assume unfinished
            $m['translation'] = $s;
 
+       // Translation does not exist yet
        } else {
           $m['translation'] = clean($m['translation']);
        }
@@ -68,13 +71,14 @@ foreach($arrXml['TS']['context'] as $c) {
           // Translation for this message exists
           if(isset($lang['contexts'][$c['name']]['messages'][$s]['translation'])) {
 
-             // Check to see if incoming translation has 'obsolete'
+             // Check to see if incoming translation has 'obsolete'. If so, don't copy it
              if(@$m['translation_attr']['type'] == 'obsolete') continue;
 
-             // Check to see if existing translation has 'obsolete'
-             if(@$lang['contexts'][$c['name']]['messages'][$s]['translation_attr']['type'] == 'obsolete') continue;
-
-             $lang['contexts'][$c['name']]['messages'][$s] = array($lang['contexts'][$c['name']]['messages'][$s]);
+             // Check to see if existing translation has 'obsolete'. If so, overwrite it
+             if(@$lang['contexts'][$c['name']]['messages'][$s]['translation_attr']['type'] == 'obsolete') {
+                 $lang['contexts'][$c['name']]['messages'][$s] = $m;
+                 continue;
+             }
           }
 
            $lang['contexts'][$c['name']]['messages'][$s][] = $m;

@@ -310,7 +310,10 @@ var vboxSnapshotButtons = [
 
 				l.run();				
 			};
-			vboxConfirm(trans('<p>Deleting the snapshot will cause the state information saved in it to be lost, and disk data spread over several image files that VirtualBox has created together with the snapshot will be merged into one file. This can be a lengthy process, and the information in the snapshot cannot be recovered.</p></p>Are you sure you want to delete the selected snapshot <b>%1</b>?</p>','UIMessageCenter').replace('%1',$('<div />').text(snapshot.name).html()),buttons);  	  		
+			vboxConfirm(trans('<p>Deleting the snapshot will cause the state information saved in it to be lost, and '+
+			        'storage data spread over several image files that VirtualBox has created together with the snapshot '+
+			        'will be merged into one file. This can be a lengthy process, and the information in the snapshot cannot '+
+			        'be recovered.</p></p>Are you sure you want to delete the selected snapshot <b>%1</b>?</p>','UIMessageCenter').replace('%1',$('<div />').text(snapshot.name).html()),buttons);  	  		
   	  	}
   	},
   	{

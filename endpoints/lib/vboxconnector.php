@@ -1463,8 +1463,6 @@ class vboxconnector {
 			$m->setExtraData('phpvb/icon', $args['customIcon']);
 		}
 
-		$m->setExtraData('GUI/SaveMountedAtRuntime', ($args['GUI']['SaveMountedAtRuntime'] == 'no' ? 'no' : 'yes'));
-
 		// VRDE settings
 		try {
 			if($m->VRDEServer && $this->vbox->systemProperties->defaultVRDEExtPack) {
@@ -1913,8 +1911,6 @@ class vboxconnector {
 			$m->setExtraData('phpvb/icon', $args['customIcon']);
 
 		$m->VRAMSize = $args['VRAMSize'];
-
-		$m->setExtraData('GUI/SaveMountedAtRuntime', ($args['GUI']['SaveMountedAtRuntime'] == 'no' ? 'no' : 'yes'));
 
 		// Video
 		$m->accelerate3DEnabled = $args['accelerate3DEnabled'];
@@ -3832,7 +3828,6 @@ class vboxconnector {
 			$this->session->machine->setExtraData('VBoxAuthSimple/users/'.$_SESSION['user'].'', $_SESSION['uHash']);
 
 			// Always set
-			$this->session->machine->setExtraData('GUI/SaveMountedAtRuntime', 'yes');
 			$this->session->machine->setExtraData('GUI/FirstRun', 'yes');
 
 			try {
@@ -4261,8 +4256,7 @@ class vboxconnector {
 			'bootOrder' => $this->_machineGetBootOrder($m),
 			'chipsetType' => (string)$m->chipsetType,
 			'GUI' => array(
-				'SaveMountedAtRuntime' => $m->getExtraData('GUI/SaveMountedAtRuntime'),
-				'FirstRun' => $m->getExtraData('GUI/FirstRun')
+				'FirstRun' => $m->getExtraData('GUI/FirstRun'),
 			),
 			'customIcon' => (@$this->settings->enableCustomIcons ? $m->getExtraData('phpvb/icon') : ''),
 			'disableHostTimeSync' => intval($m->getExtraData("VBoxInternal/Devices/VMMDev/0/Config/GetHostTimeDisabled")),
@@ -5358,7 +5352,6 @@ class vboxconnector {
 		/* @var $machine IMachine */
 		$machine = $this->vbox->findMachine($args['vm']);
 		$state = (string)$machine->sessionState;
-		$save = (strtolower($machine->getExtraData('GUI/SaveMountedAtRuntime')) == 'yes');
 
 		// create session
 		$this->session = $this->websessionManager->getSessionObject($this->vbox->handle);

@@ -1614,7 +1614,7 @@ var vboxVMActions = {
                         else icon = 'progress_start_90px.png';
                         
                         vboxProgress({'progress':d.responseData.progress,'persist':d.persist}, function(){return;},
-                                icon, trans('Start the selected virtual machines','UIActionPool'),evm.name);
+                                icon, trans('Start selected virtual machines','UIActionPool'),evm.name);
                     }
             });
 
@@ -1890,7 +1890,7 @@ var vboxVMActions = {
 									// check for progress operation
 									if(d && d.responseData && d.responseData.progress) {
 										vboxProgress({'progress':d.responseData.progress,'persist':d.persist},function(){return;},'progress_delete_90px.png',
-												trans('Remove the selected virtual machines', 'UIActionPool'), vmname);
+												trans('Remove selected virtual machines', 'UIActionPool'), vmname);
 									}
 							});						
 						}
@@ -2095,7 +2095,7 @@ var vboxVMActions = {
 			var vms = vboxChooser.getSelectedVMsData();
 			for(var i = 0; i < vms.length; i++) {
 				if(vboxVMStates.isRunning(vms[i]) || vboxVMStates.isPaused(vms[i]))
-					vboxVMActions.powerAction('savestate','Save the machine state of the selected virtual machines', vms[i]);
+					vboxVMActions.powerAction('savestate','Save the state of the virtual machine', vms[i]);
 			}
 		}
 	},
@@ -2116,7 +2116,7 @@ var vboxVMActions = {
 				var vms = vboxChooser.getSelectedVMsData();
 				for(var i = 0; i < vms.length; i++) {
 					if(vboxVMStates.isRunning(vms[i]))
-						vboxVMActions.powerAction('powerbutton','Send the ACPI Power Button press event to the virtual machine', vms[i]);		
+						vboxVMActions.powerAction('powerbutton','Send the ACPI Shutdown signal to the virtual machine', vms[i]);		
 				}
 			};
 			var vmNames = [];
@@ -2149,7 +2149,7 @@ var vboxVMActions = {
 			var vms = vboxChooser.getSelectedVMsData();
 			for(var i = 0; i < vms.length; i++) {
 				if(vboxVMStates.isRunning(vms[i]))
-					vboxVMActions.powerAction('pause','Suspend the execution of the selected virtual machines', vms[i]);
+					vboxVMActions.powerAction('pause','Suspend execution of selected virtual machines', vms[i]);
 			}
 		}
 	},
@@ -2172,7 +2172,7 @@ var vboxVMActions = {
 				var vms = vboxChooser.getSelectedVMsData();
 				for(var i = 0; i < vms.length; i++) {
 					if(vboxVMStates.isRunning(vms[i]) || vboxVMStates.isPaused(vms[i]) || vboxVMStates.isStuck(vms[i]))
-						vboxVMActions.powerAction('powerdown','Power off the selected virtual machines', vms[i]);
+						vboxVMActions.powerAction('powerdown','Power off selected virtual machines', vms[i]);
 				}
 			};
 			
@@ -2212,7 +2212,7 @@ var vboxVMActions = {
 				var vms = vboxChooser.getSelectedVMsData();
 				for(var i = 0; i < vms.length; i++) {
 					if(vboxVMStates.isRunning(vms[i]))
-						vboxVMActions.powerAction('reset','Reset the selected virtual machines', vms[i]);
+						vboxVMActions.powerAction('reset','Reset selected virtual machines', vms[i]);
 				}
 			};
 			
@@ -2228,8 +2228,8 @@ var vboxVMActions = {
 
 				vmNames = '<b>'+vmNames.join('</b>, <b>')+'</b>';
 
-				vboxConfirm(trans("<p>Do you really want to reset the following virtual machines?</p><p><b>%1</b></p><p>This will cause any unsaved data in applications "+
-						"running inside it to be lost.</p>",'UIMessageCenter').replace('%1',vmNames),buttons);
+				vboxConfirm(trans("<p>Do you really want to reset the following virtual machines?</p><p><b>%1</b></p><p>"+
+				            "This will cause any unsaved data in applications running inside it to be lost.</p>",'UIMessageCenter').replace('%1',vmNames),buttons);
 			}
 		}
 	},
@@ -2360,7 +2360,7 @@ var vboxMedia = {
 	mediumPrint: function(m,nosize,usehtml) {
 		var name = vboxMedia.getName(m);
 		if(nosize || !m || m.hostDrive) return name;
-		return name + ' (' + (m.deviceType == 'HardDisk' ? (usehtml ? '<i>': '') + trans(m.type,'VBoxGlobal', 'MediumType') + (usehtml ? '</i>': '') + ', ': '') + vboxMbytesConvert(m.logicalSize) + ')';
+		return name + ' (' + (m.deviceType == 'HardDisk' ? (usehtml ? '<i>': '') + trans(m.type,'VBoxGlobal', null, 'MediumType') + (usehtml ? '</i>': '') + ', ': '') + vboxMbytesConvert(m.logicalSize) + ')';
 	},
 
 	/**

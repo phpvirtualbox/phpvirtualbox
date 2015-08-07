@@ -82,11 +82,6 @@
 						onClick="vboxSnapshotBrowseFolder(this);" />
 		</td>
 	</tr>
-	<tr class='vboxRunningEnabled'>
-		<th><span class='translate'>Removable Media:</span></th>
-		<td><label><input type='checkbox' class='vboxCheckbox' name='vboxSettingsGeneralRemovableMedia' style='width: auto'/>
-		<span class='translate'>Remember Runtime Changes</span></label></td>
-	</tr>
 </table>
 </div>
 
@@ -278,7 +273,6 @@ $('#vboxSettingsDialog').on('dataLoaded', function(){
 	document.forms['frmVboxSettings'].vboxSettingsGeneralOSType.value = $('#vboxSettingsDialog').data('vboxMachineData').OSTypeId;
 	$(document.forms['frmVboxSettings'].vboxSettingsGeneralOSType).change();
 	document.forms['frmVboxSettings'].vboxSettingsGeneralSnapshotFolder.value = $('#vboxSettingsDialog').data('vboxMachineData').snapshotFolder;
-	document.forms['frmVboxSettings'].vboxSettingsGeneralRemovableMedia.checked = ($('#vboxSettingsDialog').data('vboxMachineData').GUI.SaveMountedAtRuntime == 'yes');
 	document.forms['frmVboxSettings'].vboxSettingsGeneralDescription.innerHTML = $('#vboxSettingsDialog').data('vboxMachineData').description;
 
 	/* Advanced config options */
@@ -401,7 +395,6 @@ $('#vboxSettingsDialog').on('dataLoaded', function(){
 		
 	$('#vboxSettingsDialog').data('vboxMachineData').OSTypeId = document.forms['frmVboxSettings'].vboxSettingsGeneralOSType.value;
 	$('#vboxSettingsDialog').data('vboxMachineData').snapshotFolder = document.forms['frmVboxSettings'].vboxSettingsGeneralSnapshotFolder.value;
-	$('#vboxSettingsDialog').data('vboxMachineData').GUI.SaveMountedAtRuntime = (document.forms['frmVboxSettings'].vboxSettingsGeneralRemovableMedia.checked ? 'yes' : 'no');
 	$('#vboxSettingsDialog').data('vboxMachineData').description = 	$(document.forms['frmVboxSettings'].vboxSettingsGeneralDescription).val();
 	
 	if($('#vboxPane').data('vboxConfig').enableAdvancedConfig) {

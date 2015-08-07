@@ -19,7 +19,7 @@ function vboxWizardImportApplianceDialog() {
 	
 	/* Common settings */
 	this.name = 'wizardImportAppliance';
-	this.title = trans('Import Virtual Applicance','UIWizardImportApp');
+	this.title = trans('Import Virtual Appliance','UIWizardImportApp');
 	this.bg = 'images/vbox/vmw_ovf_import_bg.png';
 	this.icon = 'import';
 	this.steps = 2;
@@ -611,7 +611,7 @@ function vboxWizardCloneVMDialog(args) {
 							}).fail(function(){
 								self.completed.reject();
 							});
-						},'progress_clone_90px.png',trans('Clone the selected virtual machine','UIActionPool'),
+						},'progress_clone_90px.png',trans('Clone selected virtual machine','UIActionPool'),
 						self.args.vm.name + ' > ' + name);
 					} else {
 						self.completed.reject();
