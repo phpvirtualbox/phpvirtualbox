@@ -68,9 +68,9 @@ class __vbox_language {
 		}
 
 
-		self::$langdata = unserialize(file_get_contents(VBOX_BASE_LANG_DIR.'/source/'.$lang.'.dat'));
+		self::$langdata = unserialize(@file_get_contents(VBOX_BASE_LANG_DIR.'/source/'.$lang.'.dat'));
 
-		$xmlObj = simplexml_load_string(file_get_contents(VBOX_BASE_LANG_DIR.'/'.$lang.'.xml'));
+		$xmlObj = simplexml_load_string(@file_get_contents(VBOX_BASE_LANG_DIR.'/'.$lang.'.xml'));
 		$arrXml = $this->objectsIntoArray($xmlObj);
 
 		$lang = array();

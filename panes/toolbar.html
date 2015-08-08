@@ -73,19 +73,19 @@ var vboxChooserSettingsMenu = {
 		'icon' : 'hd'
 	},
 	'USB' : {
-		'label' : 'USB Devices',
+		'label' : 'USB',
 		'icon' : 'usb'
 	},
 	'Network' : {
-		'label' : 'Network Adapters...',
+		'label' : 'Network',
 		'icon' : 'nw'
 	},
 	'SharedFolders' : {
-		'label' : 'Shared Folders...',
+		'label' : 'Shared Folders',
 		'icon' : 'sf'
 	},
 	'RemoteDisplay' : {
-		'label' : 'Enable Remote Display',
+		'label' : 'Remote Display',
 		'icon' : 'vrdp',
 		'separator' : true
 	},	
@@ -388,7 +388,7 @@ function vboxUpdateSettingsMenu(vm) {
 		}
 		if(dvdDevices.length) {
 			var ul = null;
-			var li = $('<li />').html("<a href='#dvdDevices' style='background-image:url(images/vbox/cd_16px.png);'>"+trans('CD/DVD Devices','UIActionPool')+'</a>').addClass('vboxVMSettingsStorage');
+			var li = $('<li />').html("<a href='#dvdDevices' style='background-image:url(images/vbox/cd_16px.png);'>"+trans('Optical Drives','UIActionPool')+'</a>').addClass('vboxVMSettingsStorage');
 			if(dvdDevices.length == 1) {
 				ul = dvdDevices[0].children('ul').first();
 			} else {
