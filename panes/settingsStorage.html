@@ -154,6 +154,10 @@
 								<td><span id='vboxSettingsHDattached' class='vboxRunningEnabled'>Some Virtual
 								Machine Name</span></td>
 							</tr>
+                            <tr>
+                                <th><span class='translate vboxRunningEnabled'>Encrypted with key:</span></th>
+                                <td><span id='vboxSettingsHDEncrypted' class='vboxRunningEnabled'>--</span></td>
+                            </tr>
 						</table>
 					</div>
 		
@@ -1446,13 +1450,16 @@ function vboxSettingsSelectAttachment(tbl) {
 
     	var disp = vboxMedia.getMediumById(m.base);
     	name = vboxMedia.getName(disp);
-    		
+ 
+        var encSettings = vboxMedia.getEncryptionSettings(disp);
+
         $('#vboxSettingsHDvsize').html(vboxMbytesConvert(disp.logicalSize));
         $('#vboxSettingsHDasize').html(vboxBytesConvert(disp.size));
         $('#vboxSettingsHDDetails').html(vboxMedia.getHardDiskVariant(disp));
         $('#vboxSettingsHDlocation').html(disp.location);
         $('#vboxSettingsHDtype').html(trans(disp.type,'VBoxGlobal') + ' (' + disp.format + ')');
-        $('#vboxSettingsHDattached').html(vboxMedia.attachedTo(disp));            
+        $('#vboxSettingsHDattached').html(vboxMedia.attachedTo(disp));
+        $('#vboxSettingsHDEncrypted').html(encSettings && encSettings.id ? encSettings.id : '--');
 
         
     } else {

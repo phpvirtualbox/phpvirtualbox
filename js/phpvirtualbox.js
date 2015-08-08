@@ -2359,8 +2359,9 @@ var vboxMedia = {
 	 */
 	mediumPrint: function(m,nosize,usehtml) {
 		var name = vboxMedia.getName(m);
+		var enc = vboxMedia.getEncryptionSettings(m);
 		if(nosize || !m || m.hostDrive) return name;
-		return name + ' (' + (m.deviceType == 'HardDisk' ? (usehtml ? '<i>': '') + trans(m.type,'VBoxGlobal', null, 'MediumType') + (usehtml ? '</i>': '') + ', ': '') + vboxMbytesConvert(m.logicalSize) + ')';
+		return name + ' (' + (m.deviceType == 'HardDisk' ? trans(m.type,'VBoxGlobal', null, 'MediumType') + ', ' + (enc && enc.id ? trans('Encrypted', 'VBoxGlobal') + ', ' : '') : '') + vboxMbytesConvert(m.logicalSize) + ')';
 	},
 
 	/**
