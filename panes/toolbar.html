@@ -134,13 +134,13 @@ vboxChooserToolbarTop.getButtonElement('settings').contextMenu({
 		
 		if(!vm) return;
 		
-		if(a == 'Network' || a == 'SharedFolders') {
-			vboxVMsettingsDialog(vm, a);
-			return;
-		}
-		
 		switch(a) {
 		
+		    case 'Network':
+		    case 'SharedFolders':
+		        vboxVMsettingsDialog(vm, a);
+		        break;
+
 			case 'GuestAdditions':
 				
 				vboxVMActions['guestAdditionsInstall'].click();				
@@ -316,9 +316,17 @@ function vboxUpdateSettingsMenu(vm) {
 		vboxChooserToolbarTop.getButtonElement("settings").disableContextMenu();
 		return;
 	}
-
 	// enable or disable USB
-	if(vm && vm['USBController'] && vm['USBController']['enabled']) {
+	var usbEnabled = false;
+	if(vm['USBControllers'].length) {
+	    for(var i = 0; i < vm['USBControllers'].length; i++) {
+	        if(vm['USBControllers'][i].type == 'OHCI') {
+	            usbEnabled = true;
+	            break;
+	        }
+	    }
+	}
+	if(usbEnabled) {
 		$('ul.vboxSettingsUSBAttachmentsMenu').children().remove();
 		$('#vboxVMSettingsMenu').find('a[href=#USB]').closest('li').css('display','');
 	} else {
