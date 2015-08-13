@@ -53,10 +53,11 @@ $('#wizardFirstRunStep1').on('show',function(e,wiz){
 	
 	wizardFirstRunFillMedia();
 	
-	var wizardFirstRunBar = new vboxToolbarSingle({
+	var wizardFirstRunBar = new vboxToolbarSingle({button: {
 		/* Add Attachment Button */
 		'name' : 'mselecthdbtnd',
-		'label' : trans('Choose a virtual optical disk file...','UIWizardFirstRun'),
+		'label' : 'Choose a virtual optical disk file...',
+		'language_context': 'UIWizardFirstRun',
 		'icon' : 'select_file',
 		'click' : function () {
 			vboxMedia.actions.choose(null,'DVD',function(med){
@@ -64,7 +65,7 @@ $('#wizardFirstRunStep1').on('show',function(e,wiz){
 				wizardFirstRunFillMedia(med.id);
 			});
 		}
-	});
+	}});
 	wizardFirstRunBar.renderTo('wizardFirstRunChoose');		
 
 	$('#wizardFirstRunMedia').hide();

@@ -1,4 +1,16 @@
 -------------------------------------
+    5.0-2   2015-08-12
+-------------------------------------
+Translation fixes
+
+Fixed error when creating host-only networks
+
+Fixed host-only network DHCP server settings
+
+Fix USB device attaching / detaching from Settings menu of a
+running VM.
+
+-------------------------------------
     5.0-1   2015-08-05
 -------------------------------------
 Fix paths in recovery.php-disabled

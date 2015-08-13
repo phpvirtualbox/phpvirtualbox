@@ -46,11 +46,11 @@
 var sButtons = new Array(
 
 	{
-		'name' : 'addshared',
-		'label' : trans('Add Shared Folder','UIMachineSettingsSF'),
-		'icon' : 'sf_add',
-		'enabled' : function (item) { return true; },
-		'click' : function () {
+		'name': 'addshared',
+		'label': 'Add Shared Folder',
+		'icon': 'sf_add',
+		'enabled': function (item) { return true; },
+		'click': function () {
 
 			var dialog = vboxSettingsSFEditDialog();
 			
@@ -81,11 +81,11 @@ var sButtons = new Array(
 	},
 
 	{
-		'name' : 'editshared',
-		'label' : trans('Edit Shared Folder','UIMachineSettingsSF'),
-		'icon' : 'sf_edit',
-		'enabled' : function (item) { return $(item).hasClass('vboxListItemSelected');  },
-		'click' : function () {
+		'name': 'editshared',
+		'label': 'Edit Shared Folder',
+		'icon': 'sf_edit',
+		'enabled': function (item) { return $(item).hasClass('vboxListItemSelected');  },
+		'click': function () {
 
 			var dialog = vboxSettingsSFEditDialog();
 			
@@ -118,7 +118,7 @@ var sButtons = new Array(
 	
 	{
 		'name' : 'removeshared',
-		'label' : trans('Remove Shared Folder','UIMachineSettingsSF'),
+		'label' : 'Remove Shared Folder',
 		'icon' : 'sf_remove',
 		'enabled' : function (item) { return $(item).hasClass('vboxListItemSelected'); },
 		'click' : function () {
@@ -135,8 +135,8 @@ var sButtons = new Array(
 
  );
 
-var sfToolbar = new vboxToolbarSmall(sButtons);
-sfToolbar.renderTo('vboxSettingsSFButtons');
+var sfToolbar = new vboxToolbarSmall({buttons: sButtons,
+    language_context: 'UIMachineSettingsSF', renderTo: 'vboxSettingsSFButtons'});
 
 $('#vboxSettingsSharedFoldersList').on('select',function(e,el){sfToolbar.update(el);});
 

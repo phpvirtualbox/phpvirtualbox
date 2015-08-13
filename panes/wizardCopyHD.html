@@ -7,9 +7,9 @@
 
  -->
 <!-- Step 1 -->
-<div id='wizardCopyHDStep1' title='Hard drive to copy' style='display: none'>
+<div id='wizardCopyHDStep1' title='Hard disk to copy' style='display: none'>
 	
-	<span class='translate'>&lt;p&gt;Please select the virtual hard drive file that you would like to copy if it is not already selected. You can either choose one from the list or use the folder icon beside the list to select one.&lt;/p&gt;</span>
+	<span class='translate'>&lt;p&gt;Please select the virtual hard disk file that you would like to copy if it is not already selected. You can either choose one from the list or use the folder icon beside the list to select one.&lt;/p&gt;</span>
 
 	<div class='vboxOptions'>
 		<table class='vboxOptions'>
@@ -23,9 +23,9 @@
 
 
 <!-- Step 2 -->
-<div id='wizardCopyHDStep2' title='Hard drive file type' style='display: none'>
+<div id='wizardCopyHDStep2' title='Hard disk file type' style='display: none'>
 
-	<p class='translate'>Please choose the type of file that you would like to use for the new virtual hard drive. If you do not need to use it with other virtualization software you can leave this setting unchanged.</p>
+	<p class='translate'>Please choose the type of file that you would like to use for the new virtual hard disk. If you do not need to use it with other virtualization software you can leave this setting unchanged.</p>
 
 	<div class='vboxOptions'>
 		<table class='vboxOptions'>
@@ -46,15 +46,15 @@
 
 
 <!-- Step 3 -->
-<div id='wizardCopyHDStep3' title='Storage on physical hard drive' style='display: none'>
+<div id='wizardCopyHDStep3' title='Storage on physical hard disk' style='display: none'>
 
-	<p class='translate'>Please choose whether the new virtual hard drive file should grow as it is used (dynamically allocated) or if it should be created at its maximum size (fixed size).</p>
+	<p class='translate'>Please choose whether the new virtual hard disk file should grow as it is used (dynamically allocated) or if it should be created at its maximum size (fixed size).</p>
 	
-	<span class='translate vboxCreateDynamic'>&lt;p&gt;A &lt;b&gt;dynamically allocated&lt;/b&gt; hard drive file will only use space on your physical hard drive as it fills up (up to a maximum &lt;b&gt;fixed size&lt;/b&gt;), although it will not shrink again automatically when space on it is freed.&lt;/p&gt;</span>
+	<span class='translate vboxCreateDynamic'>&lt;p&gt;A &lt;b&gt;dynamically allocated&lt;/b&gt; hard disk file will only use space on your physical hard disk as it fills up (up to a maximum &lt;b&gt;fixed size&lt;/b&gt;), although it will not shrink again automatically when space on it is freed.&lt;/p&gt;</span>
 	
-	<span class='translate vboxCreateFixed'>&lt;p&gt;A &lt;b&gt;fixed size&lt;/b&gt; hard drive file may take longer to create on some systems but is often faster to use.&lt;/p&gt;</span>
+	<span class='translate vboxCreateFixed'>&lt;p&gt;A &lt;b&gt;fixed size&lt;/b&gt; hard disk file may take longer to create on some systems but is often faster to use.&lt;/p&gt;</span>
 	
-	<span class='translate vboxCreateSplit2G'>&lt;p&gt;You can also choose to &lt;b&gt;split&lt;/b&gt; the hard drive file into several files of up to two gigabytes each. This is mainly useful if you wish to store the virtual machine on removable USB devices or old systems, some of which cannot handle very large files.</span>
+	<span class='translate vboxCreateSplit2G'>&lt;p&gt;You can also choose to &lt;b&gt;split&lt;/b&gt; the hard disk file into several files of up to two gigabytes each. This is mainly useful if you wish to store the virtual machine on removable USB devices or old systems, some of which cannot handle very large files.</span>
 	
 	<div class='vboxOptions'>
 		<table class='vboxOptions'>
@@ -72,9 +72,9 @@
 </div>
 
 <!-- Step 4 -->
-<div id='wizardCopyHDStep4' title='New hard drive to create' style='display: none'>
+<div id='wizardCopyHDStep4' title='New hard disk to create' style='display: none'>
 
-	<p class='translate'>Please type the name of the new virtual hard drive file into the box below or click on the folder icon to select a different folder to create the file in.</p>
+	<p class='translate'>Please type the name of the new virtual hard disk file into the box below or click on the folder icon to select a different folder to create the file in.</p>
 	
 	<div class='vboxOptions'>
 		<table class='vboxOptions'>
@@ -107,27 +107,29 @@ for(var i = 0; i < vboxHDTypes.length; i++) {
 vboxHDTypesTbl.find('input[value='+$('#vboxPane').data('vboxSystemProperties').defaultHardDiskFormat+']').prop('checked',true).closest('tr').detach().prependTo(vboxHDTypesTbl);
 
 
-/* Choose virtual hard drive button */
-new vboxToolbarSingle({
+/* Choose virtual hard disk button */
+new vboxToolbarSingle({button: {
 	'name' : 'mselecthdbtn',
-	'label' : trans('Choose a virtual hard drive file to copy...','UIWizardCloneVD'),
+	'label' : 'Choose a virtual hard disk file to copy...',
+	'language_context': 'UIWizardCloneVD',
 	'icon' : 'select_file',
 	'click' : function () {
 		vboxMedia.actions.choose(null,'HardDisk',function(med){
 			if(med) copyHDFillDisks(med.base);
 		});
 	}
-}).renderTo('newVMDiskVMM');		
+}}).renderTo('newVMDiskVMM');		
 
 /* Choose location of new file button */
-new vboxToolbarSingle({
+new vboxToolbarSingle({button: {
 	'name' : 'mselecthdbtn',
-	'label' : trans('Choose a location for new virtual hard drive file...','UIWizardNewVD'),
+	'label' : 'Choose a location for new virtual hard disk file...',
+	'language_context': 'UIWizardNewVD',
 	'icon' : 'select_file',
 	'click' : function () {
 		wizardCopyHDBrowseLocation();
 	}
-}).renderTo('newVMDiskVMMDest');		
+}}).renderTo('newVMDiskVMMDest');		
 
 	
 /* Set up disk selection box */

@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+	<context>
+		<name>phpVirtualBox</name>
+		<message>
+			<source>Warning: A VirtualBox internal operation is in progress. Closing this window or navigating away from this web page may cause unexpected and undesirable results. Please wait for the operation to complete.</source>
+			<translation>Waarschuwing: VirtualBox is intern bezig. Als u dit venster sluit of weggaat van deze pagina kunnen er onverwachte problemen optreden. Wacht alsjeblieft tot het proces is afgerond.</translation>
+		</message>
+		<message>
+			<source>Operation Canceled</source>
+			<translation>Actie geannuleerd</translation>
+		</message>
+		<message>
+			<source>An error occurred communicating with your vboxwebsrv. No more requests will be sent by phpVirtualBox until the error is corrected and this page is refreshed. The details of this connection error should be displayed in a subsequent dialog box.</source>
+			<translation>Er is een fout opgetreden bij de communicatie met vboxwebsrv. VirtualBox zal geen verzoeken meer sturen totdat de fout is opgelost en deze pagina ververst. De details van deze verbindingsfout zouden in een volgend dialoogvenster moeten worden getoond.</translation>
+		</message>
+		<message>
+			<source>Unable to retrieve guest properties. Make sure the virtual machine is running and has the VirtualBox Guest Additions installed.</source>
+			<translation>Gasteigenschappen kunnen niet worden opgehaald. Controleer of de virtuele machine werkt en de gasttoevoegingen zijn geïnstalleerd.</translation>
+		</message>
+		<!-- Error vmlist 1 -->
+		<message>
+			<source>There was an error obtaining the list of registered virtual machines from VirtualBox. Make sure vboxwebsrv is running and that the settings in config.php are correct.&lt;p&gt;The list of virtual machines will not begin auto-refreshing again until this page is reloaded.&lt;/p&gt;</source>
+			<translation>Er is een fout opgetreden bij het ophalen van de lijst van aangemaakte virtuele machines in VirtualBox. Controleer of vboxwebsrv werkt en dat de instellingen van config.php kloppen.&lt;/p&gt;De lijst van virtuele machines wordt niet herladen totdat deze pagina wordt ververst.&lt;/p&gt;</translation>
+		</message>
+		<message>
+			<source>Server List</source>
+			<translation>Serverlijst</translation>
+		</message>
+	</context>
+	<context>
+		<name>UIVMDesktop</name>
+		<message>
+			<source>Console</source>
+			<translation>Console</translation>
+		</message>
+		<message>
+			<source>Loading ...</source>
+			<translation>Laden ...</translation>
+		</message>
+	</context>
+	<context>
+		<name>VBoxSelectorWnd</name>
+		<message>
+			<source>Change Password</source>
+			<translation>Wachtwoord veranderen</translation>
+		</message>
+		<message>
+			<source>Log out - %1</source>
+			<translation>Uitloggen - %1</translation>
+		</message>
+		<message>
+			<source>Logged in as %1</source>
+			<translation>Ingelogd als %1</translation>
+		</message>
+		<message>
+			<source>Stop</source>
+			<translation>Stoppen</translation>
+		</message>
+		<message>
+			<source>VirtualBox User Manual</source>
+			<translation>VirtualBox handleiding</translation>
+		</message>	
+		<message>
+			<source>About</source>
+			<translation>Over</translation>
+		</message>
+	</context>
+	<context>
+		<name>UIActionsPool</name>
+		<message>
+			<source>Save State</source>
+			<translation>Toestand opslaan</translation>
+		</message>
+		<message>
+			<source>Power Off</source>
+			<translation>Stroom uit</translation>
+		</message>		
+	</context>
+	<context>
+		<!-- Console Tab -->
+		<name>VBoxConsoleWgt</name>
+		<message>
+			<source>User name</source>
+			<translation>Gebruikersnaam</translation>
+		</message>
+		<message>
+			<source>Password</source>
+			<translation>Wachtwoord</translation>
+		</message>
+		<message>
+			<source>Connecting to %1</source>
+			<translation>Verbinden met %1</translation>
+		</message>
+		<message>
+			<source>Connected to %1</source>
+			<translation>Verbonden met %1</translation>
+		</message>
+		<message>
+			<source>Requested desktop size</source>
+			<translation>Gewenste bureaubladgrootte</translation>
+		</message>
+		<message>
+			<source>Connect</source>
+			<translation>Verbinden</translation>
+		</message>
+		<message>
+			<source>Detach</source>
+			<translation>Loskoppelen</translation>
+		</message>
+		<message>
+			<source>Disconnect</source>
+			<translation>Ontkoppelen</translation>
+		</message>
+		<message>
+			<source>Send Ctrl-Alt-Del</source>
+			<translation>Stuur Ctrl-Alt-Del</translation>
+		</message>
+		<message>
+			<source>Disconnect reason</source>
+			<translation>Reden van ontkoppeling</translation>
+		</message>
+		<message>
+			<source>Redirection by %1</source>
+			<translation>Doorverwijzing door %1</translation>
+		</message>
+		<message>
+			<source>Virtual machine is not running or is not configured to accept RDP connections.</source>
+			<translation>De virtuele machine werkt niet of is niet ingesteld om RDP-verbindingen toe te laten.</translation>
+		</message>
+	</context>		
+	<context>
+		<name>VBoxGlobal</name>
+		<message>
+			<source>Hosting</source>
+			<translation>Hosting</translation>
+		</message>
+		<message>
+			<source>Guest Network Adapters</source>
+			<translation>Gastnetwerkadapters</translation>
+		</message>
+		<message>
+			<source>Up</source>
+			<translation>Aan</translation>
+			<comment>Host network adapter status</comment>
+		</message>
+		<message>
+			<source>Down</source>
+			<translation>Uit</translation>
+			<comment>Host network adapter status</comment>
+		</message>
+	</context>
+	<context>
+		<name>UIVMPreviewWindow</name>
+		<message>
+			<source>Every %1 seconds</source>
+			<translation>Iedere %1 seconde(n)</translation>
+		</message>
+		<message>
+			<source>Open in new window</source>
+			<translation>In nieuw venster openen</translation>
+		</message>		
+	</context>
+	<context>
+		<name>UISettingsDialogGlobal</name>
+		<message>
+			<source>Users</source>
+			<translation>Gebruikers</translation>
+		</message>
+	</context>
+	<context>
+		<name>UIUsers</name>
+		<message>
+			<source>Users</source>
+			<translation>Gebruikers</translation>
+		</message>		
+		<message>
+			<source>Admin User</source>
+			<translation>Admingebruiker</translation>
+		</message>
+		<message>
+			<source>Can administer users</source>
+			<translation>Kan gebruikers aanpassen</translation>
+		</message>
+		<message>
+			<source>Add User</source>
+			<translation>Gebruiker toevoegen</translation>
+		</message>
+		<message>
+			<source>Edit User</source>
+			<translation>Gebruiker aanpassen</translation>
+		</message>
+		<message>
+			<source>Remove User</source>
+			<translation>Gebruiker verwijderen</translation>
+		</message>
+		<message>
+			<source>A user with that username already exists.</source>
+			<translation>Er bestaat al een gebruiker met die naam.</translation>
+		</message>
+		<message>
+			<source>Are you sure you want to remove the user &lt;b&gt;%1&lt;/b&gt;? This action cannot be undone.</source>
+			<translation>Weet je zeker dat je de gebruiker &lt;b&gt;%1&lt;/b&gt; wilt verwijderen? Deze actie kan niet ongedaan gemaakt worden.</translation>
+		</message>
+		<message>
+			<source>Username</source>
+			<translation>Gebruikersnaam</translation>
+		</message>
+		<message>
+			<source>Password</source>
+			<translation>Wachtwoord</translation>
+		</message>
+		<message>
+			<source>Log in</source>
+			<translation>Inloggen</translation>
+		</message>
+		<message>
+			<source>Change Password</source>
+			<translation>Wachtwoord veranderen</translation>
+		</message>
+		<message>
+			<source>Old Password</source>
+			<translation>Huidig wachtwoord</translation>
+		</message>
+		<message>
+			<source>New Password</source>
+			<translation>Nieuw wachtwoord</translation>
+		</message>
+		<message>
+			<source>The passwords you have entered do not match.</source>
+			<translation>De wachtwoorden die je hebt ingevoerd komen niet overeen.</translation>
+		</message>
+		<message>
+			<source>Password changed.</source>
+			<translation>Wachtwoord veranderd.</translation>
+		</message>
+		<message>
+			<source>The password you have entered is invalid.</source>
+			<translation>Het wachtwoord dat je hebt opgegeven is niet geldig.</translation>
+		</message>
+		<message>
+			<source>Retype</source>
+			<translation>Voer opnieuw in</translation>
+		</message>
+		<message>
+			<source>Invalid username or password.</source>
+			<translation>Ongeldige gebruikersnaam of wachtwoord.</translation>
+		</message>
+		<message>
+			<source>Not logged in.</source>
+			<translation>Niet ingelogd.</translation>
+		</message>		
+	</context>
+</language>
+

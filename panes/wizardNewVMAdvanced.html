@@ -57,18 +57,18 @@
 		</table>
 	</div>
 	
-	<span class='vboxTableLabel translate'>Hard drive</span>
+	<span class='vboxTableLabel translate'>Hard disk</span>
 	<div class='vboxOptions'>
 	
 		<table class='vboxOptions' id='newVMBootDiskTable' style='width:100%;'>
 			<tr>
-				<td style='padding:2px; padding-left: 14px'><label><input type="radio" class="vboxRadio" name="newVMDisk" value="none" onClick="newVMToggleNewDisk(true)" /> <span class='translate vboxEnablerListen'>Do not add a virtual hard drive</span></label></td>
+				<td style='padding:2px; padding-left: 14px'><label><input type="radio" class="vboxRadio" name="newVMDisk" value="none" onClick="newVMToggleNewDisk(true)" /> <span class='translate vboxEnablerListen'>Do not add a virtual hard disk</span></label></td>
 			</tr>		
 			<tr id='newVMHDTriggerBind' class='vboxEnablerTrigger'>
-				<td style='padding:2px; padding-left: 14px'><label><input type="radio" class="vboxRadio" name="newVMDisk" value="create" onClick="newVMToggleNewDisk(true)" checked='checked' /> <span class='translate vboxEnablerListen'>Create a virtual hard drive now</span></label></td>
+				<td style='padding:2px; padding-left: 14px'><label><input type="radio" class="vboxRadio" name="newVMDisk" value="create" onClick="newVMToggleNewDisk(true)" checked='checked' /> <span class='translate vboxEnablerListen'>Create a virtual hard disk now</span></label></td>
 			</tr>
 			<tr>
-				<td style='padding:2px; padding-left: 14px'><label><input type="radio" class="vboxRadio" name="newVMDisk" value="existing" onClick="newVMToggleNewDisk(false)" /> <span class='translate vboxEnablerListen'>Use an existing virtual hard drive file</span></label></td>
+				<td style='padding:2px; padding-left: 14px'><label><input type="radio" class="vboxRadio" name="newVMDisk" value="existing" onClick="newVMToggleNewDisk(false)" /> <span class='translate vboxEnablerListen'>Use an existing virtual hard disk file</span></label></td>
 			</tr>		
 			<tr>
 				<td style='padding-left: 24px; white-space: nowrap'>
@@ -93,17 +93,18 @@ $('#wizardNewVMStep1').find('table.vboxOSTypeOptions').find('span.translate').ht
 }).removeClass('translate');
 
 
-var wizardNewVMToolbar = new vboxToolbarSingle({
+var wizardNewVMToolbar = new vboxToolbarSingle({button: {
 	/* Add Attachment Button */
 	'name' : 'mselecthdbtn',
-	'label' : trans('Choose a virtual hard disk file...','UIMachineSettingsStorage'),
+	'label' : 'Choose a virtual hard disk file...',
+	'language_context': 'UIMachineSettingsStorage',
 	'icon' : 'select_file',
 	'click' : function () {
 		vboxMedia.actions.choose(null,'HardDisk',function(med){
 			if(med) vmNewFillExistingDisks(med.base);
 		});
 	}
-});
+}});
 wizardNewVMToolbar.renderTo('newVMDiskVMM');		
 
 /* Toggle new / existing */
@@ -192,7 +193,7 @@ function newVMUpdateOS(ostype) {
 
 	$('#wizardNewVMSize').slider('value',ostype.recommendedRAM);	
 	$('#newVMSizeLabel').html(trans('The recommended memory size is <b>%1</b> MB.','UIWizardNewVMPage3').replace('%1',ostype.recommendedRAM));
-	$('#newVMHDSizeLabel').html(trans('<p>If you wish you can add a virtual hard drive to the new machine. You can either create a new hard drive file or select one from the list or from another location using the folder icon.</p><p>If you need a more complex storage set-up you can skip this step and make the changes to the machine settings once the machine is created.</p><p>The recommended size of the hard drive is <b>%1</b>.</p>','UIWizardNewVMPage4').replace('%1',vboxMbytesConvert(ostype.recommendedHDD)));
+	$('#newVMHDSizeLabel').html(trans('<p>If you wish you can add a virtual hard disk to the new machine. You can either create a new hard disk file or select one from the list or from another location using the folder icon.</p><p>If you need a more complex storage set-up you can skip this step and make the changes to the machine settings once the machine is created.</p><p>The recommended size of the hard disk is <b>%1</b>.</p>','UIWizardNewVMPage4').replace('%1',vboxMbytesConvert(ostype.recommendedHDD)));
 	
 }
 

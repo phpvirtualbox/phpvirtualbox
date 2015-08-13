@@ -117,20 +117,26 @@ var vboxChooser = {
 		
 			// Group menu
 			case 'group':
-				vboxChooser._vmGroupContextMenuObj = new vboxMenu(vboxChooser._anchorid+'vmgroups',null,menuitems);
+				vboxChooser._vmGroupContextMenuObj = new vboxMenu({'name': vboxChooser._anchorid+'vmgroups',
+				                                                   'menuItems': menuitems,
+				                                                   'language_context': 'UIActionPool'});
 				vboxChooser._vmGroupContextMenuObj.update();
 				break;
 				
 			// VM Menu
 			case 'vm':
-				vboxChooser._vmContextMenuObj = new vboxMenu(vboxChooser._anchorid+'vms',null,menuitems);
+				vboxChooser._vmContextMenuObj = new vboxMenu({'name': vboxChooser._anchorid+'vms',
+				                                              'menuItems': menuitems,
+				                                              'language_context': 'UIActionPool'});
 				vboxChooser._vmContextMenuObj.update();
 				break;
 				
 			// Main list menu
 			case 'anchor':
 
-				var vboxChooserPaneMenu = new vboxMenu(vboxChooser._anchorid+'Pane',null,menuitems);			
+				var vboxChooserPaneMenu = new vboxMenu({'name': vboxChooser._anchorid+'Pane',
+				                                        'menuItems': menuitems,
+				                                        'language_context': 'UIActionPool'});			
 				$('#'+vboxChooser._anchorid).parent().contextMenu({
 				  		menu: vboxChooserPaneMenu.menuId()
 				  	},

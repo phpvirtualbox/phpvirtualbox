@@ -16,21 +16,21 @@
  */
 
 // Top menu
-var vboxTopMenuBar = new vboxMenuBar('vboxTop');
+var vboxTopMenuBar = new vboxMenuBar({name: 'vboxTop', language_context: 'UIActionPool'});
 
 var menu = {
 	'name':'vboxTopFile',
-	'label':trans('File','UIActionPool'),
+	'label': 'File',
 	'menu':[
         {
 			'name':'fileVMM',
-			'label':trans('Virtual Media Manager...','UIActionPool'),
+			'label':'Virtual Media Manager...',
 			'icon':'diskimage',
 			'click':function(){vboxVMMDialog();}
         },
         {
 			'name':'fileImport',
-			'label':trans('Import Appliance...','UIActionPool'),
+			'label':'Import Appliance...',
 			'icon':'import',
 			'click':function(){
 				
@@ -40,13 +40,13 @@ var menu = {
         },
         {
 			'name':'fileExport',
-			'label':trans('Export Appliance...','UIActionPool'),
+			'label':'Export Appliance...',
 			'icon':'export',
 			'click':function(){new vboxWizardExportApplianceDialog().run();}
         },
         {
 			'name':'filePrefs',
-			'label':trans('Preferences...','UIActionPool'),
+			'label':'Preferences...',
 			'icon':'global_settings',
 			'click':function(){vboxGlobalPrefsDialog();},
 			'separator':true
@@ -58,7 +58,8 @@ if($('#vboxPane').data('vboxSession').user) {
 	if ( $('#vboxPane').data('vboxConfig').authCapabilities.canChangePassword )
 		menu['menu'][menu['menu'].length] = {
 			'name' : 'fileChangePW',
-			'label' : trans('Change Password','UIUsers'),
+			'label' : 'Change Password',
+			'language_context': 'UIUsers',
 			'icon' : 'register',
 			'click': function() {
 				var l = new vboxLoader();
@@ -113,7 +114,7 @@ if($('#vboxPane').data('vboxSession').user) {
 		menu['menu'][menu['menu'].length] = {
 				'name' : 'fileLogout',
 				// Pre-translated title to append username
-				'label' : trans('Log out - %1','UIActionPool').replace('%1',$('#vboxPane').data('vboxSession').user),
+				'label' : trans('Log out - %1','VBoxSelectorWnd').replace('%1',$('#vboxPane').data('vboxSession').user),
 				'icon' : 'exit',
 				'click': function() {
 					
@@ -170,62 +171,63 @@ vboxTopMenuBar.addMenu(menu);
 //VM List Context menu for each VM
 var sChildren = [];
 for(var i = 0; i < vboxVMActions.stop_actions.length; i++) {
-	sChildren[sChildren.length] = $.extend({},vboxVMActions[vboxVMActions.stop_actions[i]],{'name':vboxVMActions.stop_actions[i],'iconStringDisabled':'_disabled'});
+	sChildren[sChildren.length] = vboxVMActions[vboxVMActions.stop_actions[i]];
 }
 
 
 vboxTopMenuBar.addMenu({
-	'name':'vboxTopMachine',
-	'label':trans('Machine','UIActionPool'),
+	'name': 'vboxTopMachine',
+	'label': 'Machine',
 	'enabled' : function(chooser) {
 		return (!chooser || (chooser.selectionMode != vboxSelectionModeSingleGroup));
 	},
 	'menu':[
-	    $.extend({},vboxVMActions['new'],{'name':'new'}),
-	    $.extend({},vboxVMActions['add'],{'name':'add'}),
-	    $.extend({},vboxVMActions['settings'],{'name':'settings'}),
-	    $.extend({},vboxVMActions['clone'],{'name':'clone'}),
-	    $.extend({},vboxVMActions['remove'],{'name':'remove'}),
-	    $.extend({},vboxVMActions['group'],{'name':'group'}),
-	    $.extend({},vboxVMActions['start'],{'name':'start','separator':true}),
-	    $.extend({},vboxVMActions['pause'],{'name':'pause'}),
-	    $.extend({},vboxVMActions['reset'],{'name':'reset'}),
-	    $.extend({},vboxVMActions['stop'],{'name':'stop','children':sChildren}),
-	    $.extend({},vboxVMActions['discard'],{'name':'discard','separator':true}),
-	    $.extend({},vboxVMActions['logs'],{'name':'logs'}),
-	    $.extend({},vboxVMActions['refresh'],{'name':'refresh'})
+	    vboxVMActions['new'],
+	    vboxVMActions['add'],
+	    vboxVMActions['settings'],
+	    vboxVMActions['clone'],
+	    vboxVMActions['remove'],
+	    vboxVMActions['group'],
+	    $.extend({},vboxVMActions['start'],{'separator':true}),
+	    vboxVMActions['pause'],
+	    vboxVMActions['reset'],
+	    $.extend({},vboxVMActions['stop'],{'children':sChildren}),
+	    $.extend({},vboxVMActions['discard'],{'separator':true}),
+	    vboxVMActions['logs'],
+	    vboxVMActions['refresh'],
 	]
 });
 
 		
 vboxTopMenuBar.addMenu({
 	'name':'vboxTopGroup',
-	'label':trans('Group','UIActionPool'),
+	'label':'Group',
 	'enabled' : function(chooser) {
 		return (chooser && (chooser.selectionMode == vboxSelectionModeSingleGroup));
 	},
 	'menu':[
-    	$.extend({}, vboxVMGroupActions['newmachine'], {name:'newmachine'}),
-    	$.extend({}, vboxVMGroupActions['addmachine'], {name:'addmachine'}),
-    	$.extend({}, vboxVMGroupActions['rename'], {name:'rename',separator:true}),
-    	$.extend({}, vboxVMGroupActions['ungroup'], {name:'ungroup'}),
+    	vboxVMGroupActions['newmachine'],
+    	vboxVMGroupActions['addmachine'],
+    	$.extend({}, vboxVMGroupActions['rename'], {separator:true}),
+    	vboxVMGroupActions['ungroup'],
     	$.extend({},vboxVMActions['start'],{'name':'start','separator' : true}),
-        $.extend({},vboxVMActions['pause'],{'name':'pause'}),
-        $.extend({},vboxVMActions['reset'],{'name':'reset'}),
-    	$.extend({},vboxVMActions['stop'],{'name':'stop','children':sChildren}),
-    	$.extend({},vboxVMActions['discard'],{'name':'discard','separator' : true}),
-    	$.extend({},vboxVMActions['refresh'],{'name':'refresh'}),
-    	$.extend({}, vboxVMGroupActions['sort'], {name:'sort',separator:true})
+        vboxVMActions['pause'],
+        vboxVMActions['reset'],
+    	$.extend({},vboxVMActions['stop'],{'children':sChildren}),
+    	$.extend({},vboxVMActions['discard'],{'separator' : true}),
+    	vboxVMActions['refresh'],
+    	$.extend({}, vboxVMGroupActions['sort'], {separator:true})
 	]
 });
 
 vboxTopMenuBar.addMenu({
 	'name':'vboxTopHelp',
-	'label':trans('Help','UIHelpButton'),
+	'label': 'Help',
+	'language_context': 'UIHelpButton',
 	'menu':[
         {
 			'name':'helpvbox',
-			'label':trans('VirtualBox User Manual','UIActionPool'),
+			'label':'VirtualBox User Manual',
 			'icon':'site',
 			'click':function(){
 				window.open('http://www.virtualbox.org/manual/','manual');        	
@@ -234,7 +236,7 @@ vboxTopMenuBar.addMenu({
         
         {
 			'name':'helpAbout',
-			'label':trans('About','UIActionPool'),
+			'label':'About',
 			'icon':'help',
 			'click':function(){
         	

@@ -82,11 +82,6 @@
 						onClick="vboxSnapshotBrowseFolder(this);" />
 		</td>
 	</tr>
-	<tr class='vboxRunningEnabled'>
-		<th><span class='translate'>Removable Media:</span></th>
-		<td><label><input type='checkbox' class='vboxCheckbox' name='vboxSettingsGeneralRemovableMedia' style='width: auto'/>
-		<span class='translate'>Remember Runtime Changes</span></label></td>
-	</tr>
 </table>
 </div>
 
@@ -166,7 +161,7 @@ if($('#vboxPane').data('vboxConfig').vboxAutostartConfig) {
 	$('#vboxSettingsTabGeneralBasic .vboxAutostartConfig').empty().remove();
 }
 
-$('#vboxSettingsTabGeneralEncryption').find('option').html(function(i,h){ return trans(h, 'cipher type')});
+$('#vboxSettingsTabGeneralEncryption').find('option').html(function(i,h){ return trans(h, 'UIMachineSettingsGeneral', 'cipher type')});
 
 /* Browse for snapshot folder */
 function vboxSnapshotBrowseFolder(btn) {
@@ -278,7 +273,6 @@ $('#vboxSettingsDialog').on('dataLoaded', function(){
 	document.forms['frmVboxSettings'].vboxSettingsGeneralOSType.value = $('#vboxSettingsDialog').data('vboxMachineData').OSTypeId;
 	$(document.forms['frmVboxSettings'].vboxSettingsGeneralOSType).change();
 	document.forms['frmVboxSettings'].vboxSettingsGeneralSnapshotFolder.value = $('#vboxSettingsDialog').data('vboxMachineData').snapshotFolder;
-	document.forms['frmVboxSettings'].vboxSettingsGeneralRemovableMedia.checked = ($('#vboxSettingsDialog').data('vboxMachineData').GUI.SaveMountedAtRuntime == 'yes');
 	document.forms['frmVboxSettings'].vboxSettingsGeneralDescription.innerHTML = $('#vboxSettingsDialog').data('vboxMachineData').description;
 
 	/* Advanced config options */
@@ -401,7 +395,6 @@ $('#vboxSettingsDialog').on('dataLoaded', function(){
 		
 	$('#vboxSettingsDialog').data('vboxMachineData').OSTypeId = document.forms['frmVboxSettings'].vboxSettingsGeneralOSType.value;
 	$('#vboxSettingsDialog').data('vboxMachineData').snapshotFolder = document.forms['frmVboxSettings'].vboxSettingsGeneralSnapshotFolder.value;
-	$('#vboxSettingsDialog').data('vboxMachineData').GUI.SaveMountedAtRuntime = (document.forms['frmVboxSettings'].vboxSettingsGeneralRemovableMedia.checked ? 'yes' : 'no');
 	$('#vboxSettingsDialog').data('vboxMachineData').description = 	$(document.forms['frmVboxSettings'].vboxSettingsGeneralDescription).val();
 	
 	if($('#vboxPane').data('vboxConfig').enableAdvancedConfig) {
@@ -439,20 +432,20 @@ function vboxSettingsGeneralValidate() {
     if(!encSettings.enabled && $(document.forms['frmVboxSettings'].vboxSettingsGeneralEncryptionEnable).prop('checked')) {
         
         if(!$(document.forms['frmVboxSettings'].vboxSettingsTabGeneralEncryptionCipher).val()) {
-            vboxAlert("Encryption cipher type not specified.");
+            vboxAlert(trans("Encryption cipher type not specified.", 'UIMachineSettingsGeneral'));
             return false;
         } else if(!$(document.forms['frmVboxSettings'].vboxGeneralEncryptionPassword).val()) {
-            vboxAlert("Encryption password empty.");
+            vboxAlert(trans("Encryption password empty.", 'UIMachineSettingsGeneral'));
             return false;
         } else if($(document.forms['frmVboxSettings'].vboxGeneralEncryptionPassword).val() != $(document.forms['frmVboxSettings'].vboxGeneralEncryptionPassword2).val()) {
-            vboxAlert("Encryption passwords do not match.");
+            vboxAlert(trans("Encryption passwords do not match.", 'UIMachineSettingsGeneral'));
             return false;
         }
         
     // If enabled and poasswords don't match
     } else if($(document.forms['frmVboxSettings'].vboxSettingsGeneralEncryptionEnable).prop('checked')) {
         if($(document.forms['frmVboxSettings'].vboxGeneralEncryptionPassword).val() != $(document.forms['frmVboxSettings'].vboxGeneralEncryptionPassword2).val()) {
-            vboxAlert("Encryption passwords do not match.");
+            vboxAlert(trans("Encryption passwords do not match.", 'UIMachineSettingsGeneral'));
             return false;
         }
     }
