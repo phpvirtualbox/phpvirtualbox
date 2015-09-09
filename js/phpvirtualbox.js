@@ -1602,7 +1602,8 @@ var vboxVMActions = {
 		},
 		/* Start a single VM */
 		_startVM: function(vm) {
-		    
+
+		    var reqPromise = $.Deferred();
             $.when(vm,vboxAjaxRequest('machineSetState',{'vm':vm.id,'state':'powerUp'}))
             
                 // VM started and / or progress op returned
@@ -1613,10 +1614,15 @@ var vboxVMActions = {
                         if(vboxVMStates.isSaved(evm)) icon = 'progress_state_restore_90px.png';
                         else icon = 'progress_start_90px.png';
                         
+                        reqPromise.resolve();
+
                         vboxProgress({'progress':d.responseData.progress,'persist':d.persist}, function(){return;},
-                                icon, trans('Start selected virtual machines','UIActionPool'),evm.name);
+                                icon, trans('Start selected virtual machines','UIActionPool'), evm.name);
+                    } else {
+                        reqPromise.reject();
                     }
             });
+            return reqPromise;
 
 		},
 		click: function (btn) {
@@ -1689,10 +1695,11 @@ var vboxVMActions = {
 					    // Save the fact that we started this VM
 					    vboxVMActions.start._startedVMs[vm.id] = true;
 					    
-					    vboxVMActions.start._startVM(vm);
+					    $.when(vboxVMActions.start._startVM(vm)).done(function() {
+					        // Loop
+					        runVMsToStart(vms);
+					    });
 					    
-					    // Loop
-						runVMsToStart(vms);
 						
 					}));
 				})(vmsToStart);
@@ -3132,7 +3139,7 @@ function vboxWizard() {
 function vboxToolbar(options) {
 
 	var self = this;
-	this.buttons = options.buttons;
+	this.buttons = options.buttons ? options.buttons : [];
 	this.size = options.size ? options.size : 22;
 	this.addHeight = 24;
 	this.lastItem = null;

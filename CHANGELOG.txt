@@ -1,4 +1,19 @@
 -------------------------------------
+    5.0-3   2015-09-09
+-------------------------------------
+Fixed file browser header content type causing blank file / folder
+contents
+https://sourceforge.net/p/phpvirtualbox/bugs/49/
+
+Fixed selection highlighting in file / folder browser
+
+Fixed all VMs in a group starting on the same RDP port
+https://sourceforge.net/p/phpvirtualbox/bugs/46/
+
+Fixed missing en.xml language file
+https://sourceforge.net/p/phpvirtualbox/bugs/45/
+
+-------------------------------------
     5.0-2   2015-08-12
 -------------------------------------
 Translation fixes
