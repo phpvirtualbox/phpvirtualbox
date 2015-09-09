@@ -532,9 +532,10 @@ if(jQuery) (function($){
 				    return $('<li/>').addClass("folder")
 				        .addClass(data.expanded ? 'expanded' : 'collapsed')
 				        .addClass('vboxListItem')
-				        .addClass(data.selected ? 'vboxListItemSelected' : '')
 				        .append(
-				                $('<a/>').attr({'href':'#','name':data.path,'rel':data.path}).text(data.name)
+				                $('<a/>').attr({'href':'#','name':data.path,'rel':data.path})
+				                    .addClass(data.selected ? 'vboxListItemSelected' : '')
+				                    .text(data.name)
 				        );
 				}
 				
@@ -552,7 +553,7 @@ if(jQuery) (function($){
 				        
 				        return a.type == 'folder' ? 1 : -1
 				    });
-				    
+
 				    var elms = [];
 				    for(var i = 0; i < data.length; i++) {
 				        

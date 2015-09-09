@@ -1,6 +1,14 @@
 -------------------------------------
     5.0-3
 -------------------------------------
+Fixed file browser header content type causing blank file / folder
+contents
+https://sourceforge.net/p/phpvirtualbox/bugs/49/
+
+Fixed selection highlighting in file / folder browser
+
+Fixed all VMs in a group starting on the same RDP port
+https://sourceforge.net/p/phpvirtualbox/bugs/46/
 
 -------------------------------------
     5.0-2   2015-08-12
