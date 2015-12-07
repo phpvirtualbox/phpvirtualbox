@@ -1,6 +1,18 @@
 -------------------------------------
     5.0-4
 -------------------------------------
+Fixed bug in file / folder browser when $browserRestrictFolders is
+set.
+https://sourceforge.net/p/phpvirtualbox/bugs/50/
+
+Fixed bug in host network interface sorting.
+https://sourceforge.net/p/phpvirtualbox/bugs/36/
+
+Fixed bug where phpVirtualBox installations on the same server may
+share session cookies in certain PHP configurations.
+
+Fixed bug where noPreview=true; was ignored in settings.
+https://sourceforge.net/p/phpvirtualbox/bugs/38/
 
 -------------------------------------
     5.0-3   2015-09-09

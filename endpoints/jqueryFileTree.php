@@ -172,17 +172,24 @@ if($request['dir'] == DSEP && count($allowed_folders)) {
     			 */
     			if((strtoupper($request['dir']) != strtoupper($f)) && strpos(strtoupper($request['dir']),strtoupper($f)) === 0) {
 
-
     				// List entries in this folder
-    				$path = explode(DSEP,substr($request['dir'],strlen($f)));
+    				$path = explode(DSEP, substr($request['dir'],strlen($f)));
 
-    				// Folder entry
-    				array_push($returnData, getdir($f, $request['dirsOnly'], $path));
+    				if($path[0] == '') {
+    				    array_shift($path);
+    				}
+
+    			    $folder_entry = folder_entry($f, true);
+
+    			    $folder_entry['children'] = getdir($f, $request['dirsOnly'], $path);
+    			    $folder_entry['expanded'] = true;
+
+    			    array_push($returnData, $folder_entry);
 
     			} else {
-
     				array_push($returnData, folder_entry($f,true));
     			}
+
     		}
 
     	/* Just get full path */

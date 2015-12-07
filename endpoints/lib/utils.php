@@ -1,13 +1,13 @@
 <?php
 /**
  * Common PHP utilities.
- * 
+ *
  * @author Ian Moore (imoore76 at yahoo dot com)
  * @copyright Copyright (C) 2010-2015 Ian Moore (imoore76 at yahoo dot com)
  * @version $Id: utils.php 592 2015-04-12 19:53:44Z imoore76 $
  * @see phpVBoxConfigClass
  * @package phpVirtualBox
- * 
+ *
 */
 
 require_once(dirname(__FILE__).'/config.php');
@@ -19,15 +19,15 @@ require_once(dirname(__FILE__).'/config.php');
  * @uses $_SESSION
  */
 function session_init($keepopen = false) {
-	
+
 	$settings = new phpVBoxConfigClass();
-	
+
 	// Sessions provided by auth module?
 	if(@$settings->auth->capabilities['sessionStart']) {
 		call_user_func(array($settings->auth, $settings->auth->capabilities['sessionStart']), $keepopen);
 		return;
 	}
-	
+
 	// No session support? No login...
 	if(@$settings->noAuth || !function_exists('session_start')) {
 		global $_SESSION;
@@ -37,29 +37,29 @@ function session_init($keepopen = false) {
 		return;
 	}
 
-	// start session
-	session_start();
-	
-	// Session is auto-started by PHP?
+	// Session not is auto-started by PHP
 	if(!ini_get('session.auto_start')) {
-	
+
 		ini_set('session.use_trans_sid', 0);
 		ini_set('session.use_only_cookies', 1);
-		
+
 		// Session path
 		if(isset($settings->sessionSavePath)) {
 			session_save_path($settings->sessionSavePath);
 		}
-	
-		session_name((isset($settings->session_name) ? $settings->session_name : md5('phpvbx'.$_SERVER['DOCUMENT_ROOT'].$_SERVER['HTTP_USER_AGENT'])));
+
+		if(isset($settings->session_name)) {
+		    $session_name = $settings->session_name;
+		} else {
+		    $session_name = md5($_SERVER['DOCUMENT_ROOT'].$_SERVER['HTTP_USER_AGENT'].dirname(__FILE__));
+		}
+		session_name($session_name);
 		session_start();
 	}
-	
-	
+
 	if(!$keepopen)
 		session_write_close();
-	
-	
+
 }
 
 
@@ -69,7 +69,7 @@ function session_init($keepopen = false) {
  * @return array
  */
 function clean_request() {
-	
+
 	if($_SERVER['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest') {
 	   $json = json_decode(file_get_contents('php://input'), true);
 	   if(!is_array($json))

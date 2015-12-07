@@ -1,7 +1,6 @@
 /**
  * @fileOverview Common classes and objects used
  * @author Ian Moore (imoore76 at yahoo dot com)
- * @version $Id: phpvirtualbox.js 599 2015-07-27 10:40:37Z imoore76 $
  * @copyright Copyright (C) 2010-2015 Ian Moore (imoore76 at yahoo dot com)
  */
 
@@ -166,7 +165,9 @@ var vboxHostDetailsSections = {
 			
 			var netRows = [];
 			
-			d['networkInterfaces'].sort(strnatcasecmp);
+			d['networkInterfaces'].sort(function(a,b){
+			    return strnatcasecmp(a.name, b.name);
+			});
 			
 			for(var i = 0; i < d['networkInterfaces'].length; i++) {		
 				
@@ -338,7 +339,9 @@ var vboxVMDetailsSections = {
 				   if(d['HWVirtExProperties'].Enabled) acList[acList.length] = trans('VT-x/AMD-V');
 				   if(d['HWVirtExProperties'].NestedPaging) acList[acList.length] = trans('Nested Paging');
 				   if(d['CpuProperties']['PAE']) acList[acList.length] = trans('PAE/NX');
-				   
+				   if(d['EffectiveParavirtProvider'] != 'None')
+				       acList[acList.length] = trans(d['EffectiveParavirtProvider'] + ' Paravirtualization');
+
 				   if($('#vboxPane').data('vboxConfig').enableAdvancedConfig) {
 					   if(d['HWVirtExProperties'].LargePages) acList[acList.length] = trans('Large Pages');
 					   if(d['HWVirtExProperties'].UnrestrictedExecution) acList[acList.length] = trans('VT-x unrestricted execution');
@@ -3139,8 +3142,8 @@ function vboxWizard() {
 function vboxToolbar(options) {
 
 	var self = this;
-	this.buttons = options.buttons ? options.buttons : [];
-	this.size = options.size ? options.size : 22;
+	this.buttons = options.buttons || [];
+	this.size = options.size || 22;
 	this.addHeight = 24;
 	this.lastItem = null;
 	this.buttonStyle = options.buttonStyle;
@@ -3394,10 +3397,11 @@ function vboxToolbar(options) {
 */
 function vboxToolbarSingle(options) {
 
+    var self = this;
 	this.parentClass = vboxToolbarSmall;
-	options.buttons = [options.button]
-	renderTo = options.renderTo
-	options.renderTo = undefined
+	options.buttons = [options.button];
+	renderTo = options.renderTo;
+	options.renderTo = undefined;
 	this.parentClass(options);
 	this._buttonElement = this.buttonElement; /* copy orig */
 
@@ -3743,7 +3747,7 @@ function vboxButtonMediaMenu(type,callback,mediumPath) {
 	 * @return {Object} jQuery object containing button element
 	 */
 	this.getButtonElm = function () {
-		return this._buttonElement;
+		return self._buttonElement;
 	};
 
 	/**

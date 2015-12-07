@@ -4234,6 +4234,7 @@ class vboxconnector {
 				'audioDriver' => (string)$m->audioAdapter->audioDriver,
 				),
 			'RTCUseUTC' => $m->RTCUseUTC,
+		    'EffectiveParavirtProvider' => (string)$m->getEffectiveParavirtProvider(),
 			'HWVirtExProperties' => array(
 				'Enabled' => $m->getHWVirtExProperty('Enabled'),
 				'NestedPaging' => $m->getHWVirtExProperty('NestedPaging'),

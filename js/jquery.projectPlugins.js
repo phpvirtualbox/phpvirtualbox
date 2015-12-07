@@ -550,8 +550,7 @@ if(jQuery) (function($){
 				    data.sort(function(a,b){
 				        if(a.type == b.type)
 				            return strnatcasecmp(a.path, b.path);
-				        
-				        return a.type == 'folder' ? 1 : -1
+				        return a.type == 'folder' ? -1 : 1
 				    });
 
 				    var elms = [];
