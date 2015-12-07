@@ -1,0 +1,10 @@
+.buildpath
+.gitignore
+.git
+.project
+
+.DS_Store
+.SD_Store?
+.swp
+
+config.php

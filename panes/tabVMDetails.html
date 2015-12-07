@@ -530,20 +530,24 @@ function __vboxDisplayDetailsData(data, multiSelect, targetDiv, skipTable) {
 	// Multi-select details table sections
 	////////////////////////////////////////
 	if(!skipTable) {
-		
+
 		var tbl = $('<table />').attr({'id':'vboxDetailsGeneralTable-'+data.id,'class':'vboxInvisible vboxVMDetailsBox-vm-'+data.id,'style':'width: 100%;'}).append(
 	
-			$('<tr />').attr({'style':'vertical-align: top'}).append(
-	
-				$('<td />').css({'width':'100%'})
-					.append(__vboxCreateDetailsSection(data,'general'))
-					.append(__vboxCreateDetailsSection(data,'system'))
+			$('<tr />').attr({'style':'vertical-align: top'})
 			
-			).append(
-					
-				$('<td />')
-					.append(__vboxCreateDetailsSection(data,'preview'))
-			)
+    			.append(
+    	
+    				$('<td />').css({'width':'100%'})
+    					.append(__vboxCreateDetailsSection(data,'general'))
+    					.append(__vboxCreateDetailsSection(data,'system'))
+    			
+    			).append(
+    
+			        vboxVMDetailsSections['preview'].condition() ?
+        				$('<td />')
+        					.append(__vboxCreateDetailsSection(data,'preview')) :
+        				null
+    			)
 			
 		).data({'vmid':data.id});
 		
