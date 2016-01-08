@@ -313,7 +313,7 @@ try {
 			/*
 			 * Call to vboxconnector
 			 */
-			$vbox->$request['fn']($request['params'],array(&$response));
+			$vbox->{$request['fn']}($request['params'],array(&$response));
 
 
 			/*
