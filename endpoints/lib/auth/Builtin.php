@@ -167,7 +167,8 @@ class phpvbAuthBuiltin implements phpvbAuth {
 		global $_SESSION;
 
 		// Must be an admin
-		if(!$_SESSION['admin']) break;
+		if(!$_SESSION['admin'])
+		    return;
 
 		// Use main / auth server
 		$vbox = new vboxconnector(true);
@@ -175,7 +176,7 @@ class phpvbAuthBuiltin implements phpvbAuth {
 
 		// See if it exists
 		if(!$skipExistCheck && $vbox->vbox->getExtraData('phpvb/users/'.$vboxRequest['u'].'/pass'))
-			break;
+			return;
 
 		if($vboxRequest['p'])
 			$vbox->vbox->setExtraData('phpvb/users/'.$vboxRequest['u'].'/pass', hash('sha512', $vboxRequest['p']));
