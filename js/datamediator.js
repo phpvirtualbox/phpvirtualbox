@@ -93,7 +93,7 @@ var vboxVMDataMediator = {
 			for(var i = 0; i < d.responseData.length; i++) {
 				
 				// Enforce VM ownership
-			    if($('#vboxPane').data('vboxConfig').enforceVMOwnership && !$('#vboxPane').data('vboxSession').admin && d.vmlist[i].owner != $('#vboxPane').data('vboxSession').user) {
+			    if($('#vboxPane').data('vboxConfig').enforceVMOwnership && !$('#vboxPane').data('vboxSession').admin && d.responseData[i].owner != $('#vboxPane').data('vboxSession').user) {
 			    	continue;
 			    }
 
