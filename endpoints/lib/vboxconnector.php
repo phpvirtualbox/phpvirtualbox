@@ -3749,15 +3749,15 @@ class vboxconnector {
 			if ( @isset($this->settings->vmQuotaPerUser) && @$this->settings->vmQuotaPerUser > 0 && !$_SESSION['admin'] )
 			{
 				$newresp = array('data' => array());
-				$vmlist = $this->vboxGetMachines(array(), $newresp);
-				if ( count($newresp['data']['vmlist']) >= $this->settings->vmQuotaPerUser )
+				$this->vboxGetMachines(array(), array(&$newresp));
+				if ( count($newresp['data']['responseData']) >= $this->settings->vmQuotaPerUser )
 				{
 					// we're over quota!
 					// delete the disk we just created
 					if ( isset($args['disk']) )
 					{
 						$this->mediumRemove(array(
-								'id' => $args['disk'],
+								'medium' => $args['disk'],
 								'type' => 'HardDisk',
 								'delete' => true
 							), $newresp);
