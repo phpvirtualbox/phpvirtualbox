@@ -218,7 +218,21 @@ LPT support may or may not work for you.
 #var $eventListenerTimeout = 20;
 
 /* END SETTINGS  */
+  public function phpVBoxConfig() {    
+    if($this->authLib == 'VBoxAuthSimple') {
+      session_start();
+      $this->username = $this->getUsername();
+      $this->password = $this->getPassword();
+    }
+  }
 
+  public function getUsername() {
+    return $_SESSION['user'];
+  }
+
+  public function getPassword() {
+    return $_SESSION['password'];
+  }
 
 }
 
