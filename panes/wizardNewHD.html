@@ -269,7 +269,7 @@ $('#wizardNewHDStep1').on('show',function(e,wiz){
 		$('#wizardNewHDSize').slider('value',wiz.suggested.size);
 	}
 	
-	if(wiz.suggested.path){
+	if(wiz.suggested.path && wiz.suggested.name){
 		if($('#vboxPane').data('vboxConfig').enforceVMOwnership==true){
 			var nameIndex = wiz.suggested.path.lastIndexOf(wiz.suggested.name+$('#vboxPane').data('vboxConfig').DSEP);
 			var path = wiz.suggested.path.substr(0,nameIndex);
