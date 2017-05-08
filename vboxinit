@@ -1,99 +1,93 @@
-#!/bin/bash
+#!/bin/sh
+
+# $FreeBSD: www/phpvirtualbox/files/vboxinit.in $
 #
-#  vboxinit: auto start sessions when booting and save
-#                sessions when host is stopped
+# PROVIDE: vboxinit
+# REQUIRE: LOGIN FILESYSTEMS vboxnet sshd
+# KEYWORD: shutdown
 #
-#  Based on vboxtool. Only tested in Debian.
+# Add the following line to /etc/rc.conf[.local] to enable vboxinit
 #
-# Debian install:
-# copy this script to /etc/init.d
-# run:
-# 	chmod u+rx /etc/init.d/vboxinit
-# 	update-rc.d vboxinit defaults
+# vboxinit_enable (bool):	Set to "NO" by default.
+#				Set it to "YES" to enable vboxinit.
+# vboxinit_user (str):		Default user account to run with.
+# 				(default: vboxusers)
+# vboxinit_home (str):		Default home directory to run with.
+#				(default: home of user ${vboxinit_user}
+# vboxinit_stop (str):		Default stop cmd for VBoxManage controlvm.
+#				(default: savestate)
+# vboxinit_start_delay (int):	Default startup delay in seconds.
+#				(default: 0)
+# vboxinit_stop_delay (int):	Default shutdown delay in seconds.
+#				(default: 0)
 
-### BEGIN INIT INFO
-# Provides:          vboxinit
-# Required-Start:    vboxdrv $local_fs
-# Required-Stop:     vboxdrv $local_fs
-# Default-Start:     2 3 4 5
-# Default-Stop:      0 1 6
-# Description:       Controls VirtualBox sessions
-### END INIT INFO
+. /etc/rc.subr
 
-. /etc/default/virtualbox
+name="vboxinit"
+rcvar=vboxinit_enable
 
-# Enable/disable service
-if [ "${VBOXWEB_USER}" == "" ]; then
-	exit 0
-fi
+start_cmd="${name}_start"
+stop_cmd="${name}_stop"
+status_cmd="${name}_status"
+restart_cmd="${name}_restart"
 
-# Check for VirtualBox binary path
-if [ "$VBOX_BIN_PATH" != "" ]; then
-   PATH = "$PATH:$VBOX_BIN_PATH";
-fi
+vm_name()
+{
+	local UUID=$1
+	${su_command} "${command} showvminfo ${UUID} | /usr/bin/grep -m 1 '^Name:' | /usr/bin/sed 's/^Name:[ \t]*//'"
+}
 
-start()
+vboxinit_start()
 {
 	# Get all autostart machines
-	MACHINES=$($su_command "VBoxManage list vms | awk '{ print \$NF }' | sed -e 's/[{}]//g'")
-	for UUID in $MACHINES; do
-		STARTUP=$($su_command "VBoxManage getextradata $UUID 'pvbx/startupMode'" | awk '{ print $NF }')
+	MACHINES=$(${su_command} "${command} list vms | /usr/bin/awk '{ print \$NF }' | /usr/bin/sed -e 's/[{}]//g'")
+	for UUID in ${MACHINES}; do
+		STARTUP=$(${su_command} "${command} getextradata ${UUID} 'pvbx/startupMode'" | /usr/bin/awk '{ print $NF }')
 		if [ "${STARTUP}" == "auto" ]; then
-			VMNAME=$($su_command "VBoxManage showvminfo $UUID | sed -n '0,/^Name:/s/^Name:[ \t]*//p'")
-			echo "$0: starting machine ${VMNAME} ..."
-			$su_command "VBoxManage startvm $UUID --type headless" >>/var/log/vb.log
+			VMNAME=$(vm_name ${UUID})
+			echo "${name}: starting machine ${VMNAME} ..."
+			${su_command} "${command} startvm ${UUID} --type headless"
+			sleep ${vboxinit_start_delay}
 		fi
 	done
 }
 
-stop()
+vboxinit_stop()
 {
-	# vms are saved, instead of stopped.
-	MACHINES=$($su_command "VBoxManage list runningvms | awk '{ print \$NF }' | sed -e 's/[{}]//g'")
-	for UUID in $MACHINES; do
-		VMNAME=$($su_command "VBoxManage showvminfo $UUID | sed -n '0,/^Name:/s/^Name:[ \t]*//p'")
-		echo "$0: saving machine ${VMNAME} state ..."
-		$su_command "VBoxManage controlvm $UUID savestate" >>/var/log/vb.log
+	# Get all started machines
+	MACHINES=$(${su_command} "${command} list runningvms | /usr/bin/awk '{ print \$NF }' | /usr/bin/sed -e 's/[{}]//g'")
+	for UUID in ${MACHINES}; do
+		VMNAME=$(vm_name ${UUID})
+		echo "${name}: saving machine ${VMNAME} state ..."
+		${su_command} "${command} controlvm ${UUID} savestate"
+		sleep ${vboxinit_stop_delay}
 	done
-
 }
 
-status()
+vboxinit_status()
 {
-	$su_command "VBoxManage list runningvms"
+	${su_command} "${command} list runningvms"
 }
 
-restart()
+vboxinit_restart()
 {
-	stop
-	start
+	vboxinit_stop
+	vboxinit_start
 }
 
+load_rc_config $name
 
-# Implementation of user control, execute several commands as another (predefined) user,
-su_command="su - ${VBOXWEB_USER} -s /bin/bash -c"
+: ${vboxinit_enable="NO"}
+: ${vboxinit_user="vboxusers"}
+: ${vboxinit_home=$(/usr/sbin/pw usershow -7 -n "${vboxinit_user}" | /usr/bin/cut -d: -f6)}
+: ${vboxinit_stop="savestate"}
+: ${vboxinit_start_delay="0"}
+: ${vboxinit_stop_delay="0"}
+HOME=${vboxinit_home}
+USER=${vboxinit_user}
 
-#
-# Check for a command line option
-#
-case "$1" in
+command="/usr/local/bin/VBoxManage"
+su_command="/usr/bin/su -m ${vboxinit_user} -c"
 
-	start)
-		start
-		;;
-	stop)
-		stop
-  		;;
-	status)
-		status
-		;;
-	restart)
-		restart
-		;;
-	*)
-	    echo "Usage: $0 {start|stop|restart|status}"
-	    exit 1
-		;;
-esac
+run_rc_command "$1"
 
-exit 0
