@@ -3391,7 +3391,8 @@ class vboxconnector {
 		 * Processors
 		 */
 		for($i = 0; $i < $host->processorCount; $i++) {
-			$response['cpus'][$i] = $host->getProcessorDescription($i);
+			// TODO https://github.com/phpvirtualbox/phpvirtualbox/issues/53
+			$response['cpus'][$i] = $host->getProcessorDescription(0);
 		}
 
 		/*
