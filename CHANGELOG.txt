@@ -5,7 +5,7 @@ Long overdue post 5.0 support (5.2 at this stage)
 PHP 7.1 support thanks to @mikedld
 New Czech localization thanks to @p-bo
 MySQL autho module thanks to @tioigor96
-Various bugfixes thanks to @tschoening
+Various bugfixes thanks to @tschoening and @ashway83
 
 -------------------------------------
     5.0-5   2016-01-08
