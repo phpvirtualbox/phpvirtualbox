@@ -39,6 +39,7 @@
             v1_14: 16 -
             v1_15: 17 -
             v1_16: 18 -
+            v1_17: 19 -
             Future: 99999 -
             -->
       <xsd:simpleType name="SettingsVersion">
@@ -62,6 +63,7 @@
           <xsd:enumeration value="v1_14"/>
           <xsd:enumeration value="v1_15"/>
           <xsd:enumeration value="v1_16"/>
+          <xsd:enumeration value="v1_17"/>
           <xsd:enumeration value="Future"/>
         </xsd:restriction>
       </xsd:simpleType>
@@ -805,6 +807,7 @@
             VBoxTrayClient: 101 -
             Seamless: 1000 -
             Graphics: 1100 -
+            MonitorAttach: 1101 -
             All: 2147483646 -
             -->
       <xsd:simpleType name="AdditionsFacilityType">
@@ -816,6 +819,7 @@
           <xsd:enumeration value="VBoxTrayClient"/>
           <xsd:enumeration value="Seamless"/>
           <xsd:enumeration value="Graphics"/>
+          <xsd:enumeration value="MonitorAttach"/>
           <xsd:enumeration value="All"/>
         </xsd:restriction>
       </xsd:simpleType>
@@ -1570,11 +1574,13 @@
       <!-- enum: ScreenLayoutMode -
             Apply: 0 -
             Reset: 1 -
+            Attach: 2 -
             -->
       <xsd:simpleType name="ScreenLayoutMode">
         <xsd:restriction base="xsd:string">
           <xsd:enumeration value="Apply"/>
           <xsd:enumeration value="Reset"/>
+          <xsd:enumeration value="Attach"/>
         </xsd:restriction>
       </xsd:simpleType>
       <!-- enum: NetworkAttachmentType -
@@ -1958,7 +1964,10 @@
             OnHostNameResolutionConfigurationChange: 94 -
             OnSnapshotRestored: 95 -
             OnMediumConfigChanged: 96 -
-            Last: 97 -
+            OnAudioAdapterChanged: 97 -
+            OnProgressPercentageChanged: 98 -
+            OnProgressTaskCompleted: 99 -
+            Last: 100 -
             -->
       <xsd:simpleType name="VBoxEventType">
         <xsd:restriction base="xsd:string">
@@ -2034,6 +2043,9 @@
           <xsd:enumeration value="OnHostNameResolutionConfigurationChange"/>
           <xsd:enumeration value="OnSnapshotRestored"/>
           <xsd:enumeration value="OnMediumConfigChanged"/>
+          <xsd:enumeration value="OnAudioAdapterChanged"/>
+          <xsd:enumeration value="OnProgressPercentageChanged"/>
+          <xsd:enumeration value="OnProgressTaskCompleted"/>
           <xsd:enumeration value="Last"/>
         </xsd:restriction>
       </xsd:simpleType>
@@ -3409,6 +3421,21 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
+      <!-- method IVirtualBox::createUnattendedInstaller-->
+      <xsd:element name="IVirtualBox_createUnattendedInstaller">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IVirtualBox_createUnattendedInstallerResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
       <!-- method IVirtualBox::createMedium-->
       <xsd:element name="IVirtualBox_createMedium">
         <xsd:complexType>
@@ -4455,6 +4482,791 @@
         </xsd:complexType>
       </xsd:element>
       <xsd:element name="IVirtualSystemDescription_addDescriptionResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!--Interface IUnattended-->
+      <!-- read/write attribute IUnattended::isoPath-->
+      <xsd:element name="IUnattended_getIsoPath">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getIsoPathResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setIsoPath">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="isoPath" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setIsoPathResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::machine-->
+      <xsd:element name="IUnattended_getMachine">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getMachineResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setMachine">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="machine" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setMachineResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::user-->
+      <xsd:element name="IUnattended_getUser">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getUserResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setUser">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="user" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setUserResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::password-->
+      <xsd:element name="IUnattended_getPassword">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getPasswordResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setPassword">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="password" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setPasswordResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::fullUserName-->
+      <xsd:element name="IUnattended_getFullUserName">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getFullUserNameResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setFullUserName">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="fullUserName" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setFullUserNameResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::productKey-->
+      <xsd:element name="IUnattended_getProductKey">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getProductKeyResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setProductKey">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="productKey" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setProductKeyResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::additionsIsoPath-->
+      <xsd:element name="IUnattended_getAdditionsIsoPath">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getAdditionsIsoPathResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setAdditionsIsoPath">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="additionsIsoPath" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setAdditionsIsoPathResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::installGuestAdditions-->
+      <xsd:element name="IUnattended_getInstallGuestAdditions">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getInstallGuestAdditionsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:boolean"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setInstallGuestAdditions">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="installGuestAdditions" type="xsd:boolean"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setInstallGuestAdditionsResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::validationKitIsoPath-->
+      <xsd:element name="IUnattended_getValidationKitIsoPath">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getValidationKitIsoPathResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setValidationKitIsoPath">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="validationKitIsoPath" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setValidationKitIsoPathResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::installTestExecService-->
+      <xsd:element name="IUnattended_getInstallTestExecService">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getInstallTestExecServiceResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:boolean"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setInstallTestExecService">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="installTestExecService" type="xsd:boolean"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setInstallTestExecServiceResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::timeZone-->
+      <xsd:element name="IUnattended_getTimeZone">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getTimeZoneResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setTimeZone">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="timeZone" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setTimeZoneResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::locale-->
+      <xsd:element name="IUnattended_getLocale">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getLocaleResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setLocale">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="locale" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setLocaleResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::language-->
+      <xsd:element name="IUnattended_getLanguage">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getLanguageResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setLanguage">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="language" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setLanguageResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::country-->
+      <xsd:element name="IUnattended_getCountry">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getCountryResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setCountry">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="country" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setCountryResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::proxy-->
+      <xsd:element name="IUnattended_getProxy">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getProxyResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setProxy">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="proxy" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setProxyResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::packageSelectionAdjustments-->
+      <xsd:element name="IUnattended_getPackageSelectionAdjustments">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getPackageSelectionAdjustmentsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setPackageSelectionAdjustments">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="packageSelectionAdjustments" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setPackageSelectionAdjustmentsResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::hostname-->
+      <xsd:element name="IUnattended_getHostname">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getHostnameResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setHostname">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="hostname" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setHostnameResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::auxiliaryBasePath-->
+      <xsd:element name="IUnattended_getAuxiliaryBasePath">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getAuxiliaryBasePathResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setAuxiliaryBasePath">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="auxiliaryBasePath" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setAuxiliaryBasePathResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::imageIndex-->
+      <xsd:element name="IUnattended_getImageIndex">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getImageIndexResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:unsignedInt"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setImageIndex">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="imageIndex" type="xsd:unsignedInt"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setImageIndexResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::scriptTemplatePath-->
+      <xsd:element name="IUnattended_getScriptTemplatePath">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getScriptTemplatePathResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setScriptTemplatePath">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="scriptTemplatePath" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setScriptTemplatePathResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::postInstallScriptTemplatePath-->
+      <xsd:element name="IUnattended_getPostInstallScriptTemplatePath">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getPostInstallScriptTemplatePathResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setPostInstallScriptTemplatePath">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="postInstallScriptTemplatePath" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setPostInstallScriptTemplatePathResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::postInstallCommand-->
+      <xsd:element name="IUnattended_getPostInstallCommand">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getPostInstallCommandResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setPostInstallCommand">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="postInstallCommand" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setPostInstallCommandResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- read/write attribute IUnattended::extraInstallKernelParameters-->
+      <xsd:element name="IUnattended_getExtraInstallKernelParameters">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getExtraInstallKernelParametersResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setExtraInstallKernelParameters">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="extraInstallKernelParameters" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_setExtraInstallKernelParametersResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- readonly attribute IUnattended::detectedOSTypeId-->
+      <xsd:element name="IUnattended_getDetectedOSTypeId">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getDetectedOSTypeIdResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- readonly attribute IUnattended::detectedOSVersion-->
+      <xsd:element name="IUnattended_getDetectedOSVersion">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getDetectedOSVersionResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- readonly attribute IUnattended::detectedOSFlavor-->
+      <xsd:element name="IUnattended_getDetectedOSFlavor">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getDetectedOSFlavorResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- readonly attribute IUnattended::detectedOSLanguages-->
+      <xsd:element name="IUnattended_getDetectedOSLanguages">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getDetectedOSLanguagesResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- readonly attribute IUnattended::detectedOSHints-->
+      <xsd:element name="IUnattended_getDetectedOSHints">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_getDetectedOSHintsResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- method IUnattended::detectIsoOS-->
+      <xsd:element name="IUnattended_detectIsoOS">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_detectIsoOSResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- method IUnattended::prepare-->
+      <xsd:element name="IUnattended_prepare">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_prepareResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- method IUnattended::constructMedia-->
+      <xsd:element name="IUnattended_constructMedia">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_constructMediaResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- method IUnattended::reconfigureVM-->
+      <xsd:element name="IUnattended_reconfigureVM">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_reconfigureVMResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- method IUnattended::done-->
+      <xsd:element name="IUnattended_done">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IUnattended_doneResponse">
         <xsd:complexType>
           <xsd:sequence/>
         </xsd:complexType>
@@ -7615,12 +8427,34 @@
           <xsd:sequence/>
         </xsd:complexType>
       </xsd:element>
+      <!-- method IMachine::getCPUIDLeafByOrdinal-->
+      <xsd:element name="IMachine_getCPUIDLeafByOrdinal">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="ordinal" type="xsd:unsignedInt"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IMachine_getCPUIDLeafByOrdinalResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="idx" type="xsd:unsignedInt"/>
+            <xsd:element name="idxSub" type="xsd:unsignedInt"/>
+            <xsd:element name="valEax" type="xsd:unsignedInt"/>
+            <xsd:element name="valEbx" type="xsd:unsignedInt"/>
+            <xsd:element name="valEcx" type="xsd:unsignedInt"/>
+            <xsd:element name="valEdx" type="xsd:unsignedInt"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
       <!-- method IMachine::getCPUIDLeaf-->
       <xsd:element name="IMachine_getCPUIDLeaf">
         <xsd:complexType>
           <xsd:sequence>
             <xsd:element name="_this" type="xsd:string"/>
-            <xsd:element name="id" type="xsd:unsignedInt"/>
+            <xsd:element name="idx" type="xsd:unsignedInt"/>
+            <xsd:element name="idxSub" type="xsd:unsignedInt"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -7639,7 +8473,8 @@
         <xsd:complexType>
           <xsd:sequence>
             <xsd:element name="_this" type="xsd:string"/>
-            <xsd:element name="id" type="xsd:unsignedInt"/>
+            <xsd:element name="idx" type="xsd:unsignedInt"/>
+            <xsd:element name="idxSub" type="xsd:unsignedInt"/>
             <xsd:element name="valEax" type="xsd:unsignedInt"/>
             <xsd:element name="valEbx" type="xsd:unsignedInt"/>
             <xsd:element name="valEcx" type="xsd:unsignedInt"/>
@@ -7657,7 +8492,8 @@
         <xsd:complexType>
           <xsd:sequence>
             <xsd:element name="_this" type="xsd:string"/>
-            <xsd:element name="id" type="xsd:unsignedInt"/>
+            <xsd:element name="idx" type="xsd:unsignedInt"/>
+            <xsd:element name="idxSub" type="xsd:unsignedInt"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -9140,6 +9976,21 @@
         <xsd:complexType>
           <xsd:sequence>
             <xsd:element name="returnval" type="vbox:HostNetworkInterfaceType"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- readonly attribute IHostNetworkInterface::wireless-->
+      <xsd:element name="IHostNetworkInterface_getWireless">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IHostNetworkInterface_getWirelessResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:boolean"/>
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
@@ -13300,6 +14151,21 @@
           <xsd:sequence/>
         </xsd:complexType>
       </xsd:element>
+      <!-- readonly attribute IProgress::eventSource-->
+      <xsd:element name="IProgress_getEventSource">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IProgress_getEventSourceResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
       <!-- method IProgress::setCurrentOperationProgress-->
       <xsd:element name="IProgress_setCurrentOperationProgress">
         <xsd:complexType>
@@ -15179,6 +16045,21 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
+      <!-- readonly attribute IGuestScreenInfo::extendedInfo-->
+      <xsd:element name="IGuestScreenInfo_getExtendedInfo">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IGuestScreenInfo_getExtendedInfoResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
       <!--Interface IDisplay-->
       <!-- readonly attribute IDisplay::guestScreenLayout-->
       <xsd:element name="IDisplay_getGuestScreenLayout">
@@ -15412,6 +16293,20 @@
         </xsd:complexType>
       </xsd:element>
       <xsd:element name="IDisplay_setScreenLayoutResponse">
+        <xsd:complexType>
+          <xsd:sequence/>
+        </xsd:complexType>
+      </xsd:element>
+      <!-- method IDisplay::detachScreens-->
+      <xsd:element name="IDisplay_detachScreens">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+            <xsd:element name="screenIds" minOccurs="0" maxOccurs="unbounded" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IDisplay_detachScreensResponse">
         <xsd:complexType>
           <xsd:sequence/>
         </xsd:complexType>
@@ -20124,6 +21019,22 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
+      <!--Interface IAudioAdapterChangedEvent-->
+      <!-- readonly attribute IAudioAdapterChangedEvent::audioAdapter-->
+      <xsd:element name="IAudioAdapterChangedEvent_getAudioAdapter">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IAudioAdapterChangedEvent_getAudioAdapterResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
       <!--Interface ISerialPortChangedEvent-->
       <!-- readonly attribute ISerialPortChangedEvent::serialPort-->
       <xsd:element name="ISerialPortChangedEvent_getSerialPort">
@@ -21944,6 +22855,54 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
+      <!--Interface IProgressEvent-->
+      <!-- readonly attribute IProgressEvent::progressId-->
+      <xsd:element name="IProgressEvent_getProgressId">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IProgressEvent_getProgressIdResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <!--Interface IProgressPercentageChangedEvent-->
+      <!-- readonly attribute IProgressPercentageChangedEvent::percent-->
+      <xsd:element name="IProgressPercentageChangedEvent_getPercent">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IProgressPercentageChangedEvent_getPercentResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:int"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <!--Interface IProgressTaskCompletedEvent-->
+      <!-- readonly attribute IProgressTaskCompletedEvent::midlDoesNotLikeEmptyInterfaces-->
+      <xsd:element name="IProgressTaskCompletedEvent_getMidlDoesNotLikeEmptyInterfaces">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IProgressTaskCompletedEvent_getMidlDoesNotLikeEmptyInterfacesResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:boolean"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
       <!--
       ******************************************************
       * faults
@@ -22565,6 +23524,13 @@
   <wsdl:message name="IVirtualBox_createApplianceResultMsg">
     <wsdl:part name="parameters" element="vbox:IVirtualBox_createApplianceResponse"/>
   </wsdl:message>
+  <!-- method IVirtualBox::createUnattendedInstaller-->
+  <wsdl:message name="IVirtualBox_createUnattendedInstallerRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IVirtualBox_createUnattendedInstaller"/>
+  </wsdl:message>
+  <wsdl:message name="IVirtualBox_createUnattendedInstallerResultMsg">
+    <wsdl:part name="parameters" element="vbox:IVirtualBox_createUnattendedInstallerResponse"/>
+  </wsdl:message>
   <!-- method IVirtualBox::createMedium-->
   <wsdl:message name="IVirtualBox_createMediumRequestMsg">
     <wsdl:part name="parameters" element="vbox:IVirtualBox_createMedium"/>
@@ -23053,6 +24019,380 @@
   </wsdl:message>
   <wsdl:message name="IVirtualSystemDescription_addDescriptionResultMsg">
     <wsdl:part name="parameters" element="vbox:IVirtualSystemDescription_addDescriptionResponse"/>
+  </wsdl:message>
+  <!--
+        *************************************
+        messages for interface IUnattended
+        *************************************
+      -->
+  <!-- read/write attribute IUnattended::isoPath-->
+  <wsdl:message name="IUnattended_getIsoPathRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getIsoPath"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getIsoPathResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getIsoPathResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setIsoPathRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setIsoPath"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setIsoPathResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setIsoPathResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::machine-->
+  <wsdl:message name="IUnattended_getMachineRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getMachine"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getMachineResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getMachineResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setMachineRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setMachine"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setMachineResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setMachineResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::user-->
+  <wsdl:message name="IUnattended_getUserRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getUser"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getUserResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getUserResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setUserRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setUser"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setUserResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setUserResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::password-->
+  <wsdl:message name="IUnattended_getPasswordRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getPassword"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getPasswordResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getPasswordResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setPasswordRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setPassword"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setPasswordResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setPasswordResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::fullUserName-->
+  <wsdl:message name="IUnattended_getFullUserNameRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getFullUserName"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getFullUserNameResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getFullUserNameResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setFullUserNameRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setFullUserName"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setFullUserNameResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setFullUserNameResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::productKey-->
+  <wsdl:message name="IUnattended_getProductKeyRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getProductKey"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getProductKeyResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getProductKeyResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setProductKeyRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setProductKey"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setProductKeyResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setProductKeyResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::additionsIsoPath-->
+  <wsdl:message name="IUnattended_getAdditionsIsoPathRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getAdditionsIsoPath"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getAdditionsIsoPathResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getAdditionsIsoPathResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setAdditionsIsoPathRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setAdditionsIsoPath"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setAdditionsIsoPathResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setAdditionsIsoPathResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::installGuestAdditions-->
+  <wsdl:message name="IUnattended_getInstallGuestAdditionsRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getInstallGuestAdditions"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getInstallGuestAdditionsResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getInstallGuestAdditionsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setInstallGuestAdditionsRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setInstallGuestAdditions"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setInstallGuestAdditionsResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setInstallGuestAdditionsResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::validationKitIsoPath-->
+  <wsdl:message name="IUnattended_getValidationKitIsoPathRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getValidationKitIsoPath"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getValidationKitIsoPathResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getValidationKitIsoPathResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setValidationKitIsoPathRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setValidationKitIsoPath"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setValidationKitIsoPathResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setValidationKitIsoPathResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::installTestExecService-->
+  <wsdl:message name="IUnattended_getInstallTestExecServiceRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getInstallTestExecService"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getInstallTestExecServiceResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getInstallTestExecServiceResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setInstallTestExecServiceRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setInstallTestExecService"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setInstallTestExecServiceResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setInstallTestExecServiceResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::timeZone-->
+  <wsdl:message name="IUnattended_getTimeZoneRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getTimeZone"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getTimeZoneResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getTimeZoneResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setTimeZoneRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setTimeZone"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setTimeZoneResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setTimeZoneResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::locale-->
+  <wsdl:message name="IUnattended_getLocaleRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getLocale"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getLocaleResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getLocaleResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setLocaleRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setLocale"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setLocaleResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setLocaleResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::language-->
+  <wsdl:message name="IUnattended_getLanguageRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getLanguage"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getLanguageResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getLanguageResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setLanguageRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setLanguage"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setLanguageResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setLanguageResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::country-->
+  <wsdl:message name="IUnattended_getCountryRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getCountry"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getCountryResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getCountryResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setCountryRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setCountry"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setCountryResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setCountryResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::proxy-->
+  <wsdl:message name="IUnattended_getProxyRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getProxy"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getProxyResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getProxyResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setProxyRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setProxy"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setProxyResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setProxyResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::packageSelectionAdjustments-->
+  <wsdl:message name="IUnattended_getPackageSelectionAdjustmentsRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getPackageSelectionAdjustments"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getPackageSelectionAdjustmentsResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getPackageSelectionAdjustmentsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setPackageSelectionAdjustmentsRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setPackageSelectionAdjustments"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setPackageSelectionAdjustmentsResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setPackageSelectionAdjustmentsResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::hostname-->
+  <wsdl:message name="IUnattended_getHostnameRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getHostname"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getHostnameResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getHostnameResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setHostnameRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setHostname"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setHostnameResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setHostnameResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::auxiliaryBasePath-->
+  <wsdl:message name="IUnattended_getAuxiliaryBasePathRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getAuxiliaryBasePath"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getAuxiliaryBasePathResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getAuxiliaryBasePathResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setAuxiliaryBasePathRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setAuxiliaryBasePath"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setAuxiliaryBasePathResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setAuxiliaryBasePathResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::imageIndex-->
+  <wsdl:message name="IUnattended_getImageIndexRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getImageIndex"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getImageIndexResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getImageIndexResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setImageIndexRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setImageIndex"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setImageIndexResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setImageIndexResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::scriptTemplatePath-->
+  <wsdl:message name="IUnattended_getScriptTemplatePathRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getScriptTemplatePath"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getScriptTemplatePathResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getScriptTemplatePathResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setScriptTemplatePathRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setScriptTemplatePath"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setScriptTemplatePathResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setScriptTemplatePathResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::postInstallScriptTemplatePath-->
+  <wsdl:message name="IUnattended_getPostInstallScriptTemplatePathRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getPostInstallScriptTemplatePath"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getPostInstallScriptTemplatePathResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getPostInstallScriptTemplatePathResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setPostInstallScriptTemplatePathRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setPostInstallScriptTemplatePath"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setPostInstallScriptTemplatePathResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setPostInstallScriptTemplatePathResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::postInstallCommand-->
+  <wsdl:message name="IUnattended_getPostInstallCommandRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getPostInstallCommand"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getPostInstallCommandResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getPostInstallCommandResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setPostInstallCommandRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setPostInstallCommand"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setPostInstallCommandResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setPostInstallCommandResponse"/>
+  </wsdl:message>
+  <!-- read/write attribute IUnattended::extraInstallKernelParameters-->
+  <wsdl:message name="IUnattended_getExtraInstallKernelParametersRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getExtraInstallKernelParameters"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getExtraInstallKernelParametersResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getExtraInstallKernelParametersResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setExtraInstallKernelParametersRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setExtraInstallKernelParameters"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_setExtraInstallKernelParametersResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_setExtraInstallKernelParametersResponse"/>
+  </wsdl:message>
+  <!-- readonly attribute IUnattended::detectedOSTypeId-->
+  <wsdl:message name="IUnattended_getDetectedOSTypeIdRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getDetectedOSTypeId"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getDetectedOSTypeIdResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getDetectedOSTypeIdResponse"/>
+  </wsdl:message>
+  <!-- readonly attribute IUnattended::detectedOSVersion-->
+  <wsdl:message name="IUnattended_getDetectedOSVersionRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getDetectedOSVersion"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getDetectedOSVersionResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getDetectedOSVersionResponse"/>
+  </wsdl:message>
+  <!-- readonly attribute IUnattended::detectedOSFlavor-->
+  <wsdl:message name="IUnattended_getDetectedOSFlavorRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getDetectedOSFlavor"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getDetectedOSFlavorResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getDetectedOSFlavorResponse"/>
+  </wsdl:message>
+  <!-- readonly attribute IUnattended::detectedOSLanguages-->
+  <wsdl:message name="IUnattended_getDetectedOSLanguagesRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getDetectedOSLanguages"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getDetectedOSLanguagesResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getDetectedOSLanguagesResponse"/>
+  </wsdl:message>
+  <!-- readonly attribute IUnattended::detectedOSHints-->
+  <wsdl:message name="IUnattended_getDetectedOSHintsRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getDetectedOSHints"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_getDetectedOSHintsResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_getDetectedOSHintsResponse"/>
+  </wsdl:message>
+  <!-- method IUnattended::detectIsoOS-->
+  <wsdl:message name="IUnattended_detectIsoOSRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_detectIsoOS"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_detectIsoOSResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_detectIsoOSResponse"/>
+  </wsdl:message>
+  <!-- method IUnattended::prepare-->
+  <wsdl:message name="IUnattended_prepareRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_prepare"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_prepareResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_prepareResponse"/>
+  </wsdl:message>
+  <!-- method IUnattended::constructMedia-->
+  <wsdl:message name="IUnattended_constructMediaRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_constructMedia"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_constructMediaResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_constructMediaResponse"/>
+  </wsdl:message>
+  <!-- method IUnattended::reconfigureVM-->
+  <wsdl:message name="IUnattended_reconfigureVMRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_reconfigureVM"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_reconfigureVMResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_reconfigureVMResponse"/>
+  </wsdl:message>
+  <!-- method IUnattended::done-->
+  <wsdl:message name="IUnattended_doneRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_done"/>
+  </wsdl:message>
+  <wsdl:message name="IUnattended_doneResultMsg">
+    <wsdl:part name="parameters" element="vbox:IUnattended_doneResponse"/>
   </wsdl:message>
   <!--
         *************************************
@@ -24524,6 +25864,13 @@
   <wsdl:message name="IMachine_setCPUPropertyResultMsg">
     <wsdl:part name="parameters" element="vbox:IMachine_setCPUPropertyResponse"/>
   </wsdl:message>
+  <!-- method IMachine::getCPUIDLeafByOrdinal-->
+  <wsdl:message name="IMachine_getCPUIDLeafByOrdinalRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IMachine_getCPUIDLeafByOrdinal"/>
+  </wsdl:message>
+  <wsdl:message name="IMachine_getCPUIDLeafByOrdinalResultMsg">
+    <wsdl:part name="parameters" element="vbox:IMachine_getCPUIDLeafByOrdinalResponse"/>
+  </wsdl:message>
   <!-- method IMachine::getCPUIDLeaf-->
   <wsdl:message name="IMachine_getCPUIDLeafRequestMsg">
     <wsdl:part name="parameters" element="vbox:IMachine_getCPUIDLeaf"/>
@@ -25235,6 +26582,13 @@
   </wsdl:message>
   <wsdl:message name="IHostNetworkInterface_getInterfaceTypeResultMsg">
     <wsdl:part name="parameters" element="vbox:IHostNetworkInterface_getInterfaceTypeResponse"/>
+  </wsdl:message>
+  <!-- readonly attribute IHostNetworkInterface::wireless-->
+  <wsdl:message name="IHostNetworkInterface_getWirelessRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IHostNetworkInterface_getWireless"/>
+  </wsdl:message>
+  <wsdl:message name="IHostNetworkInterface_getWirelessResultMsg">
+    <wsdl:part name="parameters" element="vbox:IHostNetworkInterface_getWirelessResponse"/>
   </wsdl:message>
   <!-- method IHostNetworkInterface::enableStaticIPConfig-->
   <wsdl:message name="IHostNetworkInterface_enableStaticIPConfigRequestMsg">
@@ -27189,6 +28543,13 @@
   <wsdl:message name="IProgress_setTimeoutResultMsg">
     <wsdl:part name="parameters" element="vbox:IProgress_setTimeoutResponse"/>
   </wsdl:message>
+  <!-- readonly attribute IProgress::eventSource-->
+  <wsdl:message name="IProgress_getEventSourceRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IProgress_getEventSource"/>
+  </wsdl:message>
+  <wsdl:message name="IProgress_getEventSourceResultMsg">
+    <wsdl:part name="parameters" element="vbox:IProgress_getEventSourceResponse"/>
+  </wsdl:message>
   <!-- method IProgress::setCurrentOperationProgress-->
   <wsdl:message name="IProgress_setCurrentOperationProgressRequestMsg">
     <wsdl:part name="parameters" element="vbox:IProgress_setCurrentOperationProgress"/>
@@ -28110,6 +29471,13 @@
   <wsdl:message name="IGuestScreenInfo_getBitsPerPixelResultMsg">
     <wsdl:part name="parameters" element="vbox:IGuestScreenInfo_getBitsPerPixelResponse"/>
   </wsdl:message>
+  <!-- readonly attribute IGuestScreenInfo::extendedInfo-->
+  <wsdl:message name="IGuestScreenInfo_getExtendedInfoRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IGuestScreenInfo_getExtendedInfo"/>
+  </wsdl:message>
+  <wsdl:message name="IGuestScreenInfo_getExtendedInfoResultMsg">
+    <wsdl:part name="parameters" element="vbox:IGuestScreenInfo_getExtendedInfoResponse"/>
+  </wsdl:message>
   <!--
         *************************************
         messages for interface IDisplay
@@ -28220,6 +29588,13 @@
   </wsdl:message>
   <wsdl:message name="IDisplay_setScreenLayoutResultMsg">
     <wsdl:part name="parameters" element="vbox:IDisplay_setScreenLayoutResponse"/>
+  </wsdl:message>
+  <!-- method IDisplay::detachScreens-->
+  <wsdl:message name="IDisplay_detachScreensRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IDisplay_detachScreens"/>
+  </wsdl:message>
+  <wsdl:message name="IDisplay_detachScreensResultMsg">
+    <wsdl:part name="parameters" element="vbox:IDisplay_detachScreensResponse"/>
   </wsdl:message>
   <!--
         *************************************
@@ -30638,6 +32013,18 @@
   </wsdl:message>
   <!--
         *************************************
+        messages for interface IAudioAdapterChangedEvent
+        *************************************
+      -->
+  <!-- readonly attribute IAudioAdapterChangedEvent::audioAdapter-->
+  <wsdl:message name="IAudioAdapterChangedEvent_getAudioAdapterRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IAudioAdapterChangedEvent_getAudioAdapter"/>
+  </wsdl:message>
+  <wsdl:message name="IAudioAdapterChangedEvent_getAudioAdapterResultMsg">
+    <wsdl:part name="parameters" element="vbox:IAudioAdapterChangedEvent_getAudioAdapterResponse"/>
+  </wsdl:message>
+  <!--
+        *************************************
         messages for interface ISerialPortChangedEvent
         *************************************
       -->
@@ -31732,6 +33119,42 @@
     <wsdl:part name="parameters" element="vbox:IHostNameResolutionConfigurationChangeEvent_getMidlDoesNotLikeEmptyInterfacesResponse"/>
   </wsdl:message>
   <!--
+        *************************************
+        messages for interface IProgressEvent
+        *************************************
+      -->
+  <!-- readonly attribute IProgressEvent::progressId-->
+  <wsdl:message name="IProgressEvent_getProgressIdRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IProgressEvent_getProgressId"/>
+  </wsdl:message>
+  <wsdl:message name="IProgressEvent_getProgressIdResultMsg">
+    <wsdl:part name="parameters" element="vbox:IProgressEvent_getProgressIdResponse"/>
+  </wsdl:message>
+  <!--
+        *************************************
+        messages for interface IProgressPercentageChangedEvent
+        *************************************
+      -->
+  <!-- readonly attribute IProgressPercentageChangedEvent::percent-->
+  <wsdl:message name="IProgressPercentageChangedEvent_getPercentRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IProgressPercentageChangedEvent_getPercent"/>
+  </wsdl:message>
+  <wsdl:message name="IProgressPercentageChangedEvent_getPercentResultMsg">
+    <wsdl:part name="parameters" element="vbox:IProgressPercentageChangedEvent_getPercentResponse"/>
+  </wsdl:message>
+  <!--
+        *************************************
+        messages for interface IProgressTaskCompletedEvent
+        *************************************
+      -->
+  <!-- readonly attribute IProgressTaskCompletedEvent::midlDoesNotLikeEmptyInterfaces-->
+  <wsdl:message name="IProgressTaskCompletedEvent_getMidlDoesNotLikeEmptyInterfacesRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IProgressTaskCompletedEvent_getMidlDoesNotLikeEmptyInterfaces"/>
+  </wsdl:message>
+  <wsdl:message name="IProgressTaskCompletedEvent_getMidlDoesNotLikeEmptyInterfacesResultMsg">
+    <wsdl:part name="parameters" element="vbox:IProgressTaskCompletedEvent_getMidlDoesNotLikeEmptyInterfacesResponse"/>
+  </wsdl:message>
+  <!--
       ******************************************************
       *
       * one portType for all interfaces
@@ -32252,6 +33675,12 @@
       <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
       <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
     </wsdl:operation>
+    <wsdl:operation name="IVirtualBox_createUnattendedInstaller">
+      <wsdl:input message="vbox:IVirtualBox_createUnattendedInstallerRequestMsg"/>
+      <wsdl:output message="vbox:IVirtualBox_createUnattendedInstallerResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
     <wsdl:operation name="IVirtualBox_createMedium">
       <wsdl:input message="vbox:IVirtualBox_createMediumRequestMsg"/>
       <wsdl:output message="vbox:IVirtualBox_createMediumResultMsg"/>
@@ -32671,6 +34100,347 @@
     <wsdl:operation name="IVirtualSystemDescription_addDescription">
       <wsdl:input message="vbox:IVirtualSystemDescription_addDescriptionRequestMsg"/>
       <wsdl:output message="vbox:IVirtualSystemDescription_addDescriptionResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <!--
+          *************************************
+          operations in portType for interface IUnattended
+          *************************************
+        -->
+    <wsdl:operation name="IUnattended_getIsoPath">
+      <wsdl:input message="vbox:IUnattended_getIsoPathRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getIsoPathResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setIsoPath">
+      <wsdl:input message="vbox:IUnattended_setIsoPathRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setIsoPathResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getMachine">
+      <wsdl:input message="vbox:IUnattended_getMachineRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getMachineResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setMachine">
+      <wsdl:input message="vbox:IUnattended_setMachineRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setMachineResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getUser">
+      <wsdl:input message="vbox:IUnattended_getUserRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getUserResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setUser">
+      <wsdl:input message="vbox:IUnattended_setUserRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setUserResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getPassword">
+      <wsdl:input message="vbox:IUnattended_getPasswordRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getPasswordResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setPassword">
+      <wsdl:input message="vbox:IUnattended_setPasswordRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setPasswordResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getFullUserName">
+      <wsdl:input message="vbox:IUnattended_getFullUserNameRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getFullUserNameResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setFullUserName">
+      <wsdl:input message="vbox:IUnattended_setFullUserNameRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setFullUserNameResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getProductKey">
+      <wsdl:input message="vbox:IUnattended_getProductKeyRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getProductKeyResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setProductKey">
+      <wsdl:input message="vbox:IUnattended_setProductKeyRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setProductKeyResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getAdditionsIsoPath">
+      <wsdl:input message="vbox:IUnattended_getAdditionsIsoPathRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getAdditionsIsoPathResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setAdditionsIsoPath">
+      <wsdl:input message="vbox:IUnattended_setAdditionsIsoPathRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setAdditionsIsoPathResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getInstallGuestAdditions">
+      <wsdl:input message="vbox:IUnattended_getInstallGuestAdditionsRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getInstallGuestAdditionsResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setInstallGuestAdditions">
+      <wsdl:input message="vbox:IUnattended_setInstallGuestAdditionsRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setInstallGuestAdditionsResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getValidationKitIsoPath">
+      <wsdl:input message="vbox:IUnattended_getValidationKitIsoPathRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getValidationKitIsoPathResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setValidationKitIsoPath">
+      <wsdl:input message="vbox:IUnattended_setValidationKitIsoPathRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setValidationKitIsoPathResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getInstallTestExecService">
+      <wsdl:input message="vbox:IUnattended_getInstallTestExecServiceRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getInstallTestExecServiceResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setInstallTestExecService">
+      <wsdl:input message="vbox:IUnattended_setInstallTestExecServiceRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setInstallTestExecServiceResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getTimeZone">
+      <wsdl:input message="vbox:IUnattended_getTimeZoneRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getTimeZoneResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setTimeZone">
+      <wsdl:input message="vbox:IUnattended_setTimeZoneRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setTimeZoneResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getLocale">
+      <wsdl:input message="vbox:IUnattended_getLocaleRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getLocaleResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setLocale">
+      <wsdl:input message="vbox:IUnattended_setLocaleRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setLocaleResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getLanguage">
+      <wsdl:input message="vbox:IUnattended_getLanguageRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getLanguageResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setLanguage">
+      <wsdl:input message="vbox:IUnattended_setLanguageRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setLanguageResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getCountry">
+      <wsdl:input message="vbox:IUnattended_getCountryRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getCountryResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setCountry">
+      <wsdl:input message="vbox:IUnattended_setCountryRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setCountryResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getProxy">
+      <wsdl:input message="vbox:IUnattended_getProxyRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getProxyResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setProxy">
+      <wsdl:input message="vbox:IUnattended_setProxyRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setProxyResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getPackageSelectionAdjustments">
+      <wsdl:input message="vbox:IUnattended_getPackageSelectionAdjustmentsRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getPackageSelectionAdjustmentsResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setPackageSelectionAdjustments">
+      <wsdl:input message="vbox:IUnattended_setPackageSelectionAdjustmentsRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setPackageSelectionAdjustmentsResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getHostname">
+      <wsdl:input message="vbox:IUnattended_getHostnameRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getHostnameResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setHostname">
+      <wsdl:input message="vbox:IUnattended_setHostnameRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setHostnameResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getAuxiliaryBasePath">
+      <wsdl:input message="vbox:IUnattended_getAuxiliaryBasePathRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getAuxiliaryBasePathResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setAuxiliaryBasePath">
+      <wsdl:input message="vbox:IUnattended_setAuxiliaryBasePathRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setAuxiliaryBasePathResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getImageIndex">
+      <wsdl:input message="vbox:IUnattended_getImageIndexRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getImageIndexResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setImageIndex">
+      <wsdl:input message="vbox:IUnattended_setImageIndexRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setImageIndexResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getScriptTemplatePath">
+      <wsdl:input message="vbox:IUnattended_getScriptTemplatePathRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getScriptTemplatePathResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setScriptTemplatePath">
+      <wsdl:input message="vbox:IUnattended_setScriptTemplatePathRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setScriptTemplatePathResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getPostInstallScriptTemplatePath">
+      <wsdl:input message="vbox:IUnattended_getPostInstallScriptTemplatePathRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getPostInstallScriptTemplatePathResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setPostInstallScriptTemplatePath">
+      <wsdl:input message="vbox:IUnattended_setPostInstallScriptTemplatePathRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setPostInstallScriptTemplatePathResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getPostInstallCommand">
+      <wsdl:input message="vbox:IUnattended_getPostInstallCommandRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getPostInstallCommandResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setPostInstallCommand">
+      <wsdl:input message="vbox:IUnattended_setPostInstallCommandRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setPostInstallCommandResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getExtraInstallKernelParameters">
+      <wsdl:input message="vbox:IUnattended_getExtraInstallKernelParametersRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getExtraInstallKernelParametersResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setExtraInstallKernelParameters">
+      <wsdl:input message="vbox:IUnattended_setExtraInstallKernelParametersRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_setExtraInstallKernelParametersResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getDetectedOSTypeId">
+      <wsdl:input message="vbox:IUnattended_getDetectedOSTypeIdRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getDetectedOSTypeIdResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getDetectedOSVersion">
+      <wsdl:input message="vbox:IUnattended_getDetectedOSVersionRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getDetectedOSVersionResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getDetectedOSFlavor">
+      <wsdl:input message="vbox:IUnattended_getDetectedOSFlavorRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getDetectedOSFlavorResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getDetectedOSLanguages">
+      <wsdl:input message="vbox:IUnattended_getDetectedOSLanguagesRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getDetectedOSLanguagesResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getDetectedOSHints">
+      <wsdl:input message="vbox:IUnattended_getDetectedOSHintsRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_getDetectedOSHintsResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_detectIsoOS">
+      <wsdl:input message="vbox:IUnattended_detectIsoOSRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_detectIsoOSResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_prepare">
+      <wsdl:input message="vbox:IUnattended_prepareRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_prepareResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_constructMedia">
+      <wsdl:input message="vbox:IUnattended_constructMediaRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_constructMediaResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_reconfigureVM">
+      <wsdl:input message="vbox:IUnattended_reconfigureVMRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_reconfigureVMResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_done">
+      <wsdl:input message="vbox:IUnattended_doneRequestMsg"/>
+      <wsdl:output message="vbox:IUnattended_doneResultMsg"/>
       <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
       <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
     </wsdl:operation>
@@ -34001,6 +35771,12 @@
       <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
       <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
     </wsdl:operation>
+    <wsdl:operation name="IMachine_getCPUIDLeafByOrdinal">
+      <wsdl:input message="vbox:IMachine_getCPUIDLeafByOrdinalRequestMsg"/>
+      <wsdl:output message="vbox:IMachine_getCPUIDLeafByOrdinalResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
     <wsdl:operation name="IMachine_getCPUIDLeaf">
       <wsdl:input message="vbox:IMachine_getCPUIDLeafRequestMsg"/>
       <wsdl:output message="vbox:IMachine_getCPUIDLeafResultMsg"/>
@@ -34612,6 +36388,12 @@
     <wsdl:operation name="IHostNetworkInterface_getInterfaceType">
       <wsdl:input message="vbox:IHostNetworkInterface_getInterfaceTypeRequestMsg"/>
       <wsdl:output message="vbox:IHostNetworkInterface_getInterfaceTypeResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IHostNetworkInterface_getWireless">
+      <wsdl:input message="vbox:IHostNetworkInterface_getWirelessRequestMsg"/>
+      <wsdl:output message="vbox:IHostNetworkInterface_getWirelessResultMsg"/>
       <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
       <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
     </wsdl:operation>
@@ -36322,6 +38104,12 @@
       <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
       <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
     </wsdl:operation>
+    <wsdl:operation name="IProgress_getEventSource">
+      <wsdl:input message="vbox:IProgress_getEventSourceRequestMsg"/>
+      <wsdl:output message="vbox:IProgress_getEventSourceResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
     <wsdl:operation name="IProgress_setCurrentOperationProgress">
       <wsdl:input message="vbox:IProgress_setCurrentOperationProgressRequestMsg"/>
       <wsdl:output message="vbox:IProgress_setCurrentOperationProgressResultMsg"/>
@@ -37124,6 +38912,12 @@
       <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
       <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
     </wsdl:operation>
+    <wsdl:operation name="IGuestScreenInfo_getExtendedInfo">
+      <wsdl:input message="vbox:IGuestScreenInfo_getExtendedInfoRequestMsg"/>
+      <wsdl:output message="vbox:IGuestScreenInfo_getExtendedInfoResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
     <!--
           *************************************
           operations in portType for interface IDisplay
@@ -37214,6 +39008,12 @@
     <wsdl:operation name="IDisplay_setScreenLayout">
       <wsdl:input message="vbox:IDisplay_setScreenLayoutRequestMsg"/>
       <wsdl:output message="vbox:IDisplay_setScreenLayoutResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <wsdl:operation name="IDisplay_detachScreens">
+      <wsdl:input message="vbox:IDisplay_detachScreensRequestMsg"/>
+      <wsdl:output message="vbox:IDisplay_detachScreensResultMsg"/>
       <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
       <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
     </wsdl:operation>
@@ -39393,6 +41193,17 @@
     </wsdl:operation>
     <!--
           *************************************
+          operations in portType for interface IAudioAdapterChangedEvent
+          *************************************
+        -->
+    <wsdl:operation name="IAudioAdapterChangedEvent_getAudioAdapter">
+      <wsdl:input message="vbox:IAudioAdapterChangedEvent_getAudioAdapterRequestMsg"/>
+      <wsdl:output message="vbox:IAudioAdapterChangedEvent_getAudioAdapterResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <!--
+          *************************************
           operations in portType for interface ISerialPortChangedEvent
           *************************************
         -->
@@ -40366,6 +42177,39 @@
     <wsdl:operation name="IHostNameResolutionConfigurationChangeEvent_getMidlDoesNotLikeEmptyInterfaces">
       <wsdl:input message="vbox:IHostNameResolutionConfigurationChangeEvent_getMidlDoesNotLikeEmptyInterfacesRequestMsg"/>
       <wsdl:output message="vbox:IHostNameResolutionConfigurationChangeEvent_getMidlDoesNotLikeEmptyInterfacesResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <!--
+          *************************************
+          operations in portType for interface IProgressEvent
+          *************************************
+        -->
+    <wsdl:operation name="IProgressEvent_getProgressId">
+      <wsdl:input message="vbox:IProgressEvent_getProgressIdRequestMsg"/>
+      <wsdl:output message="vbox:IProgressEvent_getProgressIdResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <!--
+          *************************************
+          operations in portType for interface IProgressPercentageChangedEvent
+          *************************************
+        -->
+    <wsdl:operation name="IProgressPercentageChangedEvent_getPercent">
+      <wsdl:input message="vbox:IProgressPercentageChangedEvent_getPercentRequestMsg"/>
+      <wsdl:output message="vbox:IProgressPercentageChangedEvent_getPercentResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <!--
+          *************************************
+          operations in portType for interface IProgressTaskCompletedEvent
+          *************************************
+        -->
+    <wsdl:operation name="IProgressTaskCompletedEvent_getMidlDoesNotLikeEmptyInterfaces">
+      <wsdl:input message="vbox:IProgressTaskCompletedEvent_getMidlDoesNotLikeEmptyInterfacesRequestMsg"/>
+      <wsdl:output message="vbox:IProgressTaskCompletedEvent_getMidlDoesNotLikeEmptyInterfacesResultMsg"/>
       <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
       <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
     </wsdl:operation>
@@ -41630,6 +43474,21 @@
         <soap:fault name="RuntimeFault" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="IVirtualBox_createUnattendedInstaller">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="IVirtualBox_createMedium">
       <soap:operation soapAction="" style="document"/>
       <wsdl:input>
@@ -42641,6 +44500,851 @@
       </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="IVirtualSystemDescription_addDescription">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <!--
+          *************************************
+          operations in portType for interface IUnattended
+          *************************************
+        -->
+    <wsdl:operation name="IUnattended_getIsoPath">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setIsoPath">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getMachine">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setMachine">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getUser">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setUser">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getPassword">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setPassword">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getFullUserName">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setFullUserName">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getProductKey">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setProductKey">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getAdditionsIsoPath">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setAdditionsIsoPath">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getInstallGuestAdditions">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setInstallGuestAdditions">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getValidationKitIsoPath">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setValidationKitIsoPath">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getInstallTestExecService">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setInstallTestExecService">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getTimeZone">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setTimeZone">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getLocale">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setLocale">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getLanguage">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setLanguage">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getCountry">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setCountry">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getProxy">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setProxy">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getPackageSelectionAdjustments">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setPackageSelectionAdjustments">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getHostname">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setHostname">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getAuxiliaryBasePath">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setAuxiliaryBasePath">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getImageIndex">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setImageIndex">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getScriptTemplatePath">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setScriptTemplatePath">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getPostInstallScriptTemplatePath">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setPostInstallScriptTemplatePath">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getPostInstallCommand">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setPostInstallCommand">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getExtraInstallKernelParameters">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_setExtraInstallKernelParameters">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getDetectedOSTypeId">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getDetectedOSVersion">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getDetectedOSFlavor">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getDetectedOSLanguages">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_getDetectedOSHints">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_detectIsoOS">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_prepare">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_constructMedia">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_reconfigureVM">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IUnattended_done">
       <soap:operation soapAction="" style="document"/>
       <wsdl:input>
         <soap:body use="literal"/>
@@ -45935,6 +48639,21 @@
         <soap:fault name="RuntimeFault" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="IMachine_getCPUIDLeafByOrdinal">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="IMachine_getCPUIDLeaf">
       <soap:operation soapAction="" style="document"/>
       <wsdl:input>
@@ -47426,6 +50145,21 @@
       </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="IHostNetworkInterface_getInterfaceType">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IHostNetworkInterface_getWireless">
       <soap:operation soapAction="" style="document"/>
       <wsdl:input>
         <soap:body use="literal"/>
@@ -51550,6 +54284,21 @@
         <soap:fault name="RuntimeFault" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="IProgress_getEventSource">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="IProgress_setCurrentOperationProgress">
       <soap:operation soapAction="" style="document"/>
       <wsdl:input>
@@ -53459,6 +56208,21 @@
         <soap:fault name="RuntimeFault" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="IGuestScreenInfo_getExtendedInfo">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
     <!--
           *************************************
           operations in portType for interface IDisplay
@@ -53664,6 +56428,21 @@
       </wsdl:fault>
     </wsdl:operation>
     <wsdl:operation name="IDisplay_setScreenLayout">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IDisplay_detachScreens">
       <soap:operation soapAction="" style="document"/>
       <wsdl:input>
         <soap:body use="literal"/>
@@ -58716,6 +61495,26 @@
     </wsdl:operation>
     <!--
           *************************************
+          operations in portType for interface IAudioAdapterChangedEvent
+          *************************************
+        -->
+    <wsdl:operation name="IAudioAdapterChangedEvent_getAudioAdapter">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <!--
+          *************************************
           operations in portType for interface ISerialPortChangedEvent
           *************************************
         -->
@@ -60740,6 +63539,66 @@
           *************************************
         -->
     <wsdl:operation name="IHostNameResolutionConfigurationChangeEvent_getMidlDoesNotLikeEmptyInterfaces">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <!--
+          *************************************
+          operations in portType for interface IProgressEvent
+          *************************************
+        -->
+    <wsdl:operation name="IProgressEvent_getProgressId">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <!--
+          *************************************
+          operations in portType for interface IProgressPercentageChangedEvent
+          *************************************
+        -->
+    <wsdl:operation name="IProgressPercentageChangedEvent_getPercent">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <!--
+          *************************************
+          operations in portType for interface IProgressTaskCompletedEvent
+          *************************************
+        -->
+    <wsdl:operation name="IProgressTaskCompletedEvent_getMidlDoesNotLikeEmptyInterfaces">
       <soap:operation soapAction="" style="document"/>
       <wsdl:input>
         <soap:body use="literal"/>
