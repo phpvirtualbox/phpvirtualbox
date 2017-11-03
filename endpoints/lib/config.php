@@ -14,6 +14,7 @@
 /*
  * This version of phpVirtualBox
  */
+
 define('PHPVBOX_VER', '5.2-1');
 
 class phpVBoxConfigClass {
