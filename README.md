@@ -26,7 +26,7 @@ possession.
 
 Default login is username: admin password: admin
 
-Please report bugs / festure requests to GitHub
+Please report bugs / feature requests to GitHub
 https://github.com/phpvirtualbox/phpvirtualbox/issues
 
 # Password Recovery
