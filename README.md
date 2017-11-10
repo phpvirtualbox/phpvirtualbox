@@ -18,7 +18,7 @@ possession.
 
 # Installation from Zip file
 
-1) Download zip file from sourceforge project site: https://sourceforge.net/projects/phpvirtualbox/
+1) Download zip file from GitHub project site: https://github.com/phpvirtualbox/phpvirtualbox/archive/master.zip
 
 2) Unzip zipfile into /usr/share/phpvirtualbox
 
