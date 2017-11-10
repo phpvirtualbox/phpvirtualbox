@@ -1,7 +1,9 @@
 # About
 
 phpVirtualBox is from 2017 maintained by Smart Guide Pty Ltd (tudor at smartguide dot com dot au)
+
 with support from various contributors
+
 Originally Copyright (C) 2015 Ian Moore (imoore76 at yahoo dot com)
 
 FREE, WITHOUT WARRANTY:
