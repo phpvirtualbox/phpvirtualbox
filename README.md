@@ -24,7 +24,7 @@ possession.
 
 3) Rename config.php-example to config.php and edit as needed.
 
-4) Move phpvirtualbox.conf into /etc/apache2/conf-available/
+4) Move phpvirtualbox.conf into /etc/apache2/conf-available/  * NB: The default config file makes phpvirtualbox only accessible from the localhost for security reasons.
 
 5) Run `a2enconf phpvirtualbox` and `service apache2 reload`
 
