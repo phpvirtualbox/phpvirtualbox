@@ -20,7 +20,13 @@ possession.
 
 1) Download zip file from sourceforge project site: https://sourceforge.net/projects/phpvirtualbox/
 
-2) Rename config.php-example to config.php and edit as needed.
+2) Unzip zipfile into /usr/share/phpvirtualbox
+
+3) Rename config.php-example to config.php and edit as needed.
+
+4) Move phpvirtualbox.conf into /etc/apache2/conf-available/
+
+5) Run `a2enconf phpvirtualbox` and `service apache2 reload`
 
 # Post installation
 
