@@ -2623,7 +2623,7 @@ class IMachine extends VBox_ManagedObject
         $request->_this = $this->handle;
         $request->name = $arg_name;
         $request->description = $arg_description;
-        $request->pause = $arg_pause;
+        $request->pause = $arg_pause === null ? true : $arg_pause;
         $response = $this->connection->__soapCall('IMachine_takeSnapshot', array((array)$request));
         return array(new IProgress ($this->connection, $response->returnval), (string)$response->id);
     }
