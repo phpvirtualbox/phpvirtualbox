@@ -1966,7 +1966,7 @@ class IMachine extends VBox_ManagedObject
         $request->name = $arg_name;
         $request->controllerPort = $arg_controllerPort;
         $request->device = $arg_device;
-        $request->temporaryEject = $arg_temporaryEject;
+        $request->temporaryEject = $arg_temporaryEject === null ? false : $arg_temporaryEject;
         $response = $this->connection->__soapCall('IMachine_temporaryEjectDevice', array((array)$request));
         return ;
     }
@@ -1978,7 +1978,7 @@ class IMachine extends VBox_ManagedObject
         $request->name = $arg_name;
         $request->controllerPort = $arg_controllerPort;
         $request->device = $arg_device;
-        $request->nonRotational = $arg_nonRotational;
+        $request->nonRotational = $arg_nonRotational === null ? false : $arg_nonRotational;
         $response = $this->connection->__soapCall('IMachine_nonRotationalDevice', array((array)$request));
         return ;
     }
@@ -2002,7 +2002,7 @@ class IMachine extends VBox_ManagedObject
         $request->name = $arg_name;
         $request->controllerPort = $arg_controllerPort;
         $request->device = $arg_device;
-        $request->hotPluggable = $arg_hotPluggable;
+        $request->hotPluggable = $arg_hotPluggable === null ? false : $arg_hotPluggable;
         $response = $this->connection->__soapCall('IMachine_setHotPluggableForDevice', array((array)$request));
         return ;
     }
@@ -2623,7 +2623,7 @@ class IMachine extends VBox_ManagedObject
         $request->_this = $this->handle;
         $request->name = $arg_name;
         $request->description = $arg_description;
-        $request->pause = $arg_pause;
+        $request->pause = $arg_pause === null ? true : $arg_pause;
         $response = $this->connection->__soapCall('IMachine_takeSnapshot', array((array)$request));
         return array(new IProgress ($this->connection, $response->returnval), (string)$response->id);
     }
