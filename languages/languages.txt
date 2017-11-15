@@ -151,24 +151,22 @@ Text within the <source> tag is the text that is to be translated. The translate
 WARNING: Do not change the text in the <source> tag. Even adding an extra line will break the
 translation.
 
-II.b Converting QT .qm files
+II.b Converting .ts files from official Virtualbox
+ 
+You will need a copy of VirtualBox installed and to navigate to your VirtualBox installation folder on your computer, then to the "nls" folder.
+Otherwise, you can navigate to the URL: "https://www.virtualbox.org/browser/vbox/trunk/src/VBox/Frontends/VirtualBox/nls".
+You should see files which have the naming convention VirtualBox_xx.ts - where xx is the language code described above.
+If you can't find the needed language, you won't be able to add or update it in phpVirtualbox.
 
-To convert these files, you will need a copy of Qt Linguist. A google search should yield a download
-link. You will also need a copy of VirtualBox installed.
+Copy the "VirtualBox_xx.ts" file corresponding to the needed language.
 
-Open Qt Linguist. From the file menu, select Open and select All Files in the Open File dialog.
-Navigate to your VirtualBox folder on your computer, then to the nls folder. You should see files
-which have the naming convention VirtualBox_xx.qm - where xx is the language code described above.
-Select the file and click Open. Just click OK on the subsequent dialog box. Click on Save as... in
-the File menu. Save the file as a "Qt translation source" (*.ts) file.
+The script languages/source/parse_vbox_lang.php provided with phpVirtualbox can then be used to parse this ".ts" file into a ".dat" file consumable by phpVirtualBox.
 
-The script languages/source/parse_vbox_lang.php can then be used to parse a .ts file into a .dat file
-consumable by phpVirtualBox. E.g.
+Navigate to you phpVirtualbox installation folder and then to languages/source. Put the previously copied "VirtualBox_xx.ts" file there, then run the following command (you will need a working php setup) :
 
-php languages/source/pasre_vbox_lang.php VirtualBox_es.ts >es.dat
+php parse_vbox_lang.php VirtualBox_xx.ts > xx.dat (replace xx with the language code)
 
-The es.dat file can then be placed in the languages/source/ folder for use by phpVirtualBox.
-
+This will create a "xx.dat" file that should be readable by phpVirtualBox.
 
 II.c Updating language selection
 
