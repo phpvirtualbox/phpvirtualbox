@@ -131,8 +131,8 @@ class vboxconnector {
 		if(@$this->settings->warnDefault) {
 			throw new Exception("No configuration found. Rename the file <b>config.php-example</b> in phpVirtualBox's folder to ".
 					"<b>config.php</b> and edit as needed.<p>For more detailed instructions, please see the installation wiki on ".
-					"phpVirtualBox's web site. <p><a href='http://sourceforge.net/p/phpvirtualbox/wiki/Home/' target=_blank>".
-					"http://sourceforge.net/p/phpvirtualbox/wiki/Home/</a>.</p>",
+					"phpVirtualBox's web site. <p><a href='https://github.com/phpvirtualbox/phpvirtualbox/wiki' target=_blank>".
+					"https://github.com/phpvirtualbox/phpvirtualbox/wiki</a>.</p>",
 						(vboxconnector::PHPVB_ERRNO_FATAL + vboxconnector::PHPVB_ERRNO_HTML));
 		}
 

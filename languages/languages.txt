@@ -4,7 +4,7 @@ $Id: languages.txt 582 2014-12-11 17:47:28Z imoore76 $
 This outlines in-depth the process used by phpVirtualBox's translation mechanisms and describes
 how a developer may add new translations. If the reader, as an end-user simply wishes to translate
 phpVirtualBox into a new language, see:
-http://sourceforge.net/p/phpvirtualbox/wiki/Home/#translating-phpvirtualbox
+https://github.com/phpvirtualbox/phpvirtualbox/wiki#translating-phpvirtualbox
 
 .. I) phpVirtualBox translation mechanism
 ....... a) Contexts
