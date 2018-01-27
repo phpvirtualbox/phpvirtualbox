@@ -20,13 +20,11 @@ possession.
 
 1) Download zip file from GitHub project site: https://github.com/phpvirtualbox/phpvirtualbox/archive/master.zip
 
-2) Unzip zipfile into /usr/share/phpvirtualbox
+2) Unzip the zipfile into a folder accessible by your web server
 
 3) Rename config.php-example to config.php and edit as needed.
 
-4) Move phpvirtualbox.conf into /etc/apache2/conf-available/  * NB: The default config file makes phpvirtualbox only accessible from the localhost for security reasons.
-
-5) Run `a2enconf phpvirtualbox` and `service apache2 reload`
+Read the wiki for more information : https://github.com/phpvirtualbox/phpvirtualbox/wiki
 
 # Post installation
 
