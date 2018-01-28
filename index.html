@@ -53,6 +53,42 @@
 	
 		$(document).ready(function(){
 
+			//Check PHP extension requirements (SOAP, JSON)
+			$.ajax({
+				type: "GET",
+				url: "endpoints/checkPHPRequirements.php",
+				async: false,
+				dataType: "script"
+			});
+
+			// Display error if one of the required PHP extensions is not enabled
+			if(typeof __vboxCheckPHPRequirements != "undefined") {
+				trans = function(s){return s;};
+				vboxAlert(__vboxCheckPHPRequirements,{'width':'50%'});
+				return;
+			}
+
+			//Check if config.php has syntax errors
+			$.ajax({
+					type: "GET",
+					url: "endpoints/checkConfig.php",
+					async: false,
+					dataType: "script"
+				});
+
+			// Display error if config.php has syntax errors
+			if(typeof __vboxCheckConfig == "undefined") {
+				trans = function(s){return s;};
+				vboxAlert("<p>There is a PHP syntax error in your config.php.</p>\
+					<p>The most common errors are an unclosed quote or a missing\
+					semicolon in a configuration item that has been entered (e.g.\
+					 location, username, or password).</p>\
+					<p>Depending on your PHP configuration,\
+					 navigating directly to <a href='config.php'>config.php</a> in your web\
+					 browser may display the PHP error message. Otherwise, you may find that PHP error message in your web server logs.</p>",{'width':'50%'});
+				return;
+			}
+
 			/* Synchronously load requirements */
 			for(var i = 0; i < vboxEndpointConfig.require.length; i++) {
 				$.ajax({
@@ -97,17 +133,12 @@
 			 */
 			if(typeof trans != "function" || typeof __vboxLangData == "undefined") {
 				trans = function(s){return s;};
-				vboxAlert("An unknown PHP error occurred. This is most likely a syntax error in\
-					config.php in phpVirtualBox's folder. The most common errors are an unclosed\
-					 quote or a missing\
-					semicolon in a configuration item that has been entered (e.g.\
-					 location, username, or password).<p>Depending on your PHP configuration,\
-					 navigating directly to <a href='config.php'>config.php</a> in your web\
-					 browser may display the PHP error message.</p>\
-					 <p>If find that this is not the case,\
-					 or have no idea what this error message means, please raise the issue\
-					 at <a href='http://sourceforge.net/p/phpvirtualbox/discussion/help/'\
-					 >http://sourceforge.net/p/phpvirtualbox/discussion/help/",{'width':'50%'});
+				vboxAlert("An unknown error occurred.\
+					 <p>Please make sure that you followed all the instructions in the <a href='https://github.com/phpvirtualbox/phpvirtualbox/wiki'>wiki</a> and that you read the <a href='https://github.com/phpvirtualbox/phpvirtualbox/wiki/Common-phpVirtualBox-Errors-and-Issues'>common errors section</a>.</p>\
+					 <p>If it's the case, raise the issue at the\
+					 <a href='https://github.com/phpvirtualbox/phpvirtualbox/issues/'\
+					 >GitHub repository</a> with all the informations to reproduce it (operating system, phpvirtualbox version, VirtualBox version, php version, web server version, ... ).\
+					 </p>",{'width':'50%'});
 				return;
 			}
 			
