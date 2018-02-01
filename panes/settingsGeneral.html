@@ -11,7 +11,7 @@
 	<li><a href="#vboxSettingsTabGeneralAdvanced"><span class='translate'>Advanced</span></a></li>
 	<li><a href="#vboxSettingsTabGeneralDescription"><span class='translate'>Description</span></a></li>
 	<li><a href="#vboxSettingsTabGeneralEncryption"><span class='translate'>Encryption</span></a></li>
-	<li id='vboxSettingsTabGeneralInputTab'><a href="#vboxSettingsTabGeneralInput"><span class='translate'>Input</span></a></li>
+	<li id='vboxSettingsTabGeneralInputTab'><a href="#vboxSettingsTabGeneralInput"><span class='translateinputtab'>Input</span></a></li>
 </ul>
 
 <!-- Basic Tab -->
@@ -126,7 +126,7 @@
 <div id='vboxSettingsTabGeneralInput' title='Input'>
     <table class='vboxVertical'>
     	<tr>
-    		<th><span class='translate'>Keyboard:</span></th>
+    		<th><span class='translateinput'>Keyboard</span><span> :</span></th>
     		<td><select name='vboxSettingsTabGeneralInputKeyboard'>
     			<option value='PS2Keyboard'>PS/2 Keyboard</option>
     			<option value='USBKeyboard'>USB Keyboard</option>
@@ -134,7 +134,7 @@
     		</td>
     	</tr>    
     	<tr>
-    		<th><span class='translate'>Mouse:</span></th>
+    		<th><span class='translateinput'>Mouse</span><span> :</span></th>
     		<td><select name='vboxSettingsTabGeneralInputMouse'>
     			<option value='PS2Mouse'>PS/2 Mouse</option>
     			<option value='USBMouse'>USB Mouse</option>
@@ -147,6 +147,8 @@
 <script type='text/javascript'>
 
 /* Translations */
+$('#vboxSettingsTabGeneralInput').find(".translateinput").html(function(i,h){return trans(h,'UIActionPool');});
+$('#vboxSettingsTabGeneralInputTab').find(".translateinputtab").html(function(i,h){return trans(h,'UISettingsDialogGlobal');});
 $('#vboxSettingsTabGeneralBasic').find(".translateos").html(function(i,h){return trans(h,'UINameAndSystemEditor');});
 if($('#vboxPane').data('vboxConfig').vboxAutostartConfig) {
 	
@@ -162,6 +164,7 @@ if($('#vboxPane').data('vboxConfig').vboxAutostartConfig) {
 }
 
 $('#vboxSettingsTabGeneralEncryption').find('option').html(function(i,h){ return trans(h, 'UIMachineSettingsGeneral', 'cipher type')});
+$('#vboxSettingsTabGeneralInput').find('option').html(function(i,h){ return trans(h, 'VBoxGlobal')});
 
 /* Browse for snapshot folder */
 function vboxSnapshotBrowseFolder(btn) {
@@ -177,15 +180,6 @@ if(!$('#vboxPane').data('vboxConfig').startStopConfig) {
 	
 	$('#vboxSettingsTabGeneralBasic').find('tr.vboxStartStopConfig').hide();
 	
-}
-
-/*
- * Remove input if advancedconfig is not set
- * else set default values
- */
-if(!$('#vboxPane').data('vboxConfig').enableAdvancedConfig) {
-	$('#vboxSettingsTabGeneralInputTab').remove();
-	$('#vboxSettingsTabGeneralInput').remove();
 }
 
 /* Custom icons */
@@ -276,10 +270,8 @@ $('#vboxSettingsDialog').on('dataLoaded', function(){
 	document.forms['frmVboxSettings'].vboxSettingsGeneralDescription.innerHTML = $('#vboxSettingsDialog').data('vboxMachineData').description;
 
 	/* Advanced config options */
-	if($('#vboxPane').data('vboxConfig').enableAdvancedConfig) {
-		$(document.forms['frmVboxSettings'].vboxSettingsTabGeneralInputKeyboard).val($('#vboxSettingsDialog').data('vboxMachineData').keyboardHIDType);
-		$(document.forms['frmVboxSettings'].vboxSettingsTabGeneralInputMouse).val($('#vboxSettingsDialog').data('vboxMachineData').pointingHIDType);
-	}
+    $(document.forms['frmVboxSettings'].vboxSettingsTabGeneralInputKeyboard).val($('#vboxSettingsDialog').data('vboxMachineData').keyboardHIDType);
+	$(document.forms['frmVboxSettings'].vboxSettingsTabGeneralInputMouse).val($('#vboxSettingsDialog').data('vboxMachineData').pointingHIDType);
 	
 	/* OS Type */
 	
@@ -397,10 +389,8 @@ $('#vboxSettingsDialog').on('dataLoaded', function(){
 	$('#vboxSettingsDialog').data('vboxMachineData').snapshotFolder = document.forms['frmVboxSettings'].vboxSettingsGeneralSnapshotFolder.value;
 	$('#vboxSettingsDialog').data('vboxMachineData').description = 	$(document.forms['frmVboxSettings'].vboxSettingsGeneralDescription).val();
 	
-	if($('#vboxPane').data('vboxConfig').enableAdvancedConfig) {
-		$('#vboxSettingsDialog').data('vboxMachineData').keyboardHIDType = $(document.forms['frmVboxSettings'].vboxSettingsTabGeneralInputKeyboard).val();
-		$('#vboxSettingsDialog').data('vboxMachineData').pointingHIDType = $(document.forms['frmVboxSettings'].vboxSettingsTabGeneralInputMouse).val();
-	}
+	$('#vboxSettingsDialog').data('vboxMachineData').keyboardHIDType = $(document.forms['frmVboxSettings'].vboxSettingsTabGeneralInputKeyboard).val();
+	$('#vboxSettingsDialog').data('vboxMachineData').pointingHIDType = $(document.forms['frmVboxSettings'].vboxSettingsTabGeneralInputMouse).val();
 
 	if($('#vboxPane').data('vboxConfig').enableCustomIcons)
 		$('#vboxSettingsDialog').data('vboxMachineData').customIcon = $(document.forms['frmVboxSettings'].vboxSettingsGeneralIcon).val();
