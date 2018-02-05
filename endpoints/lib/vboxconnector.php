@@ -3623,7 +3623,7 @@ class vboxconnector {
 		Checks if the guest entered the ACPI mode G0 (working) or G1 (sleeping). If this method
 		returns false, the guest will most likely not respond to external ACPI events.
 		If this method fails, the following error codes may be reported:
-		 VBOX_E_INVALID_VM_STATE: Virtual machine not in Running state.
+		VBOX_E_INVALID_VM_STATE: Virtual machine not in Running state.
 		*/
 
 		// Get current console port
@@ -3944,7 +3944,7 @@ class vboxconnector {
 			else $nd = null;
 
 			$props = $n->getProperties(null);
-			$props = implode("\n",array_map(create_function('$a,$b','return "$a=$b";'),$props[1],$props[0]));
+			$props = implode("\n",array_map(function($a,$b){return "$a=$b";},$props[1],$props[0]));
 
 			$adapters[] = array(
 				'adapterType' => (string)$n->adapterType,
@@ -4500,7 +4500,7 @@ class vboxconnector {
 		}
 
 		// sort by port then device
-		usort($return,create_function('$a,$b', 'if($a["port"] == $b["port"]) { if($a["device"] < $b["device"]) { return -1; } if($a["device"] > $b["device"]) { return 1; } return 0; } if($a["port"] < $b["port"]) { return -1; } return 1;'));
+		usort($return,function($a,$b){if($a["port"] == $b["port"]) { if($a["device"] < $b["device"]) { return -1; } if($a["device"] > $b["device"]) { return 1; } return 0; } if($a["port"] < $b["port"]) { return -1; } return 1;});
 
 		return $return;
 	}
