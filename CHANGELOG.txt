@@ -1,5 +1,5 @@
 -------------------------------------
-    5.2-0
+    5.2-0   2018-02-16
 -------------------------------------
 Long overdue post 5.0 support (5.2 at this stage)
 PHP 7.1 support thanks to @mikedld
