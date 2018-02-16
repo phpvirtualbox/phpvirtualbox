@@ -21,17 +21,18 @@
  */
  
  
- /**
-	struct of db:
-		CREATE TABLE users(
-			username VARCHAR(20) PRIMARY KEY,
-			password VARCHAR(40),
-			admin ENUM('0','1') DEFAULT '0'
-			)ENGINE=InnoDB;
-			
-	INSERT INTO users(username,password,admin)
-		VALUES("admin","$1$65CMtT1M$GSDBTEZ6o5Web.4cDL6rz1",'1');	/*user:admin, pass:admin*/
- 
+/**
+ *	struct of db:
+ *		CREATE TABLE users(
+ *			username VARCHAR(20) PRIMARY KEY,
+ *			password VARCHAR(40),
+ *			admin ENUM('0','1') DEFAULT '0'
+ *			)ENGINE=InnoDB;
+ *
+ *	user:admin, pass:admin
+ *	INSERT INTO users(username,password,admin)
+ *		VALUES("admin","$1$65CMtT1M$GSDBTEZ6o5Web.4cDL6rz1",'1')
+ *
  */
 class phpvbAuthMySQL implements phpvbAuth
 {

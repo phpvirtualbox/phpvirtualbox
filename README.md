@@ -1,6 +1,10 @@
 # About
 
-phpVirtualBox is Copyright (C) 2015 Ian Moore (imoore76 at yahoo dot com)
+phpVirtualBox is from 2017 maintained by Smart Guide Pty Ltd (tudor at smartguide dot com dot au)
+
+with support from various contributors (see https://github.com/phpvirtualbox/phpvirtualbox/graphs/contributors)
+
+Originally Copyright (C) 2015 Ian Moore (imoore76 at yahoo dot com)
 
 FREE, WITHOUT WARRANTY:
 
@@ -14,17 +18,20 @@ possession.
 
 # Installation from Zip file
 
-1) Download zip file from sourceforge project site: https://sourceforge.net/projects/phpvirtualbox/
+1) Download zip file from GitHub project site: https://github.com/phpvirtualbox/phpvirtualbox/archive/master.zip
 
-2) Rename config.php-example to config.php and edit as needed.
+2) Unzip the zipfile into a folder accessible by your web server
+
+3) Rename config.php-example to config.php and edit as needed.
+
+Read the wiki for more information : https://github.com/phpvirtualbox/phpvirtualbox/wiki
 
 # Post installation
 
 Default login is username: admin password: admin
 
-Please see the wiki located at
-http://sourceforge.net/p/phpvirtualbox/wiki/Home/
-for detailed installation and configuration instructions.
+Please report bugs / feature requests to GitHub
+https://github.com/phpvirtualbox/phpvirtualbox/issues
 
 # Password Recovery
 

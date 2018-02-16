@@ -176,11 +176,11 @@
 		</message>		
 		<message>
 			<source>Admin User</source>
-			<translation>Administrative de l'utilisateur</translation>
+			<translation>Utilisateur administrateur</translation>
 		</message>
 		<message>
 			<source>Can administer users</source>
-			<translation>Peut administrer des utilisateurs</translation>
+			<translation>Peut créer, modifier ou supprimer des utilisateurs</translation>
 		</message>
 		<message>
 			<source>Add User</source>
@@ -228,7 +228,7 @@
 		</message>
 		<message>
 			<source>The passwords you have entered do not match.</source>
-			<translation>Les mots de passe que vous avez saisi ne correspond pas.</translation>
+			<translation>Les mots de passe que vous avez saisis ne correspondent pas.</translation>
 		</message>
 		<message>
 			<source>Password changed.</source>
