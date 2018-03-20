@@ -115,11 +115,12 @@ var vboxSnapshotButtons = [
   			}
   			
   			$('#vboxSnapshotNewName').val(trans('Snapshot %1','VBoxSnapshotsWgt').replace('%1',(snMax+1)));
+  			$('#vboxSnapshotNewName').select();
   			$('#vboxSnapshotNewDesc').val('');
   			
   			
   			var buttons = {};
-  			buttons[trans('OK','QIMessageBox')] = function() {
+  			var OKBtn = buttons[trans('OK','QIMessageBox')] = function() {
   				
   				// Get fresh VM state when this is clicked
   				var vm = vboxChooser.getSingleSelected();
@@ -193,6 +194,8 @@ var vboxSnapshotButtons = [
 				$(this).dialog('close');
 				if(typeof callback == 'function') { callback({success:false,uicancel:true}); }
 			};
+  			
+  			$('#vboxSnapshotNewName').off('keypress').on('keypress',function(e) { if (e.keyCode == 13) OKBtn.apply($('#vboxSnapshotNew')); });
   			
   			$('#vboxSnapshotNew').dialog({'closeOnEscape':false,'width':'400px','height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/snapshot_take_16px.png" class="vboxDialogTitleIcon" height="16" width="16" /> ' + trans('Take Snapshot of Virtual Machine','VBoxTakeSnapshotDlg')});
   			
