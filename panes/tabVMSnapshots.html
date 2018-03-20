@@ -567,7 +567,7 @@ $('#vboxPane').on('vmSelectionListChanged',function(){
 	// No single selected VM or it is host
 	} else {
 		// disable tab
-		$('#vboxTabVMConsole').parent().trigger('disableTab', ['vboxTabVMSnapshots']);
+		$('#vboxTabVMSnapshots').parent().trigger('disableTab', ['vboxTabVMSnapshots']);
 		$('#vboxTabVMSnapshots').data('lastVM',0);
 	}
 
