@@ -14,7 +14,7 @@
 	<div class='vboxOptions' style='padding: 6px'>
 		<input type='text' class='vboxText' name='machineCloneName' style='width: 95%' />
 		
-		<p><label><input type='checkbox' class='vboxCheckbox' name='vboxCloneReinitNetwork' />
+		<p><label><input type='checkbox' class='vboxCheckbox' name='vboxCloneReinitNetwork' checked='checked' />
 			<span class='translate'>Reinitialize the MAC address of all network cards</span></label>
 		</p>
 	</div>
@@ -32,10 +32,10 @@
 	<div class='vboxOptions'>
 		<table>
 			<tr style='vertical-align: bottom;'>
-				<td><label><input type='radio' class='vboxRadio' checked='checked' name='vboxCloneType' value='Full' onclick='vboxCloneVMUpdateSteps(this.value)' /> <span class='translate'>Full Clone</span></label></td>
+				<td><label><input type='radio' class='vboxRadio' name='vboxCloneType' value='Full' onclick='vboxCloneVMUpdateSteps(this.value)' /> <span class='translate'>Full Clone</span></label></td>
 			</tr>
 			<tr style='vertical-align: bottom;'>
-				<td><label><input type='radio' class='vboxRadio' name='vboxCloneType' value='Linked' onclick='vboxCloneVMUpdateSteps(this.value)' /> <span class='translate'>Linked Clone</span></label></td>
+				<td><label><input type='radio' class='vboxRadio' checked='checked' name='vboxCloneType' value='Linked' onclick='vboxCloneVMUpdateSteps(this.value)' /> <span class='translate'>Linked Clone</span></label></td>
 			</tr>		
 		</table>
 	</div>
@@ -97,6 +97,9 @@ $('#wizardCloneVMStep1').on('show',function(e,wiz){
 
 	$(document.forms['frmwizardCloneVM'].elements.machineCloneName).focus();
 	document.forms['frmwizardCloneVM'].elements.machineCloneName.value = trans('%1 Clone','UIWizardCloneVMPage1').replace('%1',wiz.args.vm.name);
+
+	var inputBox = $('#wizardCloneVMStep1').find('input.vboxText').select();
+	setTimeout(inputBox.focus.bind(inputBox),10);
 });
 
 /* When going to step2, make sure a name is entered */
