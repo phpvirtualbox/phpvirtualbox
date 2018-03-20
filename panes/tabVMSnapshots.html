@@ -734,10 +734,12 @@ function __vboxTabSnapshotsFill(response) {
 		$('#vboxSnapshotList').vbtree();
 		
 		vboxSnapshotToolbar.enable();
-	
-		$('#vboxSnapshotList').trigger('select');
-	
-		__vboxTabSnapshotTimestamps();	
+		
+		var lastListItem = $(list).find('li.vboxSnapshotCurrentState').last();
+		lastListItem.children().addClass('vboxListItemSelected');
+		$('#vboxSnapshotList').trigger('select',lastListItem);
+		
+		__vboxTabSnapshotTimestamps();
 		
 	});
 
