@@ -299,14 +299,14 @@ function vboxGuestOSTypeIcon(osTypeId) {
 		case "OpenSolaris":     strIcon = "os_oraclesolaris.png"; break;
 		case "OpenSolaris_64":  strIcon = "os_oraclesolaris_64.png"; break;
 		case "QNX":             strIcon = "os_qnx.png"; break;
-		case "MacOS106":
-		case 'MacOS':			strIcon = "os_macosx.png"; break;
-		case "MacOS106_64":
-		case 'MacOS_64':		strIcon = "os_macosx_64.png"; break;
-		case 'Oracle':			strIcon = "os_oracle.png"; break;
-		case 'Oracle_64':		strIcon = "os_oracle_64.png"; break;
-		case 'JRockitVE':		strIcon = 'os_jrockitve.png'; break;
-		case "VirtualBox_Host":	strIcon = "os_virtualbox.png"; break;
+		case "MacOS106":        strIcon = "os_macosx.png"; break;
+		case 'MacOS':           strIcon = "os_macosx.png"; break;
+		case "MacOS106_64":     strIcon = "os_macosx_64.png"; break;
+		case 'MacOS_64':        strIcon = "os_macosx_64.png"; break;
+		case 'Oracle':          strIcon = "os_oracle.png"; break;
+		case 'Oracle_64':       strIcon = "os_oracle_64.png"; break;
+		case 'JRockitVE':       strIcon = 'os_jrockitve.png'; break;
+		case "VirtualBox_Host": strIcon = "os_virtualbox.png"; break;
 
         default:
             break;
