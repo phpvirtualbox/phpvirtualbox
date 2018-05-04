@@ -3,6 +3,10 @@
 	<context>
 		<name>phpVirtualBox</name>
 		<message>
+			<source>This version of phpVirtualBox (%1) is incompatible with VirtualBox %2. You probably need to &lt;a href='%3' target='_blank'&gt;download the latest phpVirtualBox %4-x&lt;/a&gt;.</source>
+			<translation>A versão do phpVirtualBox (%1) é incompatível com o VirtualBox %2. Você provavelmente precisará &lt;a href='%3' target='_blank'&gt;fazer o dowload da versão mais recente do phpVirtualBox %4-x&lt;/a&gt;.</translation>
+		</message>
+		<message>
 			<source>Warning: A VirtualBox internal operation is in progress. Closing this window or navigating away from this web page may cause unexpected and undesirable results. Please wait for the operation to complete.</source>
 			<translation>Aviso: Uma operação do VirtualBox está em execução. Fechar esta janela ou navegar fora desta página pode causar resultados inesperados e indesejáveis. Por favor espere até que a tarefa seja executada.</translation>
 		</message>
