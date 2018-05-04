@@ -717,10 +717,10 @@ var vboxChooser = {
 			// Check for version mismatches?
 			if(!vboxChooser._versionChecked) {
 				vboxChooser._versionChecked = true;
-				var vStr = $('#vboxPane').data('vboxConfig').phpvboxver.substring(0,$('#vboxPane').data('vboxConfig').phpvboxver.indexOf('-'));
+				var vStr = $('#vboxPane').data('vboxConfig').phpvboxver.substring(0,$('#vboxPane').data('vboxConfig').phpvboxver.indexOf('-')).split('.');
 				var vers = $('#vboxPane').data('vboxConfig').version.string.replace('_OSE','').split('.');
-				if(vers[0]+'.'+vers[1] != vStr) {
-					vboxAlert('This version of phpVirtualBox ('+$('#vboxPane').data('vboxConfig').phpvboxver+') is incompatible with VirtualBox ' + $('#vboxPane').data('vboxConfig').version.string + ". You probably need to <a href='http://sourceforge.net/projects/phpvirtualbox/files/' target=_blank>download the latest phpVirtualBox " + vers[0]+'.'+vers[1] + "-x</a>.<p>See the Versioning section below the file list in the link for more information</p>",{'width':'auto'});
+				if(vers[0] != vStr[0] || vers[1] > vStr[1]) {
+					vboxAlert(trans("This version of phpVirtualBox (%1) is incompatible with VirtualBox %2. You probably need to <a href='%3' target='_blank'>download the latest phpVirtualBox %4-x</a>.",'phpVirtualBox').replace('%1',$('#vboxPane').data('vboxConfig').phpvboxver).replace('%2',$('#vboxPane').data('vboxConfig').version.string).replace('%3','https://github.com/phpvirtualbox/phpvirtualbox').replace('%4',vers[0]+'.'+vers[1]),{'width':'auto'});
 				}
 			}			
 		} else {
