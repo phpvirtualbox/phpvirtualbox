@@ -1499,7 +1499,7 @@ class IVirtualSystemDescription extends VBox_ManagedObject
     {
         $request = new stdClass();
         $request->_this = $this->handle;
-        $request->enabled = (bool)$arg_enabled;
+        $request->enabled = $arg_enabled;
         $request->VBoxValues = $arg_VBoxValues;
         $request->extraConfigValues = $arg_extraConfigValues;
         $response = $this->connection->__soapCall('IVirtualSystemDescription_setFinalValues', array((array)$request));
