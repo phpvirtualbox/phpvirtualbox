@@ -27,7 +27,7 @@ var $vrdeports = '9000-9100';
 /*
  * Set the VRDE address, e.g. 192.168.1.1
  * To permit any address set '' (empty) or '0.0.0.0'
- * Default value is 127.0.0.1
+ * Default value is '' empty (permit any address)
  */
 
 #var $vrdeaddress = '';
