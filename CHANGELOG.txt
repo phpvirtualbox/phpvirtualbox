@@ -1,11 +1,21 @@
 -------------------------------------
-    5.2-0
+    5.2-1   2018-07-13
+-------------------------------------
+New 5.2 icons thanks to @der-eismann
+Import/Export fix thanks to @tom077
+Snapshot pane fixes and faster dialogs thanks to @Adam5Wu
+Convert to unix file format to reduce size
+
+-------------------------------------
+    5.2-0   2018-02-16
 -------------------------------------
 Long overdue post 5.0 support (5.2 at this stage)
 PHP 7.1 support thanks to @mikedld
 New Czech localization thanks to @p-bo
 MySQL autho module thanks to @tioigor96
 Various bugfixes thanks to @tschoening and @ashway83
+Huge support effort from @tom077!
+Thanks to everyone who's helped bring this project back up to speed!
 
 -------------------------------------
     5.0-5   2016-01-08
