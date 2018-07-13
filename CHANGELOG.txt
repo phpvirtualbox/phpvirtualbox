@@ -1,4 +1,12 @@
 -------------------------------------
+    5.2-1   2018-07-13
+-------------------------------------
+New 5.2 icons thanks to @der-eismann
+Import/Export fix thanks to @tom077
+Snapshot pane fixes and faster dialogs thanks to @Adam5Wu
+Convert to unix file format to reduce size
+
+-------------------------------------
     5.2-0   2018-02-16
 -------------------------------------
 Long overdue post 5.0 support (5.2 at this stage)
