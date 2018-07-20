@@ -196,7 +196,7 @@
 		</message>
 		<message>
 			<source>A user with that username already exists.</source>
-			<translation>Пользователь с такимименем уже существует.</translation>
+			<translation>Пользователь с таким именем уже существует.</translation>
 		</message>
 		<message>
 			<source>Are you sure you want to remove the user &lt;b&gt;%1&lt;/b&gt;? This action cannot be undone.</source>
@@ -232,11 +232,11 @@
 		</message>
 		<message>
 			<source>Password changed.</source>
-			<translation>Пароль изменен.</translation>
+			<translation>Пароль изменён.</translation>
 		</message>
 		<message>
 			<source>The password you have entered is invalid.</source>
-			<translation>Пароль, который выввели неверный.</translation>
+			<translation>Пароль, который вы ввели, неверный.</translation>
 		</message>
 		<message>
 			<source>Retype</source>
