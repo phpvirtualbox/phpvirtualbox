@@ -1,10 +1,20 @@
 -------------------------------------
-    5.2-1   2018-07-13
+    6.0-0   
 -------------------------------------
-New 5.2 icons thanks to @der-eismann
-Import/Export fix thanks to @tom077
-Snapshot pane fixes and faster dialogs thanks to @Adam5Wu
+Upgrade to Virtualbox 6.0
+
+
+-------------------------------------
+    5.2-1   2018-11-09
+-------------------------------------
+Various snapshot fixes and improvements - @Adam5Wu
+Add a configuration variable to set the VRDE address - @rosorio
+New icons to match Desktop Application - @der-eismann
+Fix Import/Export - @tom077
+Russian translation fixes - @SvetlanaTkachenko
+Viewport and URL fixes - @krzysztof113
 Convert to unix file format to reduce size
+
 
 -------------------------------------
     5.2-0   2018-02-16
