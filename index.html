@@ -96,6 +96,8 @@
 			 * If not, there is a PHP error somewhere.
 			 */
 			if(typeof trans != "function" || typeof __vboxLangData == "undefined") {
+			//if(true) {
+
 				trans = function(s){return s;};
 				vboxAlert("An unknown PHP error occurred. This is most likely a syntax error in\
 					config.php in phpVirtualBox's folder. The most common errors are an unclosed\
@@ -106,8 +108,8 @@
 					 browser may display the PHP error message.</p>\
 					 <p>If find that this is not the case,\
 					 or have no idea what this error message means, please raise the issue\
-					 at <a href='https://github.com/phpvirtualbox/phpvirtualbox/issues/'\
-					 >https://github.com/phpvirtualbox/phpvirtualbox/issues/",{'width':'50%'});
+					 at <a target=_blank href='https://github.com/phpvirtualbox/phpvirtualbox/issues/'\
+					 >https://github.com/phpvirtualbox/phpvirtualbox/issues",{'width':'50%'});
 				return;
 			}
 			
