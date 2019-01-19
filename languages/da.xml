@@ -4,28 +4,28 @@
 		<name>phpVirtualBox</name>
 		<message>
 			<source>Warning: A VirtualBox internal operation is in progress. Closing this window or navigating away from this web page may cause unexpected and undesirable results. Please wait for the operation to complete.</source>
-			<translation>Advarsel: En intern VirtualBox operation er i gang. At lukke dette vindue eller navigere væk fra denne webside kan have uventet og uønsket effekt. Venligst vent på at operationen færdiggøres.</translation>
+			<translation>Advarsel: En intern VirtualBox-handling er i gang. Lukning af vinduet eller navigering væk fra websiden kan forårsage uventede og uønskede resultater. Vent venligst på at handlingen bliver færdig.</translation>
 		</message>
 		<message>
 			<source>Operation Canceled</source>
-			<translation>Handling afbrudt</translation>
+			<translation>Handling annulleret</translation>
 		</message>
 		<message>
 			<source>An error occurred communicating with your vboxwebsrv. No more requests will be sent by phpVirtualBox until the error is corrected and this page is refreshed. The details of this connection error should be displayed in a subsequent dialog box.</source>
-			<translation>En fejl opstod ved kommunikation med din vboxwebsrv. Der vil ikke blive sendt flere forespørgsler af phpVirtualBox før fejlen er rettet og denne side genindlæst. Yderligere information om denne kommunikationsfejl vil blive vist i en efterfølgende dialog boks.</translation>
+			<translation>Der opstod en fejl ved kommunikation med din vboxwebsrv. Der sendes ikke flere forespørgsler af phpVirtualBox før fejlen er blevet rettet og siden er blevet genindlæst. Detaljerne om forbindelsesfejlen bør blive vist i en efterfølgende dialogboks.</translation>
 		</message>
 		<message>
 			<source>Unable to retrieve guest properties. Make sure the virtual machine is running and has the VirtualBox Guest Additions installed.</source>
-			<translation>Gæstens egenskaber kan ikke læses. Kontroller at den virtuelle maskine kører og har VirtualBox Guest Additions installeret.</translation>
+			<translation>Kan ikke indhente gæstens egenskaber. Sørg for at den virtuelle maskine kører og at den har VirtualBox-gæstetilføjelser installeret.</translation>
 		</message>
 		<!-- Error vmlist 1 -->
 		<message>
 			<source>There was an error obtaining the list of registered virtual machines from VirtualBox. Make sure vboxwebsrv is running and that the settings in config.php are correct.&lt;p&gt;The list of virtual machines will not begin auto-refreshing again until this page is reloaded.&lt;/p&gt;</source>
-			<translation>Der opstod en fejl ved læsning af liste med registrerede virtualle maskiner fra VirtualBox. Kontroller at vboxwebsrv kører og at indstillingerne i config.php er korrekt.&lt;p&gt;Listen med virtuelle maskiner vil ikke blive opdateret før denne side er genindlæst.&lt;/p&gt;</translation>
+			<translation>Der opstod en fejl ved indhentning af listen over registrerede virtuelle maskiner fra VirtualBox. Sørg for at vboxwebsrv kører og at indstillingerne i config.php er korrekte.&lt;p&gt;Listen over virtuelle maskiner opdateres ikke automatisk igen før siden er blevet genindlæst.&lt;/p&gt;</translation>
 		</message>
 		<message>
 			<source>Server List</source>
-			<translation>Server liste</translation>
+			<translation>Serverliste</translation>
 		</message>
 	</context>
 	<context>
@@ -43,7 +43,7 @@
 		<name>VBoxSelectorWnd</name>
 		<message>
 			<source>Change Password</source>
-			<translation>Skift kodeord</translation>
+			<translation>Skift adgangskode</translation>
 		</message>
 		<message>
 			<source>Log out - %1</source>
@@ -51,7 +51,7 @@
 		</message>
 		<message>
 			<source>Logged in as %1</source>
-			<translation>Logget på som %1</translation>
+			<translation>Logget ind som %1</translation>
 		</message>
 		<message>
 			<source>Stop</source>
@@ -59,7 +59,7 @@
 		</message>
 		<message>
 			<source>VirtualBox User Manual</source>
-			<translation>VirtualBox Brugervejledning</translation>
+			<translation>VirtualBox-brugermanual</translation>
 		</message>	
 		<message>
 			<source>About</source>
@@ -86,11 +86,11 @@
 		</message>
 		<message>
 			<source>Password</source>
-			<translation>Kodeord</translation>
+			<translation>Adgangskode</translation>
 		</message>
 		<message>
 			<source>Connecting to %1</source>
-			<translation>Forbinder til %1</translation>
+			<translation>Opretter forbindelse til %1</translation>
 		</message>
 		<message>
 			<source>Connected to %1</source>
@@ -98,11 +98,11 @@
 		</message>
 		<message>
 			<source>Requested desktop size</source>
-			<translation>Bestilt skærmstørrelse</translation>
+			<translation>Anmodet skrivebordstørrelse</translation>
 		</message>
 		<message>
 			<source>Connect</source>
-			<translation>Forbind</translation>
+			<translation>Opret forbindelse</translation>
 		</message>
 		<message>
 			<source>Detach</source>
@@ -126,7 +126,7 @@
 		</message>
 		<message>
 			<source>Virtual machine is not running or is not configured to accept RDP connections.</source>
-			<translation>Den virtuelle maskine kører ikke eller er ikke konfigureret til at acceptere RDP forbindelser.</translation>
+			<translation>Den virtuelle maskine kører ikke eller er ikke konfigureret til at acceptere RDP-forbindelser.</translation>
 		</message>
 	</context>		
 	<context>
@@ -137,7 +137,7 @@
 		</message>
 		<message>
 			<source>Guest Network Adapters</source>
-			<translation>Gæste netværkskort</translation>
+			<translation>Gæstens netværkskort</translation>
 		</message>
 		<message>
 			<source>Up</source>
@@ -154,7 +154,7 @@
 		<name>UIVMPreviewWindow</name>
 		<message>
 			<source>Every %1 seconds</source>
-			<translation>hvert %1 sekund(er)</translation>
+			<translation>Hvert %1. sekund</translation>
 		</message>
 		<message>
 			<source>Open in new window</source>
@@ -176,7 +176,7 @@
 		</message>		
 		<message>
 			<source>Admin User</source>
-			<translation>Administrativ bruger</translation>
+			<translation>Administrator-bruger</translation>
 		</message>
 		<message>
 			<source>Can administer users</source>
@@ -196,11 +196,11 @@
 		</message>
 		<message>
 			<source>A user with that username already exists.</source>
-			<translation>En bruger med dette navn findes allerede.</translation>
+			<translation>Der findes allerede en bruger med det navn.</translation>
 		</message>
 		<message>
 			<source>Are you sure you want to remove the user &lt;b&gt;%1&lt;/b&gt;? This action cannot be undone.</source>
-			<translation>Er du sikker på, at du ønsker at fjerne brugeren &lt;b&gt;%1&lt;/b&gt;? Denne handling kan ikke fortrydes.</translation>
+			<translation>Er du sikker på, at du vil fjerne brugeren &lt;b&gt;%1&lt;/b&gt;? Handlingen kan ikke fortrydes.</translation>
 		</message>
 		<message>
 			<source>Username</source>
@@ -208,48 +208,47 @@
 		</message>
 		<message>
 			<source>Password</source>
-			<translation>Kodeord</translation>
+			<translation>Adgangskode</translation>
 		</message>
 		<message>
 			<source>Log in</source>
-			<translation>Log på</translation>
+			<translation>Log ind</translation>
 		</message>
 		<message>
 			<source>Change Password</source>
-			<translation>Skift kodeord</translation>
+			<translation>Skift adgangskode</translation>
 		</message>
 		<message>
 			<source>Old Password</source>
-			<translation>Nuv. kodeord</translation>
+			<translation>Gammel adgangskode</translation>
 		</message>
 		<message>
 			<source>New Password</source>
-			<translation>Nyt kodeord</translation>
+			<translation>Ny adgangskode</translation>
 		</message>
 		<message>
 			<source>The passwords you have entered do not match.</source>
-			<translation>De indtastede kodeord er ikke ens.</translation>
+			<translation>De indtastede adgangskoder er ikke ens.</translation>
 		</message>
 		<message>
 			<source>Password changed.</source>
-			<translation>Kodeord er skiftet.</translation>
+			<translation>Adgangskoden er skiftet.</translation>
 		</message>
 		<message>
 			<source>The password you have entered is invalid.</source>
-			<translation>Det indtastede kodeord er ikke gyldigt.</translation>
+			<translation>Den indtastede adgangskode er ikke gyldig.</translation>
 		</message>
 		<message>
 			<source>Retype</source>
-			<translation>Genindtast</translation>
+			<translation>Indtast igen</translation>
 		</message>
 		<message>
 			<source>Invalid username or password.</source>
-			<translation>Ugyldigt brugernavn eller kodeord.</translation>
+			<translation>Ugyldig brugernavn eller adgangskode.</translation>
 		</message>
 		<message>
 			<source>Not logged in.</source>
-			<translation>Ikke logget på.</translation>
+			<translation>Ikke logget ind.</translation>
 		</message>		
 	</context>
 </language>
-
