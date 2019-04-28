@@ -1854,6 +1854,7 @@ class vboxconnector {
 		if($m->snapshotFolder != $args['snapshotFolder']) $m->snapshotFolder = $args['snapshotFolder'];
 		$m->RTCUseUTC = ($args['RTCUseUTC'] ? 1 : 0);
 		$m->setCpuProperty('PAE', ($args['CpuProperties']['PAE'] ? 1 : 0));
+		$m->setCpuProperty('HWVirt', ($args['CpuProperties']['HWVirt'] ? 1 : 0));
 		$m->setCPUProperty('LongMode', (strpos($args['OSTypeId'],'_64') > - 1 ? 1 : 0));
 
 		// IOAPIC
@@ -1911,6 +1912,7 @@ class vboxconnector {
 			$m->setExtraData('phpvb/icon', $args['customIcon']);
 
 		$m->VRAMSize = $args['VRAMSize'];
+		$m->graphicsControllerType = $args['graphicsControllerType'];
 
 		// Video
 		$m->accelerate3DEnabled = $args['accelerate3DEnabled'];
@@ -1990,7 +1992,7 @@ class vboxconnector {
 			$c->useHostIOCache = $sc['useHostIOCache'];
 
 			// Set sata port count
-			if($sc['bus'] == 'SATA') {
+			if(($sc['bus'] == 'SATA')||($sc['bus'] == 'PCIe')) {
 				$max = max(1,intval(@$sc['portCount']));
 				foreach($sc['mediumAttachments'] as $ma) {
 					$max = max($max,(intval($ma['port'])+1));
@@ -2033,6 +2035,7 @@ class vboxconnector {
 				} else {
 					$med = null;
 				}
+
 				$m->attachDevice($name,$ma['port'],$ma['device'],$ma['type'],(is_object($med) ? $med->handle : null));
 
 				// CD / DVD medium attachment type
@@ -2045,8 +2048,15 @@ class vboxconnector {
 
 				// HardDisk medium attachment type
 				} else if($ma['type'] == 'HardDisk') {
-
+                                        $ma['nonRotational']=($ma['nonRotational']?1:0);
+                                        $ma['discard']=($ma['discard']?1:0);
+                                        $ma['hotPluggable']=($ma['hotPluggable']?1:0);
 					$m->nonRotationalDevice($name, $ma['port'], $ma['device'], $ma['nonRotational']);
+
+                                        // Set Discard (TRIM) Option
+					if($this->settings->enableAdvancedConfig) {
+						$m->setAutoDiscardForDevice($name, $ma['port'], $ma['device'], $ma['discard']);
+					}
 
 					// Remove IgnoreFlush key?
 					if($this->settings->enableHDFlushConfig) {
@@ -3400,7 +3410,8 @@ class vboxconnector {
 		 * Supported CPU features?
 		 */
 		$response['cpuFeatures'] = array();
-		foreach(array('HWVirtEx'=>'HWVirtEx','PAE'=>'PAE','NestedPaging'=>'Nested Paging','LongMode'=>'Long Mode (64-bit)') as $k=>$v) {
+		foreach(array('HWVirtEx'=>'HWVirtEx','PAE'=>'PAE','NestedPaging'=>'Nested Paging','LongMode'=>'Long Mode (64-bit)'
+				,'UnrestrictedGuest'=>'Unrestricted Guest','NestedHWVirt'=>'Nested Virtualization') as $k=>$v) {
 			$response['cpuFeatures'][$v] = $host->getProcessorFeature($k);
 		}
 
@@ -3595,6 +3606,7 @@ class vboxconnector {
 		$machine->releaseRemote();
 
 		$data['accessible'] = 1;
+
 		return $data;
 	}
 
@@ -3840,6 +3852,7 @@ class vboxconnector {
 			$this->session->machine->firmwareType = (string)$defaults->recommendedFirmware;
 			$this->session->machine->chipsetType = (string)$defaults->recommendedChipset;
 			if(intval($defaults->recommendedVRAM) > 0) $this->session->machine->VRAMSize = intval($defaults->recommendedVRAM);
+			$this->session->machine->setGraphicsControllerType((string)$defaults->recommendedGraphicsController);
 			$this->session->machine->setCpuProperty('PAE',$defaults->recommendedPAE);
 
 			// USB input devices
@@ -4208,6 +4221,7 @@ class vboxconnector {
 			'HPETEnabled' => $m->HPETEnabled,
 			'memorySize' => $m->memorySize,
 			'VRAMSize' => $m->VRAMSize,
+			'graphicsControllerType' => (string)$m->graphicsControllerType,
 			'pointingHIDType' => (string)$m->pointingHIDType,
 			'keyboardHIDType' => (string)$m->keyboardHIDType,
 			'accelerate3DEnabled' => $m->accelerate3DEnabled,
@@ -4246,7 +4260,7 @@ class vboxconnector {
 				'VPID' => $m->getHWVirtExProperty('VPID')
 				),
 			'CpuProperties' => array(
-				'PAE' => $m->getCpuProperty('PAE')
+				'PAE' => $m->getCpuProperty('PAE'),'HWVirt' => $m->getCpuProperty('HWVirt')
 				),
 			'bootOrder' => $this->_machineGetBootOrder($m),
 			'chipsetType' => (string)$m->chipsetType,
@@ -4497,6 +4511,7 @@ class vboxconnector {
 				'temporaryEject' => $ma->temporaryEject,
 				'nonRotational' => $ma->nonRotational,
 				'hotPluggable' => $ma->hotPluggable,
+				'discard' => $ma->discard,
 			);
 		}
 
@@ -5557,7 +5572,8 @@ class vboxconnector {
                     'PIIX4',
                     'ICH6',
                     'I82078',
-                    'USB');
+                    'USB',
+                    'NVMe');
 
 		foreach($scts as $t) {
 		    $scs[$t] = $sp->getStorageControllerHotplugCapable($t);
@@ -5692,7 +5708,8 @@ class vboxconnector {
 			'intelahci' => 'ahci',
 			'lsilogic' => 'lsilogicscsi',
 			'buslogic' => 'buslogic',
-			'lsilogicsas' => 'lsilogicsas'
+			'lsilogicsas' => 'lsilogicsas',
+			'nvme' => 'nvme'
 		);
 
 		if(!isset($cTypes[strtolower($cType)])) {
