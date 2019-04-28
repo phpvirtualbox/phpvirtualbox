@@ -148,13 +148,17 @@
 				<td></td>
 			</tr>
 		</table>
-
+		  
 		</td>
 	</tr>
 	
 	<tr id='vboxSettingsSystemPAERow'>
 		<th><span class='translate'>Extended Features:</span></th>
 		<td><label><input type='checkbox' class='vboxCheckbox' name='vboxSettingsSystemPAE' /> <span class='translate'>Enable PAE/NX</span></label></td>
+	</tr>
+	<tr id='vboxSettingsSystemNestedVTRow'>
+		<th></th>
+		<td><label><input type='checkbox' class='vboxCheckbox' name='vboxSettingsSystemNestedVT' /> <span class='translate'>Enable Nested VT-x/AMD-V</span></label></td>
 	</tr>
 </table>
 </div>
@@ -196,7 +200,6 @@
 </table>
 </div>
 
-
 <script type='text/javascript'>
 
 /* Boot order devices */
@@ -221,6 +224,13 @@ if(!$('#vboxSettingsDialog').data('vboxHostDetails').cpuFeatures.PAE) {
 	$('#vboxSettingsSystemPAERow span').addClass('disabled');
 	document.forms['frmVboxSettings'].vboxSettingsSystemPAE.checked = false;
 	document.forms['frmVboxSettings'].vboxSettingsSystemPAE.disabled = true;
+}
+
+/* Disable Nested HW Virt if it is unsupported */
+if(!$('#vboxSettingsDialog').data('vboxHostDetails').cpuFeatures.NestedHWVirt) {
+	$('vboxSettingsSystemNestedVTRow span').addClass('disabled');
+	document.forms['frmVboxSettings'].vboxSettingsSystemNestedVT.checked = false;
+	document.forms['frmVboxSettings'].vboxSettingsSystemNestedVT.disabled = true;
 }
 
 /* Set CPUs to 1 and disable if host cpu does not support HWVirtEx */
@@ -296,6 +306,7 @@ $('#vboxSettingsDialog').on('dataLoaded',function(){
 	$('#vboxSettingsSystemProcessor').slider('value',parseInt($('#vboxSettingsDialog').data('vboxMachineData').CPUCount));
 	$('#vboxSettingsSystemProcessorCap').slider('value',parseInt($('#vboxSettingsDialog').data('vboxMachineData').CPUExecutionCap));
 	document.forms['frmVboxSettings'].vboxSettingsSystemPAE.checked = ($('#vboxSettingsDialog').data('vboxMachineData').CpuProperties.PAE);
+	document.forms['frmVboxSettings'].vboxSettingsSystemNestedVT.checked = ($('#vboxSettingsDialog').data('vboxMachineData').CpuProperties.HWVirt);
 	document.forms['frmVboxSettings'].settingsSystemVT.checked = ($('#vboxSettingsDialog').data('vboxMachineData').HWVirtExProperties.Enabled);
 	document.forms['frmVboxSettings'].settingsSystemPaging.checked = ($('#vboxSettingsDialog').data('vboxMachineData').HWVirtExProperties.NestedPaging);
 	
@@ -429,6 +440,7 @@ $('#vboxSettingsDialog').on('save',function(){
 	$('#vboxSettingsDialog').data('vboxMachineData').CPUCount = parseInt($('#vboxSettingsSystemProcessor').slider('value'));
 	$('#vboxSettingsDialog').data('vboxMachineData').CPUExecutionCap = parseInt($('#vboxSettingsSystemProcessorCap').slider('value'));
 	$('#vboxSettingsDialog').data('vboxMachineData').CpuProperties.PAE = document.forms['frmVboxSettings'].vboxSettingsSystemPAE.checked;
+	$('#vboxSettingsDialog').data('vboxMachineData').CpuProperties.HWVirt = document.forms['frmVboxSettings'].vboxSettingsSystemNestedVT.checked;
 	$('#vboxSettingsDialog').data('vboxMachineData').RTCUseUTC = document.forms['frmVboxSettings'].vboxSettingsSystemRTCUseUTC.checked;
 
 	/* Only if we had a chipset */

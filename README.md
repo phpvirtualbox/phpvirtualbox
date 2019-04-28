@@ -6,6 +6,8 @@ with support from various contributors (see https://github.com/phpvirtualbox/php
 
 Originally Copyright (C) 2015 Ian Moore (imoore76 at yahoo dot com)
 
+VirtualBox 6.0.x adoptation by Pasha1st
+
 FREE, WITHOUT WARRANTY:
 
 All files of this program (phpVirtualBox) are distributed under the
@@ -18,7 +20,7 @@ possession.
 
 # Installation from Zip file
 
-1) Download zip file from GitHub project site: https://github.com/phpvirtualbox/phpvirtualbox/archive/master.zip
+1) Download zip file from GitHub project site: https://github.com/pasha1st/phpvirtualbox-6/archive/master.zip
 
 2) Unzip the zipfile into a folder accessible by your web server
 

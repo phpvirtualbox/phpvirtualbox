@@ -1,9 +1,13 @@
 -------------------------------------
-    6.0-0   
+    6.0-1   2019-04-28
 -------------------------------------
-Upgrade to Virtualbox 6.0
+Add discard (TRIM) support for VDI ($enableAdvancedConfig required)
+Upgrade to Virtualbox 6.0:
+Add NVMe storage controllers support
+Add Nested VT-x/AMD-V control (System-Processor tab)
+Add Graphics controller select (Display-Screen tab)
 
-
+Known issues: no translation for new options
 -------------------------------------
     5.2-1   2018-11-09
 -------------------------------------
