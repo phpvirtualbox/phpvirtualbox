@@ -6,7 +6,7 @@ with support from various contributors (see https://github.com/phpvirtualbox/php
 
 Originally Copyright (C) 2015 Ian Moore (imoore76 at yahoo dot com)
 
-VirtualBox 6.0.x adoptation by Pasha1st
+VirtualBox 6.0.x adaptation by Pasha1st
 
 FREE, WITHOUT WARRANTY:
 
