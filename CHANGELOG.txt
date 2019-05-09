@@ -6,6 +6,7 @@ Upgrade to Virtualbox 6.0:
 Add NVMe storage controllers support
 Add Nested VT-x/AMD-V control (System-Processor tab)
 Add Graphics controller select (Display-Screen tab)
+Add Discard (TRIM) option for VDI disk images
 
 Known issues: no translation for new options
 -------------------------------------
