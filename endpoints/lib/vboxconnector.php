@@ -1443,7 +1443,7 @@ class vboxconnector {
 
 		$m->CPUExecutionCap = $args['CPUExecutionCap'];
 		$m->description = $args['description'];
-                $m->ClipboardMode = $args['ClipboardMode'];
+		$m->ClipboardMode = $args['ClipboardMode'];
 
 		// Start / stop config
 		if(@$this->settings->startStopConfig) {
