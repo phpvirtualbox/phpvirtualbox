@@ -18,7 +18,7 @@ possession.
 
 # Installation from Zip file
 
-1) Download zip file from GitHub project site: https://github.com/pasha1st/phpvirtualbox-6/archive/master.zip
+1) Download zip file from GitHub project site: https://github.com/phpvirtualbox/phpvirtualbox/archive/master.zip
 
 2) Unzip the zipfile into a folder accessible by your web server
 
