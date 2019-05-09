@@ -1443,6 +1443,7 @@ class vboxconnector {
 
 		$m->CPUExecutionCap = $args['CPUExecutionCap'];
 		$m->description = $args['description'];
+		$m->ClipboardMode = $args['ClipboardMode'];
 
 		// Start / stop config
 		if(@$this->settings->startStopConfig) {
@@ -1860,6 +1861,7 @@ class vboxconnector {
 		$m->BIOSSettings->IOAPICEnabled = ($args['BIOSSettings']['IOAPICEnabled'] ? 1 : 0);
 		$m->CPUExecutionCap = $args['CPUExecutionCap'];
 		$m->description = $args['description'];
+		$m->ClipboardMode = $args['ClipboardMode'];
 
 		// Start / stop config
 		if(@$this->settings->startStopConfig) {
@@ -3839,6 +3841,7 @@ class vboxconnector {
 			$this->session->machine->RTCUseUTC = $defaults->recommendedRTCUseUTC;
 			$this->session->machine->firmwareType = (string)$defaults->recommendedFirmware;
 			$this->session->machine->chipsetType = (string)$defaults->recommendedChipset;
+			$this->session->machine->ClipboardMode = 'Disabled';
 			if(intval($defaults->recommendedVRAM) > 0) $this->session->machine->VRAMSize = intval($defaults->recommendedVRAM);
 			$this->session->machine->setCpuProperty('PAE',$defaults->recommendedPAE);
 
@@ -4219,6 +4222,7 @@ class vboxconnector {
 				),
 			'firmwareType' => (string)$m->firmwareType,
 			'snapshotFolder' => $m->snapshotFolder,
+			'ClipboardMode' => (string)$m->ClipboardMode,
 			'monitorCount' => $m->monitorCount,
 			'pageFusionEnabled' => $m->pageFusionEnabled,
 			'VRDEServer' => (!$m->VRDEServer ? null : array(
