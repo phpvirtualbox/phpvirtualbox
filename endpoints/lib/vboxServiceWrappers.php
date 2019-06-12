@@ -2392,6 +2392,7 @@ class IMachine extends VBox_ManagedObject
         $request->hostPath = $arg_hostPath;
         $request->writable = (bool)$arg_writable;
         $request->automount = (bool)$arg_automount;
+        $request->autoMountPoint = "/media/sf_" . $arg_name;
         $response = $this->connection->__soapCall('IMachine_createSharedFolder', array((array)$request));
         return ;
     }
@@ -14918,7 +14919,7 @@ class IMediumAttachmentCollection extends VBox_StructCollection
 /**
  * Generated VBoxWebService Struct
  */
-class ISharedFolder extends VBox_Struct
+class ISharedFolder extends VBox_ManagedObject
 {
     protected $name;
     protected $hostPath;
@@ -14927,47 +14928,83 @@ class ISharedFolder extends VBox_Struct
     protected $autoMount;
     protected $lastAccessError;
 
-    public function __construct($connection, $values)
-    {
-        $this->connection = $connection;
-        $this->name = $values->name;
-        $this->hostPath = $values->hostPath;
-        $this->accessible = $values->accessible;
-        $this->writable = $values->writable;
-        $this->autoMount = $values->autoMount;
-        $this->lastAccessError = $values->lastAccessError;
-    }
 
     public function getName()
     {
-        return (string)$this->name;
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('ISharedFolder_getName', array((array)$request));
+        return (string)$response->returnval;
     }
+
     public function getHostPath()
     {
-        return (string)$this->hostPath;
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('ISharedFolder_getHostPath', array((array)$request));
+        return (string)$response->returnval;
     }
+
     public function getAccessible()
     {
-        return (bool)$this->accessible;
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('ISharedFolder_getAccessible', array((array)$request));
+        return (string)$response->returnval;
     }
+
     public function getWritable()
     {
-        return (bool)$this->writable;
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('ISharedFolder_getWritable', array((array)$request));
+        return (string)$response->returnval;
     }
+
     public function getAutoMount()
     {
-        return (bool)$this->autoMount;
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('ISharedFolder_getAutoMount', array((array)$request));
+        return (string)$response->returnval;
     }
+
+    public function getAutoMountPoint()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('ISharedFolder_getAutoMountPoint', array((array)$request));
+        return (string)$response->returnval;
+    }
+
+    public function setAutoMountPoint()
+    {
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        if (is_null($value) || is_scalar($value))
+        {
+            $request->type = $value;
+        }
+        else
+        {
+            $request->type = $value->handle;
+        }
+        $this->connection->__soapCall('ISharedFolder_setAutoMountPoint', array((array)$request));
+    }
+
     public function getLastAccessError()
     {
-        return (string)$this->lastAccessError;
+        $request = new stdClass();
+        $request->_this = $this->handle;
+        $response = $this->connection->__soapCall('ISharedFolder_getlastAccessError', array((array)$request));
+        return (string)$response->returnval;
     }
 }
 
 /**
  * Generated VBoxWebService Struct Collection
  */
-class ISharedFolderCollection extends VBox_StructCollection
+class ISharedFolderCollection extends VBox_ManagedObjectCollection // VBox_StructCollection
 {
     protected $_interfaceName = "ISharedFolder";
 }
