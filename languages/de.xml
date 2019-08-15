@@ -141,12 +141,12 @@
 		</message>
 		<message>
 			<source>Up</source>
-			<translation>Nach Oben</translation>
+			<translation>Aktiviert</translation>
 			<comment>Host network adapter status</comment>
 		</message>
 		<message>
 			<source>Down</source>
-			<translation>Nach Unten</translation>
+			<translation>Deaktiviert</translation>
 			<comment>Host network adapter status</comment>
 		</message>
 	</context>
