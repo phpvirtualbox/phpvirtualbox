@@ -25,9 +25,13 @@ So far, so good. Almost there.
 
 In `phpvirtualbox/endpoints/lib/vboxconnector.php` Line 2232 change
 
-`$m->createSharedFolder($s['name'],$s['hostPath'],(bool)$s['writable'],(bool)$s['autoMount']);`  
+```
+$m->createSharedFolder($s['name'],$s['hostPath'],(bool)$s['writable'],(bool)$s['autoMount']);
+```
 to  
-`$m->createSharedFolder($s['name'],$s['hostPath'],(bool)$s['writable'],(bool)$s['autoMount'],$s['autoMountPoint']);`  
+```
+$m->createSharedFolder($s['name'],$s['hostPath'],(bool)$s['writable'],(bool)$s['autoMount'],$s['autoMountPoint']);
+```
 
 And, restart the `vboxwebsrv` server:
 ```sh
