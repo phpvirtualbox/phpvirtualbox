@@ -19,6 +19,7 @@ wget https://download.virtualbox.org/virtualbox/6.0.10/VirtualBoxSDK-6.0.10-1320
 unzip VirtualBoxSDK-6.0.10-132072.zip
 mv sdk sdk-6.0.10
 cp sdk-6.0.10/bindings/webservice/vboxweb.wsdl phpvirtualbox/endpoints/lib/vboxweb-6.0.wsdl
+cp sdk-6.0.10/bindings/webservice/vboxwebService.wsdl phpvirtualbox/endpoints/lib/vboxwebService-6.0.wsdl
 cp sdk-6.0.10/bindings/webservice/php/lib/vboxServiceWrappers.php phpvirtualbox/endpoints/lib/
 ```
 So far, so good. Almost there.
