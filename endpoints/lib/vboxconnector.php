@@ -1100,7 +1100,7 @@ class vboxconnector {
 		// Not in media registry. Try to register it.
 		if(!$gem) {
 			$checks = array(
-				'linux' => '/usr/share/virtualbox/VBoxGuestAdditions.iso',
+				'linux' => '/opt/VirtualBox/additions/VBoxGuestAdditions.iso',
 				'osx' => '/Applications/VirtualBox.app/Contents/MacOS/VBoxGuestAdditions.iso',
 				'sunos' => '/opt/VirtualBox/additions/VBoxGuestAdditions.iso',
 				'windows' => 'C:\Program Files\Oracle\VirtualBox\VBoxGuestAdditions.iso',
