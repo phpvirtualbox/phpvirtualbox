@@ -3,5 +3,6 @@
 /.project
 /config.php
 /phpinfo.php
+/session
 .vscode
 *.org
