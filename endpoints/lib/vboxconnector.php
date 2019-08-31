@@ -2229,7 +2229,7 @@ class vboxconnector {
 			foreach($sharedEx as $s) { $m->removeSharedFolder($s['name']);}
 			try {
 				foreach($sharedNew as $s) {
-					$m->createSharedFolder($s['name'],$s['hostPath'],(bool)$s['writable'],(bool)$s['autoMount']);
+					$m->createSharedFolder($s['name'],$s['hostPath'],(bool)$s['writable'],(bool)$s['autoMount'],$s['autoMountPoint']);
 				}
 			} catch (Exception $e) { $this->errors[] = $e; }
 		}
