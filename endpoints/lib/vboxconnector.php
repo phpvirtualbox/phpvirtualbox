@@ -1681,10 +1681,10 @@ class vboxconnector {
 			if($sf['type'] == 'machine' && $psf[$sf['name']]) {
 
 				/* Remove if it doesn't match */
-				if($sf['hostPath'] != $psf[$sf['name']]->hostPath || (bool)$sf['autoMount'] != (bool)$psf[$sf['name']]->autoMount || (bool)$sf['writable'] != (bool)$psf[$sf['name']]->writable) {
+				if($sf['hostPath'] != $psf[$sf['name']]->hostPath || (bool)$sf['autoMount'] != (bool)$psf[$sf['name']]->autoMount || (bool)$sf['autoMountPoint'] != (bool)$psf[$sf['name']]->autoMountPoint || (bool)$sf['writable'] != (bool)$psf[$sf['name']]->writable) {
 
 					$m->removeSharedFolder($sf['name']);
-					$m->createSharedFolder($sf['name'],$sf['hostPath'],(bool)$sf['writable'],(bool)$sf['autoMount']);
+					$m->createSharedFolder($sf['name'],$sf['hostPath'],(bool)$sf['writable'],(bool)$sf['autoMount'],$sf['autoMountPoint']);
 				}
 
 				unset($psf[$sf['name']]);
@@ -1693,10 +1693,10 @@ class vboxconnector {
 			} else if($sf['type'] != 'machine' && $tsf[$sf['name']]) {
 
 				/* Remove if it doesn't match */
-				if($sf['hostPath'] != $tsf[$sf['name']]->hostPath || (bool)$sf['autoMount'] != (bool)$tsf[$sf['name']]->autoMount || (bool)$sf['writable'] != (bool)$tsf[$sf['name']]->writable) {
+				if($sf['hostPath'] != $tsf[$sf['name']]->hostPath || (bool)$sf['autoMount'] != (bool)$tsf[$sf['name']]->autoMount || (bool)$sf['autoMountPoint'] != (bool)$psf[$sf['name']]->autoMountPoint || (bool)$sf['writable'] != (bool)$tsf[$sf['name']]->writable) {
 
 					$this->session->console->removeSharedFolder($sf['name']);
-					$this->session->console->createSharedFolder($sf['name'],$sf['hostPath'],(bool)$sf['writable'],(bool)$sf['autoMount']);
+					$this->session->console->createSharedFolder($sf['name'],$sf['hostPath'],(bool)$sf['writable'],(bool)$sf['autoMount'],$sf['autoMountPoint']);
 
 				}
 
@@ -1705,8 +1705,10 @@ class vboxconnector {
 			} else {
 
 				// Does not exist or was removed. Add it.
-				if($sf['type'] != 'machine') $this->session->console->createSharedFolder($sf['name'],$sf['hostPath'],(bool)$sf['writable'],(bool)$sf['autoMount']);
-				else $this->session->machine->createSharedFolder($sf['name'],$sf['hostPath'],(bool)$sf['writable'],(bool)$sf['autoMount']);
+				if($sf['type'] != 'machine')
+					$this->session->console->createSharedFolder($sf['name'],$sf['hostPath'],(bool)$sf['writable'],(bool)$sf['autoMount'],$sf['autoMountPoint']);
+				else
+					$this->session->machine->createSharedFolder($sf['name'],$sf['hostPath'],(bool)$sf['writable'],(bool)$sf['autoMount'],$sf['autoMountPoint']);
 			}
 
 		}
