@@ -24,7 +24,7 @@ cp sdk-6.0.10/bindings/webservice/php/lib/vboxServiceWrappers.php phpvirtualbox/
 ```
 So far, so good. Almost there.
 
-In `phpvirtualbox/endpoints/lib/vboxconnector.php` Line 2232 change
+In `phpvirtualbox/endpoints/lib/vboxconnector.php` Line 2232, change
 
 ```
 $m->createSharedFolder($s['name'],$s['hostPath'],(bool)$s['writable'],(bool)$s['autoMount']);
@@ -33,8 +33,16 @@ to
 ```
 $m->createSharedFolder($s['name'],$s['hostPath'],(bool)$s['writable'],(bool)$s['autoMount'],$s['autoMountPoint']);
 ```
+And in `phpvirtualbox/endpoints/lib/vboxwebService-6.0.wsdl` Line 8, change
+```
+<import location="vboxweb.wsdl" namespace="http://www.virtualbox.org/"/>
+```
+to
+```
+<import location="vboxweb-6.0.wsdl" namespace="http://www.virtualbox.org/"/>
+```
 
-And, restart the `vboxwebsrv` server:
+Restart the `vboxwebsrv` server:
 ```sh
 /etc/init.d/vboxweb-service stop
 /etc/init.d/vboxweb-service start
