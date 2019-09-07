@@ -4767,7 +4767,7 @@ var vboxStorage = {
 	            };
 	            if($('#vboxPane').data('vboxConfig').enableAdvancedConfig&&vboxMedia.formatSupportsDiscard(ma.medium.format)) {
 	                opts[opts.length]={
-                        label: 'Support Discard(TRIM)',
+                        label: 'Support Discard (TRIM)',
                         attrib: 'discard',
 	                };
 	            };
