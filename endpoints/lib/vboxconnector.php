@@ -1855,6 +1855,7 @@ class vboxconnector {
 		if($m->snapshotFolder != $args['snapshotFolder']) $m->snapshotFolder = $args['snapshotFolder'];
 		$m->RTCUseUTC = ($args['RTCUseUTC'] ? 1 : 0);
 		$m->setCpuProperty('PAE', ($args['CpuProperties']['PAE'] ? 1 : 0));
+		$m->setCpuProperty('HWVirt', ($args['CpuProperties']['HWVirt'] ? 1 : 0));
 		$m->setCPUProperty('LongMode', (strpos($args['OSTypeId'],'_64') > - 1 ? 1 : 0));
 
 		// IOAPIC
@@ -3402,7 +3403,8 @@ class vboxconnector {
 		 * Supported CPU features?
 		 */
 		$response['cpuFeatures'] = array();
-		foreach(array('HWVirtEx'=>'HWVirtEx','PAE'=>'PAE','NestedPaging'=>'Nested Paging','LongMode'=>'Long Mode (64-bit)') as $k=>$v) {
+		foreach(array('HWVirtEx'=>'HWVirtEx','PAE'=>'PAE','NestedPaging'=>'Nested Paging','LongMode'=>'Long Mode (64-bit)'
+		,'UnrestrictedGuest'=>'Unrestricted Guest','NestedHWVirt'=>'Nested Virtualization') as $k=>$v) {
 			$response['cpuFeatures'][$v] = $host->getProcessorFeature($k);
 		}
 
@@ -4250,7 +4252,7 @@ class vboxconnector {
 				'VPID' => $m->getHWVirtExProperty('VPID')
 				),
 			'CpuProperties' => array(
-				'PAE' => $m->getCpuProperty('PAE')
+				'PAE' => $m->getCpuProperty('PAE'),'HWVirt' => $m->getCpuProperty('HWVirt')
 				),
 			'bootOrder' => $this->_machineGetBootOrder($m),
 			'chipsetType' => (string)$m->chipsetType,
