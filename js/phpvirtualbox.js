@@ -957,6 +957,11 @@ var vboxVMDetailsSections = {
 			   condition: function(d) {
 				   return !(vboxVMDetailsSections.display.rows[1].condition(d));
 			   }
+			},{
+				title: "Graphics Controller",
+				callback: function(d) {
+					return d['graphicsControllerType'];
+				}
 		   }
 		]
 	},
