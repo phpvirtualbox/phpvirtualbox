@@ -4918,7 +4918,7 @@ var vboxStorage = {
 		}
 	},
 
-PCIe: {
+	PCIe: {
 		maxPortCount: 255,
 		maxDevicesPerPortCount: 1,
 		types: ['NVMe'],
