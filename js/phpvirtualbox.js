@@ -339,6 +339,7 @@ var vboxVMDetailsSections = {
 				   if(d['HWVirtExProperties'].Enabled) acList[acList.length] = trans('VT-x/AMD-V');
 				   if(d['HWVirtExProperties'].NestedPaging) acList[acList.length] = trans('Nested Paging');
 				   if(d['CpuProperties']['PAE']) acList[acList.length] = trans('PAE/NX');
+				   if(d['CpuProperties']['HWVirt']) acList[acList.length] = trans('Nested Virtualization');
 				   if(d['EffectiveParavirtProvider'] != 'None')
 				       acList[acList.length] = trans(d['EffectiveParavirtProvider'] + ' Paravirtualization');
 
