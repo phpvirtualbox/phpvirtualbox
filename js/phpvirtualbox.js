@@ -4838,7 +4838,7 @@ var vboxStorage = {
 	},
 		
 	SCSI: {
-		maxPortCount: 16,
+		maxPortCount: 15,
 		maxDevicesPerPortCount: 1,
 		driveTypes: ['dvd','disk'],
 		types: ['LsiLogic','BusLogic'],
