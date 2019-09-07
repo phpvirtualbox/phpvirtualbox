@@ -2430,7 +2430,7 @@ var vboxMedia = {
 	},
 	
 	/**
-	 * Return true if a medium format supports
+	 * Return true if a medium format supports Split2G
 	 */
 	formatSupportsSplit: function(format) {
 		
@@ -2441,6 +2441,23 @@ var vboxMedia = {
 		for(var i = 0; i < mfs.length; i++) {
 			if(mfs[i].id.toLowerCase() == format) {
 				return (jQuery.inArray('CreateSplit2G',mfs[i].capabilities) > -1);
+			}
+		}
+		return false;
+	},
+
+		/**
+	 * Return true if a medium format supports Discard
+	 */
+	formatSupportsDiscard: function(format) {
+
+		var format = format.toLowerCase();
+
+		var mfs = $('#vboxPane').data('vboxSystemProperties').mediumFormats;
+
+		for(var i = 0; i < mfs.length; i++) {
+			if(mfs[i].id.toLowerCase() == format) {
+				return (jQuery.inArray('Discard',mfs[i].capabilities) > -1);
 			}
 		}
 		return false;
@@ -4747,7 +4764,13 @@ var vboxStorage = {
                         attrib: 'ignoreFlush',
                         runningEnabled: true,
 	                });
-	            }
+	            };
+	            if($('#vboxPane').data('vboxConfig').enableAdvancedConfig&&vboxMedia.formatSupportsDiscard(ma.medium.format)) {
+	                opts[opts.length]={
+                        label: 'Support Discard(TRIM)',
+                        attrib: 'discard',
+	                };
+	            };
 	            return opts;
 	        case 'DVD':
 	            // Host drive
@@ -4881,18 +4904,34 @@ var vboxStorage = {
 	},
 	
 	USB: {
-        maxPortCount: 8,
-        maxDevicesPerPortCount: 1,
-        types: ['USB'],
-        driveTypes: ['dvd','disk'],
-        slotName: function(p,d) { return trans('USB Port %1','VBoxGlobal', null, 'StorageSlot').replace('%1',p); },
-        slots: function() {
-            var s = {};
-            for(var i = 0; i < 8; i++) {
-                s[i+'-0'] = trans('USB Port %1','VBoxGlobal', null, 'StorageSlot').replace('%1',i);
-            }
-            return s;
-        }
+		maxPortCount: 8,
+		maxDevicesPerPortCount: 1,
+	types: ['USB'],
+		driveTypes: ['dvd','disk'],
+		slotName: function(p,d) { return trans('USB Port %1','VBoxGlobal', null, 'StorageSlot').replace('%1',p); },
+		slots: function() {
+			var s = {};
+			for(var i = 0; i < 8; i++) {
+				s[i+'-0'] = trans('USB Port %1','VBoxGlobal', null, 'StorageSlot').replace('%1',i);
+			}
+		return s;
+		}
+	},
+
+PCIe: {
+		maxPortCount: 255,
+		maxDevicesPerPortCount: 1,
+		types: ['NVMe'],
+		driveTypes: ['disk'],
+		slotName: function(p,d) { return trans('NVMe Port %1','VBoxGlobal', null, 'StorageSlot').replace('%1',p); },
+		slots: function() {
+			var s = {};
+			for(var i = 0; i < 8; i++) {
+				s[i+'-0'] = trans('NVMe Port %1','VBoxGlobal', null, 'StorageSlot').replace('%1',i);
+			}
+			return s;
+		},
+	displayInherit: 'IDE'
 	}
 };
 
