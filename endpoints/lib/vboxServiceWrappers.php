@@ -16269,8 +16269,8 @@ class DataFlagsCollection extends VBox_EnumCollection
  */
 class MediumFormatCapabilities extends VBox_Enum
 {
-    public $NameMap = array(0x01 => 'Uuid', 0x02 => 'CreateFixed', 0x04 => 'CreateDynamic', 0x08 => 'CreateSplit2G', 0x10 => 'Differencing', 0x20 => 'Asynchronous', 0x40 => 'File', 0x80 => 'Properties', 0x100 => 'TcpNetworking', 0x200 => 'VFS', 0x3FF => 'CapabilityMask');
-    public $ValueMap = array('Uuid' => 0x01, 'CreateFixed' => 0x02, 'CreateDynamic' => 0x04, 'CreateSplit2G' => 0x08, 'Differencing' => 0x10, 'Asynchronous' => 0x20, 'File' => 0x40, 'Properties' => 0x80, 'TcpNetworking' => 0x100, 'VFS' => 0x200, 'CapabilityMask' => 0x3FF);
+    public $NameMap = array(0x01 => 'Uuid', 0x02 => 'CreateFixed', 0x04 => 'CreateDynamic', 0x08 => 'CreateSplit2G', 0x10 => 'Differencing', 0x20 => 'Asynchronous', 0x40 => 'File', 0x80 => 'Properties', 0x100 => 'TcpNetworking', 0x200 => 'VFS', 0x400 => 'Discard', 0x800 => 'Preferred', 0xFFF => 'CapabilityMask');
+    public $ValueMap = array('Uuid' => 0x01, 'CreateFixed' => 0x02, 'CreateDynamic' => 0x04, 'CreateSplit2G' => 0x08, 'Differencing' => 0x10, 'Asynchronous' => 0x20, 'File' => 0x40, 'Properties' => 0x80, 'TcpNetworking' => 0x100, 'VFS' => 0x200, 'Discard' => 0x400, 'Preferred' => 0x800, 'CapabilityMask' => 0xFFF);
 }
 
 /**
@@ -16592,8 +16592,8 @@ class ReasonCollection extends VBox_EnumCollection
  */
 class StorageBus extends VBox_Enum
 {
-    public $NameMap = array(0 => 'Null', 1 => 'IDE', 2 => 'SATA', 3 => 'SCSI', 4 => 'Floppy', 5 => 'SAS', 6 => 'USB');
-    public $ValueMap = array('Null' => 0, 'IDE' => 1, 'SATA' => 2, 'SCSI' => 3, 'Floppy' => 4, 'SAS' => 5, 'USB' => 6);
+    public $NameMap = array(0 => 'Null', 1 => 'IDE', 2 => 'SATA', 3 => 'SCSI', 4 => 'Floppy', 5 => 'SAS', 6 => 'USB', 7 => 'PCIe');
+    public $ValueMap = array('Null' => 0, 'IDE' => 1, 'SATA' => 2, 'SCSI' => 3, 'Floppy' => 4, 'SAS' => 5, 'USB' => 6, 'PCIe' => 7);
 }
 
 /**
@@ -16609,8 +16609,8 @@ class StorageBusCollection extends VBox_EnumCollection
  */
 class StorageControllerType extends VBox_Enum
 {
-    public $NameMap = array(0 => 'Null', 1 => 'LsiLogic', 2 => 'BusLogic', 3 => 'IntelAhci', 4 => 'PIIX3', 5 => 'PIIX4', 6 => 'ICH6', 7 => 'I82078', 8 => 'LsiLogicSas', 9 => 'USB');
-    public $ValueMap = array('Null' => 0, 'LsiLogic' => 1, 'BusLogic' => 2, 'IntelAhci' => 3, 'PIIX3' => 4, 'PIIX4' => 5, 'ICH6' => 6, 'I82078' => 7, 'LsiLogicSas' => 8, 'USB' => 9);
+    public $NameMap = array(0 => 'Null', 1 => 'LsiLogic', 2 => 'BusLogic', 3 => 'IntelAhci', 4 => 'PIIX3', 5 => 'PIIX4', 6 => 'ICH6', 7 => 'I82078', 8 => 'LsiLogicSas', 9 => 'USB', 10 => 'NVMe');
+    public $ValueMap = array('Null' => 0, 'LsiLogic' => 1, 'BusLogic' => 2, 'IntelAhci' => 3, 'PIIX3' => 4, 'PIIX4' => 5, 'ICH6' => 6, 'I82078' => 7, 'LsiLogicSas' => 8, 'USB' => 9, 'NVMe' => 10);
 }
 
 /**
