@@ -2049,7 +2049,7 @@ class vboxconnector {
 
 				// HardDisk medium attachment type
 				} else if($ma['type'] == 'HardDisk') {
-
+					$ma['nonRotational'] = (isset($ma['nonRotational'])) ? $ma['nonRotational'] : false;
 					$m->nonRotationalDevice($name, $ma['port'], $ma['device'], $ma['nonRotational']);
 
 					// Remove IgnoreFlush key?
@@ -2070,6 +2070,7 @@ class vboxconnector {
 				}
 
 				if($sc['bus'] == 'SATA' || $sc['bus'] == 'USB') {
+					$ma['hotPluggable'] = (isset($ma['hotPluggable'])) ? $ma['hotPluggable'] : false;
 					$m->setHotPluggableForDevice($name, $ma['port'], $ma['device'], $ma['hotPluggable']);
 				}
 
