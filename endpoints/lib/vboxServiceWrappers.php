@@ -3828,7 +3828,7 @@ class IMachine extends VBox_ManagedObject
         $request->hostPath = $arg_hostPath;
         $request->writable = $arg_writable;
         $request->automount = $arg_automount;
-        $request->autoMountPoint = $arg_autoMountPoint;
+        $request->autoMountPoint = (isset($arg_autoMountPoint)) ? $arg_autoMountPoint : "/media/sf_" . $arg_name ;
         $response = $this->connection->__soapCall('IMachine_createSharedFolder', array((array)$request));
         return ;
     }
