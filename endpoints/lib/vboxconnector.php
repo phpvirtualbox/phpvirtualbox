@@ -5835,4 +5835,3 @@ class vboxconnector {
 		return @$rcodes['0x'.strtoupper(dechex($c))] . ' (0x'.strtoupper(dechex($c)).')';
 	}
 }
-
