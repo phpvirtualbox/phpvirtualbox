@@ -2043,14 +2043,13 @@ class vboxconnector {
 				if($ma['type'] == 'DVD') {
 
 					if($ma['medium']['hostDrive'])
-						$m->passthroughDevice($name, $ma['port'], $ma['device'], $ma['passthrough']);
+						$m->passthroughDevice($name, $ma['port'], $ma['device'], ($ma['passthrough']) ? $ma['passthrough'] : false);
 					else
-						$m->temporaryEjectDevice($name, $ma['port'], $ma['device'], $ma['temporaryEject']);
+						$m->temporaryEjectDevice($name, $ma['port'], $ma['device'], ($ma['temporaryEject']) ? $ma['temporaryEject'] : false);
 
 				// HardDisk medium attachment type
 				} else if($ma['type'] == 'HardDisk') {
-					$ma['nonRotational'] = (isset($ma['nonRotational'])) ? $ma['nonRotational'] : false;
-					$m->nonRotationalDevice($name, $ma['port'], $ma['device'], $ma['nonRotational']);
+					$m->nonRotationalDevice($name, $ma['port'], $ma['device'], ($ma['nonRotational']) ? $ma['nonRotational'] : false);
 
 					// Remove IgnoreFlush key?
 					if($this->settings->enableHDFlushConfig) {
@@ -2070,8 +2069,7 @@ class vboxconnector {
 				}
 
 				if($sc['bus'] == 'SATA' || $sc['bus'] == 'USB') {
-					$ma['hotPluggable'] = (isset($ma['hotPluggable'])) ? $ma['hotPluggable'] : false;
-					$m->setHotPluggableForDevice($name, $ma['port'], $ma['device'], $ma['hotPluggable']);
+					$m->setHotPluggableForDevice($name, $ma['port'], $ma['device'], ($ma['hotPluggable']) ? $ma['hotPluggable'] : false);
 				}
 
 				if(is_object($med))
