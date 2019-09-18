@@ -1994,7 +1994,7 @@ class vboxconnector {
 			$c->useHostIOCache = $sc['useHostIOCache'];
 
 			// Set sata port count
-			if($sc['bus'] == 'SATA') {
+			if($sc['bus'] == 'SATA' || ($sc['bus'] == 'PCIe')) {
 				$max = max(1,intval(@$sc['portCount']));
 				foreach($sc['mediumAttachments'] as $ma) {
 					$max = max($max,(intval($ma['port'])+1));
@@ -2050,6 +2050,11 @@ class vboxconnector {
 				// HardDisk medium attachment type
 				} else if($ma['type'] == 'HardDisk') {
 					$m->nonRotationalDevice($name, $ma['port'], $ma['device'], ($ma['nonRotational']) ? $ma['nonRotational'] : false);
+
+					// Set Discard (TRIM) Option
+					if($this->settings->enableAdvancedConfig) {
+						$m->setAutoDiscardForDevice($name, $ma['port'], $ma['device'], ($ma['discard']) ? $ma['discard'] : false);
+					}
 
 					// Remove IgnoreFlush key?
 					if($this->settings->enableHDFlushConfig) {
@@ -4502,6 +4507,7 @@ class vboxconnector {
 				'temporaryEject' => $ma->temporaryEject,
 				'nonRotational' => $ma->nonRotational,
 				'hotPluggable' => $ma->hotPluggable,
+				'discard' => $ma->discard,
 			);
 		}
 
@@ -5562,7 +5568,8 @@ class vboxconnector {
                     'PIIX4',
                     'ICH6',
                     'I82078',
-                    'USB');
+										'USB',
+										'NVMe');
 
 		foreach($scts as $t) {
 		    $scs[$t] = $sp->getStorageControllerHotplugCapable($t);
@@ -5697,7 +5704,8 @@ class vboxconnector {
 			'intelahci' => 'ahci',
 			'lsilogic' => 'lsilogicscsi',
 			'buslogic' => 'buslogic',
-			'lsilogicsas' => 'lsilogicsas'
+			'lsilogicsas' => 'lsilogicsas',
+			'nvme' => 'nvme'
 		);
 
 		if(!isset($cTypes[strtolower($cType)])) {

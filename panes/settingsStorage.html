@@ -945,12 +945,12 @@ function vboxSettingsSelectController(tbl) {
     $('#vboxSettingsHDInfo').css('display','none');
     
     // Show SATA port count
-    if(busType == 'SATA') {
+    if(busType == 'SATA' || (busType == 'PCIe')) {
 	    $(document.forms['frmVboxSettings'].vboxSettingsControllerPortCount).val($(tbl).data('controller').portCount);
 	   	$('#vboxSettingsControllerPortCountRow').css('display','');
-	} else {
-		$('#vboxSettingsControllerPortCountRow').css('display','none');
-	}
+		} else {
+			$('#vboxSettingsControllerPortCountRow').css('display','none');
+		}
 
     /* Enable / disable buttons */
 	if($(tbl).parent().find('ul').children('li').length < ($(tbl).data('controller').maxPortCount * $(tbl).data('controller').maxDevicesPerPortCount)) {
