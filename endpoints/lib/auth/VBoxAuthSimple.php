@@ -90,10 +90,10 @@ class phpvbAuthVBoxAuthSimple implements phpvbAuth {
   /**
    *
    * Update user information such as password and admin status
-   * @param array $vboxRequest request passed from ajax.php representing the ajax request. 
-Contains user, password and administration level.
-   * @param boolean $skipExistCheck Do not check that the user exists first. Essentially, if 
-this is set and the user does not exist, it is added.
+   * @param array $vboxRequest request passed from ajax.php representing the ajax request.
+   * Contains user, password and administration level.
+   * @param boolean $skipExistCheck Do not check that the user exists first. Essentially, if
+   * this is set and the user does not exist, it is added.
    */
   function updateUser($vboxRequest, $skipExistCheck) {
 
