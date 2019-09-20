@@ -1914,9 +1914,12 @@ class vboxconnector {
 		if(@$this->settings->enableCustomIcons)
 			$m->setExtraData('phpvb/icon', $args['customIcon']);
 
-		$m->VRAMSize = $args['VRAMSize'];
 
 		// Video
+		$m->VRAMSize = $args['VRAMSize'];
+		
+		$m->graphicsControllerType = $args['graphicsControllerType'];
+
 		$m->accelerate3DEnabled = $args['accelerate3DEnabled'];
 		$m->accelerate2DVideoEnabled = $args['accelerate2DVideoEnabled'];
 
@@ -3849,6 +3852,7 @@ class vboxconnector {
 			$this->session->machine->chipsetType = (string)$defaults->recommendedChipset;
 			$this->session->machine->ClipboardMode = 'Disabled';
 			if(intval($defaults->recommendedVRAM) > 0) $this->session->machine->VRAMSize = intval($defaults->recommendedVRAM);
+			$this->session->machine->setGraphicsControllerType((string)$defaults->recommendedGraphicsController);
 			$this->session->machine->setCpuProperty('PAE',$defaults->recommendedPAE);
 
 			// USB input devices
@@ -4217,6 +4221,7 @@ class vboxconnector {
 			'HPETEnabled' => $m->HPETEnabled,
 			'memorySize' => $m->memorySize,
 			'VRAMSize' => $m->VRAMSize,
+			'graphicsControllerType' => (string)$m->graphicsControllerType,
 			'pointingHIDType' => (string)$m->pointingHIDType,
 			'keyboardHIDType' => (string)$m->keyboardHIDType,
 			'accelerate3DEnabled' => $m->accelerate3DEnabled,
