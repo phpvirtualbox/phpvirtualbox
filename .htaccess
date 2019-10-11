@@ -1,0 +1,1 @@
+RedirectMatch 404 /\.git
