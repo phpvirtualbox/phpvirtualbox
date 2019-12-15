@@ -5707,6 +5707,7 @@ class vboxconnector {
 			'lsilogic' => 'lsilogicscsi',
 			'buslogic' => 'buslogic',
 			'lsilogicsas' => 'lsilogicsas',
+			'usb' => 'usb',
 			'nvme' => 'nvme'
 		);
 
