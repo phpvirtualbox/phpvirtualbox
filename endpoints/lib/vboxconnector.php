@@ -1912,11 +1912,11 @@ class vboxconnector {
 		if(@$this->settings->enableCustomIcons)
 			$m->setExtraData('phpvb/icon', $args['customIcon']);
 
-		$m->VRAMSize = $args['VRAMSize'];
+		$m->GraphicsAdapter->VRAMSize = $args['VRAMSize'];
 
 		// Video
-		$m->accelerate3DEnabled = $args['accelerate3DEnabled'];
-		$m->accelerate2DVideoEnabled = $args['accelerate2DVideoEnabled'];
+		$m->GraphicsAdapter->accelerate3DEnabled = $args['accelerate3DEnabled'];
+		$m->GraphicsAdapter->accelerate2DVideoEnabled = $args['accelerate2DVideoEnabled'];
 
 		// VRDE settings
 		try {
@@ -3253,7 +3253,7 @@ class vboxconnector {
 				}
 
 				/* @var $progress IProgress */
-				$progress = $machine->launchVMProcess($this->session->handle, "headless", "");
+				$progress = $machine->launchVMProcess($this->session->handle, "headless", NULL);
 
 			} catch (Exception $e) {
 				// Error opening session
@@ -3850,7 +3850,7 @@ class vboxconnector {
 			$this->session->machine->firmwareType = (string)$defaults->recommendedFirmware;
 			$this->session->machine->chipsetType = (string)$defaults->recommendedChipset;
 			$this->session->machine->ClipboardMode = 'Disabled';
-			if(intval($defaults->recommendedVRAM) > 0) $this->session->machine->VRAMSize = intval($defaults->recommendedVRAM);
+			if(intval($defaults->recommendedVRAM) > 0) $this->session->machine->GraphicsAdapter->setVRAMSize(intval($defaults->recommendedVRAM));
 			$this->session->machine->setCpuProperty('PAE',$defaults->recommendedPAE);
 
 			// USB input devices
@@ -4218,11 +4218,11 @@ class vboxconnector {
 			'CPUCount' => $m->CPUCount,
 			'HPETEnabled' => $m->HPETEnabled,
 			'memorySize' => $m->memorySize,
-			'VRAMSize' => $m->VRAMSize,
+			'VRAMSize' => $m->GraphicsAdapter->VRAMSize,
 			'pointingHIDType' => (string)$m->pointingHIDType,
 			'keyboardHIDType' => (string)$m->keyboardHIDType,
-			'accelerate3DEnabled' => $m->accelerate3DEnabled,
-			'accelerate2DVideoEnabled' => $m->accelerate2DVideoEnabled,
+			'accelerate3DEnabled' => $m->GraphicsAdapter->accelerate3DEnabled,
+			'accelerate2DVideoEnabled' => $m->GraphicsAdapter->accelerate2DVideoEnabled,
 			'BIOSSettings' => array(
 				'ACPIEnabled' => $m->BIOSSettings->ACPIEnabled,
 				'IOAPICEnabled' => $m->BIOSSettings->IOAPICEnabled,
@@ -4231,7 +4231,7 @@ class vboxconnector {
 			'firmwareType' => (string)$m->firmwareType,
 			'snapshotFolder' => $m->snapshotFolder,
 			'ClipboardMode' => (string)$m->ClipboardMode,
-			'monitorCount' => $m->monitorCount,
+			'monitorCount' => $m->GraphicsAdapter->monitorCount,
 			'pageFusionEnabled' => $m->pageFusionEnabled,
 			'VRDEServer' => (!$m->VRDEServer ? null : array(
 				'enabled' => $m->VRDEServer->enabled,
