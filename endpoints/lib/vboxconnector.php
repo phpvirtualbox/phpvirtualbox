@@ -1470,10 +1470,11 @@ class vboxconnector {
 				$m->VRDEServer->enabled = $args['VRDEServer']['enabled'];
 				$m->VRDEServer->setVRDEProperty('TCP/Ports',$args['VRDEServer']['ports']);
 				$m->VRDEServer->setVRDEProperty('VNCPassword',$args['VRDEServer']['VNCPassword'] ? $args['VRDEServer']['VNCPassword'] : null);
-				$m->VRDEServer->authType = ($args['VRDEServer']['authType'] ? $args['VRDEServer']['authType'] : null);
+				$m->VRDEServer->authType = ($args['VRDEServer']['authType'] ? $args['VRDEServer']['authType'] : 'Null');
 				$m->VRDEServer->authTimeout = $args['VRDEServer']['authTimeout'];
 			}
 		} catch (Exception $e) {
+			$this->errors[] = $e;
 		}
 
 		// Storage Controllers if machine is in a valid state
@@ -1931,11 +1932,12 @@ class vboxconnector {
 				if(@$this->settings->enableAdvancedConfig)
 					$m->VRDEServer->setVRDEProperty('TCP/Address',$args['VRDEServer']['netAddress']);
 				$m->VRDEServer->setVRDEProperty('VNCPassword',$args['VRDEServer']['VNCPassword'] ? $args['VRDEServer']['VNCPassword'] : null);
-				$m->VRDEServer->authType = ($args['VRDEServer']['authType'] ? $args['VRDEServer']['authType'] : null);
+				$m->VRDEServer->authType = ($args['VRDEServer']['authType'] ? $args['VRDEServer']['authType'] : 'Null');
 				$m->VRDEServer->authTimeout = $args['VRDEServer']['authTimeout'];
 				$m->VRDEServer->allowMultiConnection = $args['VRDEServer']['allowMultiConnection'];
 			}
 		} catch (Exception $e) {
+			$this->errors[] = $e;
 		}
 
 		// Audio controller settings
