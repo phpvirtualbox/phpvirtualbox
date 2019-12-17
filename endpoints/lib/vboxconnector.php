@@ -428,11 +428,11 @@ class vboxconnector {
 
 				// Machine powered off or client has stale MO reference
 				if($listener)
-					try { $listener->releaseRemote(); } catch (Exceptoin $e) {
+					try { $listener->releaseRemote(); } catch (Exception $e) {
 						/// pass
 					}
 				if($source)
-					try { $source->releaseRemote(); } catch (Exceptoin $e) {
+					try { $source->releaseRemote(); } catch (Exception $e) {
 						// pass
 					}
 
