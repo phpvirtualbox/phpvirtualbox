@@ -945,7 +945,7 @@ function vboxSettingsSelectController(tbl) {
     $('#vboxSettingsHDInfo').css('display','none');
     
     // Show SATA port count
-    if(busType == 'SATA') {
+    if((busType == 'SATA')||(busType == 'PCIe')) {
 	    $(document.forms['frmVboxSettings'].vboxSettingsControllerPortCount).val($(tbl).data('controller').portCount);
 	   	$('#vboxSettingsControllerPortCountRow').css('display','');
 	} else {

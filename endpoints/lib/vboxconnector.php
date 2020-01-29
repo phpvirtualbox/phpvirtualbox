@@ -1470,10 +1470,11 @@ class vboxconnector {
 				$m->VRDEServer->enabled = $args['VRDEServer']['enabled'];
 				$m->VRDEServer->setVRDEProperty('TCP/Ports',$args['VRDEServer']['ports']);
 				$m->VRDEServer->setVRDEProperty('VNCPassword',$args['VRDEServer']['VNCPassword'] ? $args['VRDEServer']['VNCPassword'] : null);
-				$m->VRDEServer->authType = ($args['VRDEServer']['authType'] ? $args['VRDEServer']['authType'] : null);
+				$m->VRDEServer->authType = ($args['VRDEServer']['authType'] ? $args['VRDEServer']['authType'] : 'Null');
 				$m->VRDEServer->authTimeout = $args['VRDEServer']['authTimeout'];
 			}
 		} catch (Exception $e) {
+			$this->errors[] = $e;
 		}
 
 		// Storage Controllers if machine is in a valid state
@@ -1916,8 +1917,8 @@ class vboxconnector {
 		$m->graphicsControllerType = $args['graphicsControllerType'];
 
 		// Video
-		$m->accelerate3DEnabled = $args['accelerate3DEnabled'];
-		$m->accelerate2DVideoEnabled = $args['accelerate2DVideoEnabled'];
+		$m->GraphicsAdapter->accelerate3DEnabled = $args['accelerate3DEnabled'];
+		$m->GraphicsAdapter->accelerate2DVideoEnabled = $args['accelerate2DVideoEnabled'];
 
 		// VRDE settings
 		try {
@@ -1927,11 +1928,12 @@ class vboxconnector {
 				if(@$this->settings->enableAdvancedConfig)
 					$m->VRDEServer->setVRDEProperty('TCP/Address',$args['VRDEServer']['netAddress']);
 				$m->VRDEServer->setVRDEProperty('VNCPassword',$args['VRDEServer']['VNCPassword'] ? $args['VRDEServer']['VNCPassword'] : null);
-				$m->VRDEServer->authType = ($args['VRDEServer']['authType'] ? $args['VRDEServer']['authType'] : null);
+				$m->VRDEServer->authType = ($args['VRDEServer']['authType'] ? $args['VRDEServer']['authType'] : 'Null');
 				$m->VRDEServer->authTimeout = $args['VRDEServer']['authTimeout'];
 				$m->VRDEServer->allowMultiConnection = $args['VRDEServer']['allowMultiConnection'];
 			}
 		} catch (Exception $e) {
+			$this->errors[] = $e;
 		}
 
 		// Audio controller settings
@@ -1993,7 +1995,7 @@ class vboxconnector {
 			$c->useHostIOCache = $sc['useHostIOCache'];
 
 			// Set sata port count
-			if($sc['bus'] == 'SATA') {
+			if(($sc['bus'] == 'SATA')||($sc['bus'] == 'PCIe')) {
 				$max = max(1,intval(@$sc['portCount']));
 				foreach($sc['mediumAttachments'] as $ma) {
 					$max = max($max,(intval($ma['port'])+1));
@@ -2049,7 +2051,15 @@ class vboxconnector {
 				// HardDisk medium attachment type
 				} else if($ma['type'] == 'HardDisk') {
 
+					$ma['nonRotational']=($ma['nonRotational']?1:0);
+					$ma['discard']=($ma['discard']?1:0);
+					$ma['hotPluggable']=($ma['hotPluggable']?1:0);
 					$m->nonRotationalDevice($name, $ma['port'], $ma['device'], $ma['nonRotational']);
+
+					// Set Discard (TRIM) Option
+					if($this->settings->enableAdvancedConfig) {
+						$m->setAutoDiscardForDevice($name, $ma['port'], $ma['device'], $ma['discard']);
+					}
 
 					// Remove IgnoreFlush key?
 					if($this->settings->enableHDFlushConfig) {
@@ -3246,7 +3256,7 @@ class vboxconnector {
 				}
 
 				/* @var $progress IProgress */
-				$progress = $machine->launchVMProcess($this->session->handle, "headless", "");
+				$progress = $machine->launchVMProcess($this->session->handle, "headless", NULL);
 
 			} catch (Exception $e) {
 				// Error opening session
@@ -4216,8 +4226,8 @@ class vboxconnector {
 			'graphicsControllerType' => (string)$m->graphicsControllerType,
 			'pointingHIDType' => (string)$m->pointingHIDType,
 			'keyboardHIDType' => (string)$m->keyboardHIDType,
-			'accelerate3DEnabled' => $m->accelerate3DEnabled,
-			'accelerate2DVideoEnabled' => $m->accelerate2DVideoEnabled,
+			'accelerate3DEnabled' => $m->GraphicsAdapter->accelerate3DEnabled,
+			'accelerate2DVideoEnabled' => $m->GraphicsAdapter->accelerate2DVideoEnabled,
 			'BIOSSettings' => array(
 				'ACPIEnabled' => $m->BIOSSettings->ACPIEnabled,
 				'IOAPICEnabled' => $m->BIOSSettings->IOAPICEnabled,
@@ -4226,7 +4236,7 @@ class vboxconnector {
 			'firmwareType' => (string)$m->firmwareType,
 			'snapshotFolder' => $m->snapshotFolder,
 			'ClipboardMode' => (string)$m->ClipboardMode,
-			'monitorCount' => $m->monitorCount,
+			'monitorCount' => $m->GraphicsAdapter->monitorCount,
 			'pageFusionEnabled' => $m->pageFusionEnabled,
 			'VRDEServer' => (!$m->VRDEServer ? null : array(
 				'enabled' => $m->VRDEServer->enabled,
@@ -4504,6 +4514,7 @@ class vboxconnector {
 				'temporaryEject' => $ma->temporaryEject,
 				'nonRotational' => $ma->nonRotational,
 				'hotPluggable' => $ma->hotPluggable,
+				'discard' => $ma->discard,
 			);
 		}
 
@@ -4700,7 +4711,7 @@ class vboxconnector {
 			$machine->lockMachine($this->session->handle, ((string)$machine->sessionState == 'Unlocked' ? 'Write' : 'Shared'));
 
 			/* @var $progress IProgress */
-			list($progress, $snapshotId) = $this->session->machine->takeSnapshot($args['name'], $args['description'], null);
+			list($progress, $snapshotId) = $this->session->machine->takeSnapshot($args['name'], $args['description'], false);
 
 			// Does an exception exist?
 			try {
@@ -5564,7 +5575,8 @@ class vboxconnector {
                     'PIIX4',
                     'ICH6',
                     'I82078',
-                    'USB');
+					'USB',
+					'NVMe');
 
 		foreach($scts as $t) {
 		    $scs[$t] = $sp->getStorageControllerHotplugCapable($t);
@@ -5699,7 +5711,9 @@ class vboxconnector {
 			'intelahci' => 'ahci',
 			'lsilogic' => 'lsilogicscsi',
 			'buslogic' => 'buslogic',
-			'lsilogicsas' => 'lsilogicsas'
+			'lsilogicsas' => 'lsilogicsas',
+			'usb' => 'usb',
+			'nvme' => 'nvme'
 		);
 
 		if(!isset($cTypes[strtolower($cType)])) {
@@ -5835,4 +5849,3 @@ class vboxconnector {
 		return @$rcodes['0x'.strtoupper(dechex($c))] . ' (0x'.strtoupper(dechex($c)).')';
 	}
 }
-
