@@ -1914,8 +1914,8 @@ class vboxconnector {
 		if(@$this->settings->enableCustomIcons)
 			$m->setExtraData('phpvb/icon', $args['customIcon']);
 
-			$m->GraphicsAdapter->VRAMSize = $args['VRAMSize'];
-			$m->GraphicsAdapter->graphicsControllerType = $args['graphicsControllerType'];
+		$m->GraphicsAdapter->VRAMSize = $args['VRAMSize'];
+		$m->GraphicsAdapter->graphicsControllerType = $args['graphicsControllerType'];
 
 		// Video
 		$m->GraphicsAdapter->accelerate3DEnabled = $args['accelerate3DEnabled'];
