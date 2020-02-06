@@ -4771,7 +4771,8 @@ var vboxStorage = {
                         runningEnabled: true,
 	                });
 	            };
-	            if($('#vboxPane').data('vboxConfig').enableAdvancedConfig&&vboxMedia.formatSupportsDiscard(ma.medium.format)) {
+	            if($('#vboxPane').data('vboxConfig').enableAdvancedConfig 
+		        && vboxMedia.formatSupportsDiscard(ma.medium.format)) {
 	                opts[opts.length]={
                         label: 'Support Discard (TRIM)',
                         attrib: 'discard',
