@@ -377,7 +377,7 @@ div.vboxVMMDialog div.ui-dialog-buttonpane {
 #vboxVirtualMediaManager table.vboxVMMList span { display: inline-block; } 
 #vboxVirtualMediaManager div.vboxVMMMediumInfo { font-size: 0.9em; }
 #vboxVirtualMediaManager .vboxVMMMediumInfo input { padding: 0px; margin: 0px; background: transparent; color: #000000; }
-#vboxVirtualMediaManager .vboxVMMMediumInfo table { padding;0px; border: 1px solid #000; border-spacing:0px; margin-top: 12px; width: 100%; background: #fafafa; }
+#vboxVirtualMediaManager .vboxVMMMediumInfo table { padding: 0px; border: 1px solid #000; border-spacing:0px; margin-top: 12px; width: 100%; background: #fafafa; }
 #vboxVirtualMediaManager .vboxVMMMediumInfo th { padding:2px; padding-left: 18px; text-align: right; width: auto; white-space: nowrap; }
 #vboxVirtualMediaManager .vboxVMMMediumInfo td { padding:0px; padding-left: 10px; text-align: left; width: 100%; }
 #vboxVirtualMediaManager .vboxVMMSortImgFaded img {

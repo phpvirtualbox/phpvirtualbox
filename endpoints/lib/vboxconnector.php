@@ -1682,10 +1682,10 @@ class vboxconnector {
 			if($sf['type'] == 'machine' && $psf[$sf['name']]) {
 
 				/* Remove if it doesn't match */
-				if($sf['hostPath'] != $psf[$sf['name']]->hostPath || (bool)$sf['autoMount'] != (bool)$psf[$sf['name']]->autoMount || (bool)$sf['writable'] != (bool)$psf[$sf['name']]->writable) {
+				if($sf['hostPath'] != $psf[$sf['name']]->hostPath || (bool)$sf['autoMount'] != (bool)$psf[$sf['name']]->autoMount || (bool)$sf['writable'] != (bool)$psf[$sf['name']]->writable || $sf['autoMountPoint'] != $psf[$sf['name']]->autoMountPoint) {
 
 					$m->removeSharedFolder($sf['name']);
-					$m->createSharedFolder($sf['name'],$sf['hostPath'],(bool)$sf['writable'],(bool)$sf['autoMount']);
+					$m->createSharedFolder($sf['name'],$sf['hostPath'],(bool)$sf['writable'],(bool)$sf['autoMount'],$sf['autoMountPoint']);
 				}
 
 				unset($psf[$sf['name']]);
@@ -1694,10 +1694,10 @@ class vboxconnector {
 			} else if($sf['type'] != 'machine' && $tsf[$sf['name']]) {
 
 				/* Remove if it doesn't match */
-				if($sf['hostPath'] != $tsf[$sf['name']]->hostPath || (bool)$sf['autoMount'] != (bool)$tsf[$sf['name']]->autoMount || (bool)$sf['writable'] != (bool)$tsf[$sf['name']]->writable) {
+				if($sf['hostPath'] != $tsf[$sf['name']]->hostPath || (bool)$sf['autoMount'] != (bool)$tsf[$sf['name']]->autoMount || (bool)$sf['writable'] != (bool)$tsf[$sf['name']]->writable || $sf['autoMountPoint'] != $psf[$sf['name']]->autoMountPoint) {
 
 					$this->session->console->removeSharedFolder($sf['name']);
-					$this->session->console->createSharedFolder($sf['name'],$sf['hostPath'],(bool)$sf['writable'],(bool)$sf['autoMount']);
+					$this->session->console->createSharedFolder($sf['name'],$sf['hostPath'],(bool)$sf['writable'],(bool)$sf['autoMount'],$sf['autoMountPoint']);
 
 				}
 
@@ -1706,8 +1706,8 @@ class vboxconnector {
 			} else {
 
 				// Does not exist or was removed. Add it.
-				if($sf['type'] != 'machine') $this->session->console->createSharedFolder($sf['name'],$sf['hostPath'],(bool)$sf['writable'],(bool)$sf['autoMount']);
-				else $this->session->machine->createSharedFolder($sf['name'],$sf['hostPath'],(bool)$sf['writable'],(bool)$sf['autoMount']);
+				if($sf['type'] != 'machine') $this->session->console->createSharedFolder($sf['name'],$sf['hostPath'],(bool)$sf['writable'],(bool)$sf['autoMount'],$sf['autoMountPoint']);
+				else $this->session->machine->createSharedFolder($sf['name'],$sf['hostPath'],(bool)$sf['writable'],(bool)$sf['autoMount'],$sf['autoMountPoint']);
 			}
 
 		}
@@ -2231,17 +2231,17 @@ class vboxconnector {
 		$sharedEx = array();
 		$sharedNew = array();
 		foreach($this->_machineGetSharedFolders($m) as $s) {
-			$sharedEx[$s['name']] = array('name'=>$s['name'],'hostPath'=>$s['hostPath'],'autoMount'=>(bool)$s['autoMount'],'writable'=>(bool)$s['writable']);
+			$sharedEx[$s['name']] = array('name'=>$s['name'],'hostPath'=>$s['hostPath'],'autoMount'=>(bool)$s['autoMount'],'writable'=>(bool)$s['writable'],'autoMountPoint'=>$s['autoMountPoint']);
 		}
 		foreach($args['sharedFolders'] as $s) {
-			$sharedNew[$s['name']] = array('name'=>$s['name'],'hostPath'=>$s['hostPath'],'autoMount'=>(bool)$s['autoMount'],'writable'=>(bool)$s['writable']);
+			$sharedNew[$s['name']] = array('name'=>$s['name'],'hostPath'=>$s['hostPath'],'autoMount'=>(bool)$s['autoMount'],'writable'=>(bool)$s['writable'],'autoMountPoint'=>$s['autoMountPoint']);
 		}
 		// Compare
 		if(count($sharedEx) != count($sharedNew) || (@serialize($sharedEx) != @serialize($sharedNew))) {
 			foreach($sharedEx as $s) { $m->removeSharedFolder($s['name']);}
 			try {
 				foreach($sharedNew as $s) {
-					$m->createSharedFolder($s['name'],$s['hostPath'],(bool)$s['writable'],(bool)$s['autoMount']);
+					$m->createSharedFolder($s['name'],$s['hostPath'],(bool)$s['writable'],(bool)$s['autoMount'],$s['autoMountPoint']);
 				}
 			} catch (Exception $e) { $this->errors[] = $e; }
 		}
@@ -4370,6 +4370,7 @@ class vboxconnector {
 				'accessible' => $sf->accessible,
 				'writable' => $sf->writable,
 				'autoMount' => $sf->autoMount,
+				'autoMountPoint' => $sf->autoMountPoint,
 				'lastAccessError' => $sf->lastAccessError,
 				'type' => 'machine'
 			);
@@ -4452,6 +4453,7 @@ class vboxconnector {
 				'accessible' => $sf->accessible,
 				'writable' => $sf->writable,
 				'autoMount' => $sf->autoMount,
+				'autoMountPoint' => $sf->autoMountPoint,
 				'lastAccessError' => $sf->lastAccessError,
 				'type' => 'transient'
 			);
