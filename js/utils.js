@@ -302,8 +302,15 @@ function vboxGuestOSTypeIcon(osTypeId) {
 		case "QNX":             strIcon = "os_qnx.png"; break;
 		case "MacOS106":        strIcon = "os_macosx.png"; break;
 		case 'MacOS':           strIcon = "os_macosx.png"; break;
-		case "MacOS106_64":     strIcon = "os_macosx_64.png"; break;
 		case 'MacOS_64':        strIcon = "os_macosx_64.png"; break;
+		case "MacOS106_64":     strIcon = "os_macosx_64.png"; break;
+		case "MacOS107_64":     strIcon = "os_macosx_64.png"; break;
+		case "MacOS108_64":     strIcon = "os_macosx_64.png"; break;
+		case "MacOS109_64":     strIcon = "os_macosx_64.png"; break;
+		case "MacOS1010_64":     strIcon = "os_macosx_64.png"; break;
+		case "MacOS1011_64":     strIcon = "os_macosx_64.png"; break;
+		case "MacOS1012_64":     strIcon = "os_macosx_64.png"; break;
+		case "MacOS1013_64":     strIcon = "os_macosx_64.png"; break;
 		case 'Oracle':          strIcon = "os_oracle.png"; break;
 		case 'Oracle_64':       strIcon = "os_oracle_64.png"; break;
 		case 'JRockitVE':       strIcon = 'os_jrockitve.png'; break;
