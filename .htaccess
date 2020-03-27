@@ -1,1 +1,3 @@
-RedirectMatch 404 /\.git
+<Directory .git>
+  Require all denies
+</Directory>
