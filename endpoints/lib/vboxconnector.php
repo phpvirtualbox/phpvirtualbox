@@ -2047,7 +2047,7 @@ class vboxconnector {
 					if($ma['medium']['hostDrive'])
 						$m->passthroughDevice($name, $ma['port'], $ma['device'], $ma['passthrough']);
 					else
-						$m->temporaryEjectDevice($name, $ma['port'], $ma['device'], $ma['temporaryEject']);
+						$m->temporaryEjectDevice($name, $ma['port'], $ma['device'], ($ma['temporaryEject'] ? true : false));
 
 				// HardDisk medium attachment type
 				} else if($ma['type'] == 'HardDisk') {
@@ -2080,7 +2080,7 @@ class vboxconnector {
 				}
 
 				if($sc['bus'] == 'SATA' || $sc['bus'] == 'USB') {
-					$m->setHotPluggableForDevice($name, $ma['port'], $ma['device'], $ma['hotPluggable']);
+					$m->setHotPluggableForDevice($name, $ma['port'], $ma['device'], ($ma['hotPluggable'] ? true : false));
 				}
 
 				if(is_object($med))
