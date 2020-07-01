@@ -3497,10 +3497,12 @@ class vboxconnector {
 				'serialNumber' => $d->serialNumber,
 				'address' => $d->address,
 				'port' => $d->port,
+				'portPath' => $d->portPath,
 				'version' => $d->version,
-				'portVersion' => $d->portVersion,
+				'speed' => $d->speed,
 				'remote' => $d->remote,
-				'state' => (string)$d->state,
+				'deviceInfo' => $d->deviceInfo,
+				'backend' => $d->backend,
 				);
 			$d->releaseRemote();
 		}
