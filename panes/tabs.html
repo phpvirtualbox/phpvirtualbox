@@ -54,7 +54,7 @@ for(var i = 0; i < tabs.length; i++) {
 		continue;
 
 	// Tab link
-	$('<li />').attr({'class':'ui-corner-all','id':'tabsMain-'+tabs[i].name}).html('<a href="#'+tabs[i].name+'"><span><img src="images/vbox/'+tabs[i].icon+'_16px.png" border="0" /> <span id="'+tabs[i].name+'Title">'+trans(tabs[i].label, 'UIVMDesktop')+'</span></span></a>').appendTo('#tablistMain');
+	$('<li />').attr({'class':'ui-corner-all','id':'tabsMain-'+tabs[i].name}).html('<a href="#'+tabs[i].name+'"><span><img src="images/vbox/'+tabs[i].icon+'_16px.png" border="0" /> <span id="'+tabs[i].name+'Title">'+trans(tabs[i].label, 'UIActionPool')+'</span></span></a>').appendTo('#tablistMain');
 	
 	tabLoader.addFileToDOM('panes/'+tabs[i].content+'.html',$('#tabMainContent'));
 	

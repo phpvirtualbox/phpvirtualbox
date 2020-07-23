@@ -278,10 +278,10 @@ var vboxVMDetailsSections = {
 		   },{
 			   title: 'OS Type', attrib: 'OSTypeDesc'
 		   },{
-			   title: 'Guest Additions Version', attrib: 'guestAdditionsVersion'
+			   title: 'Guest Additions', attrib: 'guestAdditionsVersion', language_context: 'UIVMInformationDialog'
 		   },{
 			   title: 'Groups',
-			   language_context: 'UIGDetails',
+			   language_context: 'UICommon',
 			   condition: function(d){
 				   return (d.groups.length > 1 || (d.groups.length == 1 && d.groups[0] != '/')); 
 			   },
@@ -333,15 +333,20 @@ var vboxVMDetailsSections = {
 			   }
 		   },{
 			   title: "Acceleration",
-			   language_context: 'UIGDetails',
+			   language_context: 'UIDetails',
 			   callback: function(d) {
 				   var acList = [];
 				   if(d['HWVirtExProperties'].Enabled) acList[acList.length] = trans('VT-x/AMD-V');
 				   if(d['HWVirtExProperties'].NestedPaging) acList[acList.length] = trans('Nested Paging');
 				   if(d['CpuProperties']['PAE']) acList[acList.length] = trans('PAE/NX');
 				   if(d['CpuProperties']['HWVirt']) acList[acList.length] = trans('Nested Virtualization');
-				   if(d['EffectiveParavirtProvider'] != 'None')
-				       acList[acList.length] = trans(d['EffectiveParavirtProvider'] + ' Paravirtualization');
+				   if(d['EffectiveParavirtProvider'] != 'None') {
+						if(d['EffectiveParavirtProvider'] === 'HyperV') {
+							acList[acList.length] = trans('Hyper-V' + ' Paravirtualization', 'UIDetails');
+						} else {
+							acList[acList.length] = trans(d['EffectiveParavirtProvider'] + ' Paravirtualization', 'UIDetails');
+						}
+				   }
 
 				   if($('#vboxPane').data('vboxConfig').enableAdvancedConfig) {
 					   if(d['HWVirtExProperties'].LargePages) acList[acList.length] = trans('Large Pages');
@@ -523,7 +528,7 @@ var vboxVMDetailsSections = {
 					window.open(vboxEndpointConfig.screen+'?vm='+$(this).data('vmid')+'&full=1','vboxSC','toolbar=1,menubar=0,location=0,directories=0,status=true,resize=true');
 				}).append(
 					$('<span />')
-						.html(trans('Open in new window','UIVMPreviewWindow'))
+						.html(trans('Open in new window','UIGMachinePreview'))
 				).appendTo(ul);
 			
 			/* Hover */
@@ -1269,7 +1274,7 @@ var vboxVMDetailsSections = {
 	usb: {
 		icon: 'usb_16px.png',
 		title: 'USB',
-		language_context: 'UIGDetails',
+		language_context: 'UICommon',
 		settingsLink: 'USB',
 		rows: function(d) {
 			
@@ -1357,7 +1362,7 @@ var vboxVMDetailsSections = {
 	description: {
 		icon: 'description_16px.png',
 		title: 'Description',
-		language_context: 'UIGDetails',
+		language_context: 'UICommon',
 		settingsLink: 'General:2',
 		rows: function(d) {
 			return [{
@@ -2668,15 +2673,15 @@ var vboxMedia = {
 			icon = null;
 			switch(type) {
 				case 'HardDisk':
-					title = trans('Choose a virtual hard disk file...','UIMachineSettingsStorage');
+					title = trans('Choose a virtual hard disk file...','UIWizardNewVM');
 					icon = 'images/vbox/hd_16px.png';
 					break;
 				case 'Floppy':
-					title = trans('Choose a virtual floppy disk file...','UIMachineSettingsStorage');
+					title = trans('Please choose a virtual floppy disk file','UICommon');
 					icon = 'images/vbox/fd_16px.png';
 					break;
 				case 'DVD':
-					title = trans('Choose a virtual optical disk file...','UIMachineSettingsStorage');
+					title = trans('Choose a virtual optical disk file...','UIWizardFirstRun');
 					icon = 'images/vbox/cd_16px.png';
 					break;					
 			}
@@ -2754,10 +2759,10 @@ function vboxWizard() {
 	this.bg = null;
 	
 	/* Text on Back button */
-	this.backText = trans('Back','QIArrowSplitter');
+	this.backText = trans('Back','QIArrowButtonPress');
 	
 	/* Text on Next button */
-	this.nextText = trans('Next','QIArrowSplitter');
+	this.nextText = trans('Next','QIArrowButtonPress');
 
 	/* Text on cancel button */
 	this.cancelText = trans('Cancel','QIMessageBox');
@@ -3917,7 +3922,7 @@ function vboxMediaMenu(type,callback,mediumPath) {
 				menus[menus.length] = {'name':'createD','icon':'hd_new','label':trans('Create a new hard disk...','UIMachineSettingsStorage')};
 
 				// choose hard disk
-				menus[menus.length] = {'name':'chooseD','icon':'select_file','label':trans('Choose a virtual hard disk file...','UIMachineSettingsStorage')};
+				menus[menus.length] = {'name':'chooseD','icon':'select_file','label':trans('Choose a virtual hard disk file...','UIWizardNewVM')};
 				
 				// Add VMM?
 				if($('#vboxPane').data('vboxConfig').enableAdvancedConfig) {
@@ -3933,7 +3938,7 @@ function vboxMediaMenu(type,callback,mediumPath) {
 			case 'DVD':
 				
 				// Choose disk image
-				menus[menus.length] = {'name':'chooseD','icon':'select_file','label':trans('Choose a virtual optical disk file...','UIMachineSettingsStorage')};
+				menus[menus.length] = {'name':'chooseD','icon':'select_file','label':trans('Choose a virtual optical disk file...','UIWizardFirstRun')};
 
 				// Add VMM?
 				if($('#vboxPane').data('vboxConfig').enableAdvancedConfig) {
@@ -3954,7 +3959,7 @@ function vboxMediaMenu(type,callback,mediumPath) {
 			default:
 
 				// Choose disk image
-				menus[menus.length] = {'name':'chooseD','icon':'select_file','label':trans('Choose a virtual floppy disk file...','UIMachineSettingsStorage')};
+				menus[menus.length] = {'name':'chooseD','icon':'select_file','label':trans('Please choose a virtual floppy disk file','UICommon')};
 
 				// Add VMM?
 				if($('#vboxPane').data('vboxConfig').enableAdvancedConfig) {
@@ -4544,7 +4549,7 @@ function vboxLoader(name) {
 
 		$('<td />').attr('class', 'vboxLoaderSpinner').html('<img src="images/spinner.gif" width="36" height="39" />').appendTo(tr);
 		
-		$('<td />').attr('class','vboxLoaderText').html(trans('Loading ...','UIVMDesktop')).appendTo(tr);
+		$('<td />').attr('class','vboxLoaderText').html(trans('Loading ...','phpVirtualBox')).appendTo(tr);
 
 		$(tbl).append(tr).appendTo(div);
 		

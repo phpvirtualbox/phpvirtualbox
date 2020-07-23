@@ -148,7 +148,7 @@ var sButtons = new Array(
 
 	{
 		'name' : 'addNet',
-		'label' : 'Add host-only network',
+		'label' : 'Add Host-only Network',
 		'icon' : 'add_host_iface',
 		'enabled' : function () { return true; },
 		'click' : function () {
@@ -170,7 +170,7 @@ var sButtons = new Array(
 					vboxProgress({'progress':d.responseData.progress,'persist':d.persist},function(){
 						$('#vboxSettingsGlobalNetList').html('<li><img src="images/spinner.gif" /></li>');
 						setTimeout(refreshInterfaces,2000);
-					},null,trans('Add host-only network','UIGlobalSettingsNetwork'),'',true);
+					},null,trans('Add Host-only Network','UIGlobalSettingsNetwork'),'',true);
 				}
 				
 			});
@@ -182,7 +182,7 @@ var sButtons = new Array(
 
 	{
 		'name' : 'delNet',
-		'label' : 'Remove host-only network',
+		'label' : 'Remove Host-only Network',
 		'icon' : 'remove_host_iface',
 		'enabled' : function (item) { return ($(item).data('interface')); },
 		'click' : function () {
@@ -207,7 +207,7 @@ var sButtons = new Array(
 								vboxVMDataMediator.refreshVMData('host');
 							};
 							l2.run();
-						},null,trans('Remove host-only network','UIGlobalSettingsNetwork'),'',true);
+						},null,trans('Remove Host-only Network','UIGlobalSettingsNetwork'),'',true);
 					}
 					
 				},{'id':$(item).data('interface').id});
@@ -227,7 +227,7 @@ var sButtons = new Array(
 	},
 	{
 		'name' : 'editNet',
-		'label' : 'Edit host-only network',
+		'label' : 'Edit Host-only Network',
 		'icon' : 'guesttools',
 		'enabled' : function (item) { return ($(item).data('interface')); },
 		'click' : function () {
@@ -263,7 +263,7 @@ var sButtons = new Array(
 
 	{
 		'name' : 'addNet',
-		'label' : 'Add NAT network',
+		'label' : 'Add NAT Network',
 		'icon' : 'add_host_iface',
 		'click' : function () {
 
@@ -283,7 +283,7 @@ var sButtons = new Array(
 
 	{
 		'name' : 'delNet',
-		'label' : 'Remove NAT network',
+		'label' : 'Remove NAT Network',
 		'icon' : 'remove_host_iface',
 		'enabled' : function (item) { return (item); },
 		'click' : function () {
@@ -309,7 +309,7 @@ var sButtons = new Array(
 	},
 	{
 		'name' : 'editNet',
-		'label' : 'Edit NAT network',
+		'label' : 'Edit NAT Network',
 		'icon' : 'guesttools',
 		'enabled' : function (item) { return (item); },
 		'click' : function () {
@@ -424,7 +424,7 @@ vboxSettingsGlobalNATNetworksAdd();
  * Edit Network Interface Dialog 
  *
  */
-vboxInitDisplay('vboxSettingsGlobalNetEditDialog','UIGlobalSettingsNetworkDetails');
+vboxInitDisplay('vboxSettingsGlobalNetEditDialog','UIGlobalSettingsNetworkDetailsHost');
 
 var buttons = {};
 buttons[trans('OK','QIMessageBox')] = function(){
@@ -448,7 +448,7 @@ buttons[trans('OK','QIMessageBox')] = function(){
 	$(this).dialog("close");
 };
 buttons[trans('Cancel','QIMessageBox')] = function(){$(this).dialog("close");};
-$('#vboxSettingsGlobalNetEditDialog').dialog({'buttons':buttons,'width':500,'modal':true,'autoOpen':false,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/nw_16px.png" class="vboxDialogTitleIcon" /> ' +trans('Host-only Network Details','UIGlobalSettingsNetworkDetails')});
+$('#vboxSettingsGlobalNetEditDialog').dialog({'buttons':buttons,'width':500,'modal':true,'autoOpen':false,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/nw_16px.png" class="vboxDialogTitleIcon" /> ' +trans('Host-only Network Details','UIGlobalSettingsNetworkDetailsHost')});
 
 
 function vboxSettingsGlobalNetEditDialog() {
@@ -519,7 +519,7 @@ buttons[trans('OK','QIMessageBox')] = function(){
 	$(this).dialog("close");
 };
 buttons[trans('Cancel','QIMessageBox')] = function(){$(this).dialog("close");};
-$('#vboxSettingsGlobalNATNetworkEditDialog').dialog({'buttons':buttons,'width':500,'modal':true,'autoOpen':false,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/nw_16px.png" class="vboxDialogTitleIcon" /> ' +trans('Host-only Network Details','UIGlobalSettingsNetworkDetails')});
+$('#vboxSettingsGlobalNATNetworkEditDialog').dialog({'buttons':buttons,'width':500,'modal':true,'autoOpen':false,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/nw_16px.png" class="vboxDialogTitleIcon" /> ' +trans('Host-only Network Details','UIGlobalSettingsNetworkDetailsHost')});
 $('#vboxSettingsGlobalNATNetIPv6').on('enable',function() {
 	if(this.checked) {
 		$('#vboxSettingsGlobalNATNetIPv6Route').prop('disabled', false).siblings().removeClass('vboxDisabled');	
@@ -611,7 +611,7 @@ function vboxSettingsGlobalNetworkNatPortForwardingDialog(net, row) {
 			$(this).trigger('close').empty().remove();
 		};
 		
-		vboxInitDisplay($('#vboxSettingsGlobalNetworkNatPortForwardingDialog'), 'UIPortForwardingModel');
+		vboxInitDisplay($('#vboxSettingsGlobalNetworkNatPortForwardingDialog'), 'UIPortForwardingTable');
 		
 		$('#vboxSettingsGlobalNetworkNatPortForwardingDialog').tabs();
 		

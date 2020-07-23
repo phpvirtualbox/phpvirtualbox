@@ -79,8 +79,8 @@
 
 <script type='text/javascript'>
 
-vboxInitDisplay('vboxSnapshotNew','VBoxTakeSnapshotDlg');
-vboxInitDisplay('vboxSnapshotDetails','VBoxSnapshotDetailsDlg');
+vboxInitDisplay('vboxSnapshotNew','UITakeSnapshotDialog');
+vboxInitDisplay('vboxSnapshotDetails','UISnapshotDetailsWidget');
 
 var vboxSnapshotButtons = [
             	
@@ -104,7 +104,7 @@ var vboxSnapshotButtons = [
   			
   			$('#vboxSnapshotNewImg').attr('src',"images/vbox/" + vboxGuestOSTypeIcon(vm.OSTypeId));
 
-  			var snRegEx = new RegExp('^' + trans('Snapshot %1','VBoxSnapshotsWgt').replace('%1','([0-9]+)') + '$');
+			var snRegEx = new RegExp('^' + trans('Snapshot %1','UISnapshotPane').replace('%1','([0-9]+)') + '$');
   			
   			// Get max snapshot name
   			var snMax = 0;
@@ -114,7 +114,7 @@ var vboxSnapshotButtons = [
   				if(snNum) snMax = Math.max(parseInt(snNum[1]), snMax);
   			}
   			
-  			$('#vboxSnapshotNewName').val(trans('Snapshot %1','VBoxSnapshotsWgt').replace('%1',(snMax+1)));
+			$('#vboxSnapshotNewName').val(trans('Snapshot %1','UISnapshotPane').replace('%1',(snMax+1)));
   			$('#vboxSnapshotNewName').select();
   			$('#vboxSnapshotNewDesc').val('');
   			
@@ -151,7 +151,7 @@ var vboxSnapshotButtons = [
 								// callback passed to click()? else Refresh vm list
 								if(typeof callback == 'function') { callback(pres); }
 	
-							},'progress_snapshot_create_90px.png', trans('Take a snapshot of the current virtual machine state','VBoxSnapshotsWgt'),
+							},'progress_snapshot_create_90px.png', trans('Take a snapshot of the current virtual machine state','UISnapshotPane'),
 								vm.name);
 							
 						} else {
@@ -197,7 +197,7 @@ var vboxSnapshotButtons = [
   			
   			$('#vboxSnapshotNewName').off('keypress').on('keypress',function(e) { if (e.keyCode == 13) OKBtn.apply($('#vboxSnapshotNew')); });
   			
-  			$('#vboxSnapshotNew').dialog({'closeOnEscape':false,'width':'400px','height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/snapshot_take_16px.png" class="vboxDialogTitleIcon" height="16" width="16" /> ' + trans('Take Snapshot of Virtual Machine','VBoxTakeSnapshotDlg')});
+			$('#vboxSnapshotNew').dialog({'closeOnEscape':false,'width':'400px','height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/snapshot_take_16px.png" class="vboxDialogTitleIcon" height="16" width="16" /> ' + trans('Take Snapshot of Virtual Machine','UITakeSnapshotDialog')});
   			
   	  	}
   	},
@@ -225,7 +225,7 @@ var vboxSnapshotButtons = [
                         "<p>You can create a snapshot of the current state of the virtual machine first by checking the box below; " +
                         "if you do not do this the current state will be permanently lost. Do you wish to proceed?</p>",'UIMessageCenter');
 				q += '<p><label><input type="checkbox" id="vboxRestoreSnapshotCreate" checked /> ' + trans('Create a snapshot of the current machine state','UIMessageCenter') + '</label></br>';
-				q += '<label><input type="checkbox" id="vboxRestoreSnapshotAutoStart" '+ (vboxVMStates.isRunning(vm)? 'checked' : '') + ' /> ' + trans('Automatically start the machine after restore','UIMessageCenter') + '</label></p>';
+				q += '<label><input type="checkbox" id="vboxRestoreSnapshotAutoStart" '+ (vboxVMStates.isRunning(vm)? 'checked' : '') + ' /> ' + trans('Automatically start the machine after restore','phpVirtualBox') + '</label></p>';
 				
 				buttons[trans('Restore','UIMessageCenter')] = function() {
 
@@ -241,7 +241,7 @@ var vboxSnapshotButtons = [
 							if(d && d.responseData && d.responseData.progress) {
 								vboxProgress({'progress':d.responseData.progress,'persist':d.persist},function(d){
 									// Do Nothing
-								},'progress_state_restore_90px.png',trans('Power on virtual machine','VBoxSnapshotsWgt'), vm.name);
+								},'progress_state_restore_90px.png',trans('Starting','VBoxGlobal'), vm.name);
 								return;
 							}
 						},{'vm':vm.id,'state':'powerUp'});
@@ -276,7 +276,7 @@ var vboxSnapshotButtons = [
 												setTimeout(snrestore.bind(self,autoStart,takeSnapshot),0);
 											}
 										}
-									},'progress_poweroff_90px.png',trans('Power off virtual machine','VBoxSnapshotsWgt'), vm.name);
+									},'progress_poweroff_90px.png',trans('Stopping','VBoxGlobal'), vm.name);
 								}
 							},{'vm':vm.id,'state':'powerDown'});
 
@@ -295,7 +295,7 @@ var vboxSnapshotButtons = [
 											setTimeout(snautostart.bind(self), 0);
 										}
 									}
-								},'progress_snapshot_restore_90px.png',trans('Restore Snapshot','VBoxSnapshotsWgt'),
+								},'progress_snapshot_restore_90px.png',trans('Restore Snapshot','UISnapshotPane'),
 									vm.name);
 							} else if(d && d.error) {
 								vboxAlert(d.error);
@@ -327,7 +327,7 @@ var vboxSnapshotButtons = [
 
 								// Let events get picked up. Nothing to do here
 								
-							},'progress_snapshot_restore_90px.png',trans('Restore Snapshot','VBoxSnapshotsWgt'),
+							},'progress_snapshot_restore_90px.png',trans('Restore Snapshot','UISnapshotPane'),
 								vm.name);
 						} else if(d && d.error) {
 							vboxAlert(d.error);
@@ -363,7 +363,7 @@ var vboxSnapshotButtons = [
 							
 							// Let events get picked up. Nothing to do here
 							
-						},'progress_snapshot_discard_90px.png',trans('Delete Snapshot','VBoxSnapshotsWgt'),
+						},'progress_snapshot_discard_90px.png',trans('Delete Snapshot','UISnapshotPane'),
 							vm.name + ' - ' + snapshot.name);
 					}
 	 	  		},{'vm':vm.id,'snapshot':snapshot.id});
@@ -458,7 +458,7 @@ var vboxSnapshotButtons = [
 				buttons[trans('Cancel','QIMessageBox')] = function(){
 					$(this).dialog('close');
 				};
-				$('#vboxSnapshotDetails').dialog({'closeOnEscape':false,'width':'600px','height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/snapshot_show_details_16px.png" class="vboxDialogTitleIcon" /> '+trans('Details of %1 (%2)','VBoxSnapshotDetailsDlg').replace('%1',$('<div />').text(snapshot.name).html()).replace('%2',vm.name)});
+				$('#vboxSnapshotDetails').dialog({'closeOnEscape':false,'width':'600px','height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/snapshot_show_details_16px.png" class="vboxDialogTitleIcon" /> '+trans('Details of %1 (%2)','UISnapshotDetailsWidget').replace('%1',$('<div />').text(snapshot.name).html()).replace('%2',vm.name)});
 			};
 			l.run();
   	  	}
@@ -491,19 +491,19 @@ var vboxSnapshotButtons = [
 
 
 /* Append Top Toolbar */
-var vboxSnapshotToolbar = new vboxToolbarSmall({buttons: vboxSnapshotButtons, size: 22, language_context: 'VBoxSnapshotsWgt'});
+var vboxSnapshotToolbar = new vboxToolbarSmall({buttons: vboxSnapshotButtons, size: 22, language_context: 'UISnapshotPane'});
 // special case for 'clone' button because it is 16px rather than 22px
 vboxSnapshotToolbar.addButtonCSS('clone', {'background-position':'6px 4px'});
 vboxSnapshotToolbar.renderTo('vboxSnapshotToolbar');
 
-vboxInitDisplay('vboxSnapshotToolbar','VBoxSnapshotsWgt');
+vboxInitDisplay('vboxSnapshotToolbar','UISnapshotPane');
 
 // Context menu for snapshots
-var vboxSnapshotContextMenu = new vboxMenu({name:'vboxSnapshotContextMenu', language_context: 'VBoxSnapshotsWgt'});
+var vboxSnapshotContextMenu = new vboxMenu({name:'vboxSnapshotContextMenu', language_context: 'UISnapshotPane'});
 vboxSnapshotContextMenu.addMenu(vboxSnapshotButtons.slice(-(vboxSnapshotButtons.length-1)));
 
 //Context menu for current state
-var vboxSnapshotContextMenuCurrent = new vboxMenu({name: 'vboxSnapshotContextMenuCurrent', language_context: 'VBoxSnapshotsWgt'});
+var vboxSnapshotContextMenuCurrent = new vboxMenu({name: 'vboxSnapshotContextMenuCurrent', language_context: 'UISnapshotPane'});
 vboxSnapshotContextMenuCurrent.addMenu([vboxSnapshotButtons[0],vboxSnapshotButtons[(vboxSnapshotButtons.length-2)]]);
 
 
@@ -532,7 +532,7 @@ vboxSnapshotToolbar._timeSpans.sort(function(a,b){return (a > b ? -1 : 1);});
 /* Selected VM changed */
 $('#vboxPane').on('vmSelectionListChanged',function(){
 	
-	$('#vboxTabVMSnapshotsTitle').html(trans('Snapshots','UIVMDesktop'));
+	$('#vboxTabVMSnapshotsTitle').html(trans('Snapshots','UIActionPool'));
 
 	var vm = vboxChooser.getSingleSelected();
 	
@@ -545,7 +545,7 @@ $('#vboxPane').on('vmSelectionListChanged',function(){
 		$('#vboxTabVMSnapshots').parent().trigger('enableTab', ['vboxTabVMSnapshots']);		
 
 		$.when(vboxVMDataMediator.getVMDetails(vm.id)).done(function(vm) {
-			$('#vboxTabVMSnapshotsTitle').html(trans('Snapshots','UIVMDesktop') + (vm && vm.snapshotCount ? trans(' (%1)','VBoxSnapshotsWgt').replace('%1',vm.snapshotCount):''));
+			$('#vboxTabVMSnapshotsTitle').html(trans('Snapshots','UIActionPool') + (vm && vm.snapshotCount ? trans(' (%1)','UISnapshotPane').replace('%1',vm.snapshotCount):''));
 		});
 		
 		// Unset last vm
@@ -601,8 +601,8 @@ $('#vboxPane').on('vmSelectionListChanged',function(){
 				if(vboxChooser.getSingleSelectedId() == eventList[i].machineId) {
 					
 					// Update title
-					$('#vboxTabVMSnapshotsTitle').html(trans('Snapshots','UIVMDesktop') + 
-							(eventList[i].enrichmentData && eventList[i].enrichmentData.snapshotCount ? trans(' (%1)','VBoxSnapshotsWgt').replace('%1',eventList[i].enrichmentData.snapshotCount):''));		
+					$('#vboxTabVMSnapshotsTitle').html(trans('Snapshots','UIActionPool') +
+							(eventList[i].enrichmentData && eventList[i].enrichmentData.snapshotCount ? trans(' (%1)','UISnapshotPane').replace('%1',eventList[i].enrichmentData.snapshotCount):''));
 				
 					// Redraw snapshots if this is shown
 					if($('#vboxTabVMSnapshots').data('lastVM') == eventList[i].machineId) {
@@ -784,7 +784,7 @@ function __vboxTabSnapshot(s, currentId) {
 			ts = trans('%n second(s)', 'VBoxGlobal', ago).replace('%n', ago);
 			break;				
 	}
-	ts = trans(' (%1 ago)','VBoxSnapshotsWgt').replace('%1', ts);
+	ts = trans(' (%1 ago)','UISnapshotPane').replace('%1', ts);
 	
 	$(li).append(' ').append(
 	
@@ -803,8 +803,8 @@ function __vboxTabSnapshot(s, currentId) {
 			.dblclick(vboxSnapshotButtons[4].click).disableSelection()
 			
 			// tool tip
-			.tipped({'position':'mouse','delay':1500,'source':'<p><strong>'+$('<div />').text(s.name).html()+'</strong> ('+trans((s.online ? 'online)' : 'offline)'),'VBoxSnapshotsWgt')+'</p>'+
-				'<p>'+ vboxDateTimeString(s.timeStamp, trans('Taken at %1','VBoxSnapshotsWgt'), trans('Taken on %1','VBoxSnapshotsWgt'))+'</p>' +
+			.tipped({'position':'mouse','delay':1500,'source':'<p><strong>'+$('<div />').text(s.name).html()+'</strong> ('+trans((s.online ? 'online)' : 'offline)'),'UISnapshotPane')+'</p>'+
+				'<p>'+ vboxDateTimeString(s.timeStamp, trans('Taken at %1','UISnapshotPane'), trans('Taken on %1','UISnapshotPane'))+'</p>' +
 							(s.description ? '<hr />' + $('<div />').text(s.description).html() : '')})
 			
 	).addClass(currentId == s.id ? 'vboxSnapshotCurrent' : '').children('div.vboxListItem').first().click(function(){
@@ -830,10 +830,10 @@ function __vboxTabSnapshot(s, currentId) {
 /* Current state list item */
 function __vboxTabSnapshotCurrent(vm) {
 
-	return $('<li />').data('vboxSnapshot',{'state':'current','name':trans((vm.currentStateModified ? 'Current State (changed)' : 'Current State'),'VBoxSnapshotsWgt')}).html(' ')
+	return $('<li />').data('vboxSnapshot',{'state':'current','name':trans((vm.currentStateModified ? 'Current State (changed)' : 'Current State'),'UISnapshotPane')}).html(' ')
 		.addClass('last vboxSnapshotCurrent vboxSnapshotCurrentState')
 		.append(
-				$('<div />').attr({'class':'vboxListItem'}).html('<img src="images/vbox/'+vboxMachineStateIcon(vm.state)+'" height="16" width="16" /> ' + $('<div />').text(trans((vm.currentStateModified ? 'Current State (changed)' : 'Current State'),'VBoxSnapshotsWgt')).html())
+				$('<div />').attr({'class':'vboxListItem'}).html('<img src="images/vbox/'+vboxMachineStateIcon(vm.state)+'" height="16" width="16" /> ' + $('<div />').text(trans((vm.currentStateModified ? 'Current State (changed)' : 'Current State'),'UISnapshotPane')).html())
 				.contextMenu({
 						menu: vboxSnapshotContextMenuCurrent.menuId(),
 						clickthrough : true
@@ -844,12 +844,12 @@ function __vboxTabSnapshotCurrent(vm) {
 					$('#vboxSnapshotList').trigger('select',$(this).parent());
 				})
 				.tipped({'position':'mouse','delay':1500,'source':'<strong>'+
-					trans((vm.currentStateModified ? 'Current State (changed)' : 'Current State'),'VBoxSnapshotsWgt') + '</strong><br />'+
-					trans('%1 since %2','VBoxSnapshotsWgt').replace('%1',trans(vboxVMStates.convert(vm.state),'VBoxGlobal'))
+					trans((vm.currentStateModified ? 'Current State (changed)' : 'Current State'),'UISnapshotPane') + '</strong><br />'+
+					trans('%1 since %2','UISnapshotPane').replace('%1',trans(vboxVMStates.convert(vm.state),'VBoxGlobal'))
 						.replace('%2',vboxDateTimeString(vm.lastStateChange))
 					+ (vm.snapshotCount > 0 ? '<hr />' + (vm.currentStateModified ?
-								trans('The current state differs from the state stored in the current snapshot','VBoxSnapshotsWgt')
-								: trans('The current state is identical to the state stored in the current snapshot','VBoxSnapshotsWgt'))
+								trans('The current state differs from the state stored in the current snapshot','UISnapshotPane')
+								: trans('The current state is identical to the state stored in the current snapshot','UISnapshotPane'))
 						: '')
 					})
 		);
@@ -879,7 +879,7 @@ function __vboxTabSnapshotTimestamps() {
 		// Check for max age.
 		if(Math.floor(t / 86400) > 30) {
 			var sdate = new Date(sts * 1000);
-			$(this).html(trans(' (%1)','VBoxSnapshotsWgt').replace('%1',sdate.toLocaleString()));
+			$(this).html(trans(' (%1)','UISnapshotPane').replace('%1',sdate.toLocaleString()));
 			return;
 		}
 		
@@ -907,7 +907,7 @@ function __vboxTabSnapshotTimestamps() {
 				ts = trans('%n second(s)', 'VBoxGlobal', ago).replace('%n', ago);
 				break;				
 		}
-		$(this).html(ts = trans(' (%1 ago)','VBoxSnapshotsWgt').replace('%1', ts));
+		$(this).html(ts = trans(' (%1 ago)','UISnapshotPane').replace('%1', ts));
 	});
 	
 	var timerSet = (minTs >= 60 ? 60 : 10);

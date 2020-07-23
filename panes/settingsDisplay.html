@@ -70,7 +70,7 @@
 		<td><input type='text' class='vboxText' style='width: 100%' name='vboxSettingsDisplayVRDEPort' /></td>
 	</tr>
 	<tr id='vboxSettingsDisplayVRDEAddrRow'>
-		<th><span class='translate'>Net Address:</span></th>
+		<th><span class='translate'>Server Address:</span></th>
 		<td><input type='text' class='vboxText' style='width: 100%' name='vboxSettingsDisplayVRDEAddr' /></td>
 	</tr>	
 	<tr class='vboxRunningEnabled vboxSettingsDisplayRDP'>
@@ -104,6 +104,8 @@
 
 /* auth method translations */
 $('#vboxSettingsDisplayVRDEAuthID').find('option').html(function(i,h){return trans(h,'VBoxGlobal');});
+
+$('#vboxSettingsDisplayVRDEAddrRow').find('span').html(function(i,h){return trans(h,'UIGlobalSettingsNetworkDetailsHost');});
 
 $('#vboxSettingsDisplayMemory').data('form','frmVboxSettings');
 $('#vboxSettingsDisplayMemory').slider({'min':parseInt($('#vboxPane').data('vboxSystemProperties').minGuestVRAM),'max':parseInt($('#vboxPane').data('vboxSystemProperties').maxGuestVRAM)});

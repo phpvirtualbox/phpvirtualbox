@@ -31,18 +31,19 @@
 				<option value='HostPipe' >HostPipe</option>
 				<option value='HostDevice' >HostDevice</option>
 				<option value='RawFile' >RawFile</option>
+				<option value='TCP' >TCP</option>
 			</select>
           </td>
 	</tr>
 	<tr>
 		<th></th>
 		<td>
-			<label><input type='checkbox' class='vboxCheckbox vboxSettingsSPortCreatePipe' name='vboxSettingsSPortCreatePipe' />
-			<span class='translate vboxEnablerListen'>Create Pipe</span></label>
+			<label><input type='checkbox' class='vboxCheckbox vboxSettingsSPortConnectPipe' name='vboxSettingsSPortConnectPipe' />
+			<span class='translate vboxEnablerListen'>Connect to existing pipe/socket</span></label>
 		</td>
 	</tr>
 	<tr>
-		<th class='vboxSPortPathLabel'><span class='translate'>Port/File Path:</span></th>
+		<th class='vboxSPortPathLabel'><span class='translate'>Path/Address:</span></th>
 		<td>
 			<input type='text' class='vboxText vboxSPortPathBox' style='width: 100%' name='vboxSettingsSPortPath'/>
 		</td>
@@ -134,10 +135,10 @@ function vboxSettingsUpdateSPortOptions(sel) {
  */
 function vboxSettingsUpdateSPortMode(sel) {
 	var ptable = $(sel).closest('table');
-	if(sel.value == 'HostPipe') {
-		ptable.find('input.vboxSettingsSPortCreatePipe').prop({'disabled':false}).siblings().removeClass('vboxDisabled');
+	if((sel.value == 'HostPipe') || (sel.value == 'TCP')) {
+		ptable.find('input.vboxSettingsSPortConnectPipe').prop({'disabled':false}).siblings().removeClass('vboxDisabled');
 	} else {
-		ptable.find('input.vboxSettingsSPortCreatePipe').prop({'disabled':true}).siblings().addClass('vboxDisabled');
+		ptable.find('input.vboxSettingsSPortConnectPipe').prop({'disabled':true}).siblings().addClass('vboxDisabled');
 	}
 	if(sel.value == 'Disconnected') {
 		ptable.find('.vboxSPortPathLabel').addClass('vboxDisabled');
@@ -176,8 +177,8 @@ $('#vboxSettingsDialog').on('dataLoaded',function(){
 		$(document.forms['frmVboxSettings'].elements['vboxSettingsPortMode'+a].options[document.forms['frmVboxSettings'].elements['vboxSettingsPortMode'+a].selectedIndex]).attr('selected','selected');
 		$(document.forms['frmVboxSettings'].elements['vboxSettingsPortMode'+a]).change();
 
-		// Create pipe 
-		$(document.forms['frmVboxSettings'].elements['vboxSettingsSPortCreatePipe'+a]).prop('checked',($('#vboxSettingsDialog').data('vboxMachineData').serialPorts[i].server ? true : false)).triggerHandler('click');
+		// Connect pipe
+		$(document.forms['frmVboxSettings'].elements['vboxSettingsSPortConnectPipe'+a]).prop('checked',($('#vboxSettingsDialog').data('vboxMachineData').serialPorts[i].server ? false : true)).triggerHandler('click');
 		
 		// Path
 		$(document.forms['frmVboxSettings'].elements['vboxSettingsSPortPath'+a]).val($('#vboxSettingsDialog').data('vboxMachineData').serialPorts[i].path);
@@ -214,8 +215,8 @@ $('#vboxSettingsDialog').on('save',function(){
 		// Port Mode
 		$('#vboxSettingsDialog').data('vboxMachineData').serialPorts[i].hostMode = $(document.forms['frmVboxSettings'].elements['vboxSettingsPortMode'+a]).val(); 
 
-		// Create pipe 
-		$('#vboxSettingsDialog').data('vboxMachineData').serialPorts[i].server = document.forms['frmVboxSettings'].elements['vboxSettingsSPortCreatePipe'+a].checked;
+		// Connect pipe
+		$('#vboxSettingsDialog').data('vboxMachineData').serialPorts[i].server = !document.forms['frmVboxSettings'].elements['vboxSettingsSPortConnectPipe'+a].checked;
 		
 		// Path
 		$('#vboxSettingsDialog').data('vboxMachineData').serialPorts[i].path = $(document.forms['frmVboxSettings'].elements['vboxSettingsSPortPath'+a]).val();
