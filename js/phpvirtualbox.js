@@ -4824,9 +4824,13 @@ var vboxStorage = {
 	 */
 	getBusIconName: function(bus) {
 		if(vboxStorage[bus].displayInherit) bus = vboxStorage[bus].displayInherit
-		return bus.toLowerCase();
+		if (vboxStorage[bus].iconName) {
+			return vboxStorage[bus].iconName;
+		} else {
+			return bus.toLowerCase();
+		}
 	},
-	
+
 	IDE: {
 		maxPortCount: 2,
 		limitOneInstance: true,
@@ -4882,6 +4886,7 @@ var vboxStorage = {
 						return s;				
 					}
 	},
+
 	SAS: {
 		maxPortCount: 8,
 		maxDevicesPerPortCount: 1,
@@ -4897,7 +4902,6 @@ var vboxStorage = {
 		},
 		displayInherit: 'SATA'
 	},
-		
 
 	Floppy: {
 		maxPortCount: 1,
@@ -4939,6 +4943,22 @@ var vboxStorage = {
 			return s;
 		},
 	displayInherit: 'IDE'
+	},
+
+	VirtioSCSI: {
+		iconName: 'virtio_scsi',
+		maxPortCount: 256,
+		maxDevicesPerPortCount: 1,
+		types: ['VirtioSCSI'],
+		driveTypes: ['disk'],
+		slotName: function(p,d) { return trans('virtio-scsi Port %1','VBoxGlobal', null, 'StorageSlot').replace('%1',p); },
+		slots: function() {
+			var s = {};
+			for(var i = 0; i < 8; i++) {
+				s[i+'-0'] = trans('virtio-scsi Port %1','VBoxGlobal', null, 'StorageSlot').replace('%1',i);
+			}
+			return s;
+		}
 	}
 };
 

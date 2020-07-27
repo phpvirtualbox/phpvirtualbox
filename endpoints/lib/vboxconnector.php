@@ -5719,7 +5719,8 @@ class vboxconnector {
 			'buslogic' => 'buslogic',
 			'lsilogicsas' => 'lsilogicsas',
 			'usb' => 'usb',
-			'nvme' => 'nvme'
+			'nvme' => 'nvme',
+			'virtioscsi' => 'virtioscsi'
 		);
 
 		if(!isset($cTypes[strtolower($cType)])) {
