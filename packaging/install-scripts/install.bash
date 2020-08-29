@@ -28,7 +28,6 @@ PHPVBOX_INSTALL_DIR=${PHPVBOX_INSTALL_DIR:='/usr/share/phpvirtualbox'}
 PHPVBOX_VERSION=${PHPVBOX_VERSION:='latest'}
 APT=${APT:='apt-get -y'}
 APT_KEY=${APT_KEY:='apt-key'}
-VBOX_VER=${VBOX_VER:='6.1'}
 ACCEPT_ORACLE_EXTPACK_LICENSE=${ACCEPT_ORACLE_EXTPACK_LICENSE:='n'}
 VBOX_USER=${VBOX_USER:='vbox'}
 VBOX_GROUP=${VBOX_GROUP:='vboxusers'}
@@ -40,6 +39,8 @@ VBOX_AUTOSTART_DIR=${VBOX_AUTOSTART_DIR:="${VBOX_HOME}/VBoxAutostart"}
 VBOX_ETC_DEFAULT=${VBOX_ETC_DEFAULT:='/etc/default/virtualbox'}
 AUTOSTART_CONF=${AUTOSTART_CONF:='/etc/vbox/autostart.conf'}
 WAIT_FOR_STOP=10s
+
+
 
 
 for i in "$@"
@@ -100,11 +101,29 @@ fi
 ########################
 
 if [ "${INSTALL_VBOX}" = true ]; then
+    # Virtualbox Version needs to match PHPVirtualBox version
+    # unless pulling from "develop" or "master"
+    if [ "${PHPVBOX_VERSION}" == 'latest' ]; then
+	RELEASE_TAG_URL=$(curl -Ls -o /dev/null -w %{url_effective} https://github.com/phpvirtualbox/phpvirtualbox/releases/latest)
+	PHPVBOX_VERSION=$(echo $RELEASE_TAG_URL | awk -F/ '{print $8}')
+    fi
+    if [ "${PHPVBOX_VERSION}" == "development" ]; then
+
+        VIRTUALBOX_VERSION=$(wget -O- https://raw.githubusercontent.com/phpvirtualbox/phpvirtualbox/develop/endpoints/lib/config.php | grep "define('PHPVBOX_VER'" | sed -n "s/^.*\([0-9]\+\.[0-9]\+\).*$/\1/p")
+    else
+        VIRTUALBOX_VERSION=`echo "$PHPVBOX_VERSION" | sed -n "s/^\([0-9]\+\.[0-9]\+\).*$/\1/p"`
+    fi
+
+    if [[ $VIRTUALBOX_VERSION =~ ^[0-9]+.[0-9]+$ ]]; then
 	cat << EOT
-###########################
-## INSTALLING VIRTUALBOX ##
-###########################
+###############################
+## INSTALLING VIRTUALBOX $VIRTUALBOX_VERSION ##
+###############################
 EOT
+    else
+        echo "ERROR: UNKNOWN VIRTUALBOX VERSION: $VIRTUALBOX_VERSION"
+        exit -1
+    fi
 	set -u
 	set -e
 	set -o pipefail
@@ -127,7 +146,7 @@ EOT
 	sleep "$WAIT_FOR_STOP"
 
 	echo ">>>> Installing VirtualBox on non-x11 system <<<<"
-	${APT} install --reinstall virtualbox-${VBOX_VER} --no-install-recommends
+	${APT} install --reinstall virtualbox-${VIRTUALBOX_VERSION} --no-install-recommends
 
 	echo ">>>> Adding vbox user <<<<"
 	adduser --disabled-password --gecos "VirtualBox" vbox || true
