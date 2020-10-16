@@ -4,7 +4,7 @@
 		<name>phpVirtualBox</name>
 		<message>
 			<source>Warning: A VirtualBox internal operation is in progress. Closing this window or navigating away from this web page may cause unexpected and undesirable results. Please wait for the operation to complete.</source>
-			<translation>Varning: En intern operation pågår i VirtualBox. Att stänga detta fönster eller navigera bort från denna webbsida kan leda till oväntade och oönskade resultat. Vänligen vänta tills operationen är avslutad.</translation>
+			<translation>Varning: En intern åtgärd pågår i VirtualBox. Att stänga detta fönster eller navigera bort från denna webbsida kan leda till oväntade och oönskade resultat. Vänligen vänta tills åtgärden är avslutad.</translation>
 		</message>
 		<message>
 			<source>Operation Canceled</source>
@@ -60,7 +60,7 @@
 		<message>
 			<source>VirtualBox User Manual</source>
 			<translation>VirtualBox användarmanual</translation>
-		</message>	
+		</message>
 		<message>
 			<source>About</source>
 			<translation>Om</translation>
@@ -75,7 +75,7 @@
 		<message>
 			<source>Power Off</source>
 			<translation>Bryt strömmen</translation>
-		</message>		
+		</message>
 	</context>
 	<context>
 		<!-- Console Tab -->
@@ -128,7 +128,7 @@
 			<source>Virtual machine is not running or is not configured to accept RDP connections.</source>
 			<translation>Den virtuella maskinen är inte i gång eller är inte konfigurerad för att acceptera RDP-anslutningar.</translation>
 		</message>
-	</context>		
+	</context>
 	<context>
 		<name>VBoxGlobal</name>
 		<message>
@@ -159,7 +159,7 @@
 		<message>
 			<source>Open in new window</source>
 			<translation>Öppna i nytt fönster</translation>
-		</message>		
+		</message>
 	</context>
 	<context>
 		<name>UISettingsDialogGlobal</name>
@@ -173,7 +173,7 @@
 		<message>
 			<source>Users</source>
 			<translation>Användare</translation>
-		</message>		
+		</message>
 		<message>
 			<source>Admin User</source>
 			<translation>Administrativ användare</translation>
@@ -200,7 +200,7 @@
 		</message>
 		<message>
 			<source>Are you sure you want to remove the user &lt;b&gt;%1&lt;/b&gt;? This action cannot be undone.</source>
-			<translation>Är du säker på att du vill ta bort användaren &lt;b&gt;%1&lt;/b&gt;? Denna operation kan inte göras ogjord.</translation>
+			<translation>Är du säker på att du vill ta bort användaren &lt;b&gt;%1&lt;/b&gt;? Denna åtgärd kan inte göras ogjord.</translation>
 		</message>
 		<message>
 			<source>Username</source>
@@ -249,7 +249,7 @@
 		<message>
 			<source>Not logged in.</source>
 			<translation>Inte inloggad.</translation>
-		</message>		
+		</message>
 	</context>
 </language>
 
