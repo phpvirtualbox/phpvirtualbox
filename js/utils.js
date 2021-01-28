@@ -7,9 +7,9 @@
  */
 
 /**
- * 
+ *
  * Prevent ESC key from stopping background AJAX requests
- * 
+ *
  */
 $(document).ready(function(){
     $(window).keydown(function(i){if(i.keyCode&&i.keyCode===27){
@@ -61,20 +61,20 @@ function vboxTraverse(tree,prop,val,all,children) {
 
 /**
  * Performs AJAX request, alert()'s returned errors
- * 
+ *
  * @param {String} fn - AJAX function to call
  * @param {Object} params - params to pass to AJAX call
  * @return {Object} deferred promise
  */
 function vboxAjaxRequest(fn,params,config) {
-	
+
 	// Promise for data
 	var def = $.Deferred();
-	
+
 	// Fatal error previously occurred
 	if($('#vboxPane').data('vboxFatalError'))
 		return def.reject();
-	
+
 	var data = {
         'fn': fn,
         'params': params ? params : null,
@@ -82,27 +82,27 @@ function vboxAjaxRequest(fn,params,config) {
 	};
 
 	$.when($.post(vboxEndpointConfig.api, JSON.stringify(data), undefined,"json")
-	
+
 		// Run on error
 		.fail(function(d,etext,xlr,d2) {
 
 			// Fatal error previously occurred
 			if($('#vboxPane').data('vboxFatalError')) return null;
-			
+
 			if(etext != 'error') {
-				
+
 				// Halt on parse errors
 				if(etext.search(/parse/i) > -1) {
 					$('#vboxPane').data('vboxFatalError',1);
 				}
-				
+
 				if(window.console && window.console.log)
 					window.console.log(etext + ': '+ d.responseText);
-				
+
 				vboxAlert({'error':'Ajax error: ' + etext,'details':d.responseText},{'width':'400px'});
 
 			} else {
-				
+
 				// Check for error HTTP status
 				if(d && d.status && (String(d.status).substring(0,1) == '4' || String(d.status).substring(0,1) == '5')) {
 					var err = {error:'<div align="center">HTTP error: ' + d.status + ' ' + d.statusText+"</div>",details:''};
@@ -111,14 +111,14 @@ function vboxAjaxRequest(fn,params,config) {
 						err.details += i + ': "' + d[i] + '"' + "\n";
 					}
 					phpVirtualBoxFailure(err);
-					
+
 				} else {
-					phpVirtualBoxFailure('<div align="center">(General communication failure)');					
+					phpVirtualBoxFailure('<div align="center">(General communication failure)');
 				}
 			}
-			
+
 			return null;
-			
+
 		// Filter out data and display error messages
 		}).pipe(function(d){
 
@@ -133,21 +133,21 @@ function vboxAjaxRequest(fn,params,config) {
 					window.console.log(d.messages[i]);
 				}
 			}
-			
+
 			if(d.errors.length > 0) {
-				
-				
+
+
 				for(var i = 0; i < d.errors.length; i++) {
-					
+
 					// Handle fatal and connection errors
 					if(d.errors[i].fatal || d.errors[i].connection) {
-						
+
 						// Multiple Servers check
 						if(d.errors[i].connection && $('#vboxPane').data('vboxConfig')	) {
-							
+
 							$('#vboxPane').data('vboxFatalError',1);
 							$('#vboxPane').css({'display':'none'});
-							
+
 							s='';
 							if($('#vboxPane').data('vboxConfig').servers && $('#vboxPane').data('vboxConfig').servers.length) {
 								var servers = $('#vboxPane').data('vboxConfig').servers;
@@ -159,12 +159,12 @@ function vboxAjaxRequest(fn,params,config) {
 							if(s) vboxAlert(s);
 							vboxAlert(d.errors[i],{'width':'400px'});
 							vboxAlert('<p>'+trans('An error occurred communicating with your vboxwebsrv. No more requests will be sent by phpVirtualBox until the error is corrected and this page is refreshed. The details of this connection error should be displayed in a subsequent dialog box.','phpVirtualBox')+'</p>'+s,{'width':'50%'});
-							
-							
-						
+
+
+
 						// Ignore connection errors until we have config data unless this was a login attempt
 						} else if(!d.errors[i].connection || fn == 'login') {
-							
+
 							// If we have config data, and the error is fatal, halt processing
 							if(d.errors[i].fatal && $('#vboxPane').data('vboxConfig')) {
 								$('#vboxPane').data('vboxFatalError',1);
@@ -172,21 +172,21 @@ function vboxAjaxRequest(fn,params,config) {
 							}
 
 							vboxAlert(d.errors[i],{'width':'400px'});
-							
+
 						}
-						
+
 					} else {
-						
+
 						// Error from normal request
 						vboxAlert(d.errors[i],{'width':'400px'});
 					}
-					
+
 				} // </ foreach error >
-				
+
 			} // </ if errors.length >
-				
+
 			return (d && d.data ? d.data : null);
-			
+
 		})
 	).done(function(d) {
 		if(d) def.resolve(d);
@@ -194,7 +194,7 @@ function vboxAjaxRequest(fn,params,config) {
 	}).fail(function(){
 		def.reject();
 	});
-	
+
 	return def.promise();
 }
 
@@ -221,7 +221,7 @@ function vboxGetVRDEHost(vm) {
  * @return {String} icon file name
  */
 function vboxGuestOSTypeIcon(osTypeId) {
-	
+
     var strIcon = "os_other.png";
     switch (osTypeId)
     {
@@ -252,7 +252,7 @@ function vboxGuestOSTypeIcon(osTypeId) {
 		case "Windows10":       strIcon = "os_win10.png"; break
 		case "Windows10_64":    strIcon = "os_win10.png"; break
 		case "WindowsNT":       strIcon = "os_win_other.png"; break;
-		case "WindowsNT_64":    strIcon = "os_win_other_64.png"; break; 
+		case "WindowsNT_64":    strIcon = "os_win_other_64.png"; break;
 		case "Windows2012_64":	strIcon = "os_win2k12_64.png"; break;
 		case "Windows2016_64":	strIcon = "os_win2k16_64.png"; break;
 		case "OS2Warp3":        strIcon = "os_os2warp3.png"; break;
@@ -344,7 +344,7 @@ function vboxMachineStateIcon(state)
         default:
             strIcon = strNoIcon;
     }
-    
+
     return strIcon;
 
 }
@@ -355,19 +355,19 @@ function vboxMachineStateIcon(state)
  * @param {Function} fn - callback function to run when OK is clicked on dialog
  * @param {Boolean} foldersonly - only display / allow selection of folders (optional)
  * @param {String} title - title of dialog (optional)
- * @param {String} icon - URL to icon (optional) 
+ * @param {String} icon - URL to icon (optional)
  * @param {Boolean} strictFiles - only allow the OK button to be clicked when a file is selected (optional)
  */
 function vboxFileBrowser(root,fn,foldersonly,title,icon,strictFiles) {
 
 	var buttons = { };
 	buttons[trans('OK','QIMessageBox')] = function(f) {
-		
+
 		if(strictFiles && $('#vboxBrowseFolderList').find('.vboxListItemSelected').first().parent().hasClass('directory')) {
 			$('#vboxBrowseFolderList').find('.vboxListItemSelected').first().trigger('dblclick');
 			return;
 		}
-		
+
 		if(typeof f != 'string') {
 			f = $('#vboxBrowseFolderList').find('.vboxListItemSelected').first().attr('name');
 		}
@@ -377,14 +377,14 @@ function vboxFileBrowser(root,fn,foldersonly,title,icon,strictFiles) {
 	buttons[trans('Cancel','QIMessageBox')] = function() { fn(null); $('#vboxBrowseFolder').trigger('close').empty().remove(); };
 
 	var d1 = $('<div />').attr({'id':'vboxBrowseFolder','class':'vboxDialogContent','style':'display:none'});
-	
+
 	$('<div />').attr({'id':'vboxBrowseFolderList'}).fileTree({ 'root': (root ? root : '/'),'dirsOnly':foldersonly,'loadMessage':trans('Loading ...','UIVMDesktop'),'scrollTo':'#vboxBrowseFolder'},function(f){
     	buttons[trans('OK','QIMessageBox')](f);
     }).appendTo(d1);
-	
+
     $(d1).dialog({'closeOnEscape':true,'width':400,'height':600,'buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="'+(icon ? icon : 'images/jqueryFileTree/'+(foldersonly ? 'folder_open' : 'file')+'.png') + '" class="vboxDialogTitleIcon" /> ' + (title ? title : trans((foldersonly ? 'Select Folder' : 'Select File')))}).on("dialogbeforeclose",function(){
     	$(this).parent().find('span:contains("'+trans('Cancel','QIMessageBox')+'")').trigger('click');
-    });			
+    });
 
 }
 /**
@@ -402,7 +402,7 @@ function vboxBytesConvert(bytes) {
 	var ext = new Array('B','KB','MB','GB','TB');
 	var unitCount;
 	for(unitCount=0; bytes >= 1024 && unitCount < ext.length; unitCount++) bytes = parseFloat(parseFloat(bytes)/1024);
-	
+
 	return Math.round(parseFloat(bytes)*Math.pow(10,2))/Math.pow(10,2) + " " + trans(ext[unitCount], 'VBoxGlobal');
 }
 /**
@@ -431,9 +431,9 @@ function vboxConvertMbytes(str) {
 			return (str[0] * 1024 * 1024);
 			break;
 		default:
-			return (str[0]); 
+			return (str[0]);
 	}
-	
+
 }
 
 
@@ -446,23 +446,23 @@ function vboxConvertMbytes(str) {
 function vboxAlert(e,xtraOpts) {
 
     var acknowledged = $.Deferred();
-    
+
 	var msg = '';
-	
+
 	if(typeof e == 'object') msg = e.error;
 	else msg = e;
-	
+
 	// Convert to <p>
 	if(msg[0] != '<') msg = '<p>'+msg+'</p>';
-	
+
 	var div = $('<div />').attr({'class':'vboxDialogContent vboxAlert'}).html('<img src="images/50px-Warning_icon.svg.png" style="float: left; padding: 10px; height: 50px; width: 50px;" height="50" width="50" />'+msg);
-	
-	
+
+
 	if(typeof e == 'object' && e.details) {
-		
+
 		// Details can contain HTML entities
 		e.details = $('<div />').html(e.details).text();
-		
+
 		var p = $('<p />').attr({'style':'text-align: center'});
 		$('<a />').attr({'href':'#'}).html(trans('Details','QIMessageBox')).click(function(){
 			$(this).parent().parent().dialog('option',{'height':400,'position':'center'});
@@ -473,14 +473,14 @@ function vboxAlert(e,xtraOpts) {
 		}).appendTo(p);
 
 		$(div).append(p);
-		
-		var ddet = $('<div />').attr({'style':'display: none; height: 100%; width: auto;','class':'vboxAlert'});	
-		$('<textarea />').attr({'spellcheck':'false','wrap':'off','readonly':'true'}).val(e.details).appendTo($('<form />').appendTo(ddet));	
+
+		var ddet = $('<div />').attr({'style':'display: none; height: 100%; width: auto;','class':'vboxAlert'});
+		$('<textarea />').attr({'spellcheck':'false','wrap':'off','readonly':'true'}).val(e.details).appendTo($('<form />').appendTo(ddet));
 		$(div).append(ddet);
 	}
-	
-	
-	
+
+
+
 	var buttons = { };
 	buttons[trans('OK','QIMessageBox')] = function(f) {
 	    $(this).trigger('close').empty().remove();
@@ -496,7 +496,7 @@ function vboxAlert(e,xtraOpts) {
 	}
 
 	$(div).dialog(dialogOpts);
-	
+
     return acknowledged;
 
 }
@@ -512,13 +512,13 @@ function vboxAlert(e,xtraOpts) {
 function vboxConfirm(q,buttons,cancelText,onCancel) {
 
 	var div = $('<div />').attr({'class':'vboxDialogContent','style':'display: none; width: 500px;'}).html('<img src="images/50px-Question_icon.svg.png" style="height: 50px; width: 50px; float: left; padding: 10px;" height="50" width="50" />'+q);
-	
+
 	if(!cancelText) cancelText = trans('Cancel','QIMessageBox');
-	
+
 	buttons[cancelText] = function() { $(this).remove(); if(onCancel) { onCancel(); }};
-	
-    $(div).dialog({'closeOnEscape':false,'width':500,'height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/OSE/about_16px.png" class="vboxDialogTitleIcon" /> phpVirtualBox'});			
-	
+
+    $(div).dialog({'closeOnEscape':false,'width':500,'height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/OSE/about_16px.png" class="vboxDialogTitleIcon" /> phpVirtualBox'});
+
     return $(div);
 }
 
@@ -529,16 +529,16 @@ function vboxConfirm(q,buttons,cancelText,onCancel) {
  * @see trans()
  */
 function vboxInitDisplay(root,context) {
-	
+
 	if(typeof root == 'string')
 		root = $('#'+root);
-	
-	/* 
-	 * Sliders 
+
+	/*
+	 * Sliders
 	 */
-	
+
 	$(root).find('div.slider').each(function(){
-	
+
 		if($(this).hasClass('translateglob')) {
 			$(this).closest('table').find(".translate").html(function(i,h){return trans($('<div />').html(h).text(),'VBoxGlobal');}).removeClass('translate');
 		}
@@ -549,7 +549,7 @@ function vboxInitDisplay(root,context) {
 				document.forms[frm].elements[event.target.id + 'Value'].value = fn(ui.value);
 			}).slider('option','change',function(event,ui){
 				document.forms[frm].elements[event.target.id + 'Value'].value = fn(ui.value);
-			});			
+			});
 		} else {
 			$(this).slider('option','slide',function(event,ui){
 				document.forms[frm].elements[event.target.id + 'Value'].value = ui.value;
@@ -557,28 +557,28 @@ function vboxInitDisplay(root,context) {
 				document.forms[frm].elements[event.target.id + 'Value'].value = ui.value;
 			});
 		}
-		
+
 		// Slider scale (ticks)
 		$(this).children("div.sliderScale").each(function(){
-	
+
 			var min = $(this).parent().slider('option','min');
 			var max = $(this).parent().slider('option','max');
-			
+
 			var diff = Math.min((max - min),50);
 			var tdw = Math.round(100 / diff);
-			
+
 			var tr = $('<tr />');
-	
+
 			for(var a = 0; a < diff; a++) {
 				$(tr).append($('<td />').attr({'style':'width: '+ tdw + '%'}));
 			}
 			$('<table />').attr({'class':'sliderScale'}).append(tr).appendTo(this);
-			
+
 		});
-	
+
 		// save value
 		$(this).slider('value',$(this).slider('value'));
-		
+
 		// Min / Max labels
 		if(!$(this).data('noMinMaxLabels')) {
 			var min = $(this).slider('option','min');
@@ -588,7 +588,7 @@ function vboxInitDisplay(root,context) {
 	}
 	});
 
-	
+
 	/*
 	 * Translations
 	 */
@@ -598,57 +598,57 @@ function vboxInitDisplay(root,context) {
 	 * Setup Tabs
 	 */
 	$(root).find(".vboxTabbed").tabs();
-	
-	
+
+
 	/* Image buttons */
 	if(!jQuery.browser.msie) {
-		
+
 		$(root).find('input.vboxImgButton').on('mousedown',function(){
-	
+
 			var xy = $(this).css('backgroundPosition').split(' ');
-	
+
 			if(!$(this).data('startX')) $(this).data('startX', parseInt(xy[0]));
 			if(!$(this).data('startY')) $(this).data('startY', parseInt(xy[1]));
-	
-			$(this).css('backgroundPosition',(parseInt($(this).data('startX'))+1)+'px '+(parseInt($(this).data('startY'))+1)+'px'); 
-			
+
+			$(this).css('backgroundPosition',(parseInt($(this).data('startX'))+1)+'px '+(parseInt($(this).data('startY'))+1)+'px');
+
 			var btn = this;
 			$(document).one('mouseup',function(){
 				$(btn).css('backgroundPosition',$(btn).data('startX')+'px '+$(btn).data('startY')+'px');
 			});
-				
+
 		});
-		
+
 	}
-	
+
 	/*
-	 * 
+	 *
 	 * Enable / disable sections (Remote Display, Audio, Network Adapters, usb)
-	 * 
+	 *
 	 */
-	
+
 	$(root).find('input.vboxEnablerCheckbox').on('click', function(e) {
-	
+
 			var roottbl = $(this).closest('table');
-			
+
 			$(roottbl).find('input:not(.vboxEnablerCheckbox)').prop('disabled',!this.checked);
 			$(roottbl).find('select:not(.vboxEnablerIgnore)').prop('disabled',!this.checked);
 			(this.checked ? $(roottbl).find('th').removeClass('vboxDisabled') : $(roottbl).find('th:not(.vboxEnablerIgnore)').addClass('vboxDisabled'));
 			(this.checked ? $(roottbl).find('.vboxEnablerListen').removeClass('vboxDisabled') : $(roottbl).find('.vboxEnablerListen').addClass('vboxDisabled'));
-	
+
 			// Find any enabler / disabler listeners
 			$(roottbl).find('.vboxEnablerTrigger').trigger(this.checked ? 'enable' : 'disable');
-			
-			
+
+
 	});
-	
-	
+
+
 	/*
 	 * Tooltips
 	 */
 	$(root).find('.vboxToolbarSmallButton').tipped({'source':'title','mode':'hover'});
-	
-	
+
+
 	/*
 	 * File / Folder browsers
 	 */
@@ -693,7 +693,7 @@ function vboxDivOverflowHidden(p) {
 
 /**
  * Show progress dialog and periodically poll the progress' status
- * 
+ *
  * @param {String} prequest - request object passed to ajax
  * @param {Function} callback - function to run on progress completion
  * @param {String} icon - URL of image to display on progress operation dialog (optional)
@@ -706,10 +706,10 @@ function vboxProgress(prequest,callback,icon,title,target,blocking) {
 
 	// Fix title
 	title = title.replace('\.+$','');
-	
+
 	// Sanitize target
 	target = $('<div />').text(target).html();
-	
+
 	// Sanitize progress request data
 	var persist = prequest.persist;
 	prequest = {
@@ -719,25 +719,25 @@ function vboxProgress(prequest,callback,icon,title,target,blocking) {
 
 	// Blocking creates a dialog
 	if(!blocking) {
-	
+
 		vboxProgressCreateListElement(prequest,icon,title,target,callback);
-		
+
 		$.when(prequest, vboxAjaxRequest('progressGet',prequest,{'persist':persist})).done(vboxProgressUpdate);
 
 	} else {
-		
+
 		vboxProgressCreateDialog(prequest,icon,title,target,callback);
-				
+
 		$.when(prequest, vboxAjaxRequest('progressGet',prequest,{'persist':persist})).done(vboxProgressUpdateModal);
 	}
-	
-	
-	
+
+
+
 }
 
 /**
  * Generate modal progress dialog
- * 
+ *
  * @param {Object} prequest - progress operation request object
  * @param {String} icon - URL of image to display on progress operation dialog (optional)
  * @param {String} title - title of progress operation dialog (optional)
@@ -749,9 +749,9 @@ function vboxProgressCreateDialog(prequest,icon,title,target,callback) {
 
 	// Shorthand
 	var pid = prequest.progress;
-	
+
 	var div = $('<div />').attr({'id':'vboxProgress'+pid,'title':(title ? title : 'phpVirtualBox'),'style':'text-align: center'});
-	
+
 	var tbl = $('<table />').css({'width':'100%'});
 	var tr = $('<tr />').css({'vertical-align':'middle'});
 	var td = $('<td />').css({'padding':'0px','text-align':'left','width':'1px'});
@@ -759,11 +759,11 @@ function vboxProgressCreateDialog(prequest,icon,title,target,callback) {
 		$('<img />').css({'margin':'4px'}).attr({'src':'images/vbox/'+icon,'height':'90','width':'90'}).appendTo(td);
 	}
 	$(tr).append(td);
-	
+
 	var td = $('<td />').css({'text-align':'center','padding':'4px'}).append($('<div />').attr({'id':'vboxProgressBar'+pid,'margin':'4px'}).progressbar({ value: 1 }));
-	
+
 	$('<div />').attr({'id':'vboxProgressText'+pid}).html('<img src="images/spinner.gif" />').appendTo(td);
-	
+
 	// Cancel button
 	$('<div />').attr({'id':'vboxProgressCancel'+pid}).css({'display':'none','padding':'8px'}).append(
 
@@ -772,26 +772,26 @@ function vboxProgressCreateDialog(prequest,icon,title,target,callback) {
 			vboxAjaxRequest('progressCancel',prequest);
 		})
 	).appendTo(td);
-	
-	
+
+
 	$(tbl).append($(tr).append(td)).appendTo(div);
-	
+
 	// Append placeholder for list element
 	$('#vboxProgressOps').prepend($('<div />').addClass('vboxProgressOpElement').css({'display':'none'}).attr({'id':'vboxProgressPlaceholder'+pid}));
-	
+
 	$(div).data({
 		'vboxCallback':callback,
 		'vboxIcon' : icon,
 		'vboxTitle' : title,
 		'vboxTarget' : target
 	}).dialog({'width':400,'height':'auto','closeOnEscape':false,'modal':true,'resizable':false,'draggable':true,'closeOnEscape':false,'buttons':{}});
-	
+
 
 }
 
 /**
  * Generate progress list element and append it
- * 
+ *
  * @param {Object} prequest - progress operation request object
  * @param {String} icon - URL of image to display on progress operation dialog (optional)
  * @param {String} title - title of progress operation dialog (optional)
@@ -800,10 +800,10 @@ function vboxProgressCreateDialog(prequest,icon,title,target,callback) {
  * @see vboxconnector::progressGet()
  */
 function vboxProgressCreateListElement(prequest,icon,title,target,callback) {
-	
+
 	// Shorthand
 	var pid = prequest.progress;
-	
+
 	var div = $('<div />').attr({'id':'vboxProgress'+pid}).addClass('vboxProgressOpElement');
 
 	var divOpTitle = $('<div />').addClass('vboxProgressOpTitle');
@@ -814,7 +814,7 @@ function vboxProgressCreateListElement(prequest,icon,title,target,callback) {
 
 	// Title
 	if($('#vboxPane').data('vboxConfig').servers.length) {
-		title = $('#vboxPane').data('vboxConfig').name + ': ' + title;		
+		title = $('#vboxPane').data('vboxConfig').name + ': ' + title;
 	}
 
 	$(divOpTitle).append(title + (target ? ' (' + target + ')' : '')).appendTo(div);
@@ -823,12 +823,12 @@ function vboxProgressCreateListElement(prequest,icon,title,target,callback) {
 	$('<div />').addClass('vboxProgressBarContainer').append(
 			$('<div />').attr({'id':'vboxProgressBar'+pid}).progressbar({ value: 1 })
 	).appendTo(div);
-	
+
 	// Progress text
 	$('<div />').addClass('vboxProgressOpText').append(
 			$('<span />').attr({'id':'vboxProgressText'+pid}).html('<img src="images/spinner.gif" height=12 width=12/>')
 	).appendTo(div);
-	
+
 	// Cancel button
 	$('<div />').addClass('vboxProgressOpCancel').append(
 			$('<input />').attr({'id':'vboxProgressCancel'+pid,'type':'button'}).val(trans('Cancel','UIProgressDialog')).data({'pid':pid})
@@ -838,19 +838,19 @@ function vboxProgressCreateListElement(prequest,icon,title,target,callback) {
 				})
 				.css({'margin':'0px'})
 	).appendTo(div);
-	
+
 	$(div).data({'vboxCallback':callback})
-	
+
 	if($('#vboxProgressPlaceholder'+pid)[0]) {
 		$('#vboxProgressPlaceholder'+pid).replaceWith(div);
 	} else {
-	    $('#vboxProgressOps').prepend(div);		
+	    $('#vboxProgressOps').prepend(div);
 	}
 
-	
+
 }
 
-/** 
+/**
  * OnUnload warning shown when an operation is in progress
  * @return {String} warning message indicating operation is in progress
  */
@@ -862,7 +862,7 @@ function vboxOpInProgressCheck() {
 
 /**
  * Update progress dialog box. Callback run from vboxAjaxRequest
- * 
+ *
  * @param {Object} prequest - progress operation data passed to ajax call
  * @param {Object} data - data returned from progressGet AJAX call
  */
@@ -872,52 +872,52 @@ function vboxProgressUpdateModal(prequest, data) {
 
 /**
  * Update progress dialog box or progress list row with % completed
- * 
+ *
  * @param {Object} prequest - progress operation data passed to ajax call
  * @param {Object} d - data returned from progressGet AJAX call
  * @param {Boolean} modal - true if updating modal dialog
  * @see vboxconnector::progressGet()
  */
 function vboxProgressUpdate(prequest,d,modal) {
-	
+
 	// Shorthand
 	var pid = prequest.progress;
 
 	// check for completed progress
 	if(!d || !d.responseData || !d.responseData['progress'] || !d.responseData['info'] || d.responseData['info']['completed'] || d.responseData['info']['canceled']) {
-		
+
 		if(d && d.responseData['info'] && d.responseData['info']['canceled'])
 			vboxAlert(trans('Operation Canceled','phpVirtualBox'),{'width':'300px','height':'auto'});
-		
+
 		var callback = $("#vboxProgress"+pid).data('vboxCallback');
-		
+
 		$("#vboxProgressBar"+pid).progressbar({ value: 100 });
-		
+
 		if(modal) {
-			
+
 			var icon = $("#vboxProgress"+pid).data('vboxIcon');
 			var title = $("#vboxProgress"+pid).data('vboxTitle');
 			var target = $("#vboxProgress"+pid).data('vboxTarget');
-			
+
 			$("#vboxProgress"+pid).empty().remove();
 
 			if(callback) callback(d);
-			
+
 			// Now append to list
 			vboxProgressCreateListElement(prequest,icon,title,target);
 			vboxProgressUpdate(prequest);
-			
+
 		} else {
-			
+
 			var sdate = new Date();
 			$("#vboxProgressText"+pid).html(sdate.toLocaleString());
 			$('#vboxProgressCancel'+pid).remove();
-			
+
 			if(callback) callback(d);
 		}
-		
+
 		$("#vboxProgress"+pid).addClass('vboxProgressComplete').removeClass('vboxProgressRunning');
-		
+
 		// Remove data
 		$("#vboxProgress"+pid).removeData([
 			'vboxCallback',
@@ -925,10 +925,10 @@ function vboxProgressUpdate(prequest,d,modal) {
 			'vboxTitle',
 			'vboxTarget'
 		]);
-		
+
 		// Check for max elements
 		if($('#vboxPane').data('vboxConfig').maxProgressList) {
-			var maxList = $('#vboxPane').data('vboxConfig').maxProgressList; 
+			var maxList = $('#vboxPane').data('vboxConfig').maxProgressList;
 	        try {
 	        	maxList = Math.max(2,parseInt(maxList));
 		    } catch (e) {
@@ -937,29 +937,29 @@ function vboxProgressUpdate(prequest,d,modal) {
 		    if(maxList > 0) $('#vboxProgressOps').children('div.vboxProgressComplete').slice(maxList).remove();
 
 		}
-		
+
 		return;
 	}
 
 	// update percent
 	$("#vboxProgressBar"+pid).progressbar({ value: d.responseData.info.percent });
 	$("#vboxProgressText"+pid).html(d.responseData.info.percent+'%'+(modal ? '<br />' : ' ') + d.responseData.info.operationDescription);
-	
+
 	// Cancelable?
 	if(d.responseData.info.cancelable) {
 		$('#vboxProgressCancel'+pid).show();
 	}
-	
+
 	// Get request
 	var def = $.Deferred();
 	def.done(function(){
 
 		$.when(prequest, vboxAjaxRequest('progressGet', prequest, {'persist': d.persist}))
 			.done((modal ? vboxProgressUpdateModal : vboxProgressUpdate));
-		
+
 	});
 	window.setTimeout(def.resolve, 2000);
-	
+
 }
 
 /**
@@ -968,9 +968,9 @@ function vboxProgressUpdate(prequest,d,modal) {
  * @param {Event} e - Event to position to
  */
 function vboxPositionEvent(elm,e) {
-	
+
 	var d = {};
-	
+
 	if( self.innerHeight ) {
 		d.pageYOffset = self.pageYOffset;
 		d.pageXOffset = self.pageXOffset;
@@ -993,17 +993,17 @@ function vboxPositionEvent(elm,e) {
 
 	(e.pageX) ? x = e.pageX : x = e.clientX + d.scrollLeft;
 	(e.pageY) ? y = e.pageY : y = e.clientY + d.scrollTop;
-	
+
 	//adjust to ensure element is inside viewable screen
 	var right = x + $(elm).outerWidth();
 	var bottom = y + $(elm).outerHeight();
-	
+
 	var windowWidth = $(window).width() + $(window).scrollLeft()-5;
 	var windowHeight = $(window).height() + $(window).scrollTop()-5;
-	
+
 	x = (right > windowWidth) ? x - (right - windowWidth) : x;
 	y = (bottom > windowHeight) ? y - (bottom - windowHeight) : y;
-	
+
 	$(elm).css({ top: y, left: x });
 }
 
@@ -1016,23 +1016,23 @@ function vboxPositionToWindow(elm) {
 	var offset = $(elm).offset();
 	var x = offset.left;
 	var y = offset.top;
-		
+
 	//adjust to ensure menu is inside viewable screen
 	var right = x + $(elm).outerWidth();
 	var bottom = y + $(elm).outerHeight();
-	
+
 	var windowWidth = $(window).width() + $(window).scrollLeft();
 	var windowHeight = $(window).height() + $(window).scrollTop();
-	
+
 	x = (right > windowWidth) ? x - (right - windowWidth) : x;
 	y = (bottom > windowHeight) ? y - (bottom - windowHeight) : y;
-	
+
 	$(elm).css({'top':y,'left':x});
 
 }
 
 /*
- * keycode input validation functions 
+ * keycode input validation functions
  */
 /**
  * Return true if k param is a number
@@ -1082,7 +1082,7 @@ function vboxParseCookies() {
 	for(var i = 0; i < c.length; i++) {
 		var nv = c[i].split('=');
 		cookies[nv[0]] = nv[1];
-	}	
+	}
 	$('#vboxPane').data('vboxCookies', cookies);
 	$('#vboxPane').data('vboxCookiesParsed',true);
 }
@@ -1100,19 +1100,19 @@ function phpVirtualBoxFailure(msg) {
 	if(typeof(msg) == 'string') {
 		vboxAlert(trans('There was an error obtaining the list of registered virtual machines from VirtualBox. Make sure vboxwebsrv is running and that the settings in config.php are correct.<p>The list of virtual machines will not begin auto-refreshing again until this page is reloaded.</p>','phpVirtualBox')+(msg ? msg : ''));
 	} else {
-		msg.error = trans('There was an error obtaining the list of registered virtual machines from VirtualBox. Make sure vboxwebsrv is running and that the settings in config.php are correct.<p>The list of virtual machines will not begin auto-refreshing again until this page is reloaded.</p>','phpVirtualBox') + msg.error;		
+		msg.error = trans('There was an error obtaining the list of registered virtual machines from VirtualBox. Make sure vboxwebsrv is running and that the settings in config.php are correct.<p>The list of virtual machines will not begin auto-refreshing again until this page is reloaded.</p>','phpVirtualBox') + msg.error;
 		vboxAlert(msg);
 	}
 }
 
 /**
- * Set a cookie and update $('#vboxPane').data('vboxCookies') 
+ * Set a cookie and update $('#vboxPane').data('vboxCookies')
  * @param {String} k - cookie key
  * @param {any} v - cookie value
  * @param {Date} expire - when cookie should expire
  */
 function vboxSetCookie(k,v,expire) {
-	var exp = (v ? (expire ? expire : new Date(2020,12,24)) : new Date().setDate(new Date().getDate() - 1));
+	var exp = (v ? (expire ? expire : new Date(Date.now() + 7 * 1000 * 60 * 60 * 24)) : new Date().setDate(new Date().getDate() - 1));
 	document.cookie = k+"="+v+"; expires="+exp.toGMTString()+"; path=/";
 	$('#vboxPane').data('vboxCookies')[k] = v;
 }
@@ -1133,7 +1133,7 @@ function vboxSetLocalDataItem(k,v,nocookies) {
 	}
 	// Remove item?
 	if(v) {
-		localStorage.setItem(k,v.toString());		
+		localStorage.setItem(k,v.toString());
 	} else {
 		localStorage.removeItem(k);
 	}
@@ -1199,36 +1199,36 @@ function vboxDateTimeString(t, replaceTime, replaceDateTime) {
 /**
  * Calculate scrollbar width
  * @return {Integer} width of scrollbar
- * 
+ *
  * http://www.alexandre-gomes.com/?p=115
- * 
+ *
  */
 var getScrollbarWidth = function() {
-	
-	var inner = document.createElement('p');  
-    inner.style.width = "100%"; 
-    inner.style.height = "200px";  
-  
-    var outer = document.createElement('div');  
-    outer.style.position = "absolute";  
-    outer.style.top = "0px";  
-    outer.style.left = "0px";  
-    outer.style.visibility = "hidden";  
-    outer.style.width = "200px";  
-    outer.style.height = "150px";  
-    outer.style.overflow = "hidden";  
-    outer.appendChild (inner);  
-  
-    document.body.appendChild (outer);  
-    var w1 = inner.offsetWidth;  
-    outer.style.overflow = 'scroll';  
-    var w2 = inner.offsetWidth;  
-    if (w1 == w2) w2 = outer.clientWidth;  
-  
-    document.body.removeChild (outer);  
-  
-    return (w1 - w2);  
-	    
+
+	var inner = document.createElement('p');
+    inner.style.width = "100%";
+    inner.style.height = "200px";
+
+    var outer = document.createElement('div');
+    outer.style.position = "absolute";
+    outer.style.top = "0px";
+    outer.style.left = "0px";
+    outer.style.visibility = "hidden";
+    outer.style.width = "200px";
+    outer.style.height = "150px";
+    outer.style.overflow = "hidden";
+    outer.appendChild (inner);
+
+    document.body.appendChild (outer);
+    var w1 = inner.offsetWidth;
+    outer.style.overflow = 'scroll';
+    var w2 = inner.offsetWidth;
+    if (w1 == w2) w2 = outer.clientWidth;
+
+    document.body.removeChild (outer);
+
+    return (w1 - w2);
+
 };
 
 /**
@@ -1238,8 +1238,8 @@ var getScrollbarWidth = function() {
  * @return {Integer} integer for use in list sorting comparison
  */
 function strnatcasecmp(str1, str2) {
-    // Returns the result of case-insensitive string comparison using 'natural' algorithm  
-    // 
+    // Returns the result of case-insensitive string comparison using 'natural' algorithm
+    //
     // version: 1004.2314
     // discuss at: http://phpjs.org/functions/strnatcasecmp    // +      original by: Martin Pool
     // + reimplemented by: Pierre-Luc Paour
@@ -1250,27 +1250,27 @@ function strnatcasecmp(str1, str2) {
     // *     example 1: strnatcasecmp('1', '10');
     // *     returns 1: -1
     var a = (str1+'').toLowerCase();    var b = (str2+'').toLowerCase();
- 
+
     var isWhitespaceChar = function (a) {
         return a.charCodeAt(0) <= 32;
-    }; 
+    };
     var isDigitChar = function (a) {
         var charCode = a.charCodeAt(0);
         return ( charCode >= 48  && charCode <= 57 );
-    }; 
+    };
     var compareRight = function (a,b) {
         var bias = 0;
         var ia = 0;
-        var ib = 0; 
+        var ib = 0;
         var ca;
         var cb;
- 
+
         // The longest run of digits wins.  That aside, the greatest        // value wins, but we can't know that it will until we've scanned
         // both numbers to know that they have the same magnitude, so we
         // remember it in BIAS.
         for (;; ia++, ib++) {
             ca = a.charAt(ia);            cb = b.charAt(ib);
- 
+
             if (!isDigitChar(ca) &&
                 !isDigitChar(cb)) {
                 return bias;            } else if (!isDigitChar(ca)) {
@@ -1287,14 +1287,14 @@ function strnatcasecmp(str1, str2) {
                 return bias;
             }        }
     };
- 
+
     var ia = 0, ib = 0;
     var nza = 0, nzb = 0;    var ca, cb;
     var result;
- 
+
     while (true) {
         // only count the number of zeroes leading the last number compared        nza = nzb = 0;
- 
+
         ca = a.charAt(ia);
         cb = b.charAt(ib);
          // skip over leading spaces or zeros
@@ -1304,9 +1304,9 @@ function strnatcasecmp(str1, str2) {
             } else {                // only count consecutive zeroes
                 nza = 0;
             }
- 
+
             ca = a.charAt(++ia);        }
- 
+
         while (isWhitespaceChar( cb ) || cb == '0') {
             if (cb == '0') {
                 nzb++;            } else {
@@ -1315,7 +1315,7 @@ function strnatcasecmp(str1, str2) {
             }
              cb = b.charAt(++ib);
         }
- 
+
         // process run of digits
         if (isDigitChar(ca) && isDigitChar(cb)) {            if ((result = compareRight(a.substring(ia), b.substring(ib))) != 0) {
                 return result;
@@ -1325,12 +1325,12 @@ function strnatcasecmp(str1, str2) {
             // The strings compare the same.  Perhaps the caller
             // will want to call strcmp to break the tie.
             return nza - nzb;
-        } 
+        }
         if (ca < cb) {
             return -1;
         } else if (ca > cb) {
             return +1;        }
- 
+
         ++ia; ++ib;
     }
 }
@@ -1343,15 +1343,15 @@ if (!Array.prototype.filter)
   Array.prototype.filter = function(fun /*, thisp */)
   {
     "use strict";
- 
+
     if (this == null)
       throw new TypeError();
- 
+
     var t = Object(this);
     var len = t.length >>> 0;
     if (typeof fun != "function")
       throw new TypeError();
- 
+
     var res = [];
     var thisp = arguments[1];
     for (var i = 0; i < len; i++)
@@ -1363,7 +1363,7 @@ if (!Array.prototype.filter)
           res.push(val);
       }
     }
- 
+
     return res;
   };
 }
