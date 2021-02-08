@@ -1,6 +1,6 @@
 <?php
 /**
- * phpVirtualBox example configuration. 
+ * phpVirtualBox example configuration.
  * @version $Id: config.php-example 585 2015-04-04 11:39:31Z imoore76 $
  *
  * rename to config.php and edit as needed.
@@ -24,7 +24,7 @@ var $language = 'en';
 /* Set the standard VRDE Port Number / Range, e.g. 1010-1020 or 1027 */
 var $vrdeports = '9000-9100';
 /* Set the default VRDE address, e.g. 192.168.1.1 */
-#var $vrdeaddress = '192.168.1.1';
+var $vrdeaddress = '';
 
 /*
  *
@@ -71,7 +71,7 @@ var $servers = array(
 // Max number of progress operations to keep in list
 var $maxProgressList = 5;
 
-// Change default preview aspect ratio to 1. 
+// Change default preview aspect ratio to 1.
 // http://www.wikipedia.org/wiki/Aspect_ratio_%28image%29#Previous_and_presently_used_aspect_ratios
 #var $previewAspectRatio = 1.6;
 
@@ -125,7 +125,7 @@ var $browserRestrictFiles = array('.iso','.vdi','.vmdk','.img','.bin','.vhd','.h
 /*
  * Misc
  */
- 
+
 /*
  * Auto-refresh interval in seconds for VirtualBox host memory usage information.
  * Any value below 3 will be ignored.
@@ -137,7 +137,7 @@ var $hostMemInfoRefreshInterval = 5;
 
 /*
  * VM Memory warnings.
- * 
+ *
  * If $vmMemoryStartLimitWarn is enabled, each time a VM is started through
  * phpVirtualBox, it will check that the available host memory is greater than
  * the base and video memory of the VM + 50MB (a little bit of overhead). If it
@@ -172,7 +172,7 @@ var $consoleKeyboardLayout = 'EN';
 var $nicMax = 4;
 
 /* Enable advanced configuration items (normally hidden in the VirtualBox GUI)
- * Note that some of these items may not be translated to languages other than English. 
+ * Note that some of these items may not be translated to languages other than English.
  */
 #var $enableAdvancedConfig = true;
 
@@ -184,6 +184,7 @@ var $nicMax = 4;
 
 // Authentication library.
 // var $authLib = 'Builtin';
+#var $authLib = 'VBoxAuthSimple';
 
 // VM ownership
 #var $enforceVMOwnership = true;
@@ -195,13 +196,13 @@ var $nicMax = 4;
 // Allow VDE network configuration. This must be supported by the underlying VirtualBox installation!
 // If you do not know what VDE networking is - you do not need it, it is probably not supported by your
 // VirtualBox installation and will cause errors if enabled.
-#var $enableVDE = true; 
+#var $enableVDE = true;
 
 // Disable setting SATA controllers port count to the max port number found when saving VMs.
 #var $disableSataPortCount = true;
 
 /* Enable Parallel Port configuration - EXPERIMENTAL
-LPT support may or may not work for you. 
+LPT support may or may not work for you.
 !!! VirtualBox LPT support only works in Linux. !!!
 */
 #var $enableLPTConfig = true;
@@ -221,8 +222,23 @@ LPT support may or may not work for you.
 
 /* END SETTINGS  */
 
+  public function phpVBoxConfig() {
+    if($this->authLib == 'VBoxAuthSimple') {
+      session_start();
+      $this->username = $this->getUsername();
+      $this->password = $this->getPassword();
+    }
+    if ($this->vrdeaddress == '' || $this->vrdeaddress == '127.0.0.1' ) {
+      $this->vrdeaddress = $_SERVER['SERVER_ADDR'];
+    }
+  }
+
+  public function getUsername() {
+    return $_SESSION['user'];
+  }
+
+  public function getPassword() {
+    return $_SESSION['password'];
+  }
 
 }
-
-
-
