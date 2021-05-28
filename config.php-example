@@ -241,4 +241,7 @@ LPT support may or may not work for you.
     return $_SESSION['password'];
   }
 
+ public function getClientIP() {
+    return $_SESSION['REMOTE_ADDR'];
+  }
 }
