@@ -222,17 +222,6 @@ LPT support may or may not work for you.
 
 /* END SETTINGS  */
 
-  public function phpVBoxConfig() {
-    if($this->authLib == 'VBoxAuthSimple') {
-      session_start();
-      $this->username = $this->getUsername();
-      $this->password = $this->getPassword();
-    }
-    if ($this->vrdeaddress == '' || $this->vrdeaddress == '127.0.0.1' ) {
-      $this->vrdeaddress = $_SERVER['SERVER_ADDR'];
-    }
-  }
-
   public function getUsername() {
     return $_SESSION['user'];
   }
@@ -241,7 +230,20 @@ LPT support may or may not work for you.
     return $_SESSION['password'];
   }
 
- public function getClientIP() {
+  public function getClientIP() {
     return $_SESSION['REMOTE_ADDR'];
   }
+
+  public function phpVBoxConfig() {
+    if($this->authLib == 'VBoxAuthSimple') {
+      session_start();
+      $this->username = $this->getUsername();
+      $this->password = $this->getPassword();
+      $this->client_ip = $this->getClientIP();
+    }
+    if ($this->vrdeaddress == '' || $this->vrdeaddress == '127.0.0.1' ) {
+      $this->vrdeaddress = $_SERVER['SERVER_ADDR'];
+    }
+  }
+
 }
