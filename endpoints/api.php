@@ -43,7 +43,7 @@ $response = array('data'=>array('responseData'=>array()),'errors'=>array(),'pers
 /*
  * Built-in requests
  */
-$vbox = null; // May be set during request handling
+$vbox = new vboxconnector(); // To fix #296 issue
 
 /**
  * Main try / catch. Logic dictated by incoming 'fn' request
