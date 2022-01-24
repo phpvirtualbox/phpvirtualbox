@@ -43,7 +43,7 @@ $response = array('data'=>array('responseData'=>array()),'errors'=>array(),'pers
 /*
  * Built-in requests
  */
-$vbox = new vboxconnector(); // To fix #296 issue
+$vbox = null; // May be set during request handling
 
 /**
  * Main try / catch. Logic dictated by incoming 'fn' request
@@ -331,9 +331,14 @@ try {
  * JSON response data.
  */
 } catch (Exception $e) {
-
+	
 	// Just append to $vbox->errors and let it get
 	// taken care of below
+	
+	if(!isset($vbox)){
+    		$vbox = new stdClass();
+    	}
+	
 	if(!$vbox || !$vbox->errors) {
 		$vbox->errors = array();
 	}
@@ -342,7 +347,7 @@ try {
 
 
 // Add any messages
-if($vbox && count($vbox->messages)) {
+if($vbox && isset($vbox->messages)?count($vbox->messages):false) {
 	foreach($vbox->messages as $m)
 		$response['messages'][] = 'vboxconnector('.$request['fn'] .'): ' . $m;
 }
