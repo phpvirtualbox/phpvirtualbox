@@ -249,8 +249,9 @@ function vboxGuestOSTypeIcon(osTypeId) {
 		case "Windows8_64":     strIcon = "os_win8_64.png"; break;
 		case "Windows81":       strIcon = "os_win81.png"; break;
 		case "Windows81_64":    strIcon = "os_win81_64.png"; break;
-		case "Windows10":       strIcon = "os_win10.png"; break
-		case "Windows10_64":    strIcon = "os_win10.png"; break
+		case "Windows10":       strIcon = "os_win10.png"; break;
+		case "Windows10_64":    strIcon = "os_win10.png"; break;
+		case "Windows11_64":    strIcon = "os_win11_64.png"; break;
 		case "WindowsNT":       strIcon = "os_win_other.png"; break;
 		case "WindowsNT_64":    strIcon = "os_win_other_64.png"; break; 
 		case "Windows2012_64":	strIcon = "os_win2k12_64.png"; break;
