@@ -2861,7 +2861,8 @@
             OnUpdateAgentStateChanged: 115 -
             OnHostAudioDeviceChanged: 116 -
             OnGuestDebugControlChanged: 117 -
-            End: 118 -
+            OnMachineGroupsChanged: 118 -
+            End: 119 -
             -->
       <xsd:simpleType name="VBoxEventType">
         <xsd:restriction base="xsd:string">
@@ -2958,6 +2959,7 @@
           <xsd:enumeration value="OnUpdateAgentStateChanged"/>
           <xsd:enumeration value="OnHostAudioDeviceChanged"/>
           <xsd:enumeration value="OnGuestDebugControlChanged"/>
+          <xsd:enumeration value="OnMachineGroupsChanged"/>
           <xsd:enumeration value="End"/>
         </xsd:restriction>
       </xsd:simpleType>
@@ -28810,6 +28812,22 @@
           </xsd:sequence>
         </xsd:complexType>
       </xsd:element>
+      <!--Interface IMachineGroupsChangedEvent-->
+      <!-- readonly attribute IMachineGroupsChangedEvent::dummy-->
+      <xsd:element name="IMachineGroupsChangedEvent_getDummy">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="_this" type="xsd:string"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
+      <xsd:element name="IMachineGroupsChangedEvent_getDummyResponse">
+        <xsd:complexType>
+          <xsd:sequence>
+            <xsd:element name="returnval" type="xsd:boolean"/>
+          </xsd:sequence>
+        </xsd:complexType>
+      </xsd:element>
       <!--Interface IStringArray-->
       <!-- readonly attribute IStringArray::values-->
       <xsd:element name="IStringArray_getValues">
@@ -43421,6 +43439,18 @@
   </wsdl:message>
   <!--
         *************************************
+        messages for interface IMachineGroupsChangedEvent
+        *************************************
+      -->
+  <!-- readonly attribute IMachineGroupsChangedEvent::dummy-->
+  <wsdl:message name="IMachineGroupsChangedEvent_getDummyRequestMsg">
+    <wsdl:part name="parameters" element="vbox:IMachineGroupsChangedEvent_getDummy"/>
+  </wsdl:message>
+  <wsdl:message name="IMachineGroupsChangedEvent_getDummyResultMsg">
+    <wsdl:part name="parameters" element="vbox:IMachineGroupsChangedEvent_getDummyResponse"/>
+  </wsdl:message>
+  <!--
+        *************************************
         messages for interface IStringArray
         *************************************
       -->
@@ -55603,6 +55633,17 @@
     <wsdl:operation name="IGuestDebugControlChangedEvent_getGuestDebugControl">
       <wsdl:input message="vbox:IGuestDebugControlChangedEvent_getGuestDebugControlRequestMsg"/>
       <wsdl:output message="vbox:IGuestDebugControlChangedEvent_getGuestDebugControlResultMsg"/>
+      <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
+      <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
+    </wsdl:operation>
+    <!--
+          *************************************
+          operations in portType for interface IMachineGroupsChangedEvent
+          *************************************
+        -->
+    <wsdl:operation name="IMachineGroupsChangedEvent_getDummy">
+      <wsdl:input message="vbox:IMachineGroupsChangedEvent_getDummyRequestMsg"/>
+      <wsdl:output message="vbox:IMachineGroupsChangedEvent_getDummyResultMsg"/>
       <wsdl:fault name="InvalidObjectFault" message="vbox:InvalidObjectFaultMsg"/>
       <wsdl:fault name="RuntimeFault" message="vbox:RuntimeFaultMsg"/>
     </wsdl:operation>
@@ -82950,6 +82991,26 @@
           *************************************
         -->
     <wsdl:operation name="IGuestDebugControlChangedEvent_getGuestDebugControl">
+      <soap:operation soapAction="" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="InvalidObjectFault">
+        <soap:fault name="InvalidObjectFault" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RuntimeFault">
+        <soap:fault name="RuntimeFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <!--
+          *************************************
+          operations in portType for interface IMachineGroupsChangedEvent
+          *************************************
+        -->
+    <wsdl:operation name="IMachineGroupsChangedEvent_getDummy">
       <soap:operation soapAction="" style="document"/>
       <wsdl:input>
         <soap:body use="literal"/>
