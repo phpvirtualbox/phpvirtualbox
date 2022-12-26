@@ -3799,7 +3799,7 @@ class vboxconnector {
 
 
 		/* @var $m IMachine */
-		$m = $this->vbox->createMachine(null,$args['name'],($this->settings->phpVboxGroups ? '' : $args['group']),$args['ostype'],null,null);
+		$m = $this->vbox->createMachine(null,$args['name'],($this->settings->phpVboxGroups ? '' : $args['group']),$args['ostype'],null,null,null,null);
 
 		/* Check for phpVirtualBox groups */
 		if($this->settings->phpVboxGroups && $args['group']) {
