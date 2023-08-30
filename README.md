@@ -1,5 +1,13 @@
 # About
 
+To manage variations in Virtualbox protocols and language versions, 
+this project will be temporarily be managed as separate branches.
+
+Or you can try the 'unified' or 'ng' branches which aim to handle these
+differences automatically.
+
+This branch is for Virtualbox 6.1 with PHP 8.0.
+
 phpVirtualBox is from 2017 maintained by Smart Guide Pty Ltd (tudor at smartguide dot com dot au)
 
 with support from various contributors (see https://github.com/phpvirtualbox/phpvirtualbox/graphs/contributors)
