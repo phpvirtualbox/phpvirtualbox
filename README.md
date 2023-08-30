@@ -3,8 +3,8 @@
 To manage variations in Virtualbox protocols and language versions, 
 this project will be temporarily be managed as separate branches.
 
-This branch is an attempt to unify the differences so that the interface
-between virtualbox and phpvirtualbox can continue through version upgrades.
+This branch is an expansion on the unified branch to include improvements
+to UI experience.
 
 phpVirtualBox is from 2017 maintained by Smart Guide Pty Ltd (tudor at smartguide dot com dot au)
 
