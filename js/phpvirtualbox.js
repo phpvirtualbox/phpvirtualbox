@@ -1061,22 +1061,22 @@ var vboxVMDetailsSections = {
 			    title: "Disabled",
 			    language_context: ['VBoxGlobal', null, 'details report (audio)'],
 			    cssClass: 'vboxDetailsNone', 
-			    condition: function(d) { return !d['audioAdapter']['enabled']; },
+			    condition: function(d) { return !d['audioSettings']['enabled']; },
 			    data: ''
 		    },{
 		    	title: "Host Driver",
 		    	language_context: 'VBoxGlobal',
 		    	callback: function(d) {
-		    		return trans(vboxAudioDriver(d['audioAdapter']['audioDriver']),'VBoxGlobal');
+		    		return trans(vboxAudioDriver(d['audioSettings']['audioDriver']),'VBoxGlobal');
 		    	},
-		    	condition: function(d) { return d['audioAdapter']['enabled']; }
+		    	condition: function(d) { return d['audioSettings']['enabled']; }
 		    },{
 		    	title: "Controller",
 		    	language_context: 'VBoxGlobal',
 		    	callback: function (d) {
-		    		return trans(vboxAudioController(d['audioAdapter']['audioController']),'VBoxGlobal');
+		    		return trans(vboxAudioController(d['audioSettings']['audioController']),'VBoxGlobal');
 		    	},
-		    	condition: function(d) { return d['audioAdapter']['enabled']; }
+		    	condition: function(d) { return d['audioSettings']['enabled']; }
 		    }
 		]
 	},

@@ -59,8 +59,8 @@ $('#vboxSettingsDialog').on('dataLoaded',function(){
 
 	// Failsafe
 	if(!ad) ad = [];
-	if(jQuery.inArray($('#vboxSettingsDialog').data('vboxMachineData').audioAdapter.audioController, ad) < 0)
-		ad[ad.length] = $('#vboxSettingsDialog').data('vboxMachineData').audioAdapter.audioController;
+	if(jQuery.inArray($('#vboxSettingsDialog').data('vboxMachineData').audioSettings.audioController, ad) < 0)
+		ad[ad.length] = $('#vboxSettingsDialog').data('vboxMachineData').audioSettings.audioController;
 	
 	// clear options first
 	document.forms['frmVboxSettings'].vboxSettingsAudioController.options.length = 0;
@@ -80,36 +80,36 @@ $('#vboxSettingsDialog').on('dataLoaded',function(){
 	if(!ad) {
 		ad = [$('#vboxPane').data('vboxSystemProperties').defaultAudioDriver];
 	}
-	if(jQuery.inArray($('#vboxSettingsDialog').data('vboxMachineData').audioAdapter.audioDriver, ad) < 0)
-		ad[ad.length] = $('#vboxSettingsDialog').data('vboxMachineData').audioAdapter.audioDriver;
+	if(jQuery.inArray($('#vboxSettingsDialog').data('vboxMachineData').audioSettings.audioDriver, ad) < 0)
+		ad[ad.length] = $('#vboxSettingsDialog').data('vboxMachineData').audioSettings.audioDriver;
 
 	for(var i = 0; i < ad.length; i++) {
 		var opt = new Option(trans(vboxAudioDriver(ad[i]),'VBoxGlobal'),ad[i]);
 		document.forms['frmVboxSettings'].vboxSettingsAudioDriver.options[document.forms['frmVboxSettings'].vboxSettingsAudioDriver.options.length] = opt;
 	}
 
-	$(document.forms['frmVboxSettings'].vboxSettingsAudioDriver).val($('#vboxSettingsDialog').data('vboxMachineData').audioAdapter.audioDriver);
-	$(document.forms['frmVboxSettings'].vboxSettingsAudioController).val($('#vboxSettingsDialog').data('vboxMachineData').audioAdapter.audioController);
+	$(document.forms['frmVboxSettings'].vboxSettingsAudioDriver).val($('#vboxSettingsDialog').data('vboxMachineData').audioSettings.audioDriver);
+	$(document.forms['frmVboxSettings'].vboxSettingsAudioController).val($('#vboxSettingsDialog').data('vboxMachineData').audioSettings.audioController);
 	
 
 	var p = $(document.forms['frmVboxSettings'].vboxSettingsAudioController).closest('table'); 
 	if(!$('#vboxSettingsDialog').data('vboxFullEdit')) {
-		$(document.forms['frmVboxSettings'].vboxSettingsAudioEnabled).prop('checked',$('#vboxSettingsDialog').data('vboxMachineData').audioAdapter.enabled).triggerHandler('click');
+		$(document.forms['frmVboxSettings'].vboxSettingsAudioEnabled).prop('checked',$('#vboxSettingsDialog').data('vboxMachineData').audioSettings.enabled).triggerHandler('click');
 		$(p).find('span').addClass('disabled');
 		$(p).find('input,select,textarea').prop('disabled',true);
 	} else {
 		$(p).find('span').removeClass('disabled');
 		$(p).find('input,select,textarea').prop('disabled',false);
-		$(document.forms['frmVboxSettings'].vboxSettingsAudioEnabled).prop('checked',$('#vboxSettingsDialog').data('vboxMachineData').audioAdapter.enabled).triggerHandler('click');		
+		$(document.forms['frmVboxSettings'].vboxSettingsAudioEnabled).prop('checked',$('#vboxSettingsDialog').data('vboxMachineData').audioSettings.enabled).triggerHandler('click');		
 	}
 });
 	
 /* Change settings onSave() */
 $('#vboxSettingsDialog').on('save',function(){
 
-	$('#vboxSettingsDialog').data('vboxMachineData').audioAdapter.audioDriver = document.forms['frmVboxSettings'].vboxSettingsAudioDriver.value;
-	$('#vboxSettingsDialog').data('vboxMachineData').audioAdapter.audioController = document.forms['frmVboxSettings'].vboxSettingsAudioController.value;
-	$('#vboxSettingsDialog').data('vboxMachineData').audioAdapter.enabled = document.forms['frmVboxSettings'].vboxSettingsAudioEnabled.checked;
+	$('#vboxSettingsDialog').data('vboxMachineData').audioSettings.audioDriver = document.forms['frmVboxSettings'].vboxSettingsAudioDriver.value;
+	$('#vboxSettingsDialog').data('vboxMachineData').audioSettings.audioController = document.forms['frmVboxSettings'].vboxSettingsAudioController.value;
+	$('#vboxSettingsDialog').data('vboxMachineData').audioSettings.enabled = document.forms['frmVboxSettings'].vboxSettingsAudioEnabled.checked;
 		
 });
 
