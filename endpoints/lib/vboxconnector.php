@@ -1358,7 +1358,7 @@ class vboxconnector {
 			$src = $nsrc->machine;
 		}
 		/* @var $m IMachine */
-		$m = $this->vbox->createMachine($this->vbox->composeMachineFilename($args['name'],null,null,null),$args['name'],null,null,null,false);
+		$m = $this->vbox->createMachine($this->vbox->composeMachineFilename($args['name'],null,null,null),$args['name'],null,null,null,false,null,null);
 		$sfpath = $m->settingsFilePath;
 
 		/* @var $cm CloneMode */
@@ -1536,7 +1536,7 @@ class vboxconnector {
 					// Set Live CD/DVD
 					if($ma['type'] == 'DVD') {
 						if(!$ma['medium']['hostDrive'])
-							$m->temporaryEjectDevice($name, $ma['port'], $ma['device'], $ma['temporaryEject']);
+							$m->temporaryEjectDevice($name, $ma['port'], $ma['device'], isset($ma['temporaryEject']) ? $ma['temporaryEject'] : false);
 
 					// Set IgnoreFlush
 					} elseif($ma['type'] == 'HardDisk') {
@@ -1938,9 +1938,9 @@ class vboxconnector {
 		}
 
 		// Audio controller settings
-		$m->audioAdapter->enabled = ($args['audioAdapter']['enabled'] ? 1 : 0);
-		$m->audioAdapter->audioController = $args['audioAdapter']['audioController'];
-		$m->audioAdapter->audioDriver = $args['audioAdapter']['audioDriver'];
+		$m->audioSettings->adapter->enabled = ($args['audioSettings']['enabled'] ? 1 : 0);
+		$m->audioSettings->adapter->audioController = $args['audioSettings']['audioController'];
+		$m->audioSettings->adapter->audioDriver = $args['audioSettings']['audioDriver'];
 
 		// Boot order
 		$mbp = $this->vbox->systemProperties->maxBootPosition;
@@ -2047,7 +2047,7 @@ class vboxconnector {
 					if($ma['medium']['hostDrive'])
 						$m->passthroughDevice($name, $ma['port'], $ma['device'], $ma['passthrough']);
 					else
-						$m->temporaryEjectDevice($name, $ma['port'], $ma['device'], ($ma['temporaryEject'] ? true : false));
+						$m->temporaryEjectDevice($name, $ma['port'], $ma['device'], isset($ma['temporaryEject']) ? $ma['temporaryEject'] : false);
 
 				// HardDisk medium attachment type
 				} else if($ma['type'] == 'HardDisk') {
@@ -2080,7 +2080,7 @@ class vboxconnector {
 				}
 
 				if($sc['bus'] == 'SATA' || $sc['bus'] == 'USB') {
-					$m->setHotPluggableForDevice($name, $ma['port'], $ma['device'], ($ma['hotPluggable'] ? true : false));
+					$m->setHotPluggableForDevice($name, $ma['port'], $ma['device'], isset($ma['hotPluggable']) ? $ma['hotPluggable'] : false);
 				}
 
 				if(is_object($med))
@@ -2351,7 +2351,7 @@ class vboxconnector {
 
 
 		/* @var $m IMachine */
-		$m = $this->vbox->openMachine($args['file']);
+		$m = $this->vbox->openMachine($args['file'],null);
 		$this->vbox->registerMachine($m->handle);
 
 		$m->releaseRemote();
@@ -3799,7 +3799,7 @@ class vboxconnector {
 
 
 		/* @var $m IMachine */
-		$m = $this->vbox->createMachine(null,$args['name'],($this->settings->phpVboxGroups ? '' : $args['group']),$args['ostype'],null,null);
+		$m = $this->vbox->createMachine(null,$args['name'],($this->settings->phpVboxGroups ? '' : $args['group']),$args['ostype'],null,null,null,null);
 
 		/* Check for phpVirtualBox groups */
 		if($this->settings->phpVboxGroups && $args['group']) {
@@ -4252,10 +4252,13 @@ class vboxconnector {
 				'allowMultiConnection' => $m->VRDEServer->allowMultiConnection,
 				'VRDEExtPack' => (string)$m->VRDEServer->VRDEExtPack
 				)),
-			'audioAdapter' => array(
-				'enabled' => $m->audioAdapter->enabled,
-				'audioController' => (string)$m->audioAdapter->audioController,
-				'audioDriver' => (string)$m->audioAdapter->audioDriver,
+			'audioSettings' => array(
+				'enabled' => $m->audioSettings->adapter->enabled,
+				'audioController' => (string)$m->audioSettings->adapter->audioController,
+				'audioDriver' => (string)$m->audioSettings->adapter->audioDriver,
+				'enabledIn' => $m->audioSettings->adapter->enabledIn,
+				'enabledOut' => $m->audioSettings->adapter->enabledOut,
+				'audioCodec' => (string)$m->audioSettings->adapter->audioCodec
 				),
 			'RTCUseUTC' => $m->RTCUseUTC,
 		    'EffectiveParavirtProvider' => (string)$m->getEffectiveParavirtProvider(),
@@ -4363,7 +4366,7 @@ class vboxconnector {
 	 * @return array shared folder info
 	 */
 	private function _machineGetSharedFolders(&$m) {
-		$sfs = &$m->sharedFolders;
+		$sfs = $m->sharedFolders;
 		$return = array();
 		foreach($sfs as $sf) { /* @var $sf ISharedFolder */
 			$return[] = array(
@@ -4717,7 +4720,7 @@ class vboxconnector {
 			$machine->lockMachine($this->session->handle, ((string)$machine->sessionState == 'Unlocked' ? 'Write' : 'Shared'));
 
 			/* @var $progress IProgress */
-			list($progress, $snapshotId) = $this->session->machine->takeSnapshot($args['name'], $args['description'], false);
+			list($progress, $snapshotId) = $this->session->machine->takeSnapshot($args['name'], $args['description'], true);
 
 			// Does an exception exist?
 			try {
