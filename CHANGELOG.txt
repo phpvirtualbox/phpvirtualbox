@@ -1,8 +1,24 @@
 -------------------------------------
-    6.0-0   
+	7.1-1	2025-04-24
+-------------------------------------
+Project relocated back to phpvirtualbox github org
+
+-------------------------------------
+    7.1-0   2024-10-15
+-------------------------------------
+Virtualbox 7.1 support
+
+-------------------------------------
+    7.0-0 from Beta 1 to RC 1
+-------------------------------------
+Support for VirtualBox 7.0 and PHP8.2
+Fixed clone option and encryption/decryption
+Fixes for few small bugs
+
+-------------------------------------
+    6.0-0
 -------------------------------------
 Upgrade to Virtualbox 6.0
-
 
 -------------------------------------
     5.2-1   2018-11-09
@@ -14,7 +30,6 @@ Fix Import/Export - @tom077
 Russian translation fixes - @SvetlanaTkachenko
 Viewport and URL fixes - @krzysztof113
 Convert to unix file format to reduce size
-
 
 -------------------------------------
     5.2-0   2018-02-16

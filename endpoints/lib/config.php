@@ -14,7 +14,7 @@
 /*
  * This version of phpVirtualBox
  */
-define('PHPVBOX_VER', '6.1-0');
+define('PHPVBOX_VER', '7.1-1');
 
 class phpVBoxConfigClass {
 
@@ -140,8 +140,11 @@ class phpVBoxConfigClass {
 	 * @var integer
 	 */
 	var $eventListenerTimeout = 20;
+    // added vars to satisfy PHP 8.2+ dynamic property deprecation
+    var $enableAdvancedConfig;
+    var $enableHDFlushConfig;
 
-	/**
+    /**
 	 * Read user configuration, apply defaults, and do some sanity checking
 	 * @see vboxconnector
 	 */

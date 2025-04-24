@@ -73,6 +73,8 @@ class __vbox_language {
 		$xmlObj = simplexml_load_string(@file_get_contents(VBOX_BASE_LANG_DIR.'/'.$lang.'.xml'));
 		$arrXml = $this->objectsIntoArray($xmlObj);
 
+		if(!array_key_exists('context',$arrXml)) return;
+
 		$lang = array();
 		if(!@$arrXml['context'][0]) $arrXml['context'] = array($arrXml['context']);
 		foreach($arrXml['context'] as $c) {
