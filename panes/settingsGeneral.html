@@ -82,6 +82,16 @@
 						onClick="vboxSnapshotBrowseFolder(this);" />
 		</td>
 	</tr>
+	<tr id='vboxSettingsClipboardMode' class='vboxRunningEnabled'>
+		<th style='text-align:right'><span class='translate'>Shared Clipboard:</span></th>
+			<td><select name='vboxSettingsClipboardMode' style="width: 150px">
+					<option value='Disabled'>Disabled</option>
+					<option value='HostToGuest'>Host to Guest</option>
+					<option value='GuestToHost'>Guest to Host</option>
+					<option value='Bidirectional'>Bidirectional</option>
+				</select>
+			</td>
+	</tr>
 </table>
 </div>
 
@@ -272,6 +282,7 @@ $('#vboxSettingsDialog').on('dataLoaded', function(){
 	/* Advanced config options */
     $(document.forms['frmVboxSettings'].vboxSettingsTabGeneralInputKeyboard).val($('#vboxSettingsDialog').data('vboxMachineData').keyboardHIDType);
 	$(document.forms['frmVboxSettings'].vboxSettingsTabGeneralInputMouse).val($('#vboxSettingsDialog').data('vboxMachineData').pointingHIDType);
+	$(document.forms['frmVboxSettings'].vboxSettingsClipboardMode).val($('#vboxSettingsDialog').data('vboxMachineData').ClipboardMode);
 	
 	/* OS Type */
 	
@@ -388,6 +399,7 @@ $('#vboxSettingsDialog').on('dataLoaded', function(){
 	$('#vboxSettingsDialog').data('vboxMachineData').OSTypeId = document.forms['frmVboxSettings'].vboxSettingsGeneralOSType.value;
 	$('#vboxSettingsDialog').data('vboxMachineData').snapshotFolder = document.forms['frmVboxSettings'].vboxSettingsGeneralSnapshotFolder.value;
 	$('#vboxSettingsDialog').data('vboxMachineData').description = 	$(document.forms['frmVboxSettings'].vboxSettingsGeneralDescription).val();
+	$('#vboxSettingsDialog').data('vboxMachineData').ClipboardMode = $(document.forms['frmVboxSettings'].vboxSettingsClipboardMode).val();
 	
 	$('#vboxSettingsDialog').data('vboxMachineData').keyboardHIDType = $(document.forms['frmVboxSettings'].vboxSettingsTabGeneralInputKeyboard).val();
 	$('#vboxSettingsDialog').data('vboxMachineData').pointingHIDType = $(document.forms['frmVboxSettings'].vboxSettingsTabGeneralInputMouse).val();

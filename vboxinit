@@ -1,5 +1,7 @@
 #!/bin/bash
 #
+#  This may be OBE as VirtualBox distributes its own startup script
+#
 #  vboxinit: auto start sessions when booting and save
 #                sessions when host is stopped
 #

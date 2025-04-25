@@ -4,77 +4,77 @@
 		<name>phpVirtualBox</name>
 		<message>
 			<source>Warning: A VirtualBox internal operation is in progress. Closing this window or navigating away from this web page may cause unexpected and undesirable results. Please wait for the operation to complete.</source>
-			<translation>Warnung: Interne Aktion läuft. Wenn Sie dieses Fenster schließen oder diese Seite verlassen, kann das zu unerwünschten oder unbeabsichtigten Effekten führen. Bitte warten Sie bis die Aktion abgeschlossen ist.</translation>
+			<translation>Advarsel: En intern VirtualBox-handling er i gang. Lukning af vinduet eller navigering væk fra websiden kan forårsage uventede og uønskede resultater. Vent venligst på at handlingen bliver færdig.</translation>
 		</message>
 		<message>
 			<source>Operation Canceled</source>
-			<translation>Aktion abgebrochen</translation>
+			<translation>Handling annulleret</translation>
 		</message>
 		<message>
 			<source>An error occurred communicating with your vboxwebsrv. No more requests will be sent by phpVirtualBox until the error is corrected and this page is refreshed. The details of this connection error should be displayed in a subsequent dialog box.</source>
-			<translation>Bei der Kommunikation mit dem vboxwebsrv ist ein Fehler aufgetreten. Bevor dieser Fehler nicht behoben wird und diese Seite neu geladen wurde, werden von phpVirtualBox keine Anfragen mehr gesendet. Einzelheiten entnehmen Sie der folgenden Dialogbox.</translation>
+			<translation>Der opstod en fejl ved kommunikation med din vboxwebsrv. Der sendes ikke flere forespørgsler af phpVirtualBox før fejlen er blevet rettet og siden er blevet genindlæst. Detaljerne om forbindelsesfejlen bør blive vist i en efterfølgende dialogboks.</translation>
 		</message>
 		<message>
 			<source>Unable to retrieve guest properties. Make sure the virtual machine is running and has the VirtualBox Guest Additions installed.</source>
-			<translation>Die Eigenschaften des Gastes können nicht ermittelt werden. Stellen Sie sicher, das die Maschine läuft und die Gasterweiterungen von VirtualBox installiert sind.</translation>
+			<translation>Kan ikke indhente gæstens egenskaber. Sørg for at den virtuelle maskine kører og at den har VirtualBox-gæstetilføjelser installeret.</translation>
 		</message>
 		<!-- Error vmlist 1 -->
 		<message>
 			<source>There was an error obtaining the list of registered virtual machines from VirtualBox. Make sure vboxwebsrv is running and that the settings in config.php are correct.&lt;p&gt;The list of virtual machines will not begin auto-refreshing again until this page is reloaded.&lt;/p&gt;</source>
-			<translation>Beim Ermitteln der Liste virtueller Maschimen ist ein Fehler aufgetreten. Stellen Sie sicher, dass vboxwebsrv gestartet ist und die Einstellugen in der Datei config.php stimmen.&lt;p&gt;Die Liste der virtuellen Maschinen können Sie durch das erneute Laden dieser Seite aktualisieren.&lt;/p&gt;</translation>
+			<translation>Der opstod en fejl ved indhentning af listen over registrerede virtuelle maskiner fra VirtualBox. Sørg for at vboxwebsrv kører og at indstillingerne i config.php er korrekte.&lt;p&gt;Listen over virtuelle maskiner opdateres ikke automatisk igen før siden er blevet genindlæst.&lt;/p&gt;</translation>
 		</message>
 		<message>
 			<source>Server List</source>
-			<translation>Server-Liste</translation>
+			<translation>Serverliste</translation>
 		</message>
 	</context>
 	<context>
 		<name>UIVMDesktop</name>
 		<message>
 			<source>Console</source>
-			<translation>Konsole</translation>
+			<translation>Konsol</translation>
 		</message>
 		<message>
 			<source>Loading ...</source>
-			<translation>Lädt ...</translation>
+			<translation>Indlæser ...</translation>
 		</message>
 	</context>
 	<context>
 		<name>VBoxSelectorWnd</name>
 		<message>
 			<source>Change Password</source>
-			<translation>Passwort ändern</translation>
+			<translation>Skift adgangskode</translation>
 		</message>
 		<message>
 			<source>Log out - %1</source>
-			<translation>ausloggen - %1</translation>
+			<translation>Log ud - %1</translation>
 		</message>
 		<message>
 			<source>Logged in as %1</source>
-			<translation>Logged in as %1</translation>
+			<translation>Logget ind som %1</translation>
 		</message>
 		<message>
 			<source>Stop</source>
-			<translation>Stoppen</translation>
+			<translation>Stop</translation>
 		</message>
 		<message>
 			<source>VirtualBox User Manual</source>
-			<translation>VirtualBox Benutzerhandbuch</translation>
+			<translation>VirtualBox-brugermanual</translation>
 		</message>	
 		<message>
 			<source>About</source>
-			<translation>Über</translation>
+			<translation>Om</translation>
 		</message>
 	</context>
 	<context>
 		<name>UIActionsPool</name>
 		<message>
 			<source>Save State</source>
-			<translation>Zustand speichern</translation>
+			<translation>Gem tilstand</translation>
 		</message>
 		<message>
 			<source>Power Off</source>
-			<translation>Power Off</translation>
+			<translation>Sluk</translation>
 		</message>		
 	</context>
 	<context>
@@ -82,35 +82,35 @@
 		<name>VBoxConsoleWgt</name>
 		<message>
 			<source>User name</source>
-			<translation>Benutzername</translation>
+			<translation>Brugernavn</translation>
 		</message>
 		<message>
 			<source>Password</source>
-			<translation>Passwort</translation>
+			<translation>Adgangskode</translation>
 		</message>
 		<message>
 			<source>Connecting to %1</source>
-			<translation>Verbinden mit %1</translation>
+			<translation>Opretter forbindelse til %1</translation>
 		</message>
 		<message>
 			<source>Connected to %1</source>
-			<translation>Verbunden mit %1</translation>
+			<translation>Forbundet til %1</translation>
 		</message>
 		<message>
 			<source>Requested desktop size</source>
-			<translation>Angeforderte Bildschirmgöße</translation>
+			<translation>Anmodet skrivebordstørrelse</translation>
 		</message>
 		<message>
 			<source>Connect</source>
-			<translation>Verbinden</translation>
+			<translation>Opret forbindelse</translation>
 		</message>
 		<message>
 			<source>Detach</source>
-			<translation>Trennen</translation>
+			<translation>Frakobl</translation>
 		</message>
 		<message>
 			<source>Disconnect</source>
-			<translation>Trennen</translation>
+			<translation>Afbryd forbindelse</translation>
 		</message>
 		<message>
 			<source>Send Ctrl-Alt-Del</source>
@@ -118,15 +118,15 @@
 		</message>
 		<message>
 			<source>Disconnect reason</source>
-			<translation>Grund für die Trennung</translation>
+			<translation>Årsag til afbrudt forbindelse</translation>
 		</message>
 		<message>
 			<source>Redirection by %1</source>
-			<translation>Redirection by %1</translation>
+			<translation>Omdirigering af %1</translation>
 		</message>
 		<message>
 			<source>Virtual machine is not running or is not configured to accept RDP connections.</source>
-			<translation>Die virtuelle Maschine läuft nicht oder sie ist nicht für Zugriffe über RDP konfiguriert.</translation>
+			<translation>Den virtuelle maskine kører ikke eller er ikke konfigureret til at acceptere RDP-forbindelser.</translation>
 		</message>
 	</context>		
 	<context>
@@ -137,16 +137,16 @@
 		</message>
 		<message>
 			<source>Guest Network Adapters</source>
-			<translation>Netzwerkadapter des Gastes</translation>
+			<translation>Gæstens netværkskort</translation>
 		</message>
 		<message>
 			<source>Up</source>
-			<translation>Online</translation>
+			<translation>Oppe</translation>
 			<comment>Host network adapter status</comment>
 		</message>
 		<message>
 			<source>Down</source>
-			<translation>Offline</translation>
+			<translation>Nede</translation>
 			<comment>Host network adapter status</comment>
 		</message>
 	</context>
@@ -154,102 +154,101 @@
 		<name>UIVMPreviewWindow</name>
 		<message>
 			<source>Every %1 seconds</source>
-			<translation>alle %1 Sekunde(n)</translation>
+			<translation>Hvert %1. sekund</translation>
 		</message>
 		<message>
 			<source>Open in new window</source>
-			<translation>In neuem Fenster öffnen</translation>
+			<translation>Åbn i nyt vindue</translation>
 		</message>		
 	</context>
 	<context>
 		<name>UISettingsDialogGlobal</name>
 		<message>
 			<source>Users</source>
-			<translation>Benutzer</translation>
+			<translation>Brugere</translation>
 		</message>
 	</context>
 	<context>
 		<name>UIUsers</name>
 		<message>
 			<source>Users</source>
-			<translation>Benutzer</translation>
+			<translation>Brugere</translation>
 		</message>		
 		<message>
 			<source>Admin User</source>
-			<translation>Administrativer Benutzer</translation>
+			<translation>Administrator-bruger</translation>
 		</message>
 		<message>
 			<source>Can administer users</source>
-			<translation>Kann Benutzer verwalten</translation>
+			<translation>Kan administrere brugere</translation>
 		</message>
 		<message>
 			<source>Add User</source>
-			<translation>Hinzufügen eines Benutzers</translation>
+			<translation>Tilføj bruger</translation>
 		</message>
 		<message>
 			<source>Edit User</source>
-			<translation>Bearbeiten dieses Benutzers</translation>
+			<translation>Rediger bruger</translation>
 		</message>
 		<message>
 			<source>Remove User</source>
-			<translation>Entfernen Sie diesen Benutzer</translation>
+			<translation>Fjern bruger</translation>
 		</message>
 		<message>
 			<source>A user with that username already exists.</source>
-			<translation>Ein Benutzer mit diesem Benutzernamen existiert bereits.</translation>
+			<translation>Der findes allerede en bruger med det navn.</translation>
 		</message>
 		<message>
 			<source>Are you sure you want to remove the user &lt;b&gt;%1&lt;/b&gt;? This action cannot be undone.</source>
-			<translation>Sind Sie sicher, dass Sie den Benutzer &lt;b&gt;%1&lt;/b&gt; entfernen möchten? Diese Aktion kann nicht rückgängig gemacht werden.</translation>
+			<translation>Er du sikker på, at du vil fjerne brugeren &lt;b&gt;%1&lt;/b&gt;? Handlingen kan ikke fortrydes.</translation>
 		</message>
 		<message>
 			<source>Username</source>
-			<translation>Benutzername</translation>
+			<translation>Brugernavn</translation>
 		</message>
 		<message>
 			<source>Password</source>
-			<translation>Passwort</translation>
+			<translation>Adgangskode</translation>
 		</message>
 		<message>
 			<source>Log in</source>
-			<translation>einloggen</translation>
+			<translation>Log ind</translation>
 		</message>
 		<message>
 			<source>Change Password</source>
-			<translation>Passwort ändern</translation>
+			<translation>Skift adgangskode</translation>
 		</message>
 		<message>
 			<source>Old Password</source>
-			<translation>Aktuelles Passwort</translation>
+			<translation>Gammel adgangskode</translation>
 		</message>
 		<message>
 			<source>New Password</source>
-			<translation>Neues Passwort</translation>
+			<translation>Ny adgangskode</translation>
 		</message>
 		<message>
 			<source>The passwords you have entered do not match.</source>
-			<translation>Die Passwörter die Sie eingegeben haben stimmen nicht überein.</translation>
+			<translation>De indtastede adgangskoder er ikke ens.</translation>
 		</message>
 		<message>
 			<source>Password changed.</source>
-			<translation>Kennwort geändert.</translation>
+			<translation>Adgangskoden er skiftet.</translation>
 		</message>
 		<message>
 			<source>The password you have entered is invalid.</source>
-			<translation>Das von Ihnen eingegebene Kennwort ist ungültig.</translation>
+			<translation>Den indtastede adgangskode er ikke gyldig.</translation>
 		</message>
 		<message>
 			<source>Retype</source>
-			<translation>Retype</translation>
+			<translation>Indtast igen</translation>
 		</message>
 		<message>
 			<source>Invalid username or password.</source>
-			<translation>Ungültiger Benutzername oder Kennwort.</translation>
+			<translation>Ugyldig brugernavn eller adgangskode.</translation>
 		</message>
 		<message>
 			<source>Not logged in.</source>
-			<translation>Nicht eingeloggt.</translation>
+			<translation>Ikke logget ind.</translation>
 		</message>		
 	</context>
 </language>
-

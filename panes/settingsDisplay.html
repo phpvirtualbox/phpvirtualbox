@@ -40,6 +40,15 @@
 		</td>
 	</tr>
 	<tr>
+		<th><span class='translate'>Graphics Controller:</span></th>
+		<td><select name='vboxSettingsGraphicsController'>
+			<option value='Null'>Null</option>
+			<option value='VBoxVGA'>VBoxVGA</option>
+			<option value='VMSVGA'>VMSVGA</option>
+			<option value='VBoxSVGA'>VBoxSVGA</option>
+			</select></td>
+	</tr>
+	<tr>
 		<th><span class='translate'>Extended Features:</span></th>
 		<td><label><input type='checkbox' class='vboxCheckbox' name='vboxSettingsDisplay3d' /> <span class='translate'>Enable 3D Acceleration</span></label></td>
 	</tr>
@@ -68,7 +77,7 @@
 		<th><span class='translate'>Authentication Method:</span></th>
 		<td>
              <select name='vboxSettingsDisplayVRDEAuth' id='vboxSettingsDisplayVRDEAuthID' style='width: 100%'>
-              <option value='' >None</option>
+              <option value='Null'>None</option>
 				<option value='External'>External</option>
 				<option value='Guest'>Guest</option>
              </select>
@@ -106,6 +115,8 @@ $('#vboxSettingsDialog').on('dataLoaded', function(){
 
 
 	$('#vboxSettingsDisplayMemory').slider('value',parseInt($('#vboxSettingsDialog').data('vboxMachineData').VRAMSize));
+
+	$(document.forms['frmVboxSettings'].vboxSettingsGraphicsController).val($('#vboxSettingsDialog').data('vboxMachineData').graphicsControllerType);
 	
 	document.forms['frmVboxSettings'].vboxSettingsDisplay3d.checked = ($('#vboxSettingsDialog').data('vboxMachineData').accelerate3DEnabled);
 	document.forms['frmVboxSettings'].vboxSettingsDisplay2d.checked = ($('#vboxSettingsDialog').data('vboxMachineData').accelerate2DVideoEnabled);
@@ -176,6 +187,8 @@ $('#vboxSettingsDialog').on('dataLoaded', function(){
 $('#vboxSettingsDialog').on('save',function(){
 
 	$('#vboxSettingsDialog').data('vboxMachineData').VRAMSize = $(document.forms['frmVboxSettings'].vboxSettingsDisplayMemoryValue).val();
+
+	$('#vboxSettingsDialog').data('vboxMachineData').graphicsControllerType = $(document.forms['frmVboxSettings'].vboxSettingsGraphicsController).val();
 
 	$('#vboxSettingsDialog').data('vboxMachineData').accelerate3DEnabled = document.forms['frmVboxSettings'].vboxSettingsDisplay3d.checked;
 	$('#vboxSettingsDialog').data('vboxMachineData').accelerate2DVideoEnabled = document.forms['frmVboxSettings'].vboxSettingsDisplay2d.checked;

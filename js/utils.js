@@ -249,12 +249,14 @@ function vboxGuestOSTypeIcon(osTypeId) {
 		case "Windows8_64":     strIcon = "os_win8_64.png"; break;
 		case "Windows81":       strIcon = "os_win81.png"; break;
 		case "Windows81_64":    strIcon = "os_win81_64.png"; break;
-		case "Windows10":       strIcon = "os_win10.png"; break
-		case "Windows10_64":    strIcon = "os_win10.png"; break
+		case "Windows10":       strIcon = "os_win10.png"; break;
+		case "Windows10_64":    strIcon = "os_win10_64.png"; break;
+		case "Windows11_64":    strIcon = "os_win11_64.png"; break;
 		case "WindowsNT":       strIcon = "os_win_other.png"; break;
 		case "WindowsNT_64":    strIcon = "os_win_other_64.png"; break; 
 		case "Windows2012_64":	strIcon = "os_win2k12_64.png"; break;
 		case "Windows2016_64":	strIcon = "os_win2k16_64.png"; break;
+                case "Windows2019_64":	strIcon = "os_win2k19_64.png"; break;
 		case "OS2Warp3":        strIcon = "os_os2warp3.png"; break;
 		case "OS2Warp4":        strIcon = "os_os2warp4.png"; break;
 		case "OS2Warp45":       strIcon = "os_os2warp45.png"; break;
@@ -301,8 +303,15 @@ function vboxGuestOSTypeIcon(osTypeId) {
 		case "QNX":             strIcon = "os_qnx.png"; break;
 		case "MacOS106":        strIcon = "os_macosx.png"; break;
 		case 'MacOS':           strIcon = "os_macosx.png"; break;
-		case "MacOS106_64":     strIcon = "os_macosx_64.png"; break;
 		case 'MacOS_64':        strIcon = "os_macosx_64.png"; break;
+		case "MacOS106_64":     strIcon = "os_macosx_64.png"; break;
+		case "MacOS107_64":     strIcon = "os_macosx_64.png"; break;
+		case "MacOS108_64":     strIcon = "os_macosx_64.png"; break;
+		case "MacOS109_64":     strIcon = "os_macosx_64.png"; break;
+		case "MacOS1010_64":     strIcon = "os_macosx_64.png"; break;
+		case "MacOS1011_64":     strIcon = "os_macosx_64.png"; break;
+		case "MacOS1012_64":     strIcon = "os_macosx_64.png"; break;
+		case "MacOS1013_64":     strIcon = "os_macosx_64.png"; break;
 		case 'Oracle':          strIcon = "os_oracle.png"; break;
 		case 'Oracle_64':       strIcon = "os_oracle_64.png"; break;
 		case 'JRockitVE':       strIcon = 'os_jrockitve.png'; break;
@@ -1112,7 +1121,7 @@ function phpVirtualBoxFailure(msg) {
  * @param {Date} expire - when cookie should expire
  */
 function vboxSetCookie(k,v,expire) {
-	var exp = (v ? (expire ? expire : new Date(2020,12,24)) : new Date().setDate(new Date().getDate() - 1));
+	var exp = (v ? (expire ? expire : new Date(Date.now() + 7 * 1000 * 60 * 60 * 24)) : new Date().setDate(new Date().getDate() - 1));
 	document.cookie = k+"="+v+"; expires="+exp.toGMTString()+"; path=/";
 	$('#vboxPane').data('vboxCookies')[k] = v;
 }
