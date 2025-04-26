@@ -24,7 +24,7 @@ class phpvbAuthActiveDirectory implements phpvbAuth {
 	 * Constructor
 	 * @param array $userConfig - user configuration for this module
 	 */
-	function phpvbAuthActiveDirectory($userConfig = null) {
+	function __construct($userConfig = null) {
 		// Merge user config
 		if($userConfig) {
 			$this->config = array_merge($this->config,$userConfig);
@@ -101,7 +101,7 @@ class phpvbAuthActiveDirectory implements phpvbAuth {
 				$this->config['container'] . ',DC=' . join(',DC=', explode('.', $this->config['domain'])),
 				$filter, array("memberof","useraccountcontrol"));
 
-		if(!result) throw new Exception ("Unable to search Active Directory server: " . ldap_error($auth));
+		if(!$result) throw new Exception ("Unable to search Active Directory server: " . ldap_error($auth));
 		@list($entries) = @ldap_get_entries($auth, $result);
 		@ldap_unbind($auth);
 		if(!$entries) {

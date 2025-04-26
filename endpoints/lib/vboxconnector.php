@@ -1359,11 +1359,31 @@ class vboxconnector {
 			$src = $nsrc->machine;
 		}
 		/* @var $m IMachine */
-		$m = $this->vbox->createMachine($this->vbox->composeMachineFilename($args['name'],null,null,null),$args['name'],null,null,null,null,null,null);
+		$m = $this->vbox->createMachine(
+			// settingsFile
+			$this->vbox->composeMachineFilename($args['name'],null,null,null),
+			// name
+			$args['name'],
+			// platform
+			strval($src->platform->architecture),
+			// Groups
+			null,
+			// osTypeId
+			null,
+			// flags
+			null,
+			// cipher
+			null,
+			// passwordId
+			null,
+			// password
+			null
+		);
+
 		$sfpath = $m->settingsFilePath;
 
 		/* @var $cm CloneMode */
-		$cm = new CloneMode(null,$args['vmState']);
+		$cm = new CloneMode(null, $args['vmState']);
 		$state = $cm->ValueMap[$args['vmState']];
 
 
@@ -1372,8 +1392,9 @@ class vboxconnector {
 		if($args['link']) $opts[] = 'Link';
 
 		/* @var $progress IProgress */
-		$progress = $src->cloneTo($m->handle,$args['vmState'],$opts);
+		$progress = $src->cloneTo($m->handle, $args['vmState'], $opts);
 
+		$exp = "";
 		// Does an exception exist?
 		try {
 			if($progress->errorInfo->handle) {
@@ -1381,7 +1402,9 @@ class vboxconnector {
 				$progress->releaseRemote();
 				return false;
 			}
-		} catch (Exception $null) {}
+		} catch (Exception $e) {
+			$exp = $e->getMessage();
+		}
 
 		$m->releaseRemote();
 		$src->releaseRemote();
@@ -1389,8 +1412,10 @@ class vboxconnector {
 		$this->_util_progressStore($progress);
 
 		return array(
-				'progress' => $progress->handle,
-				'settingsFilePath' => $sfpath);
+			'progress' => $progress->handle,
+			'settingsFilePath' => $sfpath,
+			'exp' => $exp,
+		);
 
 	}
 

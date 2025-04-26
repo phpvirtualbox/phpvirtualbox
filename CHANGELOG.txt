@@ -1,4 +1,15 @@
 -------------------------------------
+	7.1-2
+-------------------------------------
+Fixed https://github.com/phpvirtualbox/phpvirtualbox/issues/350
+Clonig VMs causes an error - Vm clonig is unuseable in phpvirtualbox
+
+https://github.com/phpvirtualbox/phpvirtualbox/issues/341
+AD Auth broken in PHP 8
+
+Fixed MySQL Auth library
+
+-------------------------------------
 	7.1-1	2025-04-24
 -------------------------------------
 Project relocated back to phpvirtualbox github org

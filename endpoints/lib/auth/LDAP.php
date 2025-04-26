@@ -18,7 +18,7 @@ class phpvbAuthLDAP implements phpvbAuth {
 		'adminUser' => ''
 	);
 	
-	function phpvbAuthLDAP($userConfig = null) {
+	function __construct($userConfig = null) {
 		if($userConfig) $this->config = array_merge($this->config,$userConfig);
 	}
 	
@@ -44,7 +44,7 @@ class phpvbAuthLDAP implements phpvbAuth {
 				
 			} else if(strtolower(substr(PHP_OS, 0, 5)) == 'Linux') {
 				
-				$ex .= ' You probably need to install the php5-ldap (or similar depending on your distribution) package.';	
+				$ex .= ' You probably need to install the php-ldap (or similar depending on your distribution) package.';	
 			
 			}
 			throw new Exception($ex);

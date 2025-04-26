@@ -14,7 +14,7 @@ class phpvbAuthWebAuth implements phpvbAuth {
 		'serverUserKey' => 'REMOTE_USER'
 	);
 	
-	function phpvbAuthWebAuth($userConfig = null) {
+	function __construct($userConfig = null) {
 		if($userConfig) $this->config = array_merge($this->config,$userConfig);
 	}
 	
