@@ -102,7 +102,7 @@ if($('#vboxPane').data('vboxSession').user) {
 					buttons[trans('Cancel','QIMessageBox')] = function(){
 						$(this).remove();
 					};
-					$('#vboxUserEdit').dialog({'closeOnEscape':false,'width':400,'height':200,'buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="images/vbox/register_16px.png" class="vboxDialogTitleIcon" /> '+trans('Change Password','UIUsers')});
+					$('#vboxUserEdit').dialog({'closeOnEscape':false,'width':400,'height':200,'buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/register_16px.png" class="vboxDialogTitleIcon" /> '+trans('Change Password','UIUsers')});
 				};
 				l.run();			
 			},
@@ -248,7 +248,7 @@ vboxTopMenuBar.addMenu({
 		        	var buttons = {};
 		        	buttons[trans('Close','UIVMLogViewer')] = function() { $(this).empty().remove(); };
 		
-		            $('#vboxAbout').dialog({'closeOnEscape':false,'width':500,'height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="images/vbox/help_16px.png" class="vboxDialogTitleIcon" /> phpVirtualBox'});			        	
+		            $('#vboxAbout').dialog({'closeOnEscape':false,'width':500,'height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/help_16px.png" class="vboxDialogTitleIcon" /> phpVirtualBox'});			        	
 	        	};
 	        	l.run();
         	}

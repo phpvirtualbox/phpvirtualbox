@@ -321,7 +321,7 @@ function vboxExportAppliancePropEditDialog(elm, defaults) {
 	buttons[trans('Cancel','QIMessageBox')] = function(){
 		$(this).empty().remove();
 	};
-	$(d).dialog({'height':300,'width':300,'closeOnEscape':false,'modal':true,'resizable':true,'classes':{'ui-dialog':'vboxDialogContent'},'draggable':true,'buttons':buttons,'title':$(elm).parent().siblings().first().html()});
+	$(d).dialog({'height':300,'width':300,'closeOnEscape':false,'modal':true,'resizable':true,'dialogClass':'vboxDialogContent','draggable':true,'buttons':buttons,'title':$(elm).parent().siblings().first().html()});
 
 }
 /* Edit property that has a text box */
