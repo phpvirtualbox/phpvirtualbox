@@ -1301,8 +1301,9 @@ function vboxVMsettingsDialog(vm,pane) {
 		 */
 		var presaveCallback = function() {
 		    
-		    if(!$('#vboxSettingsDialog').data('vboxEncSettingsChanged'))
-		        return true;
+			if(!$('#vboxSettingsDialog').data('vboxEncSettingsChanged')) {
+				return true;
+			}
 		    
 		    var encMediaSettings = $.Deferred();
 		    
@@ -1433,7 +1434,6 @@ function vboxVMsettingsDialog(vm,pane) {
 		
 			// Always run this
 			.always(function(){
-
 				// No longer watch for changed VM settings
 				$('#vboxPane').unbind('vboxEvents',machineSettingsChanged);
 
@@ -1441,7 +1441,6 @@ function vboxVMsettingsDialog(vm,pane) {
 		
 			// Run this when "Save" is clicked
 			.done(function() {
-			    
 				var loader = new vboxLoader();
 				var sdata = $.extend($('#vboxSettingsDialog').data('vboxMachineData'),{'clientConfig':$('#vboxPane').data('vboxConfig')});
 				loader.add('machineSave',function(){return;},sdata);
@@ -1645,29 +1644,37 @@ function vboxSettingsDialog(title,panes,data,pane,icon,langContext,presave) {
 		/* Tell dialog that data is loaded */
 		$('#vboxSettingsDialog').trigger('dataLoaded');
 
-		var buttons = { };
-		buttons[trans('OK','QIMessageBox')] = function() {
+		var buttons = [
+			{
+				text: trans('OK','QIMessageBox'),
+				click: function() {
 			
-		    $(this).trigger('save');
+					$(this).trigger('save');
+		
+					// Does some settings pane need to do some presave
+					// work? (ask questions, run wizard, some other asynch task)
+					var promise = true;
+					if(presave) {
+						promise = presave();
+					}
+					var dlg = this;
+					$.when(promise).done(() => {
+						results.resolve();
+					}).then(() => {
+						$(dlg).trigger('close').empty().remove();
+						$(document).trigger('click');                
+					});
+				}
+			}, {
+				text: trans('Cancel','QIMessageBox'),
+				click: function() {
+					results.reject();
+					$(this).trigger('close').empty().remove();
+					$(document).trigger('click');
+				}
+			}
+		];
 
-		    // Does some settings pane need to do some presave
-		    // work? (ask questions, run wizard, some other asynch task)
-		    var promise = true;
-		    if(presave) {
-		        promise = presave();
-		    }
-		    var dlg = this;
-		    $.when(promise).done(function() {
-		        results.resolve(true);
-		        $(dlg).trigger('close').empty().remove();
-		        $(document).trigger('click');                
-            });
-		};
-		buttons[trans('Cancel','QIMessageBox')] = function() {
-			results.reject();
-			$(this).trigger('close').empty().remove();
-			$(document).trigger('click');
-		};
 
 		// Init with "nothing has changed yet"
 		$('#vboxSettingsDialog').data('formDataChanged', false);

@@ -127,7 +127,7 @@ var vboxEventListener = {
 	},
 	
 	/**
-	 * Subscribe to a single machine's events. This should happen
+	 * Subscribe to a single machine's events.
 	 * 
 	 * @param {String} vmid - ID of VM to subscribe to
 	 */
