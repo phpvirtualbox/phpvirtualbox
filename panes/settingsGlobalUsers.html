@@ -83,7 +83,7 @@ var sButtons = new Array(
 				buttons[trans('Cancel','QIMessageBox')] = function(){
 					$(this).remove();
 				};
-				$('#vboxUserEdit').dialog({'closeOnEscape':false,'width':500,'height':220,'buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/vm_new_16px.png" class="vboxDialogTitleIcon" /> '+trans('Add User','UIUsers')});
+				$('#vboxUserEdit').dialog({'closeOnEscape':false,'width':500,'height':220,'buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="images/vbox/vm_new_16px.png" class="vboxDialogTitleIcon" /> '+trans('Add User','UIUsers')});
 
 			};
 			l.run();
@@ -161,7 +161,7 @@ var sButtons = new Array(
 				buttons[trans('Cancel','QIMessageBox')] = function(){
 					$(this).remove();
 				};
-				$('#vboxUserEdit').dialog({'closeOnEscape':false,'width':400,'height':200,'buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/register_16px.png" class="vboxDialogTitleIcon" /> '+trans('Change Password','UIUsers')});
+				$('#vboxUserEdit').dialog({'closeOnEscape':false,'width':400,'height':200,'buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="images/vbox/register_16px.png" class="vboxDialogTitleIcon" /> '+trans('Change Password','UIUsers')});
 			};
 			l.run();			
 			
@@ -214,7 +214,7 @@ var sButtons = new Array(
 				buttons[trans('Cancel','QIMessageBox')] = function(){
 					$(this).remove();
 				};
-				$('#vboxUserEdit').dialog({'closeOnEscape':false,'width':500,'height':230,'buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/register_16px.png" class="vboxDialogTitleIcon" /> '+trans('Edit User','UIUsers')});
+				$('#vboxUserEdit').dialog({'closeOnEscape':false,'width':500,'height':230,'buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="images/vbox/register_16px.png" class="vboxDialogTitleIcon" /> '+trans('Edit User','UIUsers')});
 
 			};
 			l.run();
