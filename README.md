@@ -11,7 +11,7 @@ he is a member of the github project, I hope he will continue to contribute.
 - [ ] ~~Use Guacamole instead of Flash RDP client~~ Not possible without some gateway server
 - [ ] Ensure feature parity with VirtualBox 7.1 minus Oracle Cloud features
 - [ ] PHP 8.4 compatibility
-- [ ] jQuery and jQuery UI updates
+- [x] jQuery and jQuery UI updates
 - [ ] Create a release process where javascript and CSS are minified and releses do not contain unnecessary build artifacts
 - [ ] UI parity with VirtualBox 7.1 minus Oracle Cloud features
 
