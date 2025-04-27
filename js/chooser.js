@@ -501,8 +501,7 @@ var vboxChooser = {
 		if(!vmUpdate) return;
 		
 		// New VM
-		if(newVM) {
-
+		if(newVM === true) {
 			// New VM.. add it to groups..
 			if(!vmUpdate.groups || vmUpdate.groups.length == 0)
 				vmUpdate.groups = ['/'];
@@ -516,16 +515,14 @@ var vboxChooser = {
 			
 		// Existing VM. Replace existing elements
 		} else {
-				
 			$('#'+vboxChooser._anchorid).find('table.vboxChooserItem-'+vboxChooser._anchorid+'-'+vmUpdate.id).each(function(i,elm){
-				
+
 				var newHTML = vboxChooser.vmHTML(vmUpdate);
 				if($(elm).hasClass('vboxListItemSelected')) {
 					$(newHTML).addClass('vboxListItemSelected').removeClass('vboxHover');
 				}
-				$(elm).children().replaceWith(newHTML.children());
+				$(elm).empty().append(newHTML.children());
 			});
-				
 		}
 
 	},
@@ -2183,14 +2180,13 @@ $(document).ready(function(){
 	// Event list queue
 	}).on('vboxEvents',function(e, eventList) {
 
-		var redrawVMs = [];
+		const redrawVMs = new Set();
 		var sortGroups = [];
 		var groupsChanged = false;
 		var selectedChanged = false;
 		var resizeElements = false;
 		
 		for(var i = 0; i < eventList.length; i++) {
-			
 			switch(eventList[i].eventType) {
 
 				////////////////////////////////
@@ -2212,7 +2208,7 @@ $(document).ready(function(){
 							break;
 						}
 
-						redrawVMs[redrawVMs.length] = vmid;
+						redrawVMs.add(vmid);
 						
 						// Make sure VM has root group at least
 						if(data.groups.length == 0) data.groups = ['/'];
@@ -2272,7 +2268,7 @@ $(document).ready(function(){
 				case 'OnSnapshotTaken':
 				case 'OnSnapshotRestored':
 				case 'OnSnapshotChanged':
-					redrawVMs[redrawVMs.length] = eventList[i].machineId;
+					redrawVMs.add(eventList[i].machineId);
 					break;
 				
 				/////////////////////////////////////
@@ -2370,7 +2366,7 @@ $(document).ready(function(){
 						
 							// redraw when custom icon changes
 							case 'phpvb/icon':
-								redrawVMs[redrawVMs.length] = eventList[i].machineId;
+								redrawVMs.add(eventList[i].machineId);
 								break;
 						}
 					}
@@ -2383,7 +2379,7 @@ $(document).ready(function(){
 				///////////////////////////////////////
 				case 'OnSessionStateChanged':
 				case 'OnMachineStateChanged':
-					redrawVMs[redrawVMs.length] = eventList[i].machineId;
+					redrawVMs.add(eventList[i].machineId);
 					break;
 					
 			} // </ switch eventType >>
@@ -2393,17 +2389,13 @@ $(document).ready(function(){
 
 		// Now redraw each VM
 		///////////////////////////
-		var redrawn = {};
 		var updateMenus = false;
-		for(var i = 0; i < redrawVMs.length; i++) {
+		for(const vmId of redrawVMs) {
 			
-			if(redrawn[redrawVMs[i]]) continue;
-			redrawn[redrawVMs[i]] = true;
-			
-			vboxChooser.updateVMElement(vboxVMDataMediator.getVMData(redrawVMs[i]));
+			vboxChooser.updateVMElement(vboxVMDataMediator.getVMData(vmId));
 			
 			// Update menus if the VM is selected
-			updateMenus = (updateMenus || vboxChooser.isVMSelected(redrawVMs[i]));
+			updateMenus = (updateMenus || vboxChooser.isVMSelected(vmId));
 			
 		}
 
