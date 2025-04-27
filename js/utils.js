@@ -391,7 +391,7 @@ function vboxFileBrowser(root,fn,foldersonly,title,icon,strictFiles) {
     	buttons[trans('OK','QIMessageBox')](f);
     }).appendTo(d1);
 	
-    $(d1).dialog({'closeOnEscape':true,'width':400,'height':600,'buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="'+(icon ? icon : 'images/jqueryFileTree/'+(foldersonly ? 'folder_open' : 'file')+'.png') + '" class="vboxDialogTitleIcon" /> ' + (title ? title : trans((foldersonly ? 'Select Folder' : 'Select File')))}).on("dialogbeforeclose",function(){
+    $(d1).dialog({'closeOnEscape':true,'width':400,'height':600,'buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="'+(icon ? icon : 'images/jqueryFileTree/'+(foldersonly ? 'folder_open' : 'file')+'.png') + '" class="vboxDialogTitleIcon" /> ' + (title ? title : trans((foldersonly ? 'Select Folder' : 'Select File')))}).on("dialogbeforeclose",function(){
     	$(this).parent().find('span:contains("'+trans('Cancel','QIMessageBox')+'")').trigger('click');
     });			
 
@@ -496,7 +496,7 @@ function vboxAlert(e,xtraOpts) {
 	    acknowledged.resolve();
 	};
 
-	var dialogOpts = {'closeOnEscape':false,'width':600,'height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/OSE/about_16px.png" class="vboxDialogTitleIcon" /> phpVirtualBox'};
+	var dialogOpts = {'closeOnEscape':false,'width':600,'height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="images/vbox/OSE/about_16px.png" class="vboxDialogTitleIcon" /> phpVirtualBox'};
 
 	if(typeof xtraOpts == "object") {
 		for(var i in xtraOpts) {
@@ -526,7 +526,7 @@ function vboxConfirm(q,buttons,cancelText,onCancel) {
 	
 	buttons[cancelText] = function() { $(this).remove(); if(onCancel) { onCancel(); }};
 	
-    $(div).dialog({'closeOnEscape':false,'width':500,'height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/OSE/about_16px.png" class="vboxDialogTitleIcon" /> phpVirtualBox'});			
+    $(div).dialog({'closeOnEscape':false,'width':500,'height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="images/vbox/OSE/about_16px.png" class="vboxDialogTitleIcon" /> phpVirtualBox'});			
 	
     return $(div);
 }

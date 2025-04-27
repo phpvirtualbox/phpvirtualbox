@@ -119,7 +119,7 @@ function vboxTabs(id) {
 		
 		if(!this.tabSelected) {
 			this.tabSelected = '#'+tab.name;
-			$('#tablistMain').find('a[href=#'+tab.name+']').parent().addClass('selected');
+			$('#tablistMain').find('a[href="#'+tab.name+'"]').parent().addClass('selected');
 		}
 		this.tabs[this.tabs.length] = tab;
 		
@@ -151,7 +151,7 @@ function vboxTabs(id) {
 		$(''+tab).css('display','').trigger('show');
 		self.tabSelected = tab;
 		$('#tablistMain').children().removeClass('selected');
-		$('#tablistMain').find('a[href='+tab+']').parent().addClass('selected');
+		$('#tablistMain').find('a[href="'+tab+'"]').parent().addClass('selected');
 
 		
 	};

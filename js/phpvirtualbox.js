@@ -3000,7 +3000,7 @@ function vboxWizard() {
 				'modal':true,
 				'autoOpen':true,
 				'stack':true,
-				'dialogClass':'vboxDialogContent vboxWizard',
+				'classes':{'ui-dialog':'vboxDialogContent vboxWizard'},
 				'open': function() {
 					$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('span:contains("'+self.nextArrow+'")').parent().focus();
 				},
@@ -4552,7 +4552,7 @@ function vboxLoader(name) {
 			$('#vboxPane').css('display', 'none');
 
 		$(div).dialog({
-			'dialogClass': 'vboxLoaderDialog',
+			'classes':{'ui-dialog': 'vboxLoaderDialog'},
 			'width': 'auto',
 			'height': 65,
 			'modal': true,
