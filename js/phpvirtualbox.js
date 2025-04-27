@@ -4552,7 +4552,9 @@ function vboxLoader(name) {
 			$('#vboxPane').css('display', 'none');
 
 		$(div).dialog({
-			'dialogClass': 'vboxLoaderDialog',
+			'classes': {
+				'ui-dialog': 'vboxLoaderDialog',
+			},
 			'width': 'auto',
 			'height': 65,
 			'modal': true,
