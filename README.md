@@ -8,7 +8,7 @@ he is a member of the github project, I hope he will continue to contribute.
 
 ## Roadmap
 
-- [ ] Use Guacamole instead of Flash RDP client
+- [ ] ~~Use Guacamole instead of Flash RDP client~~ Not possible without some gateway server
 - [ ] Ensure feature parity with VirtualBox 7.1 minus Oracle Cloud features
 - [ ] PHP 8.4 compatibility
 - [ ] jQuery and jQuery UI updates
