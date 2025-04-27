@@ -27,7 +27,6 @@ INSTALL_EXTPACK=${INSTALL_EXTPACK:=false}
 PHPVBOX_INSTALL_DIR=${PHPVBOX_INSTALL_DIR:='/usr/share/phpvirtualbox'}
 PHPVBOX_VERSION=${PHPVBOX_VERSION:='latest'}
 APT=${APT:='apt-get -y'}
-APT_KEY=${APT_KEY:='apt-key'}
 ACCEPT_ORACLE_EXTPACK_LICENSE=${ACCEPT_ORACLE_EXTPACK_LICENSE:='n'}
 VBOX_USER=${VBOX_USER:='vbox'}
 VBOX_GROUP=${VBOX_GROUP:='vboxusers'}
@@ -97,6 +96,12 @@ if [ "$EUID" -ne 0 ]; then
 fi
 
 ########################
+## INSTALL PREREQUISITES
+########################
+
+${APT} install curl lsb-release
+
+########################
 ## INSTALL VIRTUALBOX ##
 ########################
 
@@ -109,7 +114,7 @@ if [ "${INSTALL_VBOX}" = true ]; then
     fi
     if [ "${PHPVBOX_VERSION}" == "development" ]; then
 
-        VIRTUALBOX_VERSION=$(wget -O- https://raw.githubusercontent.com/phpvirtualbox/phpvirtualbox/develop/endpoints/lib/config.php | grep "define('PHPVBOX_VER'" | sed -n "s/^.*\([0-9]\+\.[0-9]\+\).*$/\1/p")
+        VIRTUALBOX_VERSION=$(curl -s https://raw.githubusercontent.com/phpvirtualbox/phpvirtualbox/develop/endpoints/lib/config.php | grep "define('PHPVBOX_VER'" | sed -n "s/^.*\([0-9]\+\.[0-9]\+\).*$/\1/p")
     else
         VIRTUALBOX_VERSION=`echo "$PHPVBOX_VERSION" | sed -n "s/^\([0-9]\+\.[0-9]\+\).*$/\1/p"`
     fi
@@ -129,15 +134,15 @@ EOT
 	set -o pipefail
 
 	echo ">>>> Importing Oracle Virtualbox Debian Repository key <<<<"
-	wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | ${APT_KEY} add -
+	curl -s https://www.virtualbox.org/download/oracle_vbox_2016.asc -o /etc/apt/trusted.gpg.d/oracle_vbox_2016.asc
 
 	echo ">>>> Adding Oracle Virtualbox Debian Repository <<<<"
 	echo -e "## Virtualbox\ndeb [arch=amd64] http://download.virtualbox.org/virtualbox/debian $(lsb_release -cs) contrib" | tee /etc/apt/sources.list.d/virtualbox.list >/dev/null
 
 	echo ">>>> Updating Oracle Virtualbox Debian Repository index <<<<"
 	${APT} update
-	echo ">>>> Installing build-essential pwgen and curl <<<<"
-	${APT} install build-essential pwgen curl
+	echo ">>>> Installing build-essential and pwgen  <<<<"
+	${APT} install build-essential pwgen
 
 	echo ">>>> Stop vbox services <<<<"
 	systemctl --no-pager stop vboxdrv.service vboxautostart-service.service vboxweb-service.service || true
@@ -175,8 +180,8 @@ EOT
 	if [ "${INSTALL_EXTPACK}" = true ]; then
 		echo ">>>> Installing latest VBox Extension Pack <<<<"
 		cd /tmp
-		version=$(wget -qO- https://download.virtualbox.org/virtualbox/LATEST.TXT)
-		wget -c "https://download.virtualbox.org/virtualbox/${version}/Oracle_VM_VirtualBox_Extension_Pack-${version}.vbox-extpack"
+		version=$(curl -s https://download.virtualbox.org/virtualbox/LATEST.TXT)
+		curl -s "https://download.virtualbox.org/virtualbox/${version}/Oracle_VM_VirtualBox_Extension_Pack-${version}.vbox-extpack"
 		echo ${ACCEPT_ORACLE_EXTPACK_LICENSE} | vboxmanage extpack install "Oracle_VM_VirtualBox_Extension_Pack-${version}.vbox-extpack"
 		rm "Oracle_VM_VirtualBox_Extension_Pack-${version}.vbox-extpack"
 		cd -
@@ -447,7 +452,7 @@ EOT
 		PHPVBOX_VERSION=$(echo $RELEASE_TAG_URL | awk -F/ '{print $8}')
 	    fi
 	    cd /tmp
-	    wget -c https://github.com/phpvirtualbox/phpvirtualbox/archive/${PHPVBOX_VERSION}.tar.gz
+	    curl -c https://github.com/phpvirtualbox/phpvirtualbox/archive/${PHPVBOX_VERSION}.tar.gz -o ${PHPVBOX_VERSION}.tar.gz
 	    mkdir -p "${PHPVBOX_INSTALL_DIR}"
 	    chgrp ${VBOX_GROUP} "${PHPVBOX_INSTALL_DIR}"
 	    cd "${PHPVBOX_INSTALL_DIR}"

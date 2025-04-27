@@ -9,6 +9,8 @@ AD Auth broken in PHP 8
 
 Fixed MySQL Auth library
 
+Updated install script
+
 -------------------------------------
 	7.1-1	2025-04-24
 -------------------------------------
