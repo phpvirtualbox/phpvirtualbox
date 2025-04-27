@@ -348,7 +348,7 @@ function vboxSettingsSFEditDialog() {
 		$('<tr />').append($('<th />')).append($('<td />').html('<label><input type="checkbox" class="vboxCheckbox" id="vboxSettingsSFPerm" /> ' + trans('Make Permanent','UIMachineSettingsSFDetails')+'</label>')).appendTo(tbl);
 	}
 	
-	$(d).append(tbl).dialog({'width':800,'modal':true,'autoOpen':false,'classes':{'ui-dialog':'vboxDialogContent vboxNonTabbed'},'title':'<img src="images/vbox/sf_16px.png" class="vboxDialogTitleIcon" /> '+trans('Edit Share','UIMachineSettingsSFDetails')});
+	$(d).append(tbl).dialog({'width':800,'modal':true,'autoOpen':false,'dialogClass':'vboxDialogContent vboxNonTabbed','title':'<img src="images/vbox/sf_16px.png" class="vboxDialogTitleIcon" /> '+trans('Edit Share','UIMachineSettingsSFDetails')});
 	
 	return $('#vboxSettingsSFEdit');
 }

@@ -448,7 +448,7 @@ buttons[trans('OK','QIMessageBox')] = function(){
 	$(this).dialog("close");
 };
 buttons[trans('Cancel','QIMessageBox')] = function(){$(this).dialog("close");};
-$('#vboxSettingsGlobalNetEditDialog').dialog({'buttons':buttons,'width':500,'modal':true,'autoOpen':false,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="images/vbox/nw_16px.png" class="vboxDialogTitleIcon" /> ' +trans('Host-only Network Details','UIGlobalSettingsNetworkDetails')});
+$('#vboxSettingsGlobalNetEditDialog').dialog({'buttons':buttons,'width':500,'modal':true,'autoOpen':false,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/nw_16px.png" class="vboxDialogTitleIcon" /> ' +trans('Host-only Network Details','UIGlobalSettingsNetworkDetails')});
 
 
 function vboxSettingsGlobalNetEditDialog() {
@@ -519,7 +519,7 @@ buttons[trans('OK','QIMessageBox')] = function(){
 	$(this).dialog("close");
 };
 buttons[trans('Cancel','QIMessageBox')] = function(){$(this).dialog("close");};
-$('#vboxSettingsGlobalNATNetworkEditDialog').dialog({'buttons':buttons,'width':500,'modal':true,'autoOpen':false,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="images/vbox/nw_16px.png" class="vboxDialogTitleIcon" /> ' +trans('Host-only Network Details','UIGlobalSettingsNetworkDetails')});
+$('#vboxSettingsGlobalNATNetworkEditDialog').dialog({'buttons':buttons,'width':500,'modal':true,'autoOpen':false,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/nw_16px.png" class="vboxDialogTitleIcon" /> ' +trans('Host-only Network Details','UIGlobalSettingsNetworkDetails')});
 $('#vboxSettingsGlobalNATNetIPv6').on('enable',function() {
 	if(this.checked) {
 		$('#vboxSettingsGlobalNATNetIPv6Route').prop('disabled', false).siblings().removeClass('vboxDisabled');	
@@ -615,7 +615,7 @@ function vboxSettingsGlobalNetworkNatPortForwardingDialog(net, row) {
 		
 		$('#vboxSettingsGlobalNetworkNatPortForwardingDialog').tabs();
 		
-		$('#vboxSettingsGlobalNetworkNatPortForwardingDialog').dialog({'closeOnEscape':true,'width':840,'height':400,'buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="images/vbox/nw_16px.png" class="vboxDialogTitleIcon" /> ' + trans('Port Forwarding Rules','UIMachineSettingsPortForwardingDlg')}).on("dialogbeforeclose",function(){
+		$('#vboxSettingsGlobalNetworkNatPortForwardingDialog').dialog({'closeOnEscape':true,'width':840,'height':400,'buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/nw_16px.png" class="vboxDialogTitleIcon" /> ' + trans('Port Forwarding Rules','UIMachineSettingsPortForwardingDlg')}).on("dialogbeforeclose",function(){
 	    	$(this).parent().find('span:contains("'+trans('Cancel','QIMessageBox')+'")').trigger('click');
 	    });
 		

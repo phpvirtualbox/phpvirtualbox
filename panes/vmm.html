@@ -365,7 +365,7 @@ var vmmButtons = new Array(
 			var l = new vboxLoader();
 			l.addFileToDOM("panes/vmmISCSI.html",$(d));
 			l.onLoad = function() {
-		    	$(d).dialog({'width':400,'height':350,'buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent'},'title':trans('Add iSCSI')});
+		    	$(d).dialog({'width':400,'height':350,'buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':trans('Add iSCSI')});
 			};
 			l.run();
 					
@@ -468,7 +468,7 @@ var vmmButtons = new Array(
 				
 				msg = msg.replace('%1',med.location).replace('%2',trans('OK','QIMessageBox')).replace('%3',trans('Cancel','QIMessageBox'));
 				
-				$(d).dialog({'width':400,'height':370,'buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="images/vbox/diskimage_16px.png" /> '+title});
+				$(d).dialog({'width':400,'height':370,'buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/diskimage_16px.png" /> '+title});
 				
 				// Translations
 				$('#vboxVMMModifyInstructions').html(msg);
