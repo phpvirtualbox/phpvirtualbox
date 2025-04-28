@@ -45,12 +45,11 @@ possession.
 
 # Requirements
 
-- PHP
-    - ``8.2.X``
+- PHP 8.X - **Older versions are not considered.**
 
 - Webserver (eg. Apache HTTPD, nginx)
 
-**Older versions are not considered.**
+- VirtualBox 7.1.x
 
 # Installation from ZIP file
 
