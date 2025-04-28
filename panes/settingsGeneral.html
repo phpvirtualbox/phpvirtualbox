@@ -19,19 +19,25 @@
 <table class='vboxVertical'>
 	<tr>
 		<th><span class='translateos'>Name:</span></th>
-		<td colspan='2'><input type='text' class='vboxText' name='vboxSettingsGeneralName' /></td>
+		<td colspan='2'><input type='text' class='vboxText' id='vboxSettingsGeneralName' name='vboxSettingsGeneralName' /></td>
 	</tr>
 	<tr>
 		<th><span class='translateos'>Type:</span></th>
 		<td><select name='vboxSettingsGeneralOSFamily' id='vboxSettingsGeneralOSFamily' >
 			<option value='Linux'>Linux</option>
 		</select></td>
-		<td rowspan='2'><img name='vboxOSTypeImg' height='32' width='32' /></td>
+		<td rowspan='3'><img id='vboxOSTypeImg' name='vboxOSTypeImg' height='32' width='32' /></td>
+	</tr>
+	<tr>
+		<th><span id="vboxSettingsGeneralSubtypeLabel" class='translateos'>Subtype:</span></th>
+		<td><select id='vboxSettingsGeneralSubtype' name='vboxSettingsGeneralSubtype'>
+			<option value='Debian'>Debian</option>
+		</select></td>
 	</tr>
 	<tr>
 		<th><span class='translateos'>Version:</span></th>
 		<td><select id='vboxSettingsGeneralOSType' name='vboxSettingsGeneralOSType'>
-			<option value='Debian'>Debian</option>
+			<option value='Bookworm'>Bookworm</option>
 		</select></td>
 	</tr>
 	<tr id='vboxSettingsRowVMIcon' class='vboxRunningEnabled' style='display:none'>
@@ -101,17 +107,17 @@
 </div>
 
 <!-- Encryption Tab -->
-<div id='vboxSettingsTabGeneralEncryption' title='Encryption'>
+<div id='vboxSettingsTabGeneralEncryption' title='Disk Encryption'>
 <table class='vboxVertical'>
     <tr>
         <td colspan='2'>
             <label><input type='checkbox' class='vboxCheckbox vboxEnablerCheckbox' name='vboxSettingsGeneralEncryptionEnable' />
-                <span class='translate'>Enable Encryption</span>
+                <span class='translate'>Enable Disk Encryption</span>
                 </label>
         </td>
     </tr>
     <tr>
-        <th><span class='translate'>Encryption Cipher:</span></th>
+        <th><span class='translate'>Disk Encryption Cipher:</span></th>
         <td>
             <select name='vboxSettingsTabGeneralEncryptionCipher'>
                 <option value=''>Leave Unchanged</option>
@@ -187,16 +193,12 @@ function vboxSnapshotBrowseFolder(btn) {
  * Hide start / stop config if not enabled
  */
 if(!$('#vboxPane').data('vboxConfig').startStopConfig) {
-	
 	$('#vboxSettingsTabGeneralBasic').find('tr.vboxStartStopConfig').hide();
-	
 }
 
 /* Custom icons */
 if($('#vboxPane').data('vboxConfig').enableCustomIcons) {
-	
 	$('#vboxSettingsRowVMIcon').css('display','');
-	
 	$(document.forms['frmVboxSettings'].vboxSettingsGeneralIcon).blur(function(){
 		$('#vboxSettingsGeneralIconImg').attr('src',(this.value ? this.value : 'images/vbox/blank.gif'));
 	});
@@ -206,13 +208,28 @@ if($('#vboxPane').data('vboxConfig').enableCustomIcons) {
  * Called when OS family type changes
  */
 function vboxSettingsUpdateOSList(osfam) {
-	document.forms['frmVboxSettings'].vboxSettingsGeneralOSType.options.length = 0;
-	$(document.forms['frmVboxSettings'].vboxSettingsGeneralOSType).children().remove();
-	for(var i = 0; i < vboxSettingsOSTypes[osfam].osTypes.length; i++) {
-		document.forms['frmVboxSettings'].vboxSettingsGeneralOSType.options[i] = new Option(vboxSettingsOSTypes[osfam].osTypes[i].description, vboxSettingsOSTypes[osfam].osTypes[i].id);
+	$("#vboxSettingsGeneralOSType").empty();
+	$("#vboxSettingsGeneralSubtype").empty();
+
+	const subTypes = {};
+	for(const osType of vboxSettingsOSTypes[osfam].osTypes) {
+		$("#vboxSettingsGeneralOSType").append($('<option />', {text: osType.description, value:osType.id}));
+		if(osType.subtype) {
+			if(!subTypes[osType.subtype]) {
+				subTypes[osType.subtype] = {};
+				$(vboxSettingsGeneralSubtype).append($('<option />', {text:osType.subtype, value:osType.subtype}));
+			}
+		}
 	}
+	// Update subtypes
+	$("#vboxSettingsGeneralSubtypeLabel").toggleClass('disabled', $("#vboxSettingsGeneralSubtype").children().length == 0);
+	$("#vboxSettingsGeneralSubtype").prop('disabled', $("#vboxSettingsGeneralSubtype").children().length == 0);
+
 	// Update image
-	document.images["vboxOSTypeImg"].src = "images/vbox/" + vboxGuestOSTypeIcon(vboxSettingsOSTypes[osfam].osTypes[0].id);
+	$("#vboxOSTypeImg").prop('src', "images/vbox/" + vboxGuestOSTypeIcon(vboxSettingsOSTypes[osfam].osTypes[0].id));
+	if(vboxSettingsOSTypes[osfam].osTypes[0].subtype) {
+		$("#vboxSettingsGeneralSubtype").val(vboxSettingsOSTypes[osfam].osTypes[0].subtype).change();
+	}
 }
 
 var vboxSettingsOSTypes = new Array();
@@ -243,7 +260,7 @@ for(var i in vboxOSTypes) {
 		vboxDefaultOSTypeId = vboxSettingsOSTypes[vboxOSTypes[i].familyId].osTypes.length;
 	}
 
-	vboxSettingsOSTypes[vboxOSTypes[i].familyId].osTypes[vboxSettingsOSTypes[vboxOSTypes[i].familyId].osTypes.length] = {'id':vboxOSTypes[i].id,'description':vboxOSTypes[i].description };
+	vboxSettingsOSTypes[vboxOSTypes[i].familyId].osTypes.push({'id':vboxOSTypes[i].id,'description':vboxOSTypes[i].description,'subtype':vboxOSTypes[i].subtype});
 
 	vboxSettingsOSTypesObj[vboxOSTypes[i].id] = vboxOSTypes[i];
 	
@@ -253,29 +270,29 @@ for(var i in vboxOSTypes) {
 
 }
 // clear all options
-document.forms['frmVboxSettings'].vboxSettingsGeneralOSFamily.options.length = 0;
-$(document.forms['frmVboxSettings'].vboxSettingsGeneralOSFamily).children().remove();
+$(document.forms['frmVboxSettings'].vboxSettingsGeneralOSFamily).empty();
 for(var i in vboxSettingsOSTypes) {
 	// default os type family? record in dosfam
 	if(i == dosfam) dosfam = document.forms['frmVboxSettings'].vboxSettingsGeneralOSFamily.options.length;
 	document.forms['frmVboxSettings'].vboxSettingsGeneralOSFamily.options[document.forms['frmVboxSettings'].vboxSettingsGeneralOSFamily.options.length] = new Option(vboxSettingsOSTypes[i].description, vboxSettingsOSTypes[i].id);
 }
 // OnChange, update os type list and icon
-document.getElementById('vboxSettingsGeneralOSFamily').setAttribute('onChange','vboxSettingsUpdateOSList(this.value)');
-document.getElementById('vboxSettingsGeneralOSType').setAttribute('onChange','document.images["vboxOSTypeImg"].src = "images/vbox/" + vboxGuestOSTypeIcon(this.value)');
-
+$('#vboxSettingsGeneralOSFamily').on('change',(e) => vboxSettingsUpdateOSList(e.target.value));
+$('#vboxSettingsGeneralOSType').on('change',(e) => $("#vboxOSTypeImg").prop("src", "images/vbox/" + vboxGuestOSTypeIcon(e.target.value)));
+$('#vboxSettingsGeneralSubtype').on('change', (e) => {
+	if(!e.target.value) return;
+	$('#vboxSettingsGeneralOSType').empty();
+	for(const osType of vboxSettingsOSTypes[$('#vboxSettingsGeneralOSFamily').val()].osTypes) {
+		if(osType.subtype != e.target.value) continue;
+		$('#vboxSettingsGeneralOSType').append($('<option />', {value:osType.id, text:osType.description}));
+	}
+});
 
 
 
 /* Update settings when data is loaded */
 $('#vboxSettingsDialog').on('dataLoaded', function(){
 	
-	/* Defaults from machine */
-	document.forms['frmVboxSettings'].vboxSettingsGeneralName.value = $('#vboxSettingsDialog').data('vboxMachineData').name;
-	document.forms['frmVboxSettings'].vboxSettingsGeneralOSFamily.value = vboxSettingsOSTypesObj[$('#vboxSettingsDialog').data('vboxMachineData').OSTypeId].familyId;
-	$(document.forms['frmVboxSettings'].vboxSettingsGeneralOSFamily).change();
-	document.forms['frmVboxSettings'].vboxSettingsGeneralOSType.value = $('#vboxSettingsDialog').data('vboxMachineData').OSTypeId;
-	$(document.forms['frmVboxSettings'].vboxSettingsGeneralOSType).change();
 	document.forms['frmVboxSettings'].vboxSettingsGeneralSnapshotFolder.value = $('#vboxSettingsDialog').data('vboxMachineData').snapshotFolder;
 	document.forms['frmVboxSettings'].vboxSettingsGeneralDescription.innerHTML = $('#vboxSettingsDialog').data('vboxMachineData').description;
 
@@ -284,21 +301,7 @@ $('#vboxSettingsDialog').on('dataLoaded', function(){
 	$(document.forms['frmVboxSettings'].vboxSettingsTabGeneralInputMouse).val($('#vboxSettingsDialog').data('vboxMachineData').pointingHIDType);
 	$(document.forms['frmVboxSettings'].vboxSettingsClipboardMode).val($('#vboxSettingsDialog').data('vboxMachineData').ClipboardMode);
 	
-	/* OS Type */
 	
-	// shorthand
-	var vboxOSTypes = $('#vboxPane').data('vboxOSTypes');
-	for(var i = 0; i < vboxOSTypes.length; i++) {
-		if(vboxOSTypes[i].id == $('#vboxSettingsDialog').data('vboxMachineData').OSTypeId) {
-			// Set the family then os type
-			$(document.forms['frmVboxSettings'].vboxSettingsGeneralOSFamily).children('[value="'+vboxOSTypes[i].familyId+'"]').prop('selected',true);
-			$(document.forms['frmVboxSettings'].vboxSettingsGeneralOSFamily).trigger('change');
-			$(document.forms['frmVboxSettings'].vboxSettingsGeneralOSType).children('[value="'+vboxOSTypes[i].id+'"]').prop('selected',true);
-			$(document.forms['frmVboxSettings'].vboxSettingsGeneralOSType).trigger('change');
-			break;		
-		}	
-	}
-
 	/* Custom icons */
 	if($('#vboxPane').data('vboxConfig').enableCustomIcons) {
 		
@@ -337,42 +340,51 @@ $('#vboxSettingsDialog').on('dataLoaded', function(){
 		$(document.images["vboxOSTypeImg"]).removeClass('vboxDisabled');
 	}
 
+	/* OS Type */
+	$("#vboxSettingsGeneralName").val($('#vboxSettingsDialog').data('vboxMachineData').name);
+	$("#vboxSettingsGeneralOSFamily").val(vboxSettingsOSTypesObj[$('#vboxSettingsDialog').data('vboxMachineData').OSTypeId].familyId).change();
+	if(vboxSettingsOSTypesObj[$('#vboxSettingsDialog').data('vboxMachineData').OSTypeId].subtype) {
+		$("#vboxSettingsGeneralSubtype").val(vboxSettingsOSTypesObj[$('#vboxSettingsDialog').data('vboxMachineData').OSTypeId].subtype).change();
+	}
+	$("#vboxSettingsGeneralOSType").val($('#vboxSettingsDialog').data('vboxMachineData').OSTypeId).change();
+
+
+	/* Encrypted media */
 	/*
      * This is a poor way to determine extpack installation status, but the web service can't access IExtPackManager :(
      */
-    if(!($('#vboxSettingsDialog').data('vboxMachineData').VRDEServer && $('#vboxSettingsDialog').data('vboxMachineData').VRDEServer.VRDEExtPack)) {
+	 if(!($('#vboxSettingsDialog').data('vboxMachineData').VRDEServer && $('#vboxSettingsDialog').data('vboxMachineData').VRDEServer.VRDEExtPack)) {
         $('#vboxSettingsTabGeneralEncryption').parent().tabs('disable', 3);
     } else {
         $('#vboxSettingsTabGeneralEncryption').parent().tabs('enable', 3);
 
-    	// Encrypted media
-    	var encIds = vboxMedia.getEncryptedMediaIds(
-            vboxStorage.getAttachedBaseMedia($('#vboxSettingsDialog').data('vboxMachineData'))
-    	);
-    	
-    	var lastCipher = null;
-        var uniqueCiphers = true;
-        for(var i = 0; i < encIds.length; i++) {
-            if(lastCipher && (lastCipher != encIds[i].cipher)) {
-                uniqueCiphers = false;
-                break;
-            }
-            lastCipher = encIds[i].cipher;
-        }
-        $(document.forms['frmVboxSettings'].vboxSettingsGeneralEncryptionEnable).prop('checked', (encIds.length))
-            .triggerHandler('click');
-    
-        if(uniqueCiphers) {
-            $(document.forms['frmVboxSettings'].vboxSettingsTabGeneralEncryptionCipher).val(lastCipher);
-        }
-        
-        $('#vboxSettingsDialog').data('vboxEncSettings', {
-            enabled: $(document.forms['frmVboxSettings'].vboxSettingsGeneralEncryptionEnable).prop('checked'),
-            uniqueCiphers: $(document.forms['frmVboxSettings'].vboxSettingsTabGeneralEncryptionCipher).val()
-        });
-    }
+		var encIds = vboxMedia.getEncryptedMediaIds(
+			vboxStorage.getAttachedBaseMedia($('#vboxSettingsDialog').data('vboxMachineData'))
+		);
+		
+		var lastCipher = null;
+		var uniqueCiphers = true;
+		for(var i = 0; i < encIds.length; i++) {
+			if(lastCipher && (lastCipher != encIds[i].cipher)) {
+				uniqueCiphers = false;
+				break;
+			}
+			lastCipher = encIds[i].cipher;
+		}
+		$(document.forms['frmVboxSettings'].vboxSettingsGeneralEncryptionEnable).prop('checked', (encIds.length))
+			.triggerHandler('click');
 
-    
+		if(uniqueCiphers) {
+			$(document.forms['frmVboxSettings'].vboxSettingsTabGeneralEncryptionCipher).val(lastCipher);
+		}
+		
+		$('#vboxSettingsDialog').data('vboxEncSettings', {
+			enabled: $(document.forms['frmVboxSettings'].vboxSettingsGeneralEncryptionEnable).prop('checked'),
+			uniqueCiphers: $(document.forms['frmVboxSettings'].vboxSettingsTabGeneralEncryptionCipher).val()
+		});
+
+	}
+
 /* Change general settings onSave() */
 }).on('save',function(){
 

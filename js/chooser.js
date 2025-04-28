@@ -1787,7 +1787,7 @@ var vboxChooser = {
 		} else {
 			
 			// Hold history
-			vboxChooser._showOnlyGroupHistory[vboxChooser._showOnlyGroupHistory.length] = gelm;			
+			vboxChooser._showOnlyGroupHistory.push(gelm);			
 		}
 		
 		

@@ -1669,7 +1669,7 @@ function vboxSettingsDialog(title,panes,data,pane,icon,langContext,presave) {
 				text: trans('Cancel','QIMessageBox'),
 				click: function() {
 					results.reject();
-					$(this).trigger('close').empty().remove();
+					$('#vboxSettingsDialog').trigger('close').empty().remove();
 					$(document).trigger('click');
 				}
 			}
@@ -1680,8 +1680,10 @@ function vboxSettingsDialog(title,panes,data,pane,icon,langContext,presave) {
 		$('#vboxSettingsDialog').data('formDataChanged', false);
 		
 		// Show dialog
-	    $('#vboxSettingsDialog').dialog({'closeOnEscape':true,'width':(panes.length > 1 ? 900 : 600),'height':(panes.length > 1 ? 500 : 450),'buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxSettingsDialog vboxDialogContent'},'title':(icon ? '<img src="images/vbox/'+icon+'_16px.png" class="vboxDialogTitleIcon" /> ' : '') + title}).on("dialogbeforeclose",function(){
-	    	$(this).parent().find('span:contains("'+trans('Cancel','QIMessageBox')+'")').trigger('click');
+	    $('#vboxSettingsDialog').dialog({'closeOnEscape':true,'width':(panes.length > 1 ? 900 : 600),'height':(panes.length > 1 ? 500 : 450),'buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxSettingsDialog vboxDialogContent'},'title':(icon ? '<img src="images/vbox/'+icon+'_16px.png" class="vboxDialogTitleIcon" /> ' : '') + title}).on("dialogbeforeclose",(e)=>{
+			e.preventDefault();
+			buttons[1].click();
+			return false;
 	    });
 
 	    // Resize pane
