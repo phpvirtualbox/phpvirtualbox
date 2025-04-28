@@ -15,6 +15,14 @@ Updated to jQuery 3.7.1 and jQuery-UI 1.14.1
 
 PHP 8.4 compatibility
 
+Added Subtype OS filter in VM settings.
+
+Updated Encryption settings tab to match Disk Encryption wording
+in VirtualBox 7.1.
+
+Fixed bug when pressing escape to close dialog that would cause 
+subsequent dialogs to malfunction until the page was reloaded.
+
 -------------------------------------
 	7.1-1	2025-04-24
 -------------------------------------
