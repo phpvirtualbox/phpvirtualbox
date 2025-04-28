@@ -11,6 +11,10 @@ Fixed MySQL Auth library
 
 Updated install script
 
+Updated to jQuery 3.7.1 and jQuery-UI 1.14.1
+
+PHP 8.4 compatibility
+
 -------------------------------------
 	7.1-1	2025-04-24
 -------------------------------------

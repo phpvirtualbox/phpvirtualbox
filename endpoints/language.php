@@ -8,7 +8,7 @@
  */
 
 
-error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
+@error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT);
 
 require_once(dirname(__FILE__).'/lib/language.php');
 
