@@ -1875,6 +1875,11 @@ class vboxconnector {
 			$m->Platform->X86->setCPUProperty('LongMode', ($guestOS->is64Bit ? 1 : 0));
 		}
 
+		/* secureBootEnabled reported incorrectly by vboxwebsrv
+		$oldFirmware = (string)$m->FirmwareSettings->firmwareType;
+		$oldSecureBoot = ($oldFirmware != 'BIOS' && $m->nonVolatileStore->uefiVariableStore != null ? $m->nonVolatileStore->uefiVariableStore->secureBootEnabled : false);
+		*/
+	
 		$m->CPUCount = $args['CPUCount'];
 		$m->memorySize = $args['memorySize'];
 		$m->FirmwareSettings->setFirmwareType($args['firmwareType']);
@@ -1884,6 +1889,18 @@ class vboxconnector {
 		$m->Platform->X86->setCpuProperty('PAE', ($args['CpuProperties']['PAE'] ? 1 : 0));
 		$m->Platform->X86->setCpuProperty('HWVirt', ($args['CpuProperties']['HWVirt'] ? 1 : 0));
 		$m->Platform->X86->setCPUProperty('LongMode', (strpos($args['OSTypeId'],'_64') > - 1 ? 1 : 0));
+		$m->trustedPlatformModule->type = $args['trustedPlatformModule']['type'];
+
+		/* secureBootEnabled reported incorrectly by vboxwebsrv
+		if($oldFirmware == 'BIOS' && $args['firmwareType'] == 'EFI') {
+			$m->nonVolatileStore->initUefiVariableStore(0);
+			$m->nonVolatileStore->uefiVariableStore->enrollOraclePlatformKey();
+			$m->nonVolatileStore->uefiVariableStore->enrollDefaultMsSignatures();
+		}
+		if($args['firmwareType'] != 'BIOS' && $oldSecureBoot != (bool)$args['secureBootEnabled']) {
+			$m->nonVolatileStore->uefiVariableStore->secureBootEnabled = (bool)$args['secureBootEnabled'];
+		}
+		*/
 
 		// IOAPIC
 		$m->FirmwareSettings->IOAPICEnabled = ($args['BIOSSettings']['IOAPICEnabled'] ? 1 : 0);
@@ -1969,7 +1986,7 @@ class vboxconnector {
 		$m->audioSettings->Adapter->audioDriver = $args['audioAdapter']['audioDriver'];
 
 		// Boot order
-		$mbp = $this->vbox->getPlatformProperties("x86")->maxBootPosition;
+		$mbp = $this->vbox->systemProperties->platform->maxBootPosition;
 		for($i = 0; $i < $mbp; $i ++) {
 			if($args['bootOrder'][$i]) {
 				$m->setBootOrder(($i + 1),$args['bootOrder'][$i]);
@@ -4268,6 +4285,10 @@ class vboxconnector {
 				'IOAPICEnabled' => $m->FirmwareSettings->IOAPICEnabled,
 				'timeOffset' => $m->FirmwareSettings->timeOffset
 			),
+			'trustedPlatformModule' => array(
+				'type' => (string)$m->trustedPlatformModule->type
+			),
+			'secureBootEnabled' => (((string)$m->FirmwareSettings->firmwareType != 'BIOS' && $m->nonVolatileStore->uefiVariableStore != null) ? (bool)$m->nonVolatileStore->uefiVariableStore->secureBootEnabled : false),
 			'firmwareType' => (string)$m->FirmwareSettings->firmwareType,
 			'snapshotFolder' => $m->snapshotFolder,
 			'ClipboardMode' => (string)$m->ClipboardMode,
@@ -4321,7 +4342,7 @@ class vboxconnector {
 	 */
 	private function _machineGetBootOrder(&$m) {
 		$return = array();
-		$mbp = $this->vbox->getPlatformProperties("x86")->maxBootPosition;
+		$mbp = $this->vbox->systemProperties->platform->maxBootPosition;
 		for($i = 0; $i < $mbp; $i ++) {
 			if(($b = (string)$m->getBootOrder($i + 1)) == 'Null') continue;
 			$return[] = $b;
@@ -4337,7 +4358,7 @@ class vboxconnector {
 	 */
 	private function _machineGetSerialPorts(&$m) {
 		$ports = array();
-		$max = $this->vbox->getPlatformProperties("x86")->serialPortCount;
+		$max = $this->vbox->systemProperties->platform->serialPortCount;
 		for($i = 0; $i < $max; $i++) {
 			try {
 				/* @var $p ISerialPort */
@@ -4369,7 +4390,7 @@ class vboxconnector {
 	private function _machineGetParallelPorts(&$m) {
 		if(!@$this->settings->enableLPTConfig) return array();
 		$ports = array();
-		$max = $this->vbox->getPlatformProperties("x86")->parallelPortCount;
+		$max = $this->vbox->systemProperties->platform->parallelPortCount;
 		for($i = 0; $i < $max; $i++) {
 			try {
 				/* @var $p IParallelPort */
@@ -5609,17 +5630,12 @@ class vboxconnector {
 
 		$scs = array();
 
-		$scts = array('LsiLogic',
-			'BusLogic',
-			'IntelAhci',
-			'PIIX4',
-			'ICH6',
-			'I82078',
-			'USB',
-			'NVMe');
+		$scts = array_map(
+			function($sc) { return (string)$sc; }, iterator_to_array($sp->platform->supportedStorageControllerTypes)
+		);
 
 		foreach($scts as $t) {
-		    $scs[$t] = $this->vbox->getPlatformProperties("x86")->getStorageControllerHotplugCapable($t);
+		    $scs[$t] = $this->vbox->systemProperties->platform->getStorageControllerHotplugCapable($t);
 		}
 
 		return array(
@@ -5632,17 +5648,62 @@ class vboxconnector {
 			'autostartDatabasePath' => (@$this->settings->vboxAutostartConfig ? $sp->autostartDatabasePath : ''),
 			'infoVDSize' => (string)$sp->infoVDSize,
 			'networkAdapterCount' => 8, // static value for now
-			'maxBootPosition' => (string)$this->vbox->getPlatformProperties("x86")->maxBootPosition,
 			'defaultMachineFolder' => (string)$sp->defaultMachineFolder,
 			'defaultHardDiskFormat' => (string)$sp->defaultHardDiskFormat,
 			'homeFolder' => $this->vbox->homeFolder,
 			'VRDEAuthLibrary' => (string)$sp->VRDEAuthLibrary,
 			'defaultAudioDriver' => (string)$sp->defaultAudioDriver,
-			'defaultVRDEExtPack' => $sp->defaultVRDEExtPack,
-			'serialPortCount' => $this->vbox->getPlatformProperties("x86")->serialPortCount,
-			'parallelPortCount' => $this->vbox->getPlatformProperties("x86")->parallelPortCount,
+			'defaultVRDEExtPack' => (string)$sp->defaultVRDEExtPack,
 			'mediumFormats' => $mediumFormats,
-			'scs' => $scs
+			'scs' => $scs,
+			'supportedPlatformArchitectures' => array_map(
+				function($arch) { return (string)$arch; }, iterator_to_array($sp->supportedPlatformArchitectures)
+			),
+			'platform' => array(
+				'maxBootPosition' => $sp->platform->maxBootPosition,
+				'serialPortCount' => $sp->platform->serialPortCount,
+				'parallelPortCount' => $sp->platform->parallelPortCount,
+				'supportedParavirtProviders' => array_map(
+					function($gfc) { return (string)$gfc; }, iterator_to_array($sp->platform->supportedParavirtProviders)
+				),
+				'supportedFirmwareTypes' => array_map(
+					function($gfc) { return (string)$gfc; }, iterator_to_array($sp->platform->supportedFirmwareTypes)
+				),
+				'supportedGuestOSTypes' => array_map(
+					function($os) { return $os->id; }, iterator_to_array($sp->platform->supportedGuestOSTypes)
+				),
+				'supportedGfxControllerTypes' => array_map(
+					function($gfc) { return (string)$gfc; }, iterator_to_array($sp->platform->supportedGfxControllerTypes)
+				),
+				'supportedNetworkAdapterTypes' => array_map(
+					function($n) { return (string)$n; }, iterator_to_array($sp->platform->supportedNetworkAdapterTypes)
+				),
+				'supportedUartTypes' => array_map(
+					function($u) { return (string)$u; }, iterator_to_array($sp->platform->supportedUartTypes)
+				),
+				'supportedUSBControllerTypes' => array_map(
+					function($u) { return (string)$u; }, iterator_to_array($sp->platform->supportedUSBControllerTypes)
+				),
+				'supportedAudioControllerTypes' => array_map(
+					function($a) { return (string)$a; }, iterator_to_array($sp->platform->supportedAudioControllerTypes)
+				),
+				'supportedBootDevices' => array_map(
+					function($b) { return (string)$b; }, iterator_to_array($sp->platform->supportedBootDevices)
+				),
+				'supportedStorageBuses' => array_map(
+					function($sb) { return (string)$sb; }, iterator_to_array($sp->platform->supportedStorageBuses)
+				),
+				'supportedStorageControllerTypes' => $scts,
+				'supportedChipsetTypes' => array_map(
+					function($ct) { return (string)$ct; }, iterator_to_array($sp->platform->supportedChipsetTypes)
+				),
+				'supportedIommuTypes' => array_map(
+					function($i) { return (string)$i; }, iterator_to_array($sp->platform->supportedIommuTypes)
+				),
+				'supportedTpmTypes' => array_map(
+					function($t) { return (string)$t; }, iterator_to_array($sp->platform->supportedTpmTypes)
+				)
+			)
 		);
 	}
 
