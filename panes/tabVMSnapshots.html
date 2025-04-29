@@ -197,8 +197,7 @@ var vboxSnapshotButtons = [
   			
   			$('#vboxSnapshotNewName').off('keypress').on('keypress',function(e) { if (e.keyCode == 13) OKBtn.apply($('#vboxSnapshotNew')); });
   			
-			$('#vboxSnapshotNew').dialog({'closeOnEscape':false,'width':'400px','height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/snapshot_take_16px.png" class="vboxDialogTitleIcon" height="16" width="16" /> ' + trans('Take Snapshot of Virtual Machine','UITakeSnapshotDialog')});
-  			
+  			$('#vboxSnapshotNew').dialog({'closeOnEscape':false,'width':'400px','height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="images/vbox/snapshot_take_16px.png" class="vboxDialogTitleIcon" height="16" width="16" /> ' + trans('Take Snapshot of Virtual Machine','UITakeSnapshotDialog')});  			
   	  	}
   	},
   	{
@@ -458,7 +457,7 @@ var vboxSnapshotButtons = [
 				buttons[trans('Cancel','QIMessageBox')] = function(){
 					$(this).dialog('close');
 				};
-				$('#vboxSnapshotDetails').dialog({'closeOnEscape':false,'width':'600px','height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/snapshot_show_details_16px.png" class="vboxDialogTitleIcon" /> '+trans('Details of %1 (%2)','UISnapshotDetailsWidget').replace('%1',$('<div />').text(snapshot.name).html()).replace('%2',vm.name)});
+				$('#vboxSnapshotDetails').dialog({'closeOnEscape':false,'width':'600px','height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="images/vbox/snapshot_show_details_16px.png" class="vboxDialogTitleIcon" /> '+trans('Details of %1 (%2)','UISnapshotDetailsWidget').replace('%1',$('<div />').text(snapshot.name).html()).replace('%2',vm.name)});
 			};
 			l.run();
   	  	}

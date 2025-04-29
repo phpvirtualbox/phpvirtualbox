@@ -249,8 +249,9 @@ function vboxGuestOSTypeIcon(osTypeId) {
 		case "Windows8_64":     strIcon = "os_win8_64.png"; break;
 		case "Windows81":       strIcon = "os_win81.png"; break;
 		case "Windows81_64":    strIcon = "os_win81_64.png"; break;
-		case "Windows10":       strIcon = "os_win10.png"; break
-		case "Windows10_64":    strIcon = "os_win10.png"; break
+		case "Windows10":       strIcon = "os_win10.png"; break;
+		case "Windows10_64":    strIcon = "os_win10_64.png"; break;
+		case "Windows11_64":    strIcon = "os_win11_64.png"; break;
 		case "WindowsNT":       strIcon = "os_win_other.png"; break;
 		case "WindowsNT_64":    strIcon = "os_win_other_64.png"; break; 
 		case "Windows2012_64":	strIcon = "os_win2k12_64.png"; break;
@@ -390,7 +391,7 @@ function vboxFileBrowser(root,fn,foldersonly,title,icon,strictFiles) {
     	buttons[trans('OK','QIMessageBox')](f);
     }).appendTo(d1);
 	
-    $(d1).dialog({'closeOnEscape':true,'width':400,'height':600,'buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="'+(icon ? icon : 'images/jqueryFileTree/'+(foldersonly ? 'folder_open' : 'file')+'.png') + '" class="vboxDialogTitleIcon" /> ' + (title ? title : trans((foldersonly ? 'Select Folder' : 'Select File')))}).on("dialogbeforeclose",function(){
+    $(d1).dialog({'closeOnEscape':true,'width':400,'height':600,'buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="'+(icon ? icon : 'images/jqueryFileTree/'+(foldersonly ? 'folder_open' : 'file')+'.png') + '" class="vboxDialogTitleIcon" /> ' + (title ? title : trans((foldersonly ? 'Select Folder' : 'Select File')))}).on("dialogbeforeclose",function(){
     	$(this).parent().find('span:contains("'+trans('Cancel','QIMessageBox')+'")').trigger('click');
     });			
 
@@ -495,7 +496,7 @@ function vboxAlert(e,xtraOpts) {
 	    acknowledged.resolve();
 	};
 
-	var dialogOpts = {'closeOnEscape':false,'width':600,'height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/OSE/about_16px.png" class="vboxDialogTitleIcon" /> phpVirtualBox'};
+	var dialogOpts = {'closeOnEscape':false,'width':600,'height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="images/vbox/OSE/about_16px.png" class="vboxDialogTitleIcon" /> phpVirtualBox'};
 
 	if(typeof xtraOpts == "object") {
 		for(var i in xtraOpts) {
@@ -525,7 +526,7 @@ function vboxConfirm(q,buttons,cancelText,onCancel) {
 	
 	buttons[cancelText] = function() { $(this).remove(); if(onCancel) { onCancel(); }};
 	
-    $(div).dialog({'closeOnEscape':false,'width':500,'height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/OSE/about_16px.png" class="vboxDialogTitleIcon" /> phpVirtualBox'});			
+    $(div).dialog({'closeOnEscape':false,'width':500,'height':'auto','buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="images/vbox/OSE/about_16px.png" class="vboxDialogTitleIcon" /> phpVirtualBox'});			
 	
     return $(div);
 }
@@ -1120,7 +1121,7 @@ function phpVirtualBoxFailure(msg) {
  * @param {Date} expire - when cookie should expire
  */
 function vboxSetCookie(k,v,expire) {
-	var exp = (v ? (expire ? expire : new Date(2020,12,24)) : new Date().setDate(new Date().getDate() - 1));
+	var exp = (v ? (expire ? expire : new Date(Date.now() + 7 * 1000 * 60 * 60 * 24)) : new Date().setDate(new Date().getDate() - 1));
 	document.cookie = k+"="+v+"; expires="+exp.toGMTString()+"; path=/";
 	$('#vboxPane').data('vboxCookies')[k] = v;
 }

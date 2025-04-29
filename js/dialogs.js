@@ -130,7 +130,7 @@ function vboxWizardImportApplianceDialog() {
 				$(this).empty().remove();
 			};
 			
-			var dlg = $('<div />').dialog({'closeOnEscape':false,'width':600,'height':500,'buttons':buttons,'modal':true,'autoOpen':false,'dialogClass':'vboxDialogContent vboxWizard','title':'<img src="images/vbox/os_type_16px.png" class="vboxDialogTitleIcon" /> ' + trans('Software License Agreement','UIImportLicenseViewer')});
+			var dlg = $('<div />').dialog({'closeOnEscape':false,'width':600,'height':500,'buttons':buttons,'modal':true,'autoOpen':false,'classes':{'ui-dialog':'vboxDialogContent vboxWizard'},'title':'<img src="images/vbox/os_type_16px.png" class="vboxDialogTitleIcon" /> ' + trans('Software License Agreement','UIImportLicenseViewer')});
 			
 			$(dlg).html('<p id="vboxImportWizLicTitle" /><textarea rows="20" spellcheck="false" wrap="off" readonly="true"id="vboxImportWizLicContent" style="width:100%; margin:2px; padding:2px;"></textarea>');
 			$('#vboxImportWizLicTitle').html(msg.replace('%1',licenses[a]['name']));
@@ -313,7 +313,7 @@ function vboxMediumEncryptionPasswordsDialog(context, encIds, validIds) {
             $(this).trigger('close').empty().remove();
         };
 
-        $('#vboxMediumEncryptionPasswords').dialog({'closeOnEscape':true,'width':600,'height':400,'buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/nw_16px.png" class="vboxDialogTitleIcon" /> ' + dialogTitle}).on("dialogbeforeclose",function(){
+        $('#vboxMediumEncryptionPasswords').dialog({'closeOnEscape':true,'width':600,'height':400,'buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="images/vbox/nw_16px.png" class="vboxDialogTitleIcon" /> ' + dialogTitle}).on("dialogbeforeclose",function(){
             $(this).parent().find('span:contains("'+trans('Cancel','QIMessageBox')+'")').trigger('click');
         });
 
@@ -369,7 +369,7 @@ function vboxPortForwardConfigDialog(rules) {
 			$(this).trigger('close').empty().remove();
 		};
 		
-		$('#vboxSettingsPortForwarding').dialog({'closeOnEscape':true,'width':600,'height':400,'buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/nw_16px.png" class="vboxDialogTitleIcon" /> ' + trans('Port Forwarding Rules','UIMachineSettingsPortForwardingDlg')}).on("dialogbeforeclose",function(){
+		$('#vboxSettingsPortForwarding').dialog({'closeOnEscape':true,'width':600,'height':400,'buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="images/vbox/nw_16px.png" class="vboxDialogTitleIcon" /> ' + trans('Port Forwarding Rules','UIMachineSettingsPortForwardingDlg')}).on("dialogbeforeclose",function(){
 	    	$(this).parent().find('span:contains("'+trans('Cancel','QIMessageBox')+'")').trigger('click');
 	    }).on('dialogresizestop',resizeTable);
 		
@@ -685,7 +685,7 @@ function vboxShowLogsDialogInit(vm) {
 			l.run();
 		};
 		buttons[trans('Close','UIVMLogViewer')] = function(){$(this).trigger('close').empty().remove();};
-		$('#vboxVMLogsDialog').dialog({'closeOnEscape':true,'width':800,'height':500,'buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/vm_show_logs_16px.png" class="vboxDialogTitleIcon" /> '+ trans('%1 - VirtualBox Log Viewer','UIVMLogViewer').replace('%1',vm.name)}).on("dialogbeforeclose",function(){
+		$('#vboxVMLogsDialog').dialog({'closeOnEscape':true,'width':800,'height':500,'buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="images/vbox/vm_show_logs_16px.png" class="vboxDialogTitleIcon" /> '+ trans('%1 - VirtualBox Log Viewer','UIVMLogViewer').replace('%1',vm.name)}).on("dialogbeforeclose",function(){
 	    	$(this).parent().find('span:contains("'+trans('Close','UIVMLogViewer')+'")').trigger('click');
 	    });
 		vboxShowLogsInit(vm);
@@ -740,7 +740,7 @@ function vboxVMMDialog(select,type,hideDiff,mPath) {
 			results.reject();
 		};
 
-		$("#vboxVMMDialog").dialog({'closeOnEscape':true,'width':800,'height':500,'buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent vboxVMMDialog','title':'<img src="images/vbox/diskimage_16px.png" class="vboxDialogTitleIcon" /> '+trans('Virtual Media Manager','UIMediumManager')}).on("dialogbeforeclose",function(){
+		$("#vboxVMMDialog").dialog({'closeOnEscape':true,'width':800,'height':500,'buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent vboxVMMDialog'},'title':'<img src="images/vbox/diskimage_16px.png" class="vboxDialogTitleIcon" /> '+trans('Virtual Media Manager','UIMediumManager')}).on("dialogbeforeclose",function(){
 	    	$(this).parent().find('span:contains("'+trans('Close','UIMessageCenter')+'")').trigger('click');
 	    });
 		
@@ -1051,7 +1051,7 @@ function vboxGuestNetworkAdaptersDialogInit(vm) {
 		
 		var buttons = {};
 		buttons[trans('Close','UIVMLogViewer')] = function() {$('#vboxGuestNetworkDialog').trigger('close').empty().remove();};
-		$('#vboxGuestNetworkDialog').dialog({'closeOnEscape':true,'width':500,'height':250,'buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent','title':'<img src="images/vbox/nw_16px.png" class="vboxDialogTitleIcon" /> ' + trans('Guest Network Adapters','VBoxGlobal')}).on("dialogbeforeclose",function(){
+		$('#vboxGuestNetworkDialog').dialog({'closeOnEscape':true,'width':500,'height':250,'buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="images/vbox/nw_16px.png" class="vboxDialogTitleIcon" /> ' + trans('Guest Network Adapters','VBoxGlobal')}).on("dialogbeforeclose",function(){
 	    	$(this).parent().find('span:contains("'+trans('Close','UIVMLogViewer')+'")').trigger('click');
 	    });
 		
@@ -1301,8 +1301,9 @@ function vboxVMsettingsDialog(vm,pane) {
 		 */
 		var presaveCallback = function() {
 		    
-		    if(!$('#vboxSettingsDialog').data('vboxEncSettingsChanged'))
-		        return true;
+			if(!$('#vboxSettingsDialog').data('vboxEncSettingsChanged')) {
+				return true;
+			}
 		    
 		    var encMediaSettings = $.Deferred();
 		    
@@ -1433,7 +1434,6 @@ function vboxVMsettingsDialog(vm,pane) {
 		
 			// Always run this
 			.always(function(){
-
 				// No longer watch for changed VM settings
 				$('#vboxPane').unbind('vboxEvents',machineSettingsChanged);
 
@@ -1441,7 +1441,6 @@ function vboxVMsettingsDialog(vm,pane) {
 		
 			// Run this when "Save" is clicked
 			.done(function() {
-			    
 				var loader = new vboxLoader();
 				var sdata = $.extend($('#vboxSettingsDialog').data('vboxMachineData'),{'clientConfig':$('#vboxPane').data('vboxConfig')});
 				loader.add('machineSave',function(){return;},sdata);
@@ -1645,36 +1644,46 @@ function vboxSettingsDialog(title,panes,data,pane,icon,langContext,presave) {
 		/* Tell dialog that data is loaded */
 		$('#vboxSettingsDialog').trigger('dataLoaded');
 
-		var buttons = { };
-		buttons[trans('OK','QIMessageBox')] = function() {
+		var buttons = [
+			{
+				text: trans('OK','QIMessageBox'),
+				click: function() {
 			
-		    $(this).trigger('save');
+					$(this).trigger('save');
+		
+					// Does some settings pane need to do some presave
+					// work? (ask questions, run wizard, some other asynch task)
+					var promise = true;
+					if(presave) {
+						promise = presave();
+					}
+					var dlg = this;
+					$.when(promise).done(() => {
+						results.resolve();
+					}).then(() => {
+						$(dlg).trigger('close').empty().remove();
+						$(document).trigger('click');                
+					});
+				}
+			}, {
+				text: trans('Cancel','QIMessageBox'),
+				click: function() {
+					results.reject();
+					$('#vboxSettingsDialog').trigger('close').empty().remove();
+					$(document).trigger('click');
+				}
+			}
+		];
 
-		    // Does some settings pane need to do some presave
-		    // work? (ask questions, run wizard, some other asynch task)
-		    var promise = true;
-		    if(presave) {
-		        promise = presave();
-		    }
-		    var dlg = this;
-		    $.when(promise).done(function() {
-		        results.resolve(true);
-		        $(dlg).trigger('close').empty().remove();
-		        $(document).trigger('click');                
-            });
-		};
-		buttons[trans('Cancel','QIMessageBox')] = function() {
-			results.reject();
-			$(this).trigger('close').empty().remove();
-			$(document).trigger('click');
-		};
 
 		// Init with "nothing has changed yet"
 		$('#vboxSettingsDialog').data('formDataChanged', false);
 		
 		// Show dialog
-	    $('#vboxSettingsDialog').dialog({'closeOnEscape':true,'width':(panes.length > 1 ? 900 : 600),'height':(panes.length > 1 ? 500 : 450),'buttons':buttons,'modal':true,'autoOpen':true,'dialogClass':'vboxSettingsDialog vboxDialogContent','title':(icon ? '<img src="images/vbox/'+icon+'_16px.png" class="vboxDialogTitleIcon" /> ' : '') + title}).on("dialogbeforeclose",function(){
-	    	$(this).parent().find('span:contains("'+trans('Cancel','QIMessageBox')+'")').trigger('click');
+	    $('#vboxSettingsDialog').dialog({'closeOnEscape':true,'width':(panes.length > 1 ? 900 : 600),'height':(panes.length > 1 ? 500 : 450),'buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxSettingsDialog vboxDialogContent'},'title':(icon ? '<img src="images/vbox/'+icon+'_16px.png" class="vboxDialogTitleIcon" /> ' : '') + title}).on("dialogbeforeclose",(e)=>{
+			e.preventDefault();
+			buttons[1].click();
+			return false;
 	    });
 
 	    // Resize pane

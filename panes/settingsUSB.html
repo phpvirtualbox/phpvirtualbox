@@ -182,7 +182,7 @@
 			buttons[trans('Cancel','QIMessageBox')] = function() { $('#vboxSettingsUSBFilterEdit').remove(); };
 
 			                  			
-          	$('#vboxSettingsUSBFilterEdit').dialog({'buttons':buttons,'closeOnEscape':false,'width':400,'modal':true,'autoOpen':true,'dialogClass':'vboxDialogContent vboxNonTabbed','title':'<img src="images/vbox/usb_16px.png" class="vboxDialogTitleIcon" /> '+trans('USB Filter Details','UIMachineSettingsUSBFilterDetails')});
+          	$('#vboxSettingsUSBFilterEdit').dialog({'buttons':buttons,'closeOnEscape':false,'width':400,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent vboxNonTabbed'},'title':'<img src="images/vbox/usb_16px.png" class="vboxDialogTitleIcon" /> '+trans('USB Filter Details','UIMachineSettingsUSBFilterDetails')});
 			
 		}		
 	},

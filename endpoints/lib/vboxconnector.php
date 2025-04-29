@@ -10,6 +10,7 @@
  *
  */
 
+#[AllowDynamicProperties]
 class vboxconnector {
 
 	/**
@@ -1358,11 +1359,31 @@ class vboxconnector {
 			$src = $nsrc->machine;
 		}
 		/* @var $m IMachine */
-		$m = $this->vbox->createMachine($this->vbox->composeMachineFilename($args['name'],null,null,null),$args['name'],null,null,null,false);
+		$m = $this->vbox->createMachine(
+			// settingsFile
+			$this->vbox->composeMachineFilename($args['name'],null,null,null),
+			// name
+			$args['name'],
+			// platform
+			strval($src->platform->architecture),
+			// Groups
+			null,
+			// osTypeId
+			null,
+			// flags
+			null,
+			// cipher
+			null,
+			// passwordId
+			null,
+			// password
+			null
+		);
+
 		$sfpath = $m->settingsFilePath;
 
 		/* @var $cm CloneMode */
-		$cm = new CloneMode(null,$args['vmState']);
+		$cm = new CloneMode(null, $args['vmState']);
 		$state = $cm->ValueMap[$args['vmState']];
 
 
@@ -1371,8 +1392,9 @@ class vboxconnector {
 		if($args['link']) $opts[] = 'Link';
 
 		/* @var $progress IProgress */
-		$progress = $src->cloneTo($m->handle,$args['vmState'],$opts);
+		$progress = $src->cloneTo($m->handle, $args['vmState'], $opts);
 
+		$exp = "";
 		// Does an exception exist?
 		try {
 			if($progress->errorInfo->handle) {
@@ -1380,7 +1402,9 @@ class vboxconnector {
 				$progress->releaseRemote();
 				return false;
 			}
-		} catch (Exception $null) {}
+		} catch (Exception $e) {
+			$exp = $e->getMessage();
+		}
 
 		$m->releaseRemote();
 		$src->releaseRemote();
@@ -1388,8 +1412,10 @@ class vboxconnector {
 		$this->_util_progressStore($progress);
 
 		return array(
-				'progress' => $progress->handle,
-				'settingsFilePath' => $sfpath);
+			'progress' => $progress->handle,
+			'settingsFilePath' => $sfpath,
+			'exp' => $exp,
+		);
 
 	}
 
@@ -1846,21 +1872,38 @@ class vboxconnector {
 
 			$guestOS = $this->vbox->getGuestOSType($args['OSTypeId']);
 
-			$m->setCPUProperty('LongMode', ($guestOS->is64Bit ? 1 : 0));
+			$m->Platform->X86->setCPUProperty('LongMode', ($guestOS->is64Bit ? 1 : 0));
 		}
 
+		/* secureBootEnabled reported incorrectly by vboxwebsrv
+		$oldFirmware = (string)$m->FirmwareSettings->firmwareType;
+		$oldSecureBoot = ($oldFirmware != 'BIOS' && $m->nonVolatileStore->uefiVariableStore != null ? $m->nonVolatileStore->uefiVariableStore->secureBootEnabled : false);
+		*/
+	
 		$m->CPUCount = $args['CPUCount'];
 		$m->memorySize = $args['memorySize'];
-		$m->firmwareType = $args['firmwareType'];
-		if($args['chipsetType']) $m->chipsetType = $args['chipsetType'];
+		$m->FirmwareSettings->setFirmwareType($args['firmwareType']);
+		if($args['chipsetType']) $m->Platform->setChipsetType($args['chipsetType']);
 		if($m->snapshotFolder != $args['snapshotFolder']) $m->snapshotFolder = $args['snapshotFolder'];
-		$m->RTCUseUTC = ($args['RTCUseUTC'] ? 1 : 0);
-		$m->setCpuProperty('PAE', ($args['CpuProperties']['PAE'] ? 1 : 0));
-		$m->setCpuProperty('HWVirt', ($args['CpuProperties']['HWVirt'] ? 1 : 0));
-		$m->setCPUProperty('LongMode', (strpos($args['OSTypeId'],'_64') > - 1 ? 1 : 0));
+		$m->Platform->setRTCUseUTC($args['RTCUseUTC'] ? 1 : 0);
+		$m->Platform->X86->setCpuProperty('PAE', ($args['CpuProperties']['PAE'] ? 1 : 0));
+		$m->Platform->X86->setCpuProperty('HWVirt', ($args['CpuProperties']['HWVirt'] ? 1 : 0));
+		$m->Platform->X86->setCPUProperty('LongMode', (strpos($args['OSTypeId'],'_64') > - 1 ? 1 : 0));
+		$m->trustedPlatformModule->type = $args['trustedPlatformModule']['type'];
+
+		/* secureBootEnabled reported incorrectly by vboxwebsrv
+		if($oldFirmware == 'BIOS' && $args['firmwareType'] == 'EFI') {
+			$m->nonVolatileStore->initUefiVariableStore(0);
+			$m->nonVolatileStore->uefiVariableStore->enrollOraclePlatformKey();
+			$m->nonVolatileStore->uefiVariableStore->enrollDefaultMsSignatures();
+		}
+		if($args['firmwareType'] != 'BIOS' && $oldSecureBoot != (bool)$args['secureBootEnabled']) {
+			$m->nonVolatileStore->uefiVariableStore->secureBootEnabled = (bool)$args['secureBootEnabled'];
+		}
+		*/
 
 		// IOAPIC
-		$m->BIOSSettings->IOAPICEnabled = ($args['BIOSSettings']['IOAPICEnabled'] ? 1 : 0);
+		$m->FirmwareSettings->IOAPICEnabled = ($args['BIOSSettings']['IOAPICEnabled'] ? 1 : 0);
 		$m->CPUExecutionCap = $args['CPUExecutionCap'];
 		$m->description = $args['description'];
 		$m->ClipboardMode = $args['ClipboardMode'];
@@ -1884,8 +1927,8 @@ class vboxconnector {
 		$hwAccelAvail = $this->vbox->host->getProcessorFeature('HWVirtEx');
 
 		$m->paravirtProvider = $args['paravirtProvider'];
-		$m->setHWVirtExProperty('Enabled', $args['HWVirtExProperties']['Enabled']);
-		$m->setHWVirtExProperty('NestedPaging', ($args['HWVirtExProperties']['Enabled'] && $hwAccelAvail && $args['HWVirtExProperties']['NestedPaging']));
+		$m->Platform->X86->setHWVirtExProperty('Enabled', $args['HWVirtExProperties']['Enabled']);
+		$m->Platform->X86->setHWVirtExProperty('NestedPaging', ($args['HWVirtExProperties']['Enabled'] && $hwAccelAvail && $args['HWVirtExProperties']['NestedPaging']));
 
 		/* Only if advanced configuration is enabled */
 		if(@$this->settings->enableAdvancedConfig) {
@@ -1900,13 +1943,13 @@ class vboxconnector {
 				$m->pageFusionEnabled = $args['pageFusionEnabled'];
 			}
 
-			$m->HPETEnabled = $args['HPETEnabled'];
+			$m->Platform->X86->HPETEnabled = $args['HPETEnabled'];
 			$m->setExtraData("VBoxInternal/Devices/VMMDev/0/Config/GetHostTimeDisabled", $args['disableHostTimeSync']);
 			$m->keyboardHIDType = $args['keyboardHIDType'];
 			$m->pointingHIDType = $args['pointingHIDType'];
-			$m->setHWVirtExProperty('LargePages', $args['HWVirtExProperties']['LargePages']);
-			$m->setHWVirtExProperty('UnrestrictedExecution', $args['HWVirtExProperties']['UnrestrictedExecution']);
-			$m->setHWVirtExProperty('VPID', $args['HWVirtExProperties']['VPID']);
+			$m->Platform->X86->setHWVirtExProperty('LargePages', $args['HWVirtExProperties']['LargePages']);
+			$m->Platform->X86->setHWVirtExProperty('UnrestrictedExecution', $args['HWVirtExProperties']['UnrestrictedExecution']);
+			$m->Platform->X86->setHWVirtExProperty('VPID', $args['HWVirtExProperties']['VPID']);
 
 		}
 
@@ -1918,8 +1961,8 @@ class vboxconnector {
 		$m->GraphicsAdapter->graphicsControllerType = $args['graphicsControllerType'];
 
 		// Video
-		$m->GraphicsAdapter->accelerate3DEnabled = $args['accelerate3DEnabled'];
-		$m->GraphicsAdapter->accelerate2DVideoEnabled = $args['accelerate2DVideoEnabled'];
+		$m->GraphicsAdapter->setFeature("Acceleration2DVideo", $args['accelerate2DVideoEnabled']);
+		$m->GraphicsAdapter->setFeature("Acceleration3D", $args['accelerate3DEnabled']);
 
 		// VRDE settings
 		try {
@@ -1938,12 +1981,12 @@ class vboxconnector {
 		}
 
 		// Audio controller settings
-		$m->audioAdapter->enabled = ($args['audioAdapter']['enabled'] ? 1 : 0);
-		$m->audioAdapter->audioController = $args['audioAdapter']['audioController'];
-		$m->audioAdapter->audioDriver = $args['audioAdapter']['audioDriver'];
+		$m->audioSettings->Adapter->enabled = ($args['audioAdapter']['enabled'] ? 1 : 0);
+		$m->audioSettings->Adapter->audioController = $args['audioAdapter']['audioController'];
+		$m->audioSettings->Adapter->audioDriver = $args['audioAdapter']['audioDriver'];
 
 		// Boot order
-		$mbp = $this->vbox->systemProperties->maxBootPosition;
+		$mbp = $this->vbox->systemProperties->platform->maxBootPosition;
 		for($i = 0; $i < $mbp; $i ++) {
 			if($args['bootOrder'][$i]) {
 				$m->setBootOrder(($i + 1),$args['bootOrder'][$i]);
@@ -2186,7 +2229,7 @@ class vboxconnector {
 
 			try {
 				$p->enabled = $args['serialPorts'][$i]['enabled'];
-				$p->IOBase = @hexdec($args['serialPorts'][$i]['IOBase']);
+				$p->IOAddress = @hexdec($args['serialPorts'][$i]['IOBase']);
 				$p->IRQ = intval($args['serialPorts'][$i]['IRQ']);
 				if($args['serialPorts'][$i]['path']) {
 					$p->path = $args['serialPorts'][$i]['path'];
@@ -2351,7 +2394,7 @@ class vboxconnector {
 
 
 		/* @var $m IMachine */
-		$m = $this->vbox->openMachine($args['file']);
+		$m = $this->vbox->openMachine($args['file'],null);
 		$this->vbox->registerMachine($m->handle);
 
 		$m->releaseRemote();
@@ -3174,6 +3217,7 @@ class vboxconnector {
 				'familyId' => $g->familyId,
 				'familyDescription' => $g->familyDescription,
 				'id' => $g->id,
+				'subtype' => $g->subtype,
 				'description' => $g->description,
 				'is64Bit' => $bit64,
 				'recommendedRAM' => $g->recommendedRAM,
@@ -3394,7 +3438,11 @@ class vboxconnector {
 			'operatingSystem' => $host->operatingSystem,
 			'OSVersion' => $host->OSVersion,
 			'memorySize' => $host->memorySize,
-			'acceleration3DAvailable' => $host->acceleration3DAvailable,
+			//'acceleration3DAvailable' => $host->acceleration3DAvailable,
+			// changes in 7.1
+			// hardcode true so the checkbox would always be enabled in the UI
+			// when selected, should fail with an error message if actually not available
+			'acceleration3DAvailable' => true,
 			'cpus' => array(),
 			'networkInterfaces' => array(),
 			'DVDDrives' => array(),
@@ -3799,7 +3847,7 @@ class vboxconnector {
 
 
 		/* @var $m IMachine */
-		$m = $this->vbox->createMachine(null,$args['name'],($this->settings->phpVboxGroups ? '' : $args['group']),$args['ostype'],null,null);
+		$m = $this->vbox->createMachine(null,$args['name'],"x86",($this->settings->phpVboxGroups ? '' : $args['group']),$args['ostype'],null,null,null,null);
 
 		/* Check for phpVirtualBox groups */
 		if($this->settings->phpVboxGroups && $args['group']) {
@@ -3852,14 +3900,14 @@ class vboxconnector {
 			}
 
 			// Other defaults
-			$this->session->machine->BIOSSettings->IOAPICEnabled = $defaults->recommendedIOAPIC;
-			$this->session->machine->RTCUseUTC = $defaults->recommendedRTCUseUTC;
-			$this->session->machine->firmwareType = (string)$defaults->recommendedFirmware;
-			$this->session->machine->chipsetType = (string)$defaults->recommendedChipset;
+			$this->session->machine->FirmwareSettings->IOAPICEnabled = $defaults->recommendedIOAPIC;
+			$this->session->machine->Platform->RTCUseUTC = $defaults->recommendedRTCUseUTC;
+			$this->session->machine->FirmwareSettings->firmwareType = (string)$defaults->recommendedFirmware;
+			$this->session->machine->Platform->chipsetType = (string)$defaults->recommendedChipset;
 			$this->session->machine->ClipboardMode = 'Disabled';
 			if(intval($defaults->recommendedVRAM) > 0) $this->session->machine->GraphicsAdapter->setVRAMSize(intval($defaults->recommendedVRAM));
 			$this->session->machine->GraphicsAdapter->setGraphicsControllerType((string)$defaults->recommendedGraphicsController);
-			$this->session->machine->setCpuProperty('PAE',$defaults->recommendedPAE);
+			$this->session->machine->Platform->X86->setCpuProperty('PAE',$defaults->recommendedPAE);
 
 			// USB input devices
 			if($defaults->recommendedUSBHid) {
@@ -3869,7 +3917,7 @@ class vboxconnector {
 
 			/* Only if acceleration configuration is available */
 			if($this->vbox->host->getProcessorFeature('HWVirtEx')) {
-				$this->session->machine->setHWVirtExProperty('Enabled',$defaults->recommendedVirtEx);
+				$this->session->machine->Platform->X86->setHWVirtExProperty('Enabled',$defaults->recommendedVirtEx);
 			}
 
 			/*
@@ -4220,24 +4268,28 @@ class vboxconnector {
 			'autostartEnabled' => ($this->settings->vboxAutostartConfig && $m->autostartEnabled),
 			'autostartDelay' => ($this->settings->vboxAutostartConfig ? intval($m->autostartDelay) : '0'),
 			'settingsFilePath' => $m->settingsFilePath,
-		    'paravirtProvider' => (string)$m->paravirtProvider,
+			'paravirtProvider' => (string)$m->paravirtProvider,
 			'OSTypeId' => $m->OSTypeId,
 			'OSTypeDesc' => $this->vbox->getGuestOSType($m->OSTypeId)->description,
 			'CPUCount' => $m->CPUCount,
-			'HPETEnabled' => $m->HPETEnabled,
+			'HPETEnabled' => $m->Platform->X86->HPETEnabled,
 			'memorySize' => $m->memorySize,
 			'VRAMSize' => $m->GraphicsAdapter->VRAMSize,
 			'graphicsControllerType' => (string)$m->GraphicsAdapter->graphicsControllerType,
 			'pointingHIDType' => (string)$m->pointingHIDType,
 			'keyboardHIDType' => (string)$m->keyboardHIDType,
-			'accelerate3DEnabled' => $m->GraphicsAdapter->accelerate3DEnabled,
-			'accelerate2DVideoEnabled' => $m->GraphicsAdapter->accelerate2DVideoEnabled,
+			'accelerate2DVideoEnabled' => $m->GraphicsAdapter->isFeatureEnabled("Acceleration2DVideo"),
+			'accelerate3DEnabled' => $m->GraphicsAdapter->isFeatureEnabled("Acceleration3D"),
 			'BIOSSettings' => array(
-				'ACPIEnabled' => $m->BIOSSettings->ACPIEnabled,
-				'IOAPICEnabled' => $m->BIOSSettings->IOAPICEnabled,
-				'timeOffset' => $m->BIOSSettings->timeOffset
-				),
-			'firmwareType' => (string)$m->firmwareType,
+				'ACPIEnabled' => $m->FirmwareSettings->ACPIEnabled,
+				'IOAPICEnabled' => $m->FirmwareSettings->IOAPICEnabled,
+				'timeOffset' => $m->FirmwareSettings->timeOffset
+			),
+			'trustedPlatformModule' => array(
+				'type' => (string)$m->trustedPlatformModule->type
+			),
+			'secureBootEnabled' => (((string)$m->FirmwareSettings->firmwareType != 'BIOS' && $m->nonVolatileStore->uefiVariableStore != null) ? (bool)$m->nonVolatileStore->uefiVariableStore->secureBootEnabled : false),
+			'firmwareType' => (string)$m->FirmwareSettings->firmwareType,
 			'snapshotFolder' => $m->snapshotFolder,
 			'ClipboardMode' => (string)$m->ClipboardMode,
 			'monitorCount' => $m->GraphicsAdapter->monitorCount,
@@ -4253,24 +4305,25 @@ class vboxconnector {
 				'VRDEExtPack' => (string)$m->VRDEServer->VRDEExtPack
 				)),
 			'audioAdapter' => array(
-				'enabled' => $m->audioAdapter->enabled,
-				'audioController' => (string)$m->audioAdapter->audioController,
-				'audioDriver' => (string)$m->audioAdapter->audioDriver,
+				'enabled' => $m->audioSettings->Adapter->enabled,
+				'audioController' => (string)$m->audioSettings->Adapter->audioController,
+				'audioDriver' => (string)$m->audioSettings->Adapter->audioDriver,
 				),
-			'RTCUseUTC' => $m->RTCUseUTC,
-		    'EffectiveParavirtProvider' => (string)$m->getEffectiveParavirtProvider(),
+			'RTCUseUTC' => $m->Platform->RTCUseUTC,
+			'EffectiveParavirtProvider' => (string)$m->getEffectiveParavirtProvider(),
 			'HWVirtExProperties' => array(
-				'Enabled' => $m->getHWVirtExProperty('Enabled'),
-				'NestedPaging' => $m->getHWVirtExProperty('NestedPaging'),
-				'LargePages' => $m->getHWVirtExProperty('LargePages'),
-				'UnrestrictedExecution' => $m->getHWVirtExProperty('UnrestrictedExecution'),
-				'VPID' => $m->getHWVirtExProperty('VPID')
+				'Enabled' => $m->Platform->X86->getHWVirtExProperty('Enabled'),
+				'NestedPaging' => $m->Platform->X86->getHWVirtExProperty('NestedPaging'),
+				'LargePages' => $m->Platform->X86->getHWVirtExProperty('LargePages'),
+				'UnrestrictedExecution' => $m->Platform->X86->getHWVirtExProperty('UnrestrictedExecution'),
+				'VPID' => $m->Platform->X86->getHWVirtExProperty('VPID')
 				),
 			'CpuProperties' => array(
-				'PAE' => $m->getCpuProperty('PAE'),'HWVirt' => $m->getCpuProperty('HWVirt')
+				'PAE' => $m->Platform->X86->getCpuProperty('PAE'),
+				'HWVirt' => $m->Platform->X86->getCpuProperty('HWVirt')
 				),
 			'bootOrder' => $this->_machineGetBootOrder($m),
-			'chipsetType' => (string)$m->chipsetType,
+			'chipsetType' => (string)$m->Platform->chipsetType,
 			'GUI' => array(
 				'FirstRun' => $m->getExtraData('GUI/FirstRun'),
 			),
@@ -4289,7 +4342,7 @@ class vboxconnector {
 	 */
 	private function _machineGetBootOrder(&$m) {
 		$return = array();
-		$mbp = $this->vbox->systemProperties->maxBootPosition;
+		$mbp = $this->vbox->systemProperties->platform->maxBootPosition;
 		for($i = 0; $i < $mbp; $i ++) {
 			if(($b = (string)$m->getBootOrder($i + 1)) == 'Null') continue;
 			$return[] = $b;
@@ -4305,7 +4358,7 @@ class vboxconnector {
 	 */
 	private function _machineGetSerialPorts(&$m) {
 		$ports = array();
-		$max = $this->vbox->systemProperties->serialPortCount;
+		$max = $this->vbox->systemProperties->platform->serialPortCount;
 		for($i = 0; $i < $max; $i++) {
 			try {
 				/* @var $p ISerialPort */
@@ -4313,7 +4366,8 @@ class vboxconnector {
 				$ports[] = array(
 					'slot' => $p->slot,
 					'enabled' => $p->enabled,
-					'IOBase' => '0x'.strtoupper(sprintf('%3s',dechex($p->IOBase))),
+					// change in 7.1 - IOBase IOAddress
+					'IOBase' => '0x'.strtoupper(sprintf('%3s',dechex($p->IOAddress))),
 					'IRQ' => $p->IRQ,
 					'hostMode' => (string)$p->hostMode,
 					'server' => $p->server,
@@ -4336,7 +4390,7 @@ class vboxconnector {
 	private function _machineGetParallelPorts(&$m) {
 		if(!@$this->settings->enableLPTConfig) return array();
 		$ports = array();
-		$max = $this->vbox->systemProperties->parallelPortCount;
+		$max = $this->vbox->systemProperties->platform->parallelPortCount;
 		for($i = 0; $i < $max; $i++) {
 			try {
 				/* @var $p IParallelPort */
@@ -4400,13 +4454,13 @@ class vboxconnector {
 
 	    foreach($args['passwords'] as $creds) {
 	        try {
-	            $this->session->console->removeDiskEncryptionPassword($creds['id']);
+	            $this->session->console->removeEncryptionPassword($creds['id']);
 	        } catch(Exception $e) {
 	            // It may not exist yet
 	        }
 
     	    try {
-    	        $this->session->console->addDiskEncryptionPassword($creds['id'], $creds['password'], (bool)@$args['clearOnSuspend']);
+    	        $this->session->console->addEncryptionPassword($creds['id'], $creds['password'], (bool)@$args['clearOnSuspend']);
     	        $response['accepted'][] = $creds['id'];
     		} catch (Exception $e) {
     		    $response['failed'][] = $creds['id'];
@@ -4717,7 +4771,7 @@ class vboxconnector {
 			$machine->lockMachine($this->session->handle, ((string)$machine->sessionState == 'Unlocked' ? 'Write' : 'Shared'));
 
 			/* @var $progress IProgress */
-			list($progress, $snapshotId) = $this->session->machine->takeSnapshot($args['name'], $args['description'], false);
+			list($progress, $snapshotId) = $this->session->machine->takeSnapshot($args['name'], $args['description'], true);
 
 			// Does an exception exist?
 			try {
@@ -4904,6 +4958,7 @@ class vboxconnector {
 	    $m = $this->vbox->openMedium($args['medium'], 'HardDisk', 'ReadWrite', false);
 
 	    /* @var $progress IProgress */
+	    if(empty($args['password'])) $args['id'] = "";
 	    $progress = $m->changeEncryption($args['old_password'],
 	            $args['cipher'], $args['password'], $args['id']);
 
@@ -5575,17 +5630,12 @@ class vboxconnector {
 
 		$scs = array();
 
-		$scts = array('LsiLogic',
-                    'BusLogic',
-                    'IntelAhci',
-                    'PIIX4',
-                    'ICH6',
-                    'I82078',
-					'USB',
-					'NVMe');
+		$scts = array_map(
+			function($sc) { return (string)$sc; }, iterator_to_array($sp->platform->supportedStorageControllerTypes)
+		);
 
 		foreach($scts as $t) {
-		    $scs[$t] = $sp->getStorageControllerHotplugCapable($t);
+		    $scs[$t] = $this->vbox->systemProperties->platform->getStorageControllerHotplugCapable($t);
 		}
 
 		return array(
@@ -5598,17 +5648,62 @@ class vboxconnector {
 			'autostartDatabasePath' => (@$this->settings->vboxAutostartConfig ? $sp->autostartDatabasePath : ''),
 			'infoVDSize' => (string)$sp->infoVDSize,
 			'networkAdapterCount' => 8, // static value for now
-			'maxBootPosition' => (string)$sp->maxBootPosition,
 			'defaultMachineFolder' => (string)$sp->defaultMachineFolder,
 			'defaultHardDiskFormat' => (string)$sp->defaultHardDiskFormat,
 			'homeFolder' => $this->vbox->homeFolder,
 			'VRDEAuthLibrary' => (string)$sp->VRDEAuthLibrary,
 			'defaultAudioDriver' => (string)$sp->defaultAudioDriver,
-			'defaultVRDEExtPack' => $sp->defaultVRDEExtPack,
-			'serialPortCount' => $sp->serialPortCount,
-			'parallelPortCount' => $sp->parallelPortCount,
+			'defaultVRDEExtPack' => (string)$sp->defaultVRDEExtPack,
 			'mediumFormats' => $mediumFormats,
-		    'scs' => $scs
+			'scs' => $scs,
+			'supportedPlatformArchitectures' => array_map(
+				function($arch) { return (string)$arch; }, iterator_to_array($sp->supportedPlatformArchitectures)
+			),
+			'platform' => array(
+				'maxBootPosition' => $sp->platform->maxBootPosition,
+				'serialPortCount' => $sp->platform->serialPortCount,
+				'parallelPortCount' => $sp->platform->parallelPortCount,
+				'supportedParavirtProviders' => array_map(
+					function($gfc) { return (string)$gfc; }, iterator_to_array($sp->platform->supportedParavirtProviders)
+				),
+				'supportedFirmwareTypes' => array_map(
+					function($gfc) { return (string)$gfc; }, iterator_to_array($sp->platform->supportedFirmwareTypes)
+				),
+				'supportedGuestOSTypes' => array_map(
+					function($os) { return $os->id; }, iterator_to_array($sp->platform->supportedGuestOSTypes)
+				),
+				'supportedGfxControllerTypes' => array_map(
+					function($gfc) { return (string)$gfc; }, iterator_to_array($sp->platform->supportedGfxControllerTypes)
+				),
+				'supportedNetworkAdapterTypes' => array_map(
+					function($n) { return (string)$n; }, iterator_to_array($sp->platform->supportedNetworkAdapterTypes)
+				),
+				'supportedUartTypes' => array_map(
+					function($u) { return (string)$u; }, iterator_to_array($sp->platform->supportedUartTypes)
+				),
+				'supportedUSBControllerTypes' => array_map(
+					function($u) { return (string)$u; }, iterator_to_array($sp->platform->supportedUSBControllerTypes)
+				),
+				'supportedAudioControllerTypes' => array_map(
+					function($a) { return (string)$a; }, iterator_to_array($sp->platform->supportedAudioControllerTypes)
+				),
+				'supportedBootDevices' => array_map(
+					function($b) { return (string)$b; }, iterator_to_array($sp->platform->supportedBootDevices)
+				),
+				'supportedStorageBuses' => array_map(
+					function($sb) { return (string)$sb; }, iterator_to_array($sp->platform->supportedStorageBuses)
+				),
+				'supportedStorageControllerTypes' => $scts,
+				'supportedChipsetTypes' => array_map(
+					function($ct) { return (string)$ct; }, iterator_to_array($sp->platform->supportedChipsetTypes)
+				),
+				'supportedIommuTypes' => array_map(
+					function($i) { return (string)$i; }, iterator_to_array($sp->platform->supportedIommuTypes)
+				),
+				'supportedTpmTypes' => array_map(
+					function($t) { return (string)$t; }, iterator_to_array($sp->platform->supportedTpmTypes)
+				)
+			)
 		);
 	}
 
@@ -5663,8 +5758,8 @@ class vboxconnector {
 
 		// Attempt to UTF-8 encode string or json_encode may choke
 		// and return an empty string
-		if(function_exists('utf8_encode'))
-			return utf8_encode($log);
+		if(function_exists('iconv'))
+			return iconv("ISO-8859-1", "UTF-8", $log);
 
 		return $log;
 	}
@@ -5719,7 +5814,8 @@ class vboxconnector {
 			'buslogic' => 'buslogic',
 			'lsilogicsas' => 'lsilogicsas',
 			'usb' => 'usb',
-			'nvme' => 'nvme'
+			'nvme' => 'nvme',
+			'virtioscsi' => 'virtioscsi'
 		);
 
 		if(!isset($cTypes[strtolower($cType)])) {

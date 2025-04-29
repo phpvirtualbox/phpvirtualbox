@@ -41,24 +41,28 @@ class phpvbAuthMySQL implements phpvbAuth
 			'canChangePassword' => true,
 			'canModifyUsers' => true,
 			'canLogout' => true
-		);
+	);
 	
+	var $config = array(
+		'host' => "127.0.0.1",
+		'port' => 3306,
+		'user' => "MySQLuser",
+		'pass' => "MySQLpassword",
+		'db' => "vboxAuth"
+	);
+
 	/**
-	 *
+	*
 	 * Connect to MySQL DB.
 	 * return PDOconnection.
 	 */
-	function newPDO()
-	{
-		$host="127.0.0.1";
-		$port=3306;
-		$user="MySQLuser";
-		$pass="MySQLpassword";
-		$db="vboxDB";
-		
+	function newPDO() {
 		try{
-			return new PDO("mysql:host=$host;port=$port;dbname=$db;charset=utf8",$user,$pass);
-		}catch (PDOException $e){throw new Exception("Can't connect to MySQL db!",vboxconnector::PHPVB_ERRNO_CONNECT);}
+			return new PDO("mysql:host={$this->config['host']};port={$this->config['port']};dbname={$this->config['db']};charset=utf8",
+				$this->config['user'],$this->config['pass']);
+		} catch (PDOException $e) {
+			throw new Exception("Can't connect to MySQL db!",vboxconnector::PHPVB_ERRNO_CONNECT);
+		}
 	}
 	
 	/**
@@ -73,9 +77,18 @@ class phpvbAuthMySQL implements phpvbAuth
 			$statement=$this->newPDO()->prepare("SELECT username, password, admin FROM users WHERE username=:username");
 			$statement->bindValue(":username",$username, PDO::PARAM_STR);
 			$statement->execute();
-		}catch(PDOException $e){throw new Exception("Can't execute requested query!",vboxconnector::PHPVB_ERRNO_FATAL);}
+		} catch(PDOException $e){
+			throw new Exception("Can't execute requested query!",vboxconnector::PHPVB_ERRNO_FATAL);
+		}
 		return $statement->fetch(PDO::FETCH_ASSOC);
 		
+	}
+
+	function __construct($userConfig = null) {
+		// Merge user config set in config.php as $authConfig = array(...)
+		if($userConfig) {
+			$this->config = array_merge($this->config, $userConfig);
+		}		
 	}
 
 	/**

@@ -68,19 +68,24 @@
 	</tr>
 	<tr id='vboxSettingsSystemChipsetRow'>
 		<th style='text-align:right'><span class='translate'>Chipset:</span></th>
-		<td><select name='vboxSettingsSystemChipset'>
+		<td><select id='vboxSettingsSystemChipset' name='vboxSettingsSystemChipset'>
 				<option value='PIIX3'>PIIX3</option>
 				<option value='ICH9'>ICH9</option>
 			</select>
 		</td>
 	</tr>	
 	<tr>
+		<th style='text-align:right'><span class='translate'>TPM:</span></th>
+		<td><select id='vboxSettingsSystemTPM' name='vboxSettingsSystemTPM'>
+				<option value='None'>None</option>
+				<option value='v2.0'>v2.0</option>
+			</select>
+		</td>
+	</tr>	
+
+	<tr>
 		<th style='text-align:right'><span class='translate'>Extended Features:</span></th>
 		<td><label><input type='checkbox' class='vboxCheckbox' name='vboxSettingsSystemIOAPIC' /> <span class='translate'>Enable I/O APIC</span></label></td>
-	</tr>
-	<tr>
-		<th></th>
-		<td><label><input type='checkbox' class='vboxCheckbox' name='vboxSettingsSystemEFI' /> <span class='translate'>Enable EFI (special OSes only)</span></label></td>
 	</tr>
 	<tr>
 		<th></th>
@@ -94,7 +99,20 @@
 		<th></th>
 		<td><label><input type='checkbox' class='vboxCheckbox' name='vboxSettingsSystemHPET' /> <span class='translate'>HPET (high precision event timer)</span></label></td>
 	</tr>
-
+	<tr>
+		<th></th>
+		<td><label><input type='checkbox' class='vboxCheckbox' id="vboxSettingsSystemEFI" name='vboxSettingsSystemEFI' /> <span class='translate'>Enable EFI (special OSes only)</span></label></td>
+	</tr>
+	<!--
+	<tr>
+		<th></th>
+		<td><label><input type='checkbox' class='vboxCheckbox' id="vboxSettingsSystemSecureBoot" name='vboxSettingsSystemSecureBoot' /> <span class='translate'>Enable Secure Boot</span></label></td>
+	</tr>
+	<tr>
+		<th></th>
+		<td><button type="button" class="translate" id="vboxSettingsSystemResetKeys">Reset Keys to Default</button></td>
+	</tr>	
+	-->
 </table>
 </div>
 
@@ -203,6 +221,17 @@
 
 <script type='text/javascript'>
 
+/* Supported Options */
+$('#vboxSettingsSystemChipset').empty();
+for(const cs of $('#vboxPane').data('vboxSystemProperties').platform.supportedChipsetTypes) {
+	$('#vboxSettingsSystemChipset').append($('<option />', {value:cs, text:trans(cs, 'UICommon','ChipsetType')}));
+}
+$('#vboxSettingsSystemTPM').empty();
+for(const cs of $('#vboxPane').data('vboxSystemProperties').platform.supportedTpmTypes) {
+	$('#vboxSettingsSystemTPM').append($('<option />', {value:cs, text:trans(vboxTPMType(cs),'UICommon','TpmType')}));
+}
+
+
 /* Boot order devices */
 $('#vboxVMBootOrder').find("span.vboxBootOrderDevice").html(function(i,h){return trans(vboxDevice(h),'UICommon');});
 
@@ -233,6 +262,20 @@ if(!$('#vboxSettingsDialog').data('vboxHostDetails').cpuFeatures.NestedHWVirt) {
 	document.forms['frmVboxSettings'].vboxSettingsSystemNestedVT.checked = false;
 	document.forms['frmVboxSettings'].vboxSettingsSystemNestedVT.disabled = true;
 }
+
+/* EFI and Secure boot */
+/* secureBootEnabled is being reported incorrectly by vboxwebsrv
+$("#vboxSettingsSystemEFI").on('change', (e) => {
+	$("#vboxSettingsSystemSecureBoot").prop('disabled', !$(e.target).is(":checked"));
+	$("#vboxSettingsSystemSecureBoot").parent().children("span").toggleClass('disabled', $("#vboxSettingsSystemSecureBoot").prop('disabled'));
+	$("#vboxSettingsSystemResetKeys").prop('disabled', !$(e.target).is(":checked") || !$("#vboxSettingsSystemSecureBoot").is(":checked"));
+});
+
+$("#vboxSettingsSystemSecureBoot").on('change', () => {
+	$("#vboxSettingsSystemResetKeys").prop('disabled',
+		!$("#vboxSettingsSystemEFI").is(":checked") || !$("#vboxSettingsSystemSecureBoot").is(":checked"));
+});
+*/
 
 /* Set CPUs to 1 and disable if host cpu does not support HWVirtEx */
 if(!$('#vboxSettingsDialog').data('vboxHostDetails').cpuFeatures.HWVirtEx) {
@@ -302,7 +345,8 @@ $('#vboxSettingsDialog').on('dataLoaded',function(){
 	/* System Default values from VM*/
 	$('#vboxSettingsSystemMemory').slider('value', parseInt($('#vboxSettingsDialog').data('vboxMachineData').memorySize));
 	document.forms['frmVboxSettings'].vboxSettingsSystemIOAPIC.checked = $('#vboxSettingsDialog').data('vboxMachineData').BIOSSettings.IOAPICEnabled;
-	document.forms['frmVboxSettings'].vboxSettingsSystemEFI.checked = ($('#vboxSettingsDialog').data('vboxMachineData').firmwareType == 'EFI');
+	$("#vboxSettingsSystemEFI").prop('checked', ($('#vboxSettingsDialog').data('vboxMachineData').firmwareType == 'EFI'));
+	// $('#vboxSettingsSystemSecureBoot').prop('checked', $('#vboxSettingsDialog').data('vboxMachineData').secureBootEnabled);
 	document.forms['frmVboxSettings'].vboxSettingsSystemRTCUseUTC.checked = ($('#vboxSettingsDialog').data('vboxMachineData').RTCUseUTC);
 	$('#vboxSettingsSystemProcessor').slider('value',parseInt($('#vboxSettingsDialog').data('vboxMachineData').CPUCount));
 	$('#vboxSettingsSystemProcessorCap').slider('value',parseInt($('#vboxSettingsDialog').data('vboxMachineData').CPUExecutionCap));
@@ -310,11 +354,8 @@ $('#vboxSettingsDialog').on('dataLoaded',function(){
 	document.forms['frmVboxSettings'].vboxSettingsSystemNestedVT.checked = ($('#vboxSettingsDialog').data('vboxMachineData').CpuProperties.HWVirt);
 	document.forms['frmVboxSettings'].settingsSystemVT.checked = ($('#vboxSettingsDialog').data('vboxMachineData').HWVirtExProperties.Enabled);
 	document.forms['frmVboxSettings'].settingsSystemPaging.checked = ($('#vboxSettingsDialog').data('vboxMachineData').HWVirtExProperties.NestedPaging);
-	
+	$('#vboxSettingsSystemTPM').val($('#vboxSettingsDialog').data('vboxMachineData').trustedPlatformModule.type);
 	$(document.forms['frmVboxSettings'].vboxSettingsParavirtInterface).val($('#vboxSettingsDialog').data('vboxMachineData').paravirtProvider);
-	
-	$(document.forms['frmVboxSettings'].settingsSystemVT).triggerHandler('click');
-
 
 	/* Only if acceleration config is enabled */
 	if($('#vboxPane').data('vboxConfig').enableAdvancedConfig) {
@@ -388,6 +429,7 @@ $('#vboxSettingsDialog').on('dataLoaded',function(){
 		
 	} else {
 		
+		
 		$(p).find('tr:not(.vboxRunningEnabled)').find('span').removeClass('disabled');
 		$(p).find('tr:not(.vboxRunningEnabled)').find('input,select,textarea').prop('disabled',false);
 		$('#vboxSettingsSystemMemory').slider('enable');
@@ -400,22 +442,24 @@ $('#vboxSettingsDialog').on('dataLoaded',function(){
 		});
 
 		$("#vboxVMBootOrderList").children("li").click(function() {
-
+			
 			// Update class
 			$(this).siblings().prop('className','vboxListItem');
 			$(this).prop('className','vboxListItemSelected');
-
+			
 			var isFirst = ($(this).parent().children().first().attr('id') == $(this).attr('id'));
 			var isLast = ($(this).parent().children().last().attr('id') == $(this).attr('id'));
 			
 			// update buttons
 			$(this).closest("table").find('input.imgMvUp').css('background-image', 'url(images/vbox/list_moveup' + (isFirst ? '_disabled' : '') + '_16px.png)').prop('disabled', isFirst);
 			$(this).closest("table").find('input.imgMvDn').css('background-image', 'url(images/vbox/list_movedown' + (isLast ? '_disabled' : '') + '_16px.png)').prop('disabled', isLast);
-							
+			
 		}).first().trigger('click');
 		
 	}
 	
+	$("#vboxSettingsSystemEFI").trigger('change');
+	$(document.forms['frmVboxSettings'].settingsSystemVT).triggerHandler('click');
 });
 
 /* Disable non-editable items when VM is running */
@@ -438,11 +482,13 @@ $('#vboxSettingsDialog').on('save',function(){
 	$('#vboxSettingsDialog').data('vboxMachineData').memorySize = parseInt(document.forms['frmVboxSettings'].vboxSettingsSystemMemoryValue.value);
 	$('#vboxSettingsDialog').data('vboxMachineData').BIOSSettings.IOAPICEnabled = document.forms['frmVboxSettings'].vboxSettingsSystemIOAPIC.checked;
 	$('#vboxSettingsDialog').data('vboxMachineData').firmwareType = (document.forms['frmVboxSettings'].vboxSettingsSystemEFI.checked ? 'EFI' : 'BIOS');
+	// $('#vboxSettingsDialog').data('vboxMachineData').secureBootEnabled = $('#vboxSettingsSystemSecureBoot').prop('chekced');
 	$('#vboxSettingsDialog').data('vboxMachineData').CPUCount = parseInt($('#vboxSettingsSystemProcessor').slider('value'));
 	$('#vboxSettingsDialog').data('vboxMachineData').CPUExecutionCap = parseInt($('#vboxSettingsSystemProcessorCap').slider('value'));
 	$('#vboxSettingsDialog').data('vboxMachineData').CpuProperties.PAE = document.forms['frmVboxSettings'].vboxSettingsSystemPAE.checked;
 	$('#vboxSettingsDialog').data('vboxMachineData').CpuProperties.HWVirt = document.forms['frmVboxSettings'].vboxSettingsSystemNestedVT.checked;
 	$('#vboxSettingsDialog').data('vboxMachineData').RTCUseUTC = document.forms['frmVboxSettings'].vboxSettingsSystemRTCUseUTC.checked;
+	$('#vboxSettingsDialog').data('vboxMachineData').trustedPlatformModule.type = $('#vboxSettingsSystemTPM').val();
 
 	/* Only if we had a chipset */
 	if($('#vboxSettingsDialog').data('vboxMachineData').chipsetType)

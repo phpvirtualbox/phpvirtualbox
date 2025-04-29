@@ -3005,7 +3005,7 @@ function vboxWizard() {
 				'modal':true,
 				'autoOpen':true,
 				'stack':true,
-				'dialogClass':'vboxDialogContent vboxWizard',
+				'classes':{'ui-dialog':'vboxDialogContent vboxWizard'},
 				'open': function() {
 					$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('span:contains("'+self.nextArrow+'")').parent().focus();
 				},
@@ -4557,7 +4557,7 @@ function vboxLoader(name) {
 			$('#vboxPane').css('display', 'none');
 
 		$(div).dialog({
-			'dialogClass': 'vboxLoaderDialog',
+			'classes':{'ui-dialog': 'vboxLoaderDialog'},
 			'width': 'auto',
 			'height': 65,
 			'modal': true,
@@ -4829,9 +4829,13 @@ var vboxStorage = {
 	 */
 	getBusIconName: function(bus) {
 		if(vboxStorage[bus].displayInherit) bus = vboxStorage[bus].displayInherit
-		return bus.toLowerCase();
+		if (vboxStorage[bus].iconName) {
+			return vboxStorage[bus].iconName;
+		} else {
+			return bus.toLowerCase();
+		}
 	},
-	
+
 	IDE: {
 		maxPortCount: 2,
 		limitOneInstance: true,
@@ -4887,6 +4891,7 @@ var vboxStorage = {
 						return s;				
 					}
 	},
+
 	SAS: {
 		maxPortCount: 8,
 		maxDevicesPerPortCount: 1,
@@ -4902,7 +4907,6 @@ var vboxStorage = {
 		},
 		displayInherit: 'SATA'
 	},
-		
 
 	Floppy: {
 		maxPortCount: 1,
@@ -4944,8 +4948,35 @@ var vboxStorage = {
 			return s;
 		},
 	displayInherit: 'IDE'
+	},
+
+	VirtioSCSI: {
+		iconName: 'virtio_scsi',
+		maxPortCount: 256,
+		maxDevicesPerPortCount: 1,
+		types: ['VirtioSCSI'],
+		driveTypes: ['disk'],
+		slotName: function(p,d) { return trans('virtio-scsi Port %1','VBoxGlobal', null, 'StorageSlot').replace('%1',p); },
+		slots: function() {
+			var s = {};
+			for(var i = 0; i < 8; i++) {
+				s[i+'-0'] = trans('virtio-scsi Port %1','VBoxGlobal', null, 'StorageSlot').replace('%1',i);
+			}
+			return s;
+		}
 	}
 };
+
+/**
+ * TPMType conversions
+ */
+function vboxTPMType(t) {
+	switch(t) {
+		case 'v1_2': return 'v1.2';
+		case 'v2_0': return 'v2.0';
+		default: return t;
+	}
+}
 
 /**
  * Storage Controller Types conversions

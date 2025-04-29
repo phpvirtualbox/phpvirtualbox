@@ -10,7 +10,7 @@
  */
 
 # Turn off PHP notices
-error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_WARNING);
+@error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_WARNING);
 
 require_once(dirname(__FILE__).'/lib/config.php');
 require_once(dirname(__FILE__).'/lib/utils.php');
@@ -87,13 +87,13 @@ try {
 
 		// Let the browser cache images for 3 seconds
 		$ctime = 0;
-		if(strpos($_SERVER['HTTP_IF_NONE_MATCH'],'_')) {
+		if(strpos($_SERVER['HTTP_IF_NONE_MATCH'] ?? '','_')) {
 			$ctime = preg_replace("/.*_/",str_replace('"','',$_SERVER['HTTP_IF_NONE_MATCH']));
-		} else if(strpos($_ENV['HTTP_IF_NONE_MATCH'],'_')) {
+		} else if(strpos($_ENV['HTTP_IF_NONE_MATCH'] ?? '','_')) {
 			$ctime = preg_replace("/.*_/",str_replace('"','',$_ENV['HTTP_IF_NONE_MATCH']));
-		} else if(strpos($_SERVER['HTTP_IF_MODIFIED_SINCE'],'GMT')) {
+		} else if(strpos($_SERVER['HTTP_IF_MODIFIED_SINCE'] ?? '','GMT')) {
 			$ctime = strtotime($_SERVER['HTTP_IF_MODIFIED_SINCE']);
-		} else if(strpos($_ENV['HTTP_IF_MODIFIED_SINCE'],'GMT')) {
+		} else if(strpos($_ENV['HTTP_IF_MODIFIED_SINCE'] ?? '','GMT')) {
 			$ctime = strtotime($_ENV['HTTP_IF_MODIFIED_SINCE']);
 		}
 		
