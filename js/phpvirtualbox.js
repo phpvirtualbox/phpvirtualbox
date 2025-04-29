@@ -4963,6 +4963,17 @@ var vboxStorage = {
 };
 
 /**
+ * TPMType conversions
+ */
+function vboxTPMType(t) {
+	switch(t) {
+		case 'v1_2': return 'v1.2';
+		case 'v2_0': return 'v2.0';
+		default: return t;
+	}
+}
+
+/**
  * Storage Controller Types conversions
  * 
  * @param {String}

@@ -78,7 +78,7 @@ $('#vboxSettingsTabSerialPort').find(".translate").html(function(i,h){return tra
 var ul = $('<ul />');
 $(vboxSettingsSPortContainer).append(ul);
 
-for(var i = 0; i < parseInt($('#vboxPane').data('vboxSystemProperties').serialPortCount); i++) {
+for(var i = 0; i < parseInt($('#vboxPane').data('vboxSystemProperties').platform.serialPortCount); i++) {
 
 	
 	/* tab */
@@ -160,7 +160,7 @@ $('#vboxSettingsDialog').on('dataLoaded',function(){
 
 		var a = (i + 1); 
 		
-		if(a > $('#vboxPane').data('vboxSystemProperties').serialPortCount) continue;
+		if(a > $('#vboxPane').data('vboxSystemProperties').platform.serialPortCount) continue;
 
 		// Port Number
 		var pNum = vboxSerialPorts.getPortName($('#vboxSettingsDialog').data('vboxMachineData').serialPorts[i].IRQ,$('#vboxSettingsDialog').data('vboxMachineData').serialPorts[i].IOBase);
@@ -203,7 +203,7 @@ $('#vboxSettingsDialog').on('dataLoaded',function(){
 $('#vboxSettingsDialog').on('save',function(){
 
 	/* Net */
-	for(var i = 0; i < parseInt($('#vboxPane').data('vboxSystemProperties').serialPortCount); i++) {
+	for(var i = 0; i < parseInt($('#vboxPane').data('vboxSystemProperties').platform.serialPortCount); i++) {
 
 		var a = (i + 1); 
 
