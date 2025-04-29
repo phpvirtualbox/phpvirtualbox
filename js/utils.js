@@ -387,7 +387,7 @@ function vboxFileBrowser(root,fn,foldersonly,title,icon,strictFiles) {
 
 	var d1 = $('<div />').attr({'id':'vboxBrowseFolder','class':'vboxDialogContent','style':'display:none'});
 	
-	$('<div />').attr({'id':'vboxBrowseFolderList'}).fileTree({ 'root': (root ? root : '/'),'dirsOnly':foldersonly,'loadMessage':trans('Loading ...','UIVMDesktop'),'scrollTo':'#vboxBrowseFolder'},function(f){
+	$('<div />').attr({'id':'vboxBrowseFolderList'}).fileTree({ 'root': (root ? root : '/'),'dirsOnly':foldersonly,'loadMessage':trans('Loading ...','phpVirtualBox'),'scrollTo':'#vboxBrowseFolder'},function(f){
     	buttons[trans('OK','QIMessageBox')](f);
     }).appendTo(d1);
 	
@@ -412,7 +412,7 @@ function vboxBytesConvert(bytes) {
 	var unitCount;
 	for(unitCount=0; bytes >= 1024 && unitCount < ext.length; unitCount++) bytes = parseFloat(parseFloat(bytes)/1024);
 	
-	return Math.round(parseFloat(bytes)*Math.pow(10,2))/Math.pow(10,2) + " " + trans(ext[unitCount], 'VBoxGlobal');
+	return Math.round(parseFloat(bytes)*Math.pow(10,2))/Math.pow(10,2) + " " + trans(ext[unitCount], 'UICommon');
 }
 /**
  * Parse str param into megabytes
@@ -422,8 +422,8 @@ function vboxBytesConvert(bytes) {
 function vboxConvertMbytes(str) {
 	str = str.replace('  ',' ');
 	str = str.split(' ',2);
-	if(!str[1]) str[1] = trans('MB','VBoxGlobal');
-	var ext = new Array(trans('B','VBoxGlobal'),trans('KB','VBoxGlobal'),trans('MB','VBoxGlobal'),trans('GB','VBoxGlobal'),trans('TB','VBoxGlobal'));
+	if(!str[1]) str[1] = trans('MB','UICommon');
+	var ext = new Array(trans('B','UICommon'),trans('KB','UICommon'),trans('MB','UICommon'),trans('GB','UICommon'),trans('TB','UICommon'));
 	var index = jQuery.inArray(str[1],ext);
 	if(index == -1) index = 2;
 	switch(index) {

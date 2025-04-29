@@ -218,7 +218,7 @@
 // These are translated under a different context for some reason
 $('#vboxVMMTabList').find(".translate").html(function(i,h){return trans(h,'UIMediumManager');}).removeClass('translate');
 
-$("#vboxVMMTabs").find(".translate").html(function(i,h){return trans(h,'VBoxMediaManagerDlg');}).removeClass('translate');
+$("#vboxVMMTabs").find(".translate").html(function(i,h){return trans(h,'UIMediumManager');}).removeClass('translate');
 
 /*
  * Keypress events
@@ -668,11 +668,11 @@ if(!$('#vboxPane').data('vboxConfig').enableAdvancedConfig) {
 
 /* Toolbar */
 var vmmToolbar = new vboxToolbar({buttons: vmmButtons,
-    language_context: 'VBoxMediaManagerDlg',
+    language_context: 'UIMediumManager',
     renderTo: 'vboxMMToolbar'});
 
 /* Actions Menu */
-var vmmMenu = new vboxMenuBar({name: 'vboxMMMenu', language_context: 'VBoxMediaManagerDlg'});
+var vmmMenu = new vboxMenuBar({name: 'vboxMMMenu', language_context: 'UIMediumManager'});
 vmmMenu.addMenu({
 	'name':'vboxMMactions',
 	'label':'Actions',
@@ -690,7 +690,7 @@ if($('#vboxPane').data('vboxConfig').enableAdvancedConfig) {
 	vmmCMButtons = vmmButtons.slice(0,-1);
 }
 var vmmCMenu = new vboxMenu({name: 'vboxVMMMediaContextMenu', menuItems: vmmCMButtons,
-    language_context: 'VBoxMediaManagerDlg'});
+    language_context: 'UIMediumManager'});
 
 
 /**
@@ -717,7 +717,7 @@ function vboxVMMMediaInfo(med) {
 	if(m) {
 		attch = vboxMedia.attachedTo(m,true);
 		if(!attch) {
-			attch = trans('Not Attached','UIGDetails','details (storage)');
+			attch = trans('Not Attached','UICommon','details (storage)');
 			attchElm.css({'font-style':'italic'});
 		}
 		attchElm.val(attch);

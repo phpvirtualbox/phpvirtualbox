@@ -14,7 +14,7 @@ https://github.com/phpvirtualbox/phpvirtualbox/wiki#translating-phpvirtualbox
 
 .. II) Adding a new language
 ....... a) Creating phpVirtualBox XML translation file
-....... b) Converting QT .qm files
+....... b) Converting Qt .ts files
 ....... c) Updating language selection
 
 
@@ -23,7 +23,7 @@ I. phpVirtualBox translation mechanism
 The translation mechanism in phpVirtualBox uses a combination of PHP serialized data along with
 runtime parsed XML files. 
 
-VirtualBox's QT language files are pre-parsed (before runtime) and serialized into data consumable
+VirtualBox's Qt language files are pre-parsed (before runtime) and serialized into data consumable
 by PHP's unserialize function. These files contain all translations performed by VirtualBox's
 translators for the VirtualBox GUI frontend. Serialized translation files are placed in the 
 languages/source folder.
@@ -87,7 +87,7 @@ the translation of Storage Details.
 
 I.c Runtime translations in JavaScript
 
-When phpVirtualBox is loaded, it loads js/language.php. This instantiates __vbox_language and dumps
+When phpVirtualBox is loaded, it loads lib/language.php. This instantiates __vbox_language and dumps
 its language data as a JSON encoded object. It also contains the phpVirtualBox JavaScript trans()
 function which takes (at a minimum) a context and message, and returns the corresponding translation.
 
@@ -97,7 +97,7 @@ lib/language.php contains a trans() function defined in PHP which takes (at a mi
 message, and returns the corresponding translation using an instance of __vbox_language. Since
 language loading is an expensive process (unserializing a large amount of data and parsing XML), the
 instantiation of the __vbox_language only occurs if trans() is called in PHP. Subsequent calls to
-trans() will of course use the existing instantiation. Translation inside PHP Is rare and restricted
+trans() will of course use the existing instantiation. Translation inside PHP is rare and restricted
 to error messages returned by phpVirtualBox.
 
 II. Adding a new language
@@ -160,11 +160,11 @@ If you can't find the needed language, you won't be able to add or update it in 
 
 Copy the "VirtualBox_xx.ts" file corresponding to the needed language.
 
-The script languages/source/parse_vbox_lang.php provided with phpVirtualbox can then be used to parse this ".ts" file into a ".dat" file consumable by phpVirtualBox.
+The script languages/source/ParseVboxLang.php provided with phpVirtualbox can then be used to parse this ".ts" file into a ".dat" file consumable by phpVirtualBox.
 
-Navigate to you phpVirtualbox installation folder and then to languages/source. Put the previously copied "VirtualBox_xx.ts" file there, then run the following command (you will need a working php setup) :
+Navigate to your phpVirtualbox installation folder and then to languages/source. Put the previously copied "VirtualBox_xx.ts" file there, then run the following command (you will need a working php setup) :
 
-php parse_vbox_lang.php VirtualBox_xx.ts > xx.dat (replace xx with the language code)
+php ParseVboxLang.php --infile VirtualBox_xx.ts --outfile xx.dat (replace xx with the language code)
 
 This will create a "xx.dat" file that should be readable by phpVirtualBox.
 

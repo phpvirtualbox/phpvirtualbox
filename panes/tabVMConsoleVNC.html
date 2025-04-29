@@ -179,7 +179,7 @@ function vboxVNCDetach() {
 	var newwin = window.open('about:blank','vboxConsoleDetachedWin'+vmname.replace(/[^a-zA-Z0-9]/g,'_'),'toolbar=0,menubar=0,location=0,directories=0,status=true,resize=true,width='+(parseInt(wh[0])+20)+',height='+(parseInt(wh[1])+20)+'');
 
 	newwin.document.open();	
-	newwin.document.write('<html><head><title>'+vmname + ' - ' + trans('Console','UIVMDesktop')+'</title></head><body style="margin: 0px; border: 0px; padding: 0px; overflow: hidden;"><div style="margin: 0px; border: 0px; padding: 0px" id="vboxPane">'+$('#vboxVNCAppletContainer').html()+'</div></body></html>');
+	newwin.document.write('<html><head><title>'+vmname + ' - ' + trans('Console','UIActionPool')+'</title></head><body style="margin: 0px; border: 0px; padding: 0px; overflow: hidden;"><div style="margin: 0px; border: 0px; padding: 0px" id="vboxPane">'+$('#vboxVNCAppletContainer').html()+'</div></body></html>');
 	newwin.document.close();
 	newwin.trans = function(t) { return t; };
 	

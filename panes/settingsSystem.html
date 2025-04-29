@@ -191,7 +191,7 @@
             <option value='Default'>Default</option>
             <option value='Legacy'>Legacy</option>
             <option value='Minimal'>Minimal</option>
-            <option value='HyperV'>HyperV</option>
+            <option value='HyperV'>Hyper-V</option>
             <option value='KVM'>KVM</option>
         </select></td>
 	<tr>
@@ -233,13 +233,13 @@ for(const cs of $('#vboxPane').data('vboxSystemProperties').platform.supportedTp
 
 
 /* Boot order devices */
-$('#vboxVMBootOrder').find("span.vboxBootOrderDevice").html(function(i,h){return trans(vboxDevice(h),'VBoxGlobal');});
+$('#vboxVMBootOrder').find("span.vboxBootOrderDevice").html(function(i,h){return trans(vboxDevice(h),'UICommon');});
 
 /* Chipsets */
 $('#vboxSettingsSystemChipsetRow').find('option').html(function(i,h){return trans(h,'VBoxGlobal');});
 
 /* Paravirtualization providers */
-$(document.forms['frmVboxSettings'].vboxSettingsParavirtInterface).find('option').html(function(i,h){return trans(h,'VBoxGlobal', 'ParavirtProvider');});
+$(document.forms['frmVboxSettings'].vboxSettingsParavirtInterface).find('option').html(function(i,h){return trans(h,'UIDetails', 'ParavirtProvider');});
 
 $('#vboxSettingsSystemMemory').data('form','frmVboxSettings');
 $('#vboxSettingsSystemProcessor').data('form','frmVboxSettings');

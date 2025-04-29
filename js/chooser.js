@@ -690,7 +690,7 @@ var vboxChooser = {
 			
 
 			// Table gets tool tips
-			tip = trans(vboxChooser._vmToolTip, 'UIVMListView').replace('%1',('<b>'+$('<span />')
+			tip = trans(vboxChooser._vmToolTip, 'UIVirtualMachineItem').replace('%1',('<b>'+$('<span />')
 				.text(vmn.name).html()+'</b>'+(vmn.currentSnapshotName ? ' (' + $('<span />')
 						.text(vmn.currentSnapshotName).html() + ')' : '')))
 				.replace('%2',trans(vboxVMStates.convert(vmn.state),'VBoxGlobal'))

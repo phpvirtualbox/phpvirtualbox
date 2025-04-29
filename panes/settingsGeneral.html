@@ -92,8 +92,8 @@
 		<th style='text-align:right'><span class='translate'>Shared Clipboard:</span></th>
 			<td><select name='vboxSettingsClipboardMode' style="width: 150px">
 					<option value='Disabled'>Disabled</option>
-					<option value='HostToGuest'>Host to Guest</option>
-					<option value='GuestToHost'>Guest to Host</option>
+					<option value='HostToGuest'>Host To Guest</option>
+					<option value='GuestToHost'>Guest To Host</option>
 					<option value='Bidirectional'>Bidirectional</option>
 				</select>
 			</td>
@@ -166,11 +166,12 @@
 $('#vboxSettingsTabGeneralInput').find(".translateinput").html(function(i,h){return trans(h,'UIActionPool');});
 $('#vboxSettingsTabGeneralInputTab').find(".translateinputtab").html(function(i,h){return trans(h,'UISettingsDialogGlobal');});
 $('#vboxSettingsTabGeneralBasic').find(".translateos").html(function(i,h){return trans(h,'UINameAndSystemEditor');});
+$('#vboxSettingsClipboardMode').find('option').html(function(i,h){return trans(h,'VBoxGlobal');});
 if($('#vboxPane').data('vboxConfig').vboxAutostartConfig) {
 	
 	// Shutdown options select buttons
 	$('#vboxAutostartConfigShutdown').find('option').each(function(i,opt){
-		$(opt).text(i == 0 ? trans('Disabled','UIGDetails',null,'details (audio)') : trans($(opt).text(),'UIActionPool'));
+		$(opt).text(i == 0 ? trans('Disabled','UICommon',null,'details (audio)') : trans($(opt).text(),'UIActionPool'));
 		if($(opt).val() == $('#vboxSettingsDialog').data('vboxMachineData').autostopType)
 			$(opt).prop('selected', true);
 	});
@@ -456,7 +457,7 @@ function vboxSettingsGeneralValidate() {
             return false;
         }
         
-    // If enabled and poasswords don't match
+    // If enabled and passwords don't match
     } else if($(document.forms['frmVboxSettings'].vboxSettingsGeneralEncryptionEnable).prop('checked')) {
         if($(document.forms['frmVboxSettings'].vboxGeneralEncryptionPassword).val() != $(document.forms['frmVboxSettings'].vboxGeneralEncryptionPassword2).val()) {
             vboxAlert(trans("Encryption passwords do not match.", 'UIMachineSettingsGeneral'));

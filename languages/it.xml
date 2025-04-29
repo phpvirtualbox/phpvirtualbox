@@ -26,17 +26,29 @@
 		<message>
 			<source>Server List</source>
 			<translation>Elenco server</translation>
-		</message>		
+		</message>
+		<message>
+			<source>Automatically start the machine after restore</source>
+			<translation></translation>
+		</message>
+		<message>
+			<source>Loading ...</source>
+			<translation>Caricamento ...</translation>
+		</message>
 	</context>
 	<context>
-		<name>UIVMDesktop</name>
+		<name>UIActionPool</name>
 		<message>
 			<source>Console</source>
 			<translation>Console</translation>
 		</message>
 		<message>
-			<source>Loading ...</source>
-			<translation>Caricamento ...</translation>
+			<source>About phpVirtualBox...</source>
+			<translation></translation>
+		</message>
+		<message>
+			<source>Install Guest Additions...</source>
+			<translation></translation>
 		</message>
 	</context>
 	<context>
@@ -58,24 +70,9 @@
 			<translation>Fermare</translation>
 		</message>
 		<message>
-			<source>VirtualBox User Manual</source>
-			<translation>Manuale Utente VirtualBox</translation>
-		</message>	
-		<message>
 			<source>About</source>
 			<translation>Info</translation>
 		</message>
-	</context>
-	<context>
-		<name>UIActionsPool</name>
-		<message>
-			<source>Save State</source>
-			<translation>Salva Stato</translation>
-		</message>
-		<message>
-			<source>Power Off</source>
-			<translation>Termina</translation>
-		</message>		
 	</context>
 	<context>
 		<!-- Console Tab -->
@@ -151,7 +148,7 @@
 		</message>
 	</context>
 	<context>
-		<name>UIVMPreviewWindow</name>
+		<name>UIGMachinePreview</name>
 		<message>
 			<source>Every %1 seconds</source>
 			<translation>Ogni %1 secondi</translation>

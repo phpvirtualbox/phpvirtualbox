@@ -740,7 +740,7 @@ function vboxVMMDialog(select,type,hideDiff,mPath) {
 			results.reject();
 		};
 
-		$("#vboxVMMDialog").dialog({'closeOnEscape':true,'width':800,'height':500,'buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent vboxVMMDialog'},'title':'<img src="images/vbox/diskimage_16px.png" class="vboxDialogTitleIcon" /> '+trans('Virtual Media Manager','VBoxMediaManagerDlg')}).on("dialogbeforeclose",function(){
+		$("#vboxVMMDialog").dialog({'closeOnEscape':true,'width':800,'height':500,'buttons':buttons,'modal':true,'autoOpen':true,'classes':{'ui-dialog':'vboxDialogContent vboxVMMDialog'},'title':'<img src="images/vbox/diskimage_16px.png" class="vboxDialogTitleIcon" /> '+trans('Virtual Media Manager','UIMediumManager')}).on("dialogbeforeclose",function(){
 	    	$(this).parent().find('span:contains("'+trans('Close','UIMessageCenter')+'")').trigger('click');
 	    });
 		

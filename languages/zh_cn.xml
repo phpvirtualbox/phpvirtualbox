@@ -26,17 +26,29 @@
 		<message>
 			<source>Server List</source>
 			<translation>服务器列表</translation>
-		</message>		
+		</message>
+		<message>
+			<source>Automatically start the machine after restore</source>
+			<translation></translation>
+		</message>
+		<message>
+			<source>Loading ...</source>
+			<translation>载入中 ...</translation>
+		</message>
 	</context>
 	<context>
-		<name>UIVMDesktop</name>
+		<name>UIActionPool</name>
 		<message>
 			<source>Console</source>
 			<translation>终端</translation>
 		</message>
 		<message>
-			<source>Loading ...</source>
-			<translation>载入中 ...</translation>
+			<source>About phpVirtualBox...</source>
+			<translation>关于 phpVirtualBox...</translation>
+		</message>
+		<message>
+			<source>Install Guest Additions...</source>
+			<translation></translation>
 		</message>
 	</context>
 	<context>
@@ -58,24 +70,9 @@
 			<translation>停止</translation>
 		</message>
 		<message>
-			<source>VirtualBox User Manual</source>
-			<translation>VirtualBox用户手册</translation>
-		</message>	
-		<message>
 			<source>About</source>
 			<translation>关于</translation>
 		</message>
-	</context>
-	<context>
-		<name>UIActionsPool</name>
-		<message>
-			<source>Save State</source>
-			<translation>保存状态</translation>
-		</message>
-		<message>
-			<source>Power Off</source>
-			<translation>关闭电源</translation>
-		</message>		
 	</context>
 	<context>
 		<!-- Console Tab -->
@@ -151,7 +148,7 @@
 		</message>
 	</context>
 	<context>
-		<name>UIVMPreviewWindow</name>
+		<name>UIGMachinePreview</name>
 		<message>
 			<source>Every %1 seconds</source>
 			<translation>每 %1 秒</translation>
