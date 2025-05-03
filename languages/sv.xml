@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+<language>
+	<context>
+		<name>phpVirtualBox</name>
+		<message>
+			<source>Warning: A VirtualBox internal operation is in progress. Closing this window or navigating away from this web page may cause unexpected and undesirable results. Please wait for the operation to complete.</source>
+			<translation>Varning: En intern åtgärd pågår i VirtualBox. Att stänga detta fönster eller navigera bort från denna webbsida kan leda till oväntade och oönskade resultat. Vänligen vänta tills åtgärden är avslutad.</translation>
+		</message>
+		<message>
+			<source>Operation Canceled</source>
+			<translation>Operationen avbröts</translation>
+		</message>
+		<message>
+			<source>An error occurred communicating with your vboxwebsrv. No more requests will be sent by phpVirtualBox until the error is corrected and this page is refreshed. The details of this connection error should be displayed in a subsequent dialog box.</source>
+			<translation>Ett fel inträffade i kommunikationen med din vboxwebsrv. Inga mer anrop kommer att skickas från phpVirtualBox förrän felet rättats till och denna sida laddas om. Detaljerna om anslutningsfelet borde visas i den följande dialogrutan.</translation>
+		</message>
+		<message>
+			<source>Unable to retrieve guest properties. Make sure the virtual machine is running and has the VirtualBox Guest Additions installed.</source>
+			<translation>Oförmögen att hämta gästegenskaper. Säkerställ att den virtuella maskinen är i gång och att den har VirtualBox Guest Additions installed.</translation>
+		</message>
+		<!-- Error vmlist 1 -->
+		<message>
+			<source>There was an error obtaining the list of registered virtual machines from VirtualBox. Make sure vboxwebsrv is running and that the settings in config.php are correct.&lt;p&gt;The list of virtual machines will not begin auto-refreshing again until this page is reloaded.&lt;/p&gt;</source>
+			<translation>Ett fel uppstod när listan över registrerade virtuella maskiner skulle hämtas från VirtualBox. Säkerställ att vboxwebsrv är i gång och att inställningarna i config.php är korrekta.&lt;p&gt;Listan över virtuella maskiner kommer inte börja automatladdas förrän denna sida laddats om.&lt;/p&gt;</translation>
+		</message>
+		<message>
+			<source>Server List</source>
+			<translation>Serverlista</translation>
+		</message>
+	</context>
+	<context>
+		<name>UIVMDesktop</name>
+		<message>
+			<source>Console</source>
+			<translation>Konsol</translation>
+		</message>
+		<message>
+			<source>Loading ...</source>
+			<translation>Laddar ...</translation>
+		</message>
+	</context>
+	<context>
+		<name>VBoxSelectorWnd</name>
+		<message>
+			<source>Change Password</source>
+			<translation>Byt lösenord</translation>
+		</message>
+		<message>
+			<source>Log out - %1</source>
+			<translation>Logga ut - %1</translation>
+		</message>
+		<message>
+			<source>Logged in as %1</source>
+			<translation>Inloggad som %1</translation>
+		</message>
+		<message>
+			<source>Stop</source>
+			<translation>Stoppa</translation>
+		</message>
+		<message>
+			<source>VirtualBox User Manual</source>
+			<translation>VirtualBox användarmanual</translation>
+		</message>
+		<message>
+			<source>About</source>
+			<translation>Om</translation>
+		</message>
+	</context>
+	<context>
+		<name>UIActionsPool</name>
+		<message>
+			<source>Save State</source>
+			<translation>Spara tillstånd</translation>
+		</message>
+		<message>
+			<source>Power Off</source>
+			<translation>Bryt strömmen</translation>
+		</message>
+	</context>
+	<context>
+		<!-- Console Tab -->
+		<name>VBoxConsoleWgt</name>
+		<message>
+			<source>User name</source>
+			<translation>Användarnamn</translation>
+		</message>
+		<message>
+			<source>Password</source>
+			<translation>Lösenord</translation>
+		</message>
+		<message>
+			<source>Connecting to %1</source>
+			<translation>Ansluter till %1</translation>
+		</message>
+		<message>
+			<source>Connected to %1</source>
+			<translation>Ansluten till %1</translation>
+		</message>
+		<message>
+			<source>Requested desktop size</source>
+			<translation>Begärd skrivbordsstorlek</translation>
+		</message>
+		<message>
+			<source>Connect</source>
+			<translation>Anslut</translation>
+		</message>
+		<message>
+			<source>Detach</source>
+			<translation>Koppla loss</translation>
+		</message>
+		<message>
+			<source>Disconnect</source>
+			<translation>Koppla från</translation>
+		</message>
+		<message>
+			<source>Send Ctrl-Alt-Del</source>
+			<translation>Skicka Ctrl-Alt-Del</translation>
+		</message>
+		<message>
+			<source>Disconnect reason</source>
+			<translation>Anledning till bortkoppling</translation>
+		</message>
+		<message>
+			<source>Redirection by %1</source>
+			<translation>Omdirigering av %1</translation>
+		</message>
+		<message>
+			<source>Virtual machine is not running or is not configured to accept RDP connections.</source>
+			<translation>Den virtuella maskinen är inte i gång eller är inte konfigurerad för att acceptera RDP-anslutningar.</translation>
+		</message>
+	</context>
+	<context>
+		<name>VBoxGlobal</name>
+		<message>
+			<source>Hosting</source>
+			<translation>Värd</translation>
+		</message>
+		<message>
+			<source>Guest Network Adapters</source>
+			<translation>Gästnätverksadapter</translation>
+		</message>
+		<message>
+			<source>Up</source>
+			<translation>Online</translation>
+			<comment>Host network adapter status</comment>
+		</message>
+		<message>
+			<source>Down</source>
+			<translation>Offline</translation>
+			<comment>Host network adapter status</comment>
+		</message>
+	</context>
+	<context>
+		<name>UIVMPreviewWindow</name>
+		<message>
+			<source>Every %1 seconds</source>
+			<translation>Varje %1 sekund(er)</translation>
+		</message>
+		<message>
+			<source>Open in new window</source>
+			<translation>Öppna i nytt fönster</translation>
+		</message>
+	</context>
+	<context>
+		<name>UISettingsDialogGlobal</name>
+		<message>
+			<source>Users</source>
+			<translation>Användare</translation>
+		</message>
+	</context>
+	<context>
+		<name>UIUsers</name>
+		<message>
+			<source>Users</source>
+			<translation>Användare</translation>
+		</message>
+		<message>
+			<source>Admin User</source>
+			<translation>Administrativ användare</translation>
+		</message>
+		<message>
+			<source>Can administer users</source>
+			<translation>Kan administrera användare</translation>
+		</message>
+		<message>
+			<source>Add User</source>
+			<translation>Lägg till användare</translation>
+		</message>
+		<message>
+			<source>Edit User</source>
+			<translation>Redigera användare</translation>
+		</message>
+		<message>
+			<source>Remove User</source>
+			<translation>Ta bort användare</translation>
+		</message>
+		<message>
+			<source>A user with that username already exists.</source>
+			<translation>Det finns redan en användare med detta användarnamn.</translation>
+		</message>
+		<message>
+			<source>Are you sure you want to remove the user &lt;b&gt;%1&lt;/b&gt;? This action cannot be undone.</source>
+			<translation>Är du säker på att du vill ta bort användaren &lt;b&gt;%1&lt;/b&gt;? Denna åtgärd kan inte göras ogjord.</translation>
+		</message>
+		<message>
+			<source>Username</source>
+			<translation>Användarnamn</translation>
+		</message>
+		<message>
+			<source>Password</source>
+			<translation>Lösenord</translation>
+		</message>
+		<message>
+			<source>Log in</source>
+			<translation>Logga in</translation>
+		</message>
+		<message>
+			<source>Change Password</source>
+			<translation>Byta lösenord</translation>
+		</message>
+		<message>
+			<source>Old Password</source>
+			<translation>Nuvarande lösenord</translation>
+		</message>
+		<message>
+			<source>New Password</source>
+			<translation>Nytt lösenord</translation>
+		</message>
+		<message>
+			<source>The passwords you have entered do not match.</source>
+			<translation>Lösenorden stämmer inte överens.</translation>
+		</message>
+		<message>
+			<source>Password changed.</source>
+			<translation>Lösenordet har ändrats.</translation>
+		</message>
+		<message>
+			<source>The password you have entered is invalid.</source>
+			<translation>Lösenordet du har angett är inte gilltigt.</translation>
+		</message>
+		<message>
+			<source>Retype</source>
+			<translation>Skriv om</translation>
+		</message>
+		<message>
+			<source>Invalid username or password.</source>
+			<translation>Ogilltigt användarnamn eller lösenord.</translation>
+		</message>
+		<message>
+			<source>Not logged in.</source>
+			<translation>Inte inloggad.</translation>
+		</message>
+	</context>
+</language>
+
