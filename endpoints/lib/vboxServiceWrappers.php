@@ -235,7 +235,7 @@ abstract class VBox_Enum
 
     public function __toString()
     {
-        return (string)$this->NameMap[$this->_handle];
+        return (string)$this->NameMap[$this->_handle ?? ''];
     }
 }
 
