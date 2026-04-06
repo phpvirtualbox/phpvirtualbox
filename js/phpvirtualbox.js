@@ -2893,7 +2893,7 @@ function vboxWizard() {
 							vl.onLoad = function() {
 								
 								// Change this button text
-								$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('span:contains("'+trans('Expert Mode', 'UIWizard')+'")')
+								$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('button:contains("'+trans('Expert Mode', 'UIWizard')+'")')
 								.html(trans('Guided Mode', 'UIWizard'));
 								
 								for(var i = 0; i < self.stepButtons.length; i++) {
@@ -2904,7 +2904,7 @@ function vboxWizard() {
 								}
 								
 								// Hide back button
-								$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('span:contains("'+self.backArrow + ' '+self.backText+'")').parent().hide();
+								$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('button:contains("'+self.backArrow + ' '+self.backText+'")').hide();
 								
 								// Translations and setup
 								vboxInitDisplay(self.name+'Content',self.context);
@@ -2914,7 +2914,7 @@ function vboxWizard() {
 								// Go to last step
 								self.displayStep(1);
 								
-								$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('span:contains("'+self.finishText+'")').parent().trigger('focus');
+								$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('button:contains("'+self.finishText+'")').trigger('focus');
 								
 							};
 							vl.run();
@@ -2942,7 +2942,7 @@ function vboxWizard() {
 								
 								// Change this button text
 								$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane')
-								.find('span:contains("'+trans('Guided Mode', 'UIWizard')+'")')
+								.find('button:contains("'+trans('Guided Mode', 'UIWizard')+'")')
 								.html(trans('Expert Mode', 'UIWizard'));
 								
 								for(var i = 0; i < self.stepButtons.length; i++) {
@@ -2956,13 +2956,13 @@ function vboxWizard() {
 								vboxInitDisplay(self.name+'Content',self.context);
 								
 								// Show back button
-								$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('span:contains("'+self.backArrow + ' '+self.backText+'")').parent().show();
+								$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('button:contains("'+self.backArrow + ' '+self.backText+'")').show();
 								
 								self.steps = self.simpleSteps;
 								
 								self.displayStep(1);
 								
-								$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('span:contains("'+self.nextArrow+'")').parent().trigger('focus');
+								$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('button:contains("'+self.nextArrow+'")').trigger('focus');
 
 								
 							};
@@ -3007,7 +3007,7 @@ function vboxWizard() {
 				'stack':true,
 				'classes':{'ui-dialog':'vboxDialogContent vboxWizard'},
 				'open': function() {
-					$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('span:contains("'+self.nextArrow+'")').parent().trigger('focus');
+					$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('button:contains("'+self.nextArrow+'")').trigger('focus');
 				},
 				'title':(self.icon ? '<img src="images/vbox/'+self.icon+ ( (self.icon.indexOf('.png') == -1) ? '_16px.png': '') +'" class="vboxDialogTitleIcon" /> ': '') + self.title
 			
@@ -3041,7 +3041,7 @@ function vboxWizard() {
 				$('#'+self.name+'Title').hide();
 				
 				// Hide back button
-				$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('span:contains("'+self.backArrow + ' '+self.backText+'")').parent().hide();
+				$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('button:contains("'+self.backArrow + ' '+self.backText+'")').hide();
 			}
 			
 			self.displayStep(1);
@@ -3085,20 +3085,20 @@ function vboxWizard() {
 		/* update buttons */
 		if(self.stepButtons) {
 			for(var i = 0; i < self.stepButtons.length; i++) {
-				$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('span:contains("'+self.stepButtons[i].name+'")').parent().css({'display':((step == self.steps && self.stepButtons[i].steps[0]==-1) || jQuery.inArray(step,self.stepButtons[i].steps) > -1 ? '': 'none')});
+				$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('button:contains("'+self.stepButtons[i].name+'")').css({'display':((step == self.steps && self.stepButtons[i].steps[0]==-1) || jQuery.inArray(step,self.stepButtons[i].steps) > -1 ? '': 'none')});
 			}
 		}
 		if(step == 1 && step != self.steps) {
-			$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('span:contains("'+self.backText+'")').parent().addClass('disabled').trigger('blur');
-			$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('span:contains("'+self.finishText+'")').html($('<div />').text((self.steps > 1 ? self.nextText+' '+self.nextArrow: self.finishText)).html());
+			$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('button:contains("'+self.backText+'")').addClass('disabled').trigger('blur');
+			$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('button:contains("'+self.finishText+'")').html($('<div />').text((self.steps > 1 ? self.nextText+' '+self.nextArrow: self.finishText)).html());
 		} else {
 			
-			$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('span:contains("'+self.backText+'")').parent().removeClass('disabled');
+			$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('button:contains("'+self.backText+'")').removeClass('disabled');
 			
 			if(step == self.steps) {
-				$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('span:contains("'+self.nextArrow+'")').html($('<div />').text(self.finishText).html());
+				$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('button:contains("'+self.nextArrow+'")').html($('<div />').text(self.finishText).html());
 			} else {
-				$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('span:contains("'+self.finishText+'")').html($('<div />').text(self.nextText+' '+self.nextArrow).html());
+				$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('button:contains("'+self.finishText+'")').html($('<div />').text(self.nextText+' '+self.nextArrow).html());
 			}
 		}
 		$('#'+self.name+'Title').html(trans($('#'+self.name+'Step'+step).attr('title'),self.context));
@@ -3114,7 +3114,7 @@ function vboxWizard() {
 	 * @memberOf vboxWizard
 	 */
 	this.setLast = function() {
-		$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('span:contains("'+self.nextText+'")').html($('<div />').text(self.finishText).html());
+		$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('button:contains("'+self.nextText+'")').html($('<div />').text(self.finishText).html());
 		self._origSteps = self.steps;
 		self.steps = self._curStep;
 	};
@@ -3126,7 +3126,7 @@ function vboxWizard() {
 	 * @memberOf vboxWizard
 	 */
 	this.unsetLast = function() {
-		$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('span:contains("'+self.finishText+'")').html($('<div />').text(self.nextText+' '+self.nextArrow).html());
+		$('#'+self.name+'Dialog').parent().find('.ui-dialog-buttonpane').find('button:contains("'+self.finishText+'")').html($('<div />').text(self.nextText+' '+self.nextArrow).html());
 		if(self._origSteps) self.steps = self._origSteps;
 	};
 	
