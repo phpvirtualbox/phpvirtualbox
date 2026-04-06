@@ -118,11 +118,11 @@ function vboxSettingsGlobalNetworkNatPortForwardingEdit(td,type) {
 	var w = $(td).width();
 	var ex = $(td).parent().data('vboxRule')[$(td).data('vboxPane')];
 	$(td).html('');
-	$('<input />').data('vboxPane',$(td).data('vboxPane')).attr({'class':'vboxText'}).val(ex.replace('[','').replace(']','')).blur(function(){
+	$('<input />').data('vboxPane',$(td).data('vboxPane')).attr({'class':'vboxText'}).val(ex.replace('[','').replace(']','')).on('blur', function(){
 		switch($(this).data('vboxPane')) {
 			/* name */
 			case 0:
-				$(this).val(jQuery.trim($(this).val().replace(':','')));
+				$(this).val($(this).val().replace(':','').trim());
 				if(!$(this).val())
 					$(this).val($(this).parent().parent().data('vboxRule')[0]);
 				break;
@@ -142,7 +142,7 @@ function vboxSettingsGlobalNetworkNatPortForwardingEdit(td,type) {
 		$(this).parent().parent().data('vboxRule')[$(this).data('vboxPane')] = ($(this).parent().hasClass('vboxIP') ? ('['+ $(this).val() + ']') : $(this).val());
 		var ex = $(this).val();
 		$(this).replaceWith($('<div />').html(ex).text());
-	}).css({'width':(w-8)+'px','padding':'0px','margin':'0px'}).keydown(function(event){
+	}).css({'width':(w-8)+'px','padding':'0px','margin':'0px'}).on('keydown', function(event){
 		if(event.keyCode == 13) {
 			$(this).trigger('blur');
 			return;
@@ -164,7 +164,7 @@ function vboxSettingsGlobalNetworkNatPortForwardingEdit(td,type) {
 				break;
 		}
 		
-	}).appendTo(td).focus();
+	}).appendTo(td).trigger('focus');
 }
 
 /* Edit protocol */
@@ -188,7 +188,7 @@ function vboxSettingsGlobalNetworkNatPortForwardingAdd(r,listId) {
 	var tr = $('<tr />').attr({'class':'vboxListItem'});
 	
 	/* Rule Name */
-	$('<td />').data('vboxPane',0).html($('<div />').html(rule[0]).text()).click(function(){
+	$('<td />').data('vboxPane',0).html($('<div />').html(rule[0]).text()).on('click', function(){
 		if($(this).parent().hasClass('vboxListItemSelected')) {
 			vboxSettingsGlobalNetworkNatPortForwardingEdit(this,'name');
 			return;
@@ -201,7 +201,7 @@ function vboxSettingsGlobalNetworkNatPortForwardingAdd(r,listId) {
 	}).addClass('vboxHoverFirst').appendTo(tr);
 	
 	/* Rule protocol */
-	$('<td />').css({'text-align':'center'}).click(function(){
+	$('<td />').css({'text-align':'center'}).on('click', function(){
 		if($(this).parent().hasClass('vboxListItemSelected')) {
 			vboxSettingsGlobalNetworkNatPortForwardingEditProto(this);
 			return;
@@ -214,7 +214,7 @@ function vboxSettingsGlobalNetworkNatPortForwardingAdd(r,listId) {
 	}).addClass('vboxProto vboxHoverMid').html(trans(rule[1] == 'tcp' ? 'TCP' : 'UDP','VBoxGlobal')).appendTo(tr);
 	
 	for(var i = 2; i < rule.length; i++) {
-		$('<td />').css({'text-align':'center'}).data('vboxPane',i).click(function(){
+		$('<td />').css({'text-align':'center'}).data('vboxPane',i).on('click', function(){
 			if($(this).parent().hasClass('vboxListItemSelected')) {
 				vboxSettingsGlobalNetworkNatPortForwardingEdit(this,'port');
 				return;

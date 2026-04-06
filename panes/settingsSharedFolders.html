@@ -187,15 +187,15 @@ function vboxSettingsAddSharedFolder(f, noColor) {
 	$('<td />').attr({'class':'vboxSettingsSFAMPointCell vboxHoverLast'}).html($('<div/>').text(f.autoMountPoint).html()).appendTo(tr);
 
 	
-	$(tr).children().click(function(){
+	$(tr).children().on('click', function(){
 		$('#vboxSettingsSharedFoldersList').find('tr.vboxListItemSelected').removeClass('vboxListItemSelected').addClass('vboxListItem');
 		$(this).parent().removeClass('vboxListItem').addClass('vboxListItemSelected');
 		$('#vboxSettingsSharedFoldersList').trigger('select',$(this).parent());
 
-	}).dblclick(function(e){
+	}).on('dblclick', function(e){
 		sfToolbar.click('editshared');
 		e.preventDefault();
-		
+
 	});
 	
 	if(f.type == 'machine') {
@@ -230,7 +230,7 @@ function vboxSettingsAddSharedFolder(f, noColor) {
 	var tb = $('<tbody />').attr({'id':'vboxSFMachineBody'}).addClass('vboxHover');
 	var tr = $('<tr />').attr({'class':'vboxListItemDisabled'}).disableSelection();
 	var td = $('<td />').attr({'class':'vboxSettingsSFNameCell'});
-	$('<input />').attr({'type':'button','class':'vboxImgButton','style':'background-image: url(images/vbox/arrow_down_10px.png); width: 12px; height: 12px; margin-right: 4px;'}).click(function(){
+	$('<input />').attr({'type':'button','class':'vboxImgButton','style':'background-image: url(images/vbox/arrow_down_10px.png); width: 12px; height: 12px; margin-right: 4px;'}).on('click', function(){
 
 		if(!$(this).data('toggleClicked')) {
 			
@@ -262,7 +262,7 @@ function vboxSettingsAddSharedFolder(f, noColor) {
 		 var tr = $('<tr />').attr({'class':'vboxListItemDisabled'}).disableSelection();
 	
 		 $('<td />').attr({'class':'vboxSettingsSFNameCell'}).append(
-				 $('<input />').attr({'type':'button','class':'vboxImgButton','style':'background-image: url(images/vbox/arrow_down_10px.png); width: 12px; height: 12px; margin-right: 4px;'}).click(function(){
+				 $('<input />').attr({'type':'button','class':'vboxImgButton','style':'background-image: url(images/vbox/arrow_down_10px.png); width: 12px; height: 12px; margin-right: 4px;'}).on('click', function(){
 					 
 						if(!$(this).data('toggleClicked')) {
 							

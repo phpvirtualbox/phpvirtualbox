@@ -90,7 +90,7 @@ var vboxChooser = {
 			$(this).removeClass('vboxChooserDropTargetHoverRoot');
 		});
 		
-		$(window).resize(function(){
+		$(window).trigger('resize', function(){
 			
 			// Get anchor id and add / remove class
 			var w = parseInt($(vboxChooser._anchor).innerWidth());
@@ -753,7 +753,7 @@ var vboxChooser = {
 			});
 			
 			// Open settings on dblclick
-			$(tbl).dblclick(function(){
+			$(tbl).on('dblclick', function(){
 				if(vboxChooser._vmContextMenuObj.menuItems['settings'].enabled())
 					vboxChooser._vmContextMenuObj.menuItems['settings'].click();
 			});
@@ -1593,7 +1593,7 @@ var vboxChooser = {
 			)
 
 		);
-		$(el).children('div.vboxChooserGroupHeader').children('form').children('input').focus().select().blur(renameGroup);
+		$(el).children('div.vboxChooserGroupHeader').children('form').children('input').trigger('focus').trigger('select').on('blur', renameGroup);
 
 	},
 
@@ -1885,7 +1885,7 @@ var vboxChooser = {
 			).append(
 			$('<div />').addClass('vboxChooserGroupHeader').css({'display':(first ? 'none' : '')})
 				.attr({'title':gname})
-				.dblclick(function() {
+				.on('dblclick', function() {
 
 					// Already collapsed?
 					var collapsed = $(this).closest('div.vboxChooserGroup').hasClass('vboxVMGroupCollapsed');
@@ -1950,18 +1950,18 @@ var vboxChooser = {
 				)
 				.append(
 						$('<span />').addClass('vboxChooserGroupNameArrowLeft vboxChooserGroupNameArrowCollapse vboxArrowImage')
-								.mousedown(function(e){
+								.on('mousedown', function(e){
 									e.stopPropagation();
 									e.preventDefault();
 									return false;
-								}).mouseup(function(){
+								}).on('mouseup', function(){
 									$(this).closest('div.vboxChooserGroupHeader').trigger('dblclick');									
 								})
 						
 				).append(
 						
 					$('<span />').addClass('vboxChooserGroupNameArrowLeft vboxChooserGroupShowOnlyBack vboxArrowImage')
-						.click(function(e) {
+						.on('click', function(e) {
 							e.stopPropagation();
 							e.preventDefault();
 							vboxChooser.showOnlyGroupElm();
@@ -1974,7 +1974,7 @@ var vboxChooser = {
 						"<span class='vboxChooserGroupCounts' />"
 						).append(
 							$('<span />').addClass('vboxChooserGroupShowOnly vboxArrowImage')
-								.click(function(e){
+								.on('click', function(e){
 									e.stopPropagation();
 									e.preventDefault();
 									vboxChooser.showOnlyGroupElm($(this).closest('div.vboxChooserGroup'));

@@ -267,11 +267,11 @@ function vboxSettingsAddUSBFilter(f,noColor) {
 	
 	if(document.forms['frmVboxSettings'].vboxSettingsUSBEnabled.checked) {
 		
-		li.click(function(){
+		li.on('click', function(){
 			$(this).parent().children().removeClass('vboxListItemSelected');
 			$(this).addClass('vboxListItemSelected');
 			$('#vboxSettingsUSBFilterList').trigger('select',this);
-		}).dblclick(function(e){
+		}).on('dblclick', function(e){
 			e.preventDefault();
 			usbToolbar.click('usbedit');
 		}).hoverClass('vboxHover').disableSelection();

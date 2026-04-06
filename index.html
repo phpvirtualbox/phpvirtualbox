@@ -255,7 +255,7 @@
 			/*
 			 * Resize panes when the window changes sizes
 			 */
-			$(window).resize(function(){
+			$(window).on('resize', function(){
 				
 				// Hide 
 				$('#vboxChooserResizePane').children().children().css({'display':'none'});
@@ -372,8 +372,8 @@
 				$('#vboxLogin').find('input[name=password]').val('');
 				$('#vboxLogin').dialog('open');
 				
-				if(!$('#vboxLogin').find('input[name=username]').val()) $('#vboxLogin').find('input[name=username]').focus();
-				else $('#vboxLogin').find('input[name=password]').focus();
+				if(!$('#vboxLogin').find('input[name=username]').val()) $('#vboxLogin').find('input[name=username]').trigger('focus');
+				else $('#vboxLogin').find('input[name=password]').trigger('focus');
 				
 				// Display error if we tried to log in
 				if(tried) {
@@ -408,7 +408,7 @@
 				if($.browser.webkit) heightadd = 5;
 				else heightadd = 0;
 				$('#vboxLogin').dialog({'closeOnEscape':false,'width':300,'height':'auto','buttons':buttons,'modal':true,'autoOpen':false,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="images/vbox/OSE/about_16px.png" class="vboxDialogTitleIcon" /> phpVirtualBox :: ' + trans('Log in','UIUsers')});
-				$('#vboxLogin').find('input[name=username]').first().focus();
+				$('#vboxLogin').find('input[name=username]').first().trigger('focus');
 				
 				// Trick loader into not showing root pane again
 				loader.hideRoot = false;

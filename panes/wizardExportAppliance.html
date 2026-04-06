@@ -103,7 +103,7 @@ l.onLoad = function() {
 		if(vboxVMStates.isRunning(vms[i]) || vboxVMStates.isPaused(vms[i])) {
 			$(li).addClass('vboxDisabled disabled');
 		} else {
-			$(li).click(function(){$(this).toggleClass('vboxListItemSelected');}).addClass('vboxListItem');
+			$(li).on('click', function(){$(this).toggleClass('vboxListItemSelected');}).addClass('vboxListItem');
 			if(vboxChooser.isVMSelected(vms[i].id))
 				$(li).addClass('vboxListItemSelected');
 		}
@@ -222,7 +222,7 @@ $('#wizardExportApplianceStep3').on('show',function(e,wiz){
 
 	var name = '';
 	if(vmSel.length == 1) {
-		name = jQuery.trim($(vmSel[0]).data('vboxVMName'));
+		name = String($(vmSel[0]).data('vboxVMName')).trim();
 	}
 	
 	if(!name) name = 'Appliance';
@@ -253,7 +253,7 @@ $('#wizardExportApplianceStep4').on('show',function(e,wiz){
 		var trparent = $('<tr />').attr({'id':'vboxAppliance-'+vmid}).addClass('vboxAppliance-'+vmid + ' vboxTableParent');
 		var td = $('<td />').attr({'colspan':'2','class':'vboxApplianceHeader'}).append(
 			$('<div />').css({'font-weight':'bold','padding-left':'6px'}).append(
-					$('<input />').attr({'type':'button','class':'vboxImgButton','style':'background-image: url(images/downArrow.png); margin:0px;margin-right:4px;padding:0px;vspace:0px;hspace:0px;width: 12px; height: 12px;'}).click(function(){
+					$('<input />').attr({'type':'button','class':'vboxImgButton','style':'background-image: url(images/downArrow.png); margin:0px;margin-right:4px;padding:0px;vspace:0px;hspace:0px;width: 12px; height: 12px;'}).on('click', function(){
 						
 						if(!$(this).data('toggleClicked')) {
 							
@@ -285,7 +285,7 @@ $('#wizardExportApplianceStep4').on('show',function(e,wiz){
 			
 			$('<td />').css({'padding-left':'18px','white-space':'nowrap','width':'1%'}).html('<img src="images/vbox/'+vboxApplianceProps[p].icon+'_16px.png" /> ' + trans(vboxApplianceProps[p].label,'UIApplianceEditorWidget')).appendTo(tr);
 
-			$('<td />').attr({'class':'vboxHideOverflow vboxAppProp'+p}).css({'width':'100%','padding-left':'10px','padding-right':'2px'}).html('<div>'+$('<div />').text(($(trparent).data('vm')[p]||'')).html()+'</div>').dblclick((vboxApplianceProps[p].textarea ? vboxExportAppliancePropEditArea : vboxExportAppliancePropEdit )).appendTo(tr);
+			$('<td />').attr({'class':'vboxHideOverflow vboxAppProp'+p}).css({'width':'100%','padding-left':'10px','padding-right':'2px'}).html('<div>'+$('<div />').text(($(trparent).data('vm')[p]||'')).html()+'</div>').on('dblclick', (vboxApplianceProps[p].textarea ? vboxExportAppliancePropEditArea : vboxExportAppliancePropEdit )).appendTo(tr);
 			
 			$(tbl).append(tr);
 		}
@@ -326,15 +326,15 @@ function vboxExportAppliancePropEditDialog(elm, defaults) {
 }
 /* Edit property that has a text box */
 function vboxExportAppliancePropEdit(evt,elm) {
-	var input = $('<input />').attr({'type':'text','class':'vboxText'}).css({'width':($(this).innerWidth()-12)+'px','margin':'0px'}).val($('<div />').html($(this).children().first().html()).text()).blur(function(){
+	var input = $('<input />').attr({'type':'text','class':'vboxText'}).css({'width':($(this).innerWidth()-12)+'px','margin':'0px'}).val($('<div />').html($(this).children().first().html()).text()).on('blur', function(){
 		var v = $(this).val();
 		var p = $(this).parent();
 		var d = vboxDivOverflowHidden(p);		
 		$(this).remove();
 		$(d).html($('<div />').text(v).html());
 		$(p).html('').append(d);
-	}).keydown(function(e){if(e.keyCode == 13) $(this).trigger('blur');});
-	$(this).html('').append(input).children().first().focus();
+	}).on('keydown', function(e){if(e.keyCode == 13) $(this).trigger('blur');});
+	$(this).html('').append(input).children().first().trigger('focus');
 }
 
 </script>

@@ -167,7 +167,7 @@ $('#vboxSettingsDialog').on('dataLoaded',function(){
 		var pNum = vboxSerialPorts.getPortName($('#vboxSettingsDialog').data('vboxMachineData').serialPorts[i].IRQ,$('#vboxSettingsDialog').data('vboxMachineData').serialPorts[i].IOBase);
 		$(document.forms['frmVboxSettings'].elements['vboxSettingsPortNumber'+a]).val(pNum);
 		$(document.forms['frmVboxSettings'].elements['vboxSettingsPortNumber'+a].options[document.forms['frmVboxSettings'].elements['vboxSettingsPortNumber'+a].selectedIndex]).attr('selected','selected');
-		$(document.forms['frmVboxSettings'].elements['vboxSettingsPortNumber'+a]).change();	
+		$(document.forms['frmVboxSettings'].elements['vboxSettingsPortNumber'+a]).trigger('change');
 
 		$(document.forms['frmVboxSettings'].elements['vboxSettingsSPortIRQ'+a]).val($('#vboxSettingsDialog').data('vboxMachineData').serialPorts[i].IRQ);
 		$(document.forms['frmVboxSettings'].elements['vboxSettingsSPortIO'+a]).val($('#vboxSettingsDialog').data('vboxMachineData').serialPorts[i].IOBase);
@@ -175,7 +175,7 @@ $('#vboxSettingsDialog').on('dataLoaded',function(){
 		// Port Mode
 		$(document.forms['frmVboxSettings'].elements['vboxSettingsPortMode'+a]).val($('#vboxSettingsDialog').data('vboxMachineData').serialPorts[i].hostMode);
 		$(document.forms['frmVboxSettings'].elements['vboxSettingsPortMode'+a].options[document.forms['frmVboxSettings'].elements['vboxSettingsPortMode'+a].selectedIndex]).attr('selected','selected');
-		$(document.forms['frmVboxSettings'].elements['vboxSettingsPortMode'+a]).change();
+		$(document.forms['frmVboxSettings'].elements['vboxSettingsPortMode'+a]).trigger('change');
 
 		// Connect pipe
 		$(document.forms['frmVboxSettings'].elements['vboxSettingsSPortConnectPipe'+a]).prop('checked',($('#vboxSettingsDialog').data('vboxMachineData').serialPorts[i].server ? false : true)).triggerHandler('click');

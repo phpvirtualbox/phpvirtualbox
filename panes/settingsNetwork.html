@@ -155,7 +155,7 @@ var vboxSettingsNetContainer = $(vboxSettingsNetTemplate).parent();
  
 
 /* Network advanced show / hide */
-$('#vboxSettingsTabNetAdapter').find('input.netImgAdvanced').click(function(){
+$('#vboxSettingsTabNetAdapter').find('input.netImgAdvanced').on('click', function(){
 		
 		if(!$(this).data('toggleClicked')) {
 			
@@ -175,7 +175,7 @@ $('#vboxSettingsTabNetAdapter').find('input.netImgAdvanced').click(function(){
 });
 
 /* Mac address generator */
-$('#vboxSettingsTabNetAdapter').find('input.vboxSettingsNetMacGen').click(function(){
+$('#vboxSettingsTabNetAdapter').find('input.vboxSettingsNetMacGen').on('click', function(){
 
 	var t = $(this).siblings('input').first();
 	var oval = $(t).val();
@@ -339,7 +339,7 @@ $('#vboxSettingsDialog').on('dataLoaded',function(){
 		// attached to
 		$(document.forms['frmVboxSettings'].elements['vboxSettingsNetAttachedTo'+a]).val($('#vboxSettingsDialog').data('vboxMachineData').networkAdapters[i].attachmentType).trigger('change');
 		$(document.forms['frmVboxSettings'].elements['vboxSettingsNetAttachedTo'+a].options[document.forms['frmVboxSettings'].elements['vboxSettingsNetAttachedTo'+a].selectedIndex]).attr('selected','selected');
-		$(document.forms['frmVboxSettings'].elements['vboxSettingsNetAttachedTo'+a]).change();
+		$(document.forms['frmVboxSettings'].elements['vboxSettingsNetAttachedTo'+a]).trigger('change');
 		
 		// Device or network name, depending on what 'attached to' is
 		var netName = '';
@@ -381,8 +381,8 @@ $('#vboxSettingsDialog').on('dataLoaded',function(){
 		$(document.forms['frmVboxSettings'].elements['vboxSettingsNetEnabled'+a]).prop('checked',$('#vboxSettingsDialog').data('vboxMachineData').networkAdapters[i].enabled).triggerHandler('click');;
 
 		
-		$(document.forms['frmVboxSettings'].elements['vboxSettingsNetPF'+a]).unbind('click');
-		$(document.forms['frmVboxSettings'].elements['vboxSettingsNetPF'+a]).click(function(){
+		$(document.forms['frmVboxSettings'].elements['vboxSettingsNetPF'+a]).off('click');
+		$(document.forms['frmVboxSettings'].elements['vboxSettingsNetPF'+a]).on('click', function(){
 			
 			var nicIndex = (parseInt($(this).attr('name').substr(17))-1);
 			

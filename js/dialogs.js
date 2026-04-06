@@ -418,7 +418,7 @@ function vboxWizardNewVMDialog(vmgroup) {
 				disk = $(self.form)[0].newVMDiskSelect.options[$(self.form)[0].newVMDiskSelect.selectedIndex].value;
 				disk = vboxMedia.getMediumById(disk).location;
 			}
-			var name = jQuery.trim($(self.form).find('[name=newVMName]').val());
+			var name = String($(self.form).find('[name=newVMName]').val()).trim();
 			var ostype = $(self.form).find('[name=newVMOSType]').val();
 			var mem = parseInt($(self.form).find('[name=wizardNewVMSizeValue]').val());
 			
@@ -451,7 +451,7 @@ function vboxWizardNewVMDialog(vmgroup) {
 		};
 		
 		// Name must exist
-		if(!jQuery.trim($(self.form).find('[name=newVMName]').val())) {
+		if(!String($(self.form).find('[name=newVMName]').val()).trim()) {
 			$(self.form).find('[name=newVMName]').addClass('vboxRequired');
 			return;
 		}
@@ -485,7 +485,7 @@ function vboxWizardNewVMDialog(vmgroup) {
 					// Recommended size
 					var size = newVMOSTypesObj[$(self.form).find('[name=newVMOSType]').val()].recommendedHDD;
 					
-					$.when(new vboxWizardNewHDDialog({'name':jQuery.trim($(self.form).find('[name=newVMName]').val()),'size':size,'group':vmgroup}).run())
+					$.when(new vboxWizardNewHDDialog({'name':String($(self.form).find('[name=newVMName]').val()).trim(),'size':size,'group':vmgroup}).run())
 							.done(function(med){
 								
 								$(self.form).find('[name=newVMDisk]').eq(2).trigger('click').prop('checked',true);
@@ -571,7 +571,7 @@ function vboxWizardCloneVMDialog(args) {
 	this.onFinish = function() {
 		
 		// Get parameters
-		var name = jQuery.trim($(self.form).find('[name=machineCloneName]').val());
+		var name = String($(self.form).find('[name=machineCloneName]').val()).trim();
 		var src = self.args.vm.id;
 		var snapshot = self.args.snapshot;
 		var allNetcards = $(self.form).find('[name=vboxCloneReinitNetwork]').prop('checked');
@@ -968,7 +968,7 @@ function vboxWizardCopyHDDialog(suggested) {
 
 		var fsplit = $(self.form).find('[name=newHardDiskSplit]').prop('checked') && vboxMedia.formatSupportsSplit(format);
 
-		var loc = jQuery.trim($(self.form).find('[name=wizardCopyHDLocation]').val());
+		var loc = String($(self.form).find('[name=wizardCopyHDLocation]').val()).trim();
 		if(!loc) {
 			$(self.form).find('[name=wizardCopyHDLocation]').addClass('vboxRequired');
 			return;
@@ -1309,7 +1309,7 @@ function vboxVMsettingsDialog(vm,pane) {
 		    
 		    // Validate
 		    if(!vboxSettingsGeneralValidate()) {
-        	      $('#vboxSettingsMenuList').children('li:eq(0)').first().click();
+        	      $('#vboxSettingsMenuList').children('li:eq(0)').first().trigger('click');
         	      $('#vboxSettingsPane-General').tabs('option','active', 3);
         	      encMediaSettings.reject();
         	      return encMediaSettings;
@@ -1435,7 +1435,7 @@ function vboxVMsettingsDialog(vm,pane) {
 			// Always run this
 			.always(function(){
 				// No longer watch for changed VM settings
-				$('#vboxPane').unbind('vboxEvents',machineSettingsChanged);
+				$('#vboxPane').off('vboxEvents',machineSettingsChanged);
 
 			})
 		
@@ -1610,7 +1610,7 @@ function vboxSettingsDialog(title,panes,data,pane,icon,langContext,presave) {
 		if(panes[i].disabled) continue;
 				
 		// Menu item
-		$('<li />').html('<div><img src="images/vbox/'+panes[i].icon+'_16px.png" /></div> <div>'+trans(panes[i].label,langContext)+'</div>').data(panes[i]).click(function(){
+		$('<li />').html('<div><img src="images/vbox/'+panes[i].icon+'_16px.png" /></div> <div>'+trans(panes[i].label,langContext)+'</div>').data(panes[i]).on('click', function(){
 			
 			$('#vboxSettingsTitle').html(trans($(this).data('label'),langContext));
 			
@@ -1709,7 +1709,7 @@ function vboxSettingsDialog(title,panes,data,pane,icon,langContext,presave) {
 	    }
 	    i-=offset;
 	    if(i >= panes.length) i = 0;
-	    $('#vboxSettingsMenuList').children('li:eq('+i+')').first().click().each(function(){
+	    $('#vboxSettingsMenuList').children('li:eq('+i+')').first().trigger('click').each(function(){
 	    	if(tab !== undefined) {
 	    		// Check for out of scope tab
 	    		tab = Math.min(($('#vboxSettingsPane-'+$(this).data('name')).children('ul').first().children().length-1), parseInt(tab));

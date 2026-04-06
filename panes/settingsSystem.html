@@ -302,7 +302,7 @@ if(!$('#vboxSettingsDialog').data('vboxHostDetails').cpuFeatures['Long Mode (64-
  *
  */
 
-$("#vboxVMBootOrder").find("input.imgMvUp").click(function() {
+$("#vboxVMBootOrder").find("input.imgMvUp").on('click', function() {
 
 	var list = $('#vboxVMBootOrderList').children('li');
 
@@ -312,13 +312,13 @@ $("#vboxVMBootOrder").find("input.imgMvUp").click(function() {
 			var mv = $(list[i]).detach();
 			$(list[(i-1)]).before(mv);
 			i = list.length;
-			mv.click();
+			mv.trigger('click');
 		}
 	}
 	
 });
 
-$("#vboxVMBootOrder").find("input.imgMvDn").click(function() {
+$("#vboxVMBootOrder").find("input.imgMvDn").on('click', function() {
 
 	var list = $('#vboxVMBootOrderList').children('li');
 
@@ -329,7 +329,7 @@ $("#vboxVMBootOrder").find("input.imgMvDn").click(function() {
 			var mv = $(list[i]).detach();
 			$(list[(i+1)]).after(mv);
 			i = list.length;
-			mv.click();
+			mv.trigger('click');
 		}
 	}
 	
@@ -429,7 +429,7 @@ $('#vboxSettingsDialog').on('dataLoaded',function(){
 			$(this).prop('src',$(this).prop('src').replace('_16','_disabled_16'));
 		});
 		
-		$("#vboxVMBootOrderList").children("li").unbind('click');
+		$("#vboxVMBootOrderList").children("li").off('click');
 		
 	} else {
 		
@@ -445,7 +445,7 @@ $('#vboxSettingsDialog').on('dataLoaded',function(){
 			$(this).prop('src',$(this).prop('src').replace('_disabled_16','_16'));
 		});
 
-		$("#vboxVMBootOrderList").children("li").click(function() {
+		$("#vboxVMBootOrderList").children("li").on('click', function() {
 			
 			// Update class
 			$(this).siblings().prop('className','vboxListItem');
