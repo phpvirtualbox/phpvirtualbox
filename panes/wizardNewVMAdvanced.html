@@ -270,7 +270,7 @@ $('#newVMHDTriggerBind').on('enable',function(){
 }).trigger('disable');
 
 $('#wizardNewVMStep1').on('show',function() {
-	$(document.forms['frmwizardNewVM'].newVMName).focus();
+	$(document.forms['frmwizardNewVM'].newVMName).trigger('focus');
 });
 
 </script>

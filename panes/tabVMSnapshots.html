@@ -799,14 +799,14 @@ function __vboxTabSnapshot(s, currentId) {
 			},vboxSnapshotContextMenu.menuClickCallback)
 			
 			// show details on dblclick
-			.dblclick(vboxSnapshotButtons[4].click).disableSelection()
+			.on('dblclick', vboxSnapshotButtons[4].click).disableSelection()
 			
 			// tool tip
 			.tipped({'position':'mouse','delay':1500,'source':'<p><strong>'+$('<div />').text(s.name).html()+'</strong> ('+trans((s.online ? 'online)' : 'offline)'),'UISnapshotPane')+'</p>'+
 				'<p>'+ vboxDateTimeString(s.timeStamp, trans('Taken at %1','UISnapshotPane'), trans('Taken on %1','UISnapshotPane'))+'</p>' +
 							(s.description ? '<hr />' + $('<div />').text(s.description).html() : '')})
 			
-	).addClass(currentId == s.id ? 'vboxSnapshotCurrent' : '').children('div.vboxListItem').first().click(function(){
+	).addClass(currentId == s.id ? 'vboxSnapshotCurrent' : '').children('div.vboxListItem').first().on('click', function(){
 		$('#vboxSnapshotList').find('div.vboxListItemSelected').first().removeClass('vboxListItemSelected');
 		$(this).addClass('vboxListItemSelected');
 		$('#vboxSnapshotList').trigger('select',$(this).parent());
@@ -837,7 +837,7 @@ function __vboxTabSnapshotCurrent(vm) {
 						menu: vboxSnapshotContextMenuCurrent.menuId(),
 						clickthrough : true
 					},vboxSnapshotContextMenuCurrent.menuClickCallback)
-				.click(function(){
+				.on('click', function(){
 					$('#vboxSnapshotList').find('div.vboxListItemSelected').first().removeClass('vboxListItemSelected');
 					$(this).addClass('vboxListItemSelected');
 					$('#vboxSnapshotList').trigger('select',$(this).parent());

@@ -216,7 +216,7 @@ $('#wizardNewHDStep1').on('show',function(e,wiz){
 	// Already initialized?
 	if($('#wizardNewHDStep1').data('init') || !wiz || !wiz.suggested) return;
 	
-	$(document.forms['frmwizardNewHD'].elements.wizardNewHDLocation).focus();
+	$(document.forms['frmwizardNewHD'].elements.wizardNewHDLocation).trigger('focus');
 	
 	/* Keep suggested options */
 	$('#wizardNewHDStep1').data('wizSuggested', wiz.suggested);

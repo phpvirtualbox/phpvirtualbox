@@ -7,32 +7,6 @@
  */
 
 /**
- * 
- * Prevent ESC key from stopping background AJAX requests
- * 
- */
-$(document).ready(function(){
-    $(window).keydown(function(i){if(i.keyCode&&i.keyCode===27){
-        i.preventDefault();
-        try {
-                var flash = RDPWebClient.getFlashById("FlashRDP");
-                flash.keyboardSendScancodes('01');
-        } catch (e) {
-                //alert(e.message);
-        }
-    }});
-    $(document).keydown(function(i){if(i.keyCode&&i.keyCode===27){
-        i.preventDefault();
-        try {
-                var flash = RDPWebClient.getFlashById("FlashRDP");
-                flash.keyboardSendScancodes('01');
-        } catch (e) {
-                //alert(e.message);
-        }
-    }});
-});
-
-/**
  * Traverse a tree and return matching nodes.
  * @param {Object} tree - tree to traverse
  * @param {String} prop - node property to match
@@ -120,7 +94,7 @@ function vboxAjaxRequest(fn,params,config) {
 			return null;
 			
 		// Filter out data and display error messages
-		}).pipe(function(d){
+		}).then(function(d){
 
 			// Fatal error previously occurred
 			if($('#vboxPane').data('vboxFatalError')) {
@@ -473,7 +447,7 @@ function vboxAlert(e,xtraOpts) {
 		e.details = $('<div />').html(e.details).text();
 		
 		var p = $('<p />').attr({'style':'text-align: center'});
-		$('<a />').attr({'href':'#'}).html(trans('Details','QIMessageBox')).click(function(){
+		$('<a />').attr({'href':'#'}).html(trans('Details','QIMessageBox')).on('click', function(){
 			$(this).parent().parent().dialog('option',{'height':400,'position':'center'});
 			$(this).parent().siblings(".vboxAlert").css({"display":""});
 			$(this).parent().css({'padding':'0px','margin':'0px'});
@@ -484,7 +458,7 @@ function vboxAlert(e,xtraOpts) {
 		$(div).append(p);
 		
 		var ddet = $('<div />').attr({'style':'display: none; height: 100%; width: auto;','class':'vboxAlert'});	
-		$('<textarea />').attr({'spellcheck':'false','wrap':'off','readonly':'true'}).val(e.details).appendTo($('<form />').appendTo(ddet));	
+		$('<textarea />').attr({'spellcheck':'false','wrap':'off','readonly':'readonly'}).val(e.details).appendTo($('<form />').appendTo(ddet));
 		$(div).append(ddet);
 	}
 	
@@ -776,7 +750,7 @@ function vboxProgressCreateDialog(prequest,icon,title,target,callback) {
 	// Cancel button
 	$('<div />').attr({'id':'vboxProgressCancel'+pid}).css({'display':'none','padding':'8px'}).append(
 
-		$('<input />').attr('type','button').val(trans('Cancel','QIMessageBox')).data({'pid':pid}).click(function(){
+		$('<input />').attr('type','button').val(trans('Cancel','QIMessageBox')).data({'pid':pid}).on('click', function(){
 			this.disabled = 'disabled';
 			vboxAjaxRequest('progressCancel',prequest);
 		})
@@ -841,7 +815,7 @@ function vboxProgressCreateListElement(prequest,icon,title,target,callback) {
 	// Cancel button
 	$('<div />').addClass('vboxProgressOpCancel').append(
 			$('<input />').attr({'id':'vboxProgressCancel'+pid,'type':'button'}).val(trans('Cancel','UIProgressDialog')).data({'pid':pid})
-				.click(function(){
+				.on('click', function(){
 					this.disabled = 'disabled';
 					vboxAjaxRequest('progressCancel',prequest);
 				})

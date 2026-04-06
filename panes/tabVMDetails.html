@@ -410,13 +410,13 @@ function __vboxCreateDetailsSection(data, sectionName, section) {
 						.append(
 							$('<img />').attr({'style':'float:left;margin-right:3px','src':'images/vbox/'+section.icon,'class':'vboxDetailsSectionIcon'})
 						).append(
-							$('<span />').css({'float':'left'}).addClass((links ? 'vboxDetailsSectionLink' : '')).click(function(){
+							$('<span />').css({'float':'left'}).addClass((links ? 'vboxDetailsSectionLink' : '')).on('click', function(){
 								if($(this).hasClass('vboxDetailsSectionLink'))
 									vboxVMsettingsDialog(data,section.settingsLink);
 							}).html(title)
 						).append(
 							$('<span />').addClass('vboxArrowImage')
-								.click(function(){ $(this).parent().trigger("dblclick"); })
+								.on('click', function(){ $(this).parent().trigger("dblclick"); })
 						)
 					)
 				).disableSelection()
@@ -440,7 +440,7 @@ function __vboxCreateDetailsSection(data, sectionName, section) {
 
 	var vboxDetailsSection = $('<div />')
 		.attr({'class':'vboxDetailsBorder vboxVMDetailsBox'+sectionName+ ' vboxVMDetailsBox-vm-'+data.id,'id':'vboxDetailsSectionId-'+sectionName+'-'+data.id})
-		.dblclick(__vboxDetailsSectionCollapse)
+		.on('dblclick', __vboxDetailsSectionCollapse)
 			.hoverClass('vboxHover').disableSelection().data({'sectionName':sectionName});
 
 	if(vboxGetLocalDataItem("vboxSectionCollapse"+sectionName)) {
@@ -458,7 +458,7 @@ function __vboxCreateDetailsSection(data, sectionName, section) {
 		
 		var menu = section.contextMenu();
 				
-		$(vboxDetailsSection).mouseup({'vmid':data.id},function(e) {
+		$(vboxDetailsSection).on('mouseup', {'vmid':data.id}, function(e) {
 
 			$('ul.contextMenu').hide();
 			
@@ -510,7 +510,7 @@ function __vboxDisplayDetailsData(data, multiSelect, targetDiv, skipTable) {
 		$('<input />').attr({'type':'button',
 			'value':trans('Refresh','UIVMLogViewer'),
 			'style':'background: url(images/vbox/refresh_16px.png) 2px 2px no-repeat; padding: 2px 2px 2px 18px; border: 1px solid #000; background-color: #eee;'
-		}).click({vmid:data.id},function(e){
+		}).on('click', {vmid:data.id}, function(e){
 
 			
 			var l = new vboxLoader();
@@ -723,7 +723,7 @@ $('#vboxTabVMDetails').append(ul);
 
 
 /* Menu functionality */
-$("#vboxVMDetails").mouseup( function(e) {
+$("#vboxVMDetails").on('mouseup', function(e) {
 
 	$('ul.contextMenu').hide();
 	

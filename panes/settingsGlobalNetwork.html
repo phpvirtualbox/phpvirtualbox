@@ -356,7 +356,7 @@ function vboxSettingsGlobalNetworkAddAdpater(n) {
 
 	if(exists) return;
 	
-	$('<li />').attr({'class':'vboxListItem'}).html($('<div />').text(n.name).html()).hoverClass('vboxHover').data('interface',n).click(function(){
+	$('<li />').attr({'class':'vboxListItem'}).html($('<div />').text(n.name).html()).hoverClass('vboxHover').data('interface',n).on('click', function(){
 		$(this).parent().children('li.vboxListItemSelected').removeClass('vboxListItemSelected').addClass('vboxListItem');
 		$(this).addClass('vboxListItemSelected').removeClass('vboxListItem');
 		$('#vboxSettingsGlobalNetList').trigger('select',this);
@@ -397,18 +397,18 @@ function vboxSettingsGlobalNATNetworksAddNet(net) {
 
 	$('<tr />').data({'NATNetwork':net}).hoverClass('vboxHover').addClass('vboxListItem').append(
 		$('<td />').append(
-				$('<input />').attr({'type':'checkbox'}).click(function(){
+				$('<input />').attr({'type':'checkbox'}).on('click', function(){
 					$(this).closest('tr').data('NATNetwork').enabled = this.checked;		
 					$(this).closest('tr').data('NATNetwork')._modified = true;
 					}).prop('checked', net.enabled)
 				
-			).click(function(){
+			).on('click', function(){
 				$(this).parent().parent().children('tr.vboxListItemSelected').removeClass('vboxListItemSelected').addClass('vboxListItem');
 				$(this).parent().addClass('vboxListItemSelected').removeClass('vboxListItem');
 				$('#vboxSettingsGlobalNATNetList').trigger('select',this);
 		})
 	).append(
-		$('<td />').html($('<div />').html(net.networkName).text()).click(function(){
+		$('<td />').html($('<div />').html(net.networkName).text()).on('click', function(){
 			$(this).parent().parent().children('tr.vboxListItemSelected').removeClass('vboxListItemSelected').addClass('vboxListItem');
 			$(this).parent().addClass('vboxListItemSelected').removeClass('vboxListItem');
 			$('#vboxSettingsGlobalNATNetList').trigger('select',this);

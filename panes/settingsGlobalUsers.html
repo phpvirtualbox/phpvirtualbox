@@ -235,7 +235,7 @@ $('#vboxSettingsUserList').on('select', function(e,el){userToolbar.update(el);})
  */
 function vboxSettingsGlobalAddUserList(n) {
 
-	$('<li />').attr({'class':'vboxListItem'}).html($('<div />').html(n.username + (n.admin ? ' ('+trans('Admin User','UIUsers')+')' : ''))).hoverClass('vboxHover').data(n).click(function(){
+	$('<li />').attr({'class':'vboxListItem'}).html($('<div />').html(n.username + (n.admin ? ' ('+trans('Admin User','UIUsers')+')' : ''))).hoverClass('vboxHover').data(n).on('click', function(){
 		$(this).parent().children('li.vboxListItemSelected').removeClass('vboxListItemSelected').addClass('vboxListItem');
 		$(this).addClass('vboxListItemSelected').removeClass('vboxListItem');
 		$('#vboxSettingsUserList').trigger('select',this);

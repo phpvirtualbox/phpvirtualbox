@@ -95,17 +95,17 @@ $('#wizardCloneVMStep1').on('show',function(e,wiz){
 		$('#vboxCloneCurrentAll').show();
 	}
 
-	$(document.forms['frmwizardCloneVM'].elements.machineCloneName).focus();
+	$(document.forms['frmwizardCloneVM'].elements.machineCloneName).trigger('focus');
 	document.forms['frmwizardCloneVM'].elements.machineCloneName.value = trans('%1 Clone','UIWizardCloneVMPage1').replace('%1',wiz.args.vm.name);
 
-	var inputBox = $('#wizardCloneVMStep1').find('input.vboxText').select();
-	setTimeout(inputBox.focus.bind(inputBox),10);
+	var inputBox = $('#wizardCloneVMStep1').find('input.vboxText').trigger('select');
+	setTimeout(function triggerFocus() { this.trigger('focus'); }.bind(inputBox), 10);
 });
 
 /* When going to step2, make sure a name is entered */
 $('#wizardCloneVMStep2').on('show',function(e,wiz){
 
-	document.forms['frmwizardCloneVM'].elements.machineCloneName.value = jQuery.trim(document.forms['frmwizardCloneVM'].elements.machineCloneName.value);
+	document.forms['frmwizardCloneVM'].elements.machineCloneName.value = String(document.forms['frmwizardCloneVM'].elements.machineCloneName.value).trim();
 
 	if(!document.forms['frmwizardCloneVM'].elements.machineCloneName.value) {
 		// Go back

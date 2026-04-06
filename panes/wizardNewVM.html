@@ -273,13 +273,13 @@ newVMUpdateOS(document.forms['frmwizardNewVM'].newVMOSType.options[document.form
  */
 
 $('#wizardNewVMStep1').on('show',function(e,wiz){
-	$(document.forms['frmwizardNewVM'].newVMName).focus();	 
+	$(document.forms['frmwizardNewVM'].newVMName).trigger('focus');
 });
  
 /* When going to step2, make sure a name is entered */
 $('#wizardNewVMStep2').on('show',function(e,wiz){
 
-	document.forms['frmwizardNewVM'].newVMName.value = jQuery.trim(document.forms['frmwizardNewVM'].newVMName.value);
+	document.forms['frmwizardNewVM'].newVMName.value = String(document.forms['frmwizardNewVM'].newVMName.value).trim();
 
 	if(!document.forms['frmwizardNewVM'].newVMName.value) {
 		$(document.forms['frmwizardNewVM'].newVMName).addClass('vboxRequired');

@@ -289,7 +289,7 @@ function vboxChooserToolbarUSBUpdate(menu) {
 			
 			$(menu).append($('<li />').append(
 					$('<span />').addClass('vboxMenuAcceptClick')
-						.click(function(){if(!$(this).parent().hasClass('disabled')){$(this).children('input').click();}return false;})
+						.on('click', function(){if(!$(this).parent().hasClass('disabled')){$(this).children('input').trigger('click');}return false;})
 						.append(cbox).append(' '+dname)).attr({'class':(avail ? '' : 'disabled')}));
 		}
 		

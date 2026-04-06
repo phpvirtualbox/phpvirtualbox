@@ -26,15 +26,11 @@
     <link rel="stylesheet" type="text/css" href="css/layout.css"/>
 
     <!-- External or jQuery related scripts -->
-    <script type="text/javascript" src="js/jquery-3.7.1.min.js"></script>
-    <script type="text/javascript" src="js/jquery-ui-1.14.1.min.js"></script>
-	<script type="text/javascript" src="js/jquery.tipped-2.1b.min.js"></script>
-	<script type="text/javascript" src="js/jquery.scrollTo-min.js"></script>
-	<script type="text/javascript" src="js/jquery.jec-1.3.1.js"></script>
-	
-	<!-- Oracle RDP Control -->
-	<script type="text/javascript" src="rdpweb/webclient.js"></script>
-	<script type="text/javascript" src="rdpweb/swfobject.js"></script>
+	<script type="text/javascript" src="js/jquery-4.0.0.min.js"></script>
+	<script type="text/javascript" src="js/jquery-ui-1.14.2.min.js"></script>
+	<script type="text/javascript" src="js/jquery.tipped-2.2b.js"></script>
+	<script type="text/javascript" src="js/jquery.scrollTo-2.1.3.js"></script>
+	<script type="text/javascript" src="js/jquery.jec-1.4.0.js"></script>
 	
 	<!-- Internal / project related scripts -->
     <script type="text/javascript" src="endpoints/config.js"></script>
@@ -259,7 +255,7 @@
 			/*
 			 * Resize panes when the window changes sizes
 			 */
-			$(window).resize(function(){
+			$(window).on('resize', function(){
 				
 				// Hide 
 				$('#vboxChooserResizePane').children().children().css({'display':'none'});
@@ -376,8 +372,8 @@
 				$('#vboxLogin').find('input[name=password]').val('');
 				$('#vboxLogin').dialog('open');
 				
-				if(!$('#vboxLogin').find('input[name=username]').val()) $('#vboxLogin').find('input[name=username]').focus();
-				else $('#vboxLogin').find('input[name=password]').focus();
+				if(!$('#vboxLogin').find('input[name=username]').val()) $('#vboxLogin').find('input[name=username]').trigger('focus');
+				else $('#vboxLogin').find('input[name=password]').trigger('focus');
 				
 				// Display error if we tried to log in
 				if(tried) {
@@ -412,7 +408,7 @@
 				if($.browser.webkit) heightadd = 5;
 				else heightadd = 0;
 				$('#vboxLogin').dialog({'closeOnEscape':false,'width':300,'height':'auto','buttons':buttons,'modal':true,'autoOpen':false,'classes':{'ui-dialog':'vboxDialogContent'},'title':'<img src="images/vbox/OSE/about_16px.png" class="vboxDialogTitleIcon" /> phpVirtualBox :: ' + trans('Log in','UIUsers')});
-				$('#vboxLogin').find('input[name=username]').first().focus();
+				$('#vboxLogin').find('input[name=username]').first().trigger('focus');
 				
 				// Trick loader into not showing root pane again
 				loader.hideRoot = false;

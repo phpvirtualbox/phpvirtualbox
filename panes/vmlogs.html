@@ -53,7 +53,7 @@ function vboxShowLogsInit(vm) {
 				
 				var frm = $('<form />');
 				$(frm).height(pHeight);
-				$('<textarea />').attr({'id':'vboxLogText'+x.logIndex,'spellcheck':'false','wrap':'off','readonly':'true'}).height(pHeight).val(d.responseData).appendTo(frm);
+				$('<textarea />').attr({'id':'vboxLogText'+x.logIndex,'spellcheck':'false','wrap':'off','readonly':'readonly'}).height(pHeight).val(d.responseData).appendTo(frm);
 				$('#vboxVMLog'+x.logIndex).html('').append(frm);
 				$('#vboxLogText'+x.logIndex).attr('scrollTop',$('#vboxLogText'+x.logIndex).attr('scrollHeight'));
 				

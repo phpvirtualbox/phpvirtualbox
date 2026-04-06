@@ -223,7 +223,9 @@ $("#vboxVMMTabs").find(".translate").html(function(i,h){return trans(h,'UIMedium
 /*
  * Keypress events
  */
-$('div.vmmTableBody table').click(function(){$(this).focus();}).keydown(function(e){
+$('div.vmmTableBody table')
+.on('click', function(){$(this).trigger('focus');})
+.on('keydown', function(e){
 	
 	var keynum = 0;
 	
@@ -236,22 +238,22 @@ $('div.vmmTableBody table').click(function(){$(this).focus();}).keydown(function
 	
 		// up
 		case 38:			
-			$(this).find('tr.vboxListItemSelected').prevAll('tr:not([class~="vboxHidden"]):first').children().first().click();
+			$(this).find('tr.vboxListItemSelected').prevAll('tr:not([class~="vboxHidden"]):first').children().first().trigger('click');
 			break;
 			
 		// right / expand
 		case 39:
-			$(this).find('tr.vboxListItemSelected.collapsed').find('input').click();
+			$(this).find('tr.vboxListItemSelected.collapsed').find('input').trigger('click');
 			break;
 			
 		// left / contract
 		case 37:
-			$(this).find('tr.vboxListItemSelected:not(.collapsed)').find('input').click();
+			$(this).find('tr.vboxListItemSelected:not(.collapsed)').find('input').trigger('click');
 			break;
 			
 		// down
 		case 40:
-			$(this).find('tr.vboxListItemSelected').nextAll('tr:not([class~="vboxHidden"]):first').children().first().click();
+			$(this).find('tr.vboxListItemSelected').nextAll('tr:not([class~="vboxHidden"]):first').children().first().trigger('click');
 			break;
 			
 	}
@@ -269,7 +271,7 @@ $("#vboxVMMTabs").tabs().on("tabsactivate",function(ev,ui){
 	vboxVMMSizeTable(ui.newPanel);
 	
 	// Medium selection
-	if(!$(ui.newPanel).find('tbody').children('tr.vboxListItemSelected').first().children().first().click().length) {
+	if(!$(ui.newPanel).find('tbody').children('tr.vboxListItemSelected').first().children().first().trigger('click').length) {
 		$('#vboxVirtualMediaManager').trigger('mediumselect',[null]);
 	}	
 });
@@ -782,7 +784,7 @@ function vboxVMMAddMedium(d,depth,hideDiff,topLevelParent) {
 	// Show / hide children button
 	if(d.children && d.children.length && !hideDiff) {
 
-		$('<input />').attr({'type':'button','class':'vboxImgButton vboxVMMMediaExpand','style':'background-image: url(images/vbox/arrow_right_10px.png)'}).click(function(){
+		$('<input />').attr({'type':'button','class':'vboxImgButton vboxVMMMediaExpand','style':'background-image: url(images/vbox/arrow_right_10px.png)'}).on('click', function(){
 			
 			if(!$(this).data('toggleClicked')) {
 				
@@ -859,7 +861,7 @@ function vboxVMMAddMedium(d,depth,hideDiff,topLevelParent) {
 		if(first) { vboxColorRows($('#vboxVMMHDList')); vboxVMMTableHeaderSetup($('#vmmDisks'));}
 
 		
-	}).children().click(function(){
+	}).children().on('click', function(){
 		$(this).parent().removeClass('vboxListItem vboxHover').addClass('vboxListItemSelected')
 			.siblings().removeClass('vboxListItemSelected').addClass('vboxListItem');
 		$('#vboxVirtualMediaManager').trigger('mediumselect',[$(this).parent()]);
@@ -921,7 +923,7 @@ function vboxVMMFillMedia(sel) {
 	// Select medium?
 	if(sel) {
 		
-		$('#vboxVMMMedium'+sel).children().first().click();
+		$('#vboxVMMMedium'+sel).children().first().trigger('click');
 		
 	} else {
 		$('#vboxVirtualMediaManager').trigger('mediumselect',null);
@@ -1090,7 +1092,7 @@ function vboxVMMInit(hideDiff,vmPath) {
 			if($(this).data('sorted')) return;
 			$(this).children('img').css({'visibility':'hidden'});
 			
-		}).addClass('vboxVMMSortImgFaded').append(' ').append($('<img />').attr({'src':'images/upArrow.png','style':'visibility:hidden;cursor:pointer'}).click(function(e,sortDefault){
+		}).addClass('vboxVMMSortImgFaded').append(' ').append($('<img />').attr({'src':'images/upArrow.png','style':'visibility:hidden;cursor:pointer'}).on('click', function(e,sortDefault){
 			
 			var p = $(this).parent();
 			

@@ -200,7 +200,7 @@ if(!$('#vboxPane').data('vboxConfig').startStopConfig) {
 /* Custom icons */
 if($('#vboxPane').data('vboxConfig').enableCustomIcons) {
 	$('#vboxSettingsRowVMIcon').css('display','');
-	$(document.forms['frmVboxSettings'].vboxSettingsGeneralIcon).blur(function(){
+	$(document.forms['frmVboxSettings'].vboxSettingsGeneralIcon).on('blur', function(){
 		$('#vboxSettingsGeneralIconImg').attr('src',(this.value ? this.value : 'images/vbox/blank.gif'));
 	});
 }
@@ -229,7 +229,7 @@ function vboxSettingsUpdateOSList(osfam) {
 	// Update image
 	$("#vboxOSTypeImg").prop('src', "images/vbox/" + vboxGuestOSTypeIcon(vboxSettingsOSTypes[osfam].osTypes[0].id));
 	if(vboxSettingsOSTypes[osfam].osTypes[0].subtype) {
-		$("#vboxSettingsGeneralSubtype").val(vboxSettingsOSTypes[osfam].osTypes[0].subtype).change();
+		$("#vboxSettingsGeneralSubtype").val(vboxSettingsOSTypes[osfam].osTypes[0].subtype).trigger('change');
 	}
 }
 
@@ -343,11 +343,11 @@ $('#vboxSettingsDialog').on('dataLoaded', function(){
 
 	/* OS Type */
 	$("#vboxSettingsGeneralName").val($('#vboxSettingsDialog').data('vboxMachineData').name);
-	$("#vboxSettingsGeneralOSFamily").val(vboxSettingsOSTypesObj[$('#vboxSettingsDialog').data('vboxMachineData').OSTypeId].familyId).change();
+	$("#vboxSettingsGeneralOSFamily").val(vboxSettingsOSTypesObj[$('#vboxSettingsDialog').data('vboxMachineData').OSTypeId].familyId).trigger('change');
 	if(vboxSettingsOSTypesObj[$('#vboxSettingsDialog').data('vboxMachineData').OSTypeId].subtype) {
-		$("#vboxSettingsGeneralSubtype").val(vboxSettingsOSTypesObj[$('#vboxSettingsDialog').data('vboxMachineData').OSTypeId].subtype).change();
+		$("#vboxSettingsGeneralSubtype").val(vboxSettingsOSTypesObj[$('#vboxSettingsDialog').data('vboxMachineData').OSTypeId].subtype).trigger('change');
 	}
-	$("#vboxSettingsGeneralOSType").val($('#vboxSettingsDialog').data('vboxMachineData').OSTypeId).change();
+	$("#vboxSettingsGeneralOSType").val($('#vboxSettingsDialog').data('vboxMachineData').OSTypeId).trigger('change');
 
 
 	/* Encrypted media */
@@ -406,8 +406,8 @@ $('#vboxSettingsDialog').on('dataLoaded', function(){
 
 	}
 	
-	if(jQuery.trim(document.forms['frmVboxSettings'].vboxSettingsGeneralName.value))
-		$('#vboxSettingsDialog').data('vboxMachineData').name = jQuery.trim(document.forms['frmVboxSettings'].vboxSettingsGeneralName.value);
+	if(String(document.forms['frmVboxSettings'].vboxSettingsGeneralName.value).trim())
+		$('#vboxSettingsDialog').data('vboxMachineData').name = String(document.forms['frmVboxSettings'].vboxSettingsGeneralName.value).trim();
 		
 	$('#vboxSettingsDialog').data('vboxMachineData').OSTypeId = document.forms['frmVboxSettings'].vboxSettingsGeneralOSType.value;
 	$('#vboxSettingsDialog').data('vboxMachineData').snapshotFolder = document.forms['frmVboxSettings'].vboxSettingsGeneralSnapshotFolder.value;
