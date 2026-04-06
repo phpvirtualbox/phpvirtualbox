@@ -1,4 +1,12 @@
 -------------------------------------
+	7.2-3	2026-04-05
+-------------------------------------
+Update jQuery to 4.0.0 and jQuery-UI to 1.14.2
+Update jQuery plugins to the latest versions
+Fix deprecated jQuery usage
+Fix dialogs buttons not updating
+
+-------------------------------------
 	7.2-2	2025-11-01
 -------------------------------------
 Disable Page Fusion feature

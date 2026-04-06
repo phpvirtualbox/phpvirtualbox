@@ -4,10 +4,9 @@ Web interface for Oracle VirtualBox (https://www.virtualbox.org/)
 
 ## Roadmap
 
-- [ ] Ensure feature parity with VirtualBox 7.2 minus Oracle Cloud features
-- [x] PHP 8.4 compatibility
-- [x] jQuery and jQuery UI updates
-- [ ] Create a release process where javascript and CSS are minified and releses do not contain unnecessary build artifacts
+- Ensure feature parity with VirtualBox 7.2 minus Oracle Cloud features
+- PHP 8.4 compatibility
+- jQuery and jQuery UI updates
 
 ## Project history and credits
 
