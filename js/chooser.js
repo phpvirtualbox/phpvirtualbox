@@ -90,7 +90,7 @@ var vboxChooser = {
 			$(this).removeClass('vboxChooserDropTargetHoverRoot');
 		});
 		
-		$(window).trigger('resize', function(){
+		$(window).on('resize', function(){
 			
 			// Get anchor id and add / remove class
 			var w = parseInt($(vboxChooser._anchor).innerWidth());
