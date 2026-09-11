@@ -106,7 +106,7 @@ for(var i in vboxChooserSettingsMenu) {
 	// add name
 	vboxChooserSettingsMenu[i].name = i;
     var label = trans(vboxChooserSettingsMenu[i].label, 'UIActionPool'); 
-	var li = $('<li />').html("<span class='vboxMenuItemChecked' /><a href='#" + vboxChooserSettingsMenu[i].name + "' style='background-image: url(images/vbox/" + vboxChooserSettingsMenu[i].icon +"_16px.png);' >"+(label ? label : ' ')+"</a>");
+	var li = $('<li />').html("<span class='vboxMenuItemChecked'></span><a href='#" + vboxChooserSettingsMenu[i].name + "' style='background-image: url(images/vbox/" + vboxChooserSettingsMenu[i].icon +"_16px.png);' >"+(label ? label : ' ')+"</a>");
 	if(i == 'storage') { $(li).attr({'style':'display:none','id':'vboxVMSettingsToolbarStorageHolder'}); }
 	if(i == 'USB') {
 		/* 'USB' menu */
