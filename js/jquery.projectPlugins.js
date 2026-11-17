@@ -512,20 +512,19 @@ if(jQuery) (function($){
 				    
 				    $(c).append($('<li />').addClass("wait").text(o.loadMessage));
 				    
-					$.post(o.script, JSON.stringify({ 'dir': t, 'dirsOnly' : (o.dirsOnly ? true : false), 'fullpath' : (fullpath ? true : false)}), function(data) {
-
-					    $(c).children('.wait').remove();
-						$(c).append(toHTML(data));
-						
-						if(o.scrollTo) {
-							var sto = $(o.scrollTo).find('a.vboxListItemSelected').first();
-							if(sto.length) {
-								$(o.scrollTo).scrollTo($(sto),{'axis':'y','offset':{'top':-15}});
-							}
-						}
-						bindTree(c);
-						
-					}, "json");
+					$.post( { url: o.script, contentType: "application/json; charset=utf-8",
+							data: JSON.stringify({ 'dir': t, 'dirsOnly' : (o.dirsOnly ? true : false), 'fullpath' : (fullpath ? true : false)}),
+							success: function(data) {
+										$(c).children('.wait').remove();
+										$(c).append(toHTML(data));
+										if(o.scrollTo) {
+											var sto = $(o.scrollTo).find('a.vboxListItemSelected').first();
+											if(sto.length) {
+												$(o.scrollTo).scrollTo($(sto),{'axis':'y','offset':{'top':-15}});
+											}
+										}
+										bindTree(c); },
+							dataType: "json" } );
 				}
 				
 				function folderElement(data) {

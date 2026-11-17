@@ -57,7 +57,7 @@ value*/
                     if ($.isPlainObject(value)) {
                         min = value.min;
                         max = value.max;
-                    } else if ($.isArray(value) && value.length === 2) {
+                    } else if (Array.isArray(value) && value.length === 2) {
                         min = value[0];
                         max = value[1];
                     }
@@ -180,12 +180,12 @@ value*/
 
                     parseKeys = function (value) {
                         var keys = [];
-                        if ($.isArray(value)) {
+                        if (Array.isArray(value)) {
                             /*jslint unparam: true*/
                             $.each(value, function (i, val) {
                                 var j, min, max;
                                 if (Validators.keyRange(val)) {
-                                    if ($.isArray(val)) {
+                                    if (Array.isArray(val)) {
                                         min = val[0];
                                         max = val[1];
                                     } else {
@@ -230,7 +230,7 @@ value*/
                                 }
                                 var id = Combobox.getId(elem),
                                     opt = options[id];
-                                if (opt !== undefined && $.isArray(value)) {
+                                if (opt !== undefined && Array.isArray(value)) {
                                     opt[name] = value;
                                     return true;
                                 }
@@ -246,7 +246,7 @@ value*/
                             keys: function (elem, name, value) {
                                 var id = Combobox.getId(elem),
                                     opt = options[id];
-                                if (opt !== undefined && $.isArray(value)) {
+                                if (opt !== undefined && Array.isArray(value)) {
                                     opt[name] = parseKeys(value);
                                 }
                             }
@@ -612,12 +612,12 @@ value*/
                 initJS: function (options, settings) {
                     var select = $('<select>'),
                         addOptions = function (elem, options) {
-                            if ($.isArray(options)) {
+                            if (Array.isArray(options)) {
                                 /*jslint unparam: true*/
                                 $.each(options, function (i, val) {
                                     if ($.isPlainObject(val)) {
                                         $.each(val, function (key, value) {
-                                            if ($.isArray(value)) {
+                                            if (Array.isArray(value)) {
                                                 var og = $('<optgroup>').attr('label', key);
                                                 addOptions(og, value);
                                                 og.appendTo(select);

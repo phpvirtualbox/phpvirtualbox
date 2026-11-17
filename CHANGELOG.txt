@@ -1,4 +1,13 @@
 -------------------------------------
+        7.2-4   2026-11-16
+-------------------------------------
+Fix settings dialogue failing to load with a second network adapter attached
+https://github.com/phpvirtualbox/phpvirtualbox/issues/389
+
+Fix content-type in POST requests to application/json
+https://github.com/phpvirtualbox/phpvirtualbox/issues/388
+
+-------------------------------------
 	7.2-3	2026-04-05
 -------------------------------------
 Update jQuery to 4.0.0 and jQuery-UI to 1.14.2
