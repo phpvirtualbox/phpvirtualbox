@@ -14,7 +14,7 @@
 /*
  * This version of phpVirtualBox
  */
-define('PHPVBOX_VER', '7.2-3');
+define('PHPVBOX_VER', '7.2-4');
 
 class phpVBoxConfigClass {
 
