@@ -55,7 +55,7 @@ function vboxAjaxRequest(fn,params,config) {
         'persist': config && config.persist ? config.persist : null
 	};
 
-	$.when($.post(vboxEndpointConfig.api, JSON.stringify(data), undefined,"json")
+	$.when($.post( { url: vboxEndpointConfig.api, contentType: "application/json; charset=utf-8", data: JSON.stringify(data), dataType: "json" } )
 	
 		// Run on error
 		.fail(function(d,etext,xlr,d2) {
